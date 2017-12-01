@@ -33,7 +33,7 @@ Git客户端下载地址: [点击跳转](https://git-for-windows.github.io/ 'htt
   - 检查出windows格式转换为unix格式 : 将windows格式的换行转为unix格式的换行在进行提交;
   - 检查出原来格式转为unix格式 : 不管什么格式的, 一律转为unix格式的换行在进行提交;
   - 不进行格式转换 : 不进行转换, 检查出什么, 就提交什么;  
-  
+
   ![选择换行格式](./images/4.png)
 
 之后就是正常安装了。
@@ -86,6 +86,7 @@ Git客户端下载地址: [点击跳转](https://git-for-windows.github.io/ 'htt
 或者git命令复制该文件的内容  `$ clip < ~/.ssh/id_rsa.pub`
 - 登录你的github账号，从又上角的设置（ Account Settings ）进入，然后点击菜单栏的 SSH key 进入页面添加 SSH key。
 - 点击 Add SSH key 按钮添加一个 SSH key 。把你复制的 SSH key 代码粘贴到 key 所对应的输入框中，记得 SSH key 代码的前后不要留有空格或者回车。当然，上面的 Title 所对应的输入框你也可以输入一个该 SSH key 显示在 github 上的一个别名。默认的会使用你的邮件名称。
+
 ![SSH key](./images/1.jpg)
 ![Add SSH key 按钮](./images/2.jpg)
 
