@@ -4,7 +4,7 @@
 
 ## 辅助工具
 
-* [分布式版本控制系统——Git](./git/index.md 'git')
+* [分布式版本控制系统——Git](./assistive-tools/git/index.md 'git')
 
 ## 推荐资料
 
