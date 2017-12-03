@@ -101,3 +101,24 @@ git diff branch1 branch2 #比较两次分支之间的差异
 
 git diff commit commit #比较两次提交之间的差异
 ```
+
+* 撤销相关
+```
+git reset HEAD <file.name> # 取消已经暂存的文件
+
+git reset -- <file.name> # 同上
+
+git reset --hard HEAD <file.name> # 恢复到当前版本库的状态，会覆盖工作区和缓存区的文件
+
+git revert HEAD #撤销前一次操作
+git revert HEAD~ #撤销前前一次操作
+git revert commit ## 撤销指定操作
+
+checkout命令用于从历史提交（或者暂存区域）中拷贝文件到工作目录，也可用于切换分支。当给定某个文件名（或者打开-p选项，或者文件名和-p选项同时打开）时，git会从指定的提交中拷贝文件到暂存区域和工作目录。如果命令中没有指定提交节点，则会从暂存区域中拷贝内容。注意当前分支不会发生变化。
+
+git checkout -- file # 取消在工作区对文件的修改（从暂存区——覆盖工作区）
+
+git checkout branch|tag|commit -- file_name#从仓库取出file覆盖当前分支
+
+git checkout -- . # 从暂存区取出文件覆盖工作区
+```
