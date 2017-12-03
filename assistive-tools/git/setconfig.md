@@ -2,23 +2,28 @@
     git config -e [--global] # 编辑Git配置文件
 1. 配置用户名和邮箱
 用户名邮箱作用 : 我们需要设置一个用户名 和 邮箱, 这是用来上传本地仓库到GitHub中, 在GitHub中显示代码上传者;  
-**使用命令：**
+
+**使用命令：**  
+
 ```
 git config --global user.name "yourname" //设置用户名  
 git config --global user.email "your email"  //设置邮箱  
 ```
 
 2. 配置自动换行  
+
 ```
 git config --global core.autocrlf input #提交到git是自动将换行符转换为lf
 ```
 
-3. 彩色的git输出
+3. 彩色的git输出  
+
 ```
 git config --global color.ui true
 ```
 
-4. 配置别名
+4. 配置别名  
+
 ```
 git config --global alias.st status #git st
 git config --global alias.co checkout #git co
@@ -27,16 +32,19 @@ git config --global alias.ci commit #git ci
 ```
 
 5. 设置显示中文文件名  
+
 ```
 git config –global core.quotepath false 
 ```
 
-5. 获取配置列表和帮助
+6. 获取配置列表和帮助  
+
 ```
 git config --list #查看配置的信息
 
 git help config #获取帮助信息
 ```
+
 
 ### .gitignore文件
 
@@ -47,12 +55,15 @@ git help config #获取帮助信息
 * 过滤模式 : Git中的 .gitignore 中有两种模式,开放模式 和保守模式,保守模式的优先级要高于开放模式;
 
 * 开放模式 : 设置哪些文件和目录被过滤, 凡是在文件中列出的文件或者目录都要被过滤掉;  
+
 ```
 -- 过滤目录 : /bin/ 就是将bin目录过滤, 该文件下的所有目录和文件都不被提交;  
 -- 过滤某个类型文件 : *.zip *.class 就是过滤zip 和 class 后缀的文件, 这些文件不被提交;  
 -- 过滤指定文件 : /gen/R.java, 过滤该文件, 该文件不被提交;
 ```
-* 保守模式 : 设置哪些文件不被过滤, 凡是列在其中的文件都要完整的提交上去;
+
+* 保守模式 : 设置哪些文件不被过滤, 凡是列在其中的文件都要完整的提交上去;  
+
 ```
 -- 跟踪目录 : !/src , 该目录下的所有文件都要被提交;
 -- 跟踪某类文件 : !*.java , 凡是java文件都要保留;

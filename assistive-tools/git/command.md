@@ -41,7 +41,8 @@ git commit -v # 提交时显示所有diff信息
 [提交信息规范](http://yanhaijing.com/git/2016/02/17/my-commit-message/)
 
 ### 恢复相关的操作
-* 文件删除相关
+* 文件删除相关  
+
 ```
 rm *&git rm * 
 # 第一个命令移除工作区文件，第二个命令本地已经删除了的文件，通过此命令把暂存区的文件也删除了。
@@ -54,7 +55,8 @@ git rm --cached * # 停止追踪指定文件，但该文件会保留在工作区
 git mv file_from file_to # 重命名跟踪文件
 ```
 
-* 查看历史记录
+* 查看历史记录  
+
 ```
 git log # 查看最近的提交日志
 # 每次提交都有一个唯一id，可以查看所有提交和他们的id，之后恢复会用到
@@ -80,7 +82,9 @@ git log -p [file] # 显示指定文件相关的每一次diff
 git log -p -x # 仅显示最近x次的提交,包含每一次的diff
 
 ```
-* 搜索调试
+
+* 搜索调试  
+
 ```
 git reflog 	# 查看已经修改的版本号，即使是已经删除的某个分支
 
@@ -90,7 +94,8 @@ git log -S<searchword> --oneline # 在Git的整个历史中进行搜索
 
 ```
 
-* 对比相关
+* 对比相关  
+
 ```
 git show commitId # 查看某一次提交更新了什么
 
@@ -111,7 +116,8 @@ git diff branch1 branch2 #比较两次分支之间的差异
 git diff commit commit #比较两次提交之间的差异
 ```
 
-* 撤销相关
+* 撤销相关  
+
 ```
 git reset HEAD <file.name> # 取消已经暂存的文件
 
@@ -136,7 +142,9 @@ git checkout branch|tag|commit -- file_name # 从仓库取出file覆盖当前分
 ```
 
 ### 分支
-* 创建分支
+
+* 创建分支  
+
 ```
 git branch # 列出本地分支
 
@@ -172,7 +180,9 @@ git checkout -b test # 新建+切换到test分支
 git checkout -b test dev # 基于dev新建test分支，并切换
 
 ```
-* 合并分支
+
+* 合并分支  
+
 ```
 git merge test # 将test分支合并到当前分支,
 
@@ -201,11 +211,13 @@ git rebase --abort # 取消合并
 ```
 
 * 合并推荐链接：  
+
 [图解4种git合并分支方法](http://yanhaijing.com/git/2017/07/14/four-method-for-git-merge/)
 
 ### 远程仓库
 
-* 连接远程仓库
+* 连接远程仓库  
+
 ```
 git remote add origin1 git@github.com:yanhaijing/data.js.git # 添加远程仓库
 
@@ -219,7 +231,8 @@ git remote rm origin # 删除
 git remote show origin # 查看指定源的全部信息
 ```
 
-* 操作远程仓库
+* 操作远程仓库  
+
 ```
 git fetch origin remotebranch[:localbranch] # 从远端拉去分支[到本地指定分支]
 
@@ -256,12 +269,12 @@ git stash pop # 恢复的同时直接删除stash内容
 
 git stash apply stash@{0} # 恢复指定的工作现场，当你保存了不只一份工作现场时。
 ```
-
-* 链接：[里面有介绍工作现场](http://blog.csdn.net/man_help/article/details/51840722)
+  
+  * 链接：[里面有介绍工作现场](http://blog.csdn.net/man_help/article/details/51840722)
 
 ### 标签
 
-标签作用: 在开发的一些关键时期,使用标签来记录这些关键时刻, 例如发布版本, 有重大修改, 升级的时候, 会使用标签记录这些时刻, 来永久标记项目中的关键历史时刻;
+标签作用: 在开发的一些关键时期,使用标签来记录这些关键时刻, 例如发布版本, 有重大修改, 升级的时候, 会使用标签记录这些时刻, 来永久标记项目中的关键历史时刻;  
 
 ```
 git tag # 列出现有标签	
@@ -279,7 +292,10 @@ git tag -d v0.1 # 删除标签
 
 git push origin :refs/tags/v0.1 # 删除远程标签
 ```
+  
+
 链接：[里面有关于标签的操作](http://blog.csdn.net/vipzjyno1/article/details/22098621)
 
 ### 推荐资源
+
 * [图解Git](http://marklodato.github.io/visual-git-guide/index-zh-cn.html#checkout)

@@ -157,7 +157,7 @@ git config --global alias.ci commit #git ci
 git config –global core.quotepath false 
 ```
 
-5. 获取配置列表和帮助
+6. 获取配置列表和帮助
 ```
 git config --list #查看配置的信息
 
