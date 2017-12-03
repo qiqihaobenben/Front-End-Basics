@@ -186,3 +186,6 @@ git clone git@github.com:qiqihaobenben/Front-End-Basics.git myfile #克隆到自
 
 之后操作跟上述相同，省略remote这一步。
 ```
+
+### 推荐资料
+* [GitHub超详细图文攻略 - Git客户端下载安装 GitHub提交修改源码工作流程](http://blog.csdn.net/vipzjyno1/article/details/22098621)
