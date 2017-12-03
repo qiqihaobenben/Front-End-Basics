@@ -46,7 +46,8 @@ Git 是一套内容寻址文件系统。意思就是Git 从核心上来看不过
 
 ### 文件(blob)对象，树(tree)对象，提交(commit)对象
 
-简单来说，blob对象保存文件的内容；tree对象类似文件夹，保存blob对象和其它tree对象；commit对象保存tree对象，提交信息，作者，邮箱以及上一次的提交对象的ID（第一次提交没有）。而Git就是通过组织和管理这些对象的状态以及复杂的关系实现的版本控制以及以及其他功能如分支。
+简单来说，blob对象保存文件的内容；tree对象类似文件夹，保存blob对象和其它tree对象；commit对象保存tree对象，提交信息，作者，邮箱以及上一次的提交对象的ID（第一次提交没有）。而Git就是通过组织和管理这些对象的状态以及复杂的关系实现的版本控制以及以及其他功能如分支。  
+具体可以参考[http://blog.codingplayboy.com/2017/03/23/git_internal/](http://blog.codingplayboy.com/2017/03/23/git_internal/)
 
 ### Git的引用
 
