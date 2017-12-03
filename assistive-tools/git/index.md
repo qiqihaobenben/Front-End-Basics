@@ -7,3 +7,9 @@
 ### [4、工作流程基础配置和入门操作](./workflow '工作流程基础配置和入门操作')
 
 ### [5、命令操作](./command '命令操作')
+
+### 推荐资料
+
+* [Git的核心概念](https://lufficc.com/blog/the-core-conception-of-git)
+* [GitHub超详细图文攻略 - Git客户端下载安装 GitHub提交修改源码工作流程](http://blog.csdn.net/vipzjyno1/article/details/22098621)
+* [一本关于github的书-GotGitHub](http://www.worldhello.net/gotgithub/index.html)
