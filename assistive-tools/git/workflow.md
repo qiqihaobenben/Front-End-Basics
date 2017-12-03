@@ -153,11 +153,13 @@ git config --global alias.ci commit #git ci
 ```
 
 5. 设置显示中文文件名  
+
 ```
 git config –global core.quotepath false 
 ```
 
-6. 获取配置列表和帮助
+6. 获取配置列表和帮助  
+
 ```
 git config --list #查看配置的信息
 
