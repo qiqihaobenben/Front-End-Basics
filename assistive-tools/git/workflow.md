@@ -150,7 +150,7 @@ git config --global core.autocrlf input #提交到git是自动将换行符转换
 git config --global color.ui true
 ```
 
-4. 配置别名  
+* 配置别名  
 
 ```
 git config --global alias.st status #git st
