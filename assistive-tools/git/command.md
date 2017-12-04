@@ -45,7 +45,7 @@ git commit -v # 提交时显示所有diff信息
 
 ```
 rm *&git rm * 
-# 第一个命令移除工作区文件，第二个命令本地已经删除了的文件，通过此命令把暂存区的文件也删除了。
+# 第一个命令移除工作区文件，第二个命令本地已经删除了的文件，通过此命令把暂存区的文件也删除了。
 
 git rm -f * 
 # 工作区和暂存区都有文件，运行此命令，会把两个文件都删除
@@ -94,7 +94,7 @@ git log -S<searchword> --oneline # 在Git的整个历史中进行搜索
 
 ```
 
-* 对比相关  
+* 对比相关  
 
 ```
 git show commitId # 查看某一次提交更新了什么
@@ -116,7 +116,7 @@ git diff branch1 branch2 #比较两次分支之间的差异
 git diff commit commit #比较两次提交之间的差异
 ```
 
-* 撤销相关  
+* 撤销相关  
 
 ```
 git reset HEAD <file.name> # 取消已经暂存的文件
@@ -209,7 +209,7 @@ git rebase --skip # 跳过
 
 git rebase --abort # 取消合并
 ```
-
+
 * 合并推荐链接：  
 
 [图解4种git合并分支方法](http://yanhaijing.com/git/2017/07/14/four-method-for-git-merge/)
