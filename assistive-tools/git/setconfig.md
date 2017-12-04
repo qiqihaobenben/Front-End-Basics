@@ -1,6 +1,9 @@
 ### Git 配置  
-    git config -e [--global] # 编辑Git配置文件
-    
+
+```
+git config -e [--global] # 编辑Git配置文件
+```
+
 * 配置用户名和邮箱
 用户名邮箱作用 : 我们需要设置一个用户名 和 邮箱, 这是用来上传本地仓库到GitHub中, 在GitHub中显示代码上传者;  
 
