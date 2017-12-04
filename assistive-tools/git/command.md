@@ -59,7 +59,7 @@ git mv file_from file_to # 重命名跟踪文件
 
 ```
 git log # 查看最近的提交日志
-# 每次提交都有一个唯一id，可以查看所有提交和他们的id，之后恢复会用到
+# 每次提交都有一个唯一id，可以查看所有提交和他们的id，之后恢复会用到
 
 git log --pretty=oneline #单行显示提交日志 --pretty: 指定默认不同格式展示信息
 
@@ -123,7 +123,7 @@ git reset HEAD <file.name> # 取消已经暂存的文件
 
 git reset -- <file.name> # 同上,可以用git reset 撤销所有暂存区域文件。
 
-git reset --hard HEAD <file.name> # 恢复到当前版本库的状态，会覆盖工作区和缓存区的文件
+git reset --hard HEAD <file.name> # 恢复到当前版本库的状态，会覆盖工作区和缓存区的文件
 
 git reset --hard commit(id) # 通过提交id来恢复之前的某个版本
 
