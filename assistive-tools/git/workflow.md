@@ -29,7 +29,7 @@ Git客户端下载地址: [点击跳转](https://git-for-windows.github.io/ 'htt
 
 ![设置环境变量](./images/3.png)
 
-* 选择换行格式 : 
+* 选择换行格式 :  
   - 检查出windows格式转换为unix格式 : 将windows格式的换行转为unix格式的换行在进行提交;
   - 检查出原来格式转为unix格式 : 不管什么格式的, 一律转为unix格式的换行在进行提交;
   - 不进行格式转换 : 不进行转换, 检查出什么, 就提交什么;  
@@ -193,8 +193,11 @@ git clone git@github.com:qiqihaobenben/Front-End-Basics.git
 
 git clone git@github.com:qiqihaobenben/Front-End-Basics.git myfile #克隆到自定义文件夹
 
-之后操作跟上述相同，省略remote这一步。
+git clone -o jQuery https://github.com/jquery/jquery.git # 更改远程主机的名字
+
+之后操作跟上述相同，省略remote这一步。
 ```
 
 ### 推荐资料
+
 * [GitHub超详细图文攻略 - Git客户端下载安装 GitHub提交修改源码工作流程](http://blog.csdn.net/vipzjyno1/article/details/22098621)

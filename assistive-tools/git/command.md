@@ -254,6 +254,9 @@ git checkout -b [--track] test origin/dev#基于远端dev分支，新建本地te
 
 ```
 
+* 推荐资源：  
+[Git远程操作详解](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
+
 ### 工作现场
 
 ```
