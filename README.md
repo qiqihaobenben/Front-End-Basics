@@ -9,5 +9,5 @@
 
 ## 网络基础
 
-* [HTTP](./network-basisc/HTTP/index)
+* [HTTP](./network-basics/HTTP/index)
 
