@@ -116,7 +116,9 @@ cookie其实是个字符串，但这个字符串中逗号、分号、空格被�
 
 * **cookie推荐资源**
   - [聊一聊 cookie](https://segmentfault.com/a/1190000004556040)  
-  - [HTTP cookies 详解](http://bubkoo.com/2014/04/21/http-cookies-explained/)
+  - [HTTP cookies 详解](http://bubkoo.com/2014/04/21/http-cookies-explained/)  
+---
+---
 
 ### localStronge（本地存储）
 
@@ -156,11 +158,17 @@ HTML5新方法，不过**IE8及以上**浏览器都兼容。
 | newValue | Any | The new value, or null if an item was added |
 | url/uri | String | The page that called the method that triggered this change |  
 
+---
+---
+
 ### sessionStorage 
 
 其实跟localStorage差不多，也是本地存储，会话本地存储
 * 特点：
   - 用于本地存储一个会话（session）中的数据，这些数据只有在同一个会话中的页面才能访问并且当会话结束后数据也随之销毁。因此sessionStorage不是一种持久化的本地存储，仅仅是会话级别的存储。也就是说只要这个浏览器窗口没有关闭，即使刷新页面或进入同源另一页面，数据仍然存在。关闭窗口后，sessionStorage即被销毁，或者在新窗口打开同源的另一个页面，sessionStorage也是没有的。
+
+---
+---
 
 ### cookie、localStorage、sessionStorage区别
 
