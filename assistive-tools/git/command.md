@@ -301,4 +301,4 @@ git push origin :refs/tags/v0.1 # 删除远程标签
 
 ### 推荐资源
 
-* [图解Git](http://marklodato.github.io/visual-git-guide/index-zh-cn.html#checkout)
+* [图解Git](http://marklodato.github.io/visual-git-guide/index-zh-cn.html)
