@@ -21,6 +21,7 @@ cookie是纯文本，没有可执行代码。存储数据，当用户访问了�
 
 * **cookie值既可以设置，也可以读取。**
     - 设置：  
+    
     **客户端设置**
     ```
     document.cookie = '名字=值';
@@ -78,7 +79,7 @@ cookie是纯文本，没有可执行代码。存储数据，当用户访问了�
   `document.cookie = "username=cfangxu;path=/;domain=qq.com"`  
   如上：“www.qq.com" 与 "sports.qq.com" 公用一个关联的域名"qq.com"，我们如果想让 "sports.qq.com" 下的cookie被 "www.qq.com" 访问，我们就需要用到 cookie 的domain属性，并且需要把path属性设置为 "/"。  
   **服务端设置**  
-  `Set-Cookie: username=cfangxu;path=/;domain=qq.com`  
+  `Set-Cookie: username=cfangxu;path=/;domain=qq.com`  
   *注：一定的是同域之间的访问，不能把domain的值设置成非主域的域名。*
 
   - cookie的路径概念（path选项）  
@@ -86,7 +87,7 @@ cookie是纯文本，没有可执行代码。存储数据，当用户访问了�
   因为安全方面的考虑,默认情况下，只有与创建 cookie 的页面在同一个目录或子目录下的网页才可以访问。
   即path属性可以为服务器特定文档指定cookie，这个属性设置的url且带有这个前缀的url路径都是有效的。  
   **客户端设置**  
-  最常用的例子就是让 cookie 在跟目录下,这样不管是哪个子页面创建的 cookie，所有的页面都可以访问到了。  
+  最常用的例子就是让 cookie 在根目录下,这样不管是哪个子页面创建的 cookie，所有的页面都可以访问到了。  
   `document.cookie = "username=cfangxu; path=/"` 
   **服务端设置**  
   `Set-Cookie:name=cfangxu; path=/blog`  
@@ -170,7 +171,7 @@ HTML5新方法，不过**IE8及以上**浏览器都兼容。
 ---
 ---
 
-### cookie、localStorage、sessionStorage区别
+### cookie、localStorage、sessionStorage区别
 
 * 相同：在本地（浏览器端）存储数据
 
@@ -179,11 +180,8 @@ HTML5新方法，不过**IE8及以上**浏览器都兼容。
   localStorage只要在相同的协议、相同的主机名、相同的端口下，就能读取/修改到同一份localStorage数据。  
   sessionStorage比localStorage更严苛一点，除了协议、主机名、端口外，还要求在同一窗口（也就是浏览器的标签页）下。    
   localStorage是永久存储，除非手动删除
-  sessionStorage当会话结束（当前页面关闭的时候，自动销毁）
+  sessionStorage当会话结束（当前页面关闭的时候，自动销毁）  
   cookie的数据会在每一次发送http请求的时候，同时发送给服务器而localStorage、sessionStorage不会。
-
-
-
 
 
 
