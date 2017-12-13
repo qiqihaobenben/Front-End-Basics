@@ -154,9 +154,9 @@ git branch -a # 列出所有分支
 
 git branch -v # 查看各个分支最后一个提交对象的信息
 
-git branch --merge # 查看已经合并到当前分支的分支
+git branch --merged # 查看已经合并到当前分支的分支
 
-git branch --no-merge # 查看为合并到当前分支的分支
+git branch --no-merged # 查看未合并到当前分支的分支
 
 git branch test # 新建test分支
 
