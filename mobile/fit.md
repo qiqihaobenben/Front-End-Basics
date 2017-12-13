@@ -1,6 +1,12 @@
 ## 移动端适配
 
 ### 基础概念
+
+* **PX(CSS pixels)**  
+虚拟像素，可以理解为“直觉”像素，CSS和JS使用的抽象单位，浏览器内的一切长度都是以CSS像素为单位的，CSS像素的单位是px。  
+在CSS规范中，长度单位可以分为两类，绝对(absolute)单位以及相对(relative)单位。px是一个相对单位，相对的是物理像素(device pixel)。  
+px实际是pixel（像素）的缩写，它是图像显示的基本单元，既不是一个确定的物理量，也不是一个点或者小方块，而是一个抽象概念。所以在谈论像素时**一定要清楚它的上下文**！
+
 * **屏幕尺寸**  
 屏幕大小的物理尺寸，屏幕对角线长度衡量。  
 单位：英寸，1英寸 = 2.54厘米  
@@ -8,11 +14,11 @@
 * **像素密度(PPI)**  
 像素密度(Pixels Per Inch)，所表示的是每英寸所拥有的像素数量。因此PPI数值越高，即代表显示屏能够以越高的密度显示图像。  
 
-* **物理像素(physical pixel)**  
+* **物理像素(physical pixel或device pixel)**  
  一个物理像素是显示器(手机屏幕)上最小的物理显示单元，在操作系统的调度下，每一个设备像素都有自己的颜色值和亮度值。  
 
-* **设备独立像素(density independentpixel)**  
-设备独立像素(也叫密度无关像素)，可以认为是计算机坐标系统中的一个点，这个点代表一个可以由程序使用的虚拟像素(比如: css像素)，然后由相关系统转换为物理像素。  
+* **设备独立像素(density-independent pixel或device independent pixel)**  
+设备独立像素(也叫密度无关像素、逻辑像素)，可以认为是计算机坐标系统中的一个点，这个点代表一个可以由程序使用的虚拟像素(比如: css像素)，然后由相关系统转换为物理像素。  
 
 * **设备像素比(device pixel ratio)**  
 设备像素比(简称dpr)定义了物理像素和设备独立像素的对应关系，它的值可以按如下的公式的得到：  
@@ -59,6 +65,19 @@ dpr为2，根据上面的计算公式，其物理像素就应该×2，为750×13
 在普通屏幕下，200×300(css pixel)img标签，所对应的物理像素个数就是200×300个，而两倍图片的位图像素个数则是200×300*4，所以就出现一个物理像素点对应4个位图像素点，所以它的取色也只能通过一定的算法(显示结果就是一张只有原图像素总数四分之一，我们称这个过程叫做downsampling)，肉眼看上去虽然图片不会模糊，但是会觉得图片缺少一些锐利度，或者是有点色差(但还是可以接受的)。如下图展示：  
 ![普通屏幕位图像素](./images/641.webp)  
 
+### 三个viewport
+
+* layout viewport  
+layout viewport的宽度可以通过document.documentElement.clientWidth 来获取。（DOM的宽度）  
+layout viewport 的宽度是大于浏览器可视区域的宽度的  
+移动设备默认的viewport是layout viewport
+
+* visual viewport  
+代表浏览器可视区域的大小，在移动端可以描述为屏幕宽度。visual viewport的宽度可以通过window.innerWidth 来获取。
+
+* ideal viewport  
+移动设备的理想viewport，ideal viewport的宽度等于移动设备的屏幕宽度，作用是使布局视口就是可见视口。
+
 ### 多屏适配布局问题
 
 移动端布局，为了适配各种大屏手机，目前最好用的方案莫过于使用相对单位rem。rem的应用其本质就是等比缩放，就是屏幕分成多少个rem份，然后每一份大小就会根据根节点html的font-size大小动态改变。  
@@ -84,12 +103,41 @@ iphone6: 375px * 2 / 10 = 75px
 2）图片高清问题
 3）屏幕适配布局问题
 
+* **方案二**  
+搭配vw和rem  
+```
+// rem 单位换算：定为 75px 只是方便运算，750px-75px、640-64px、1080px-108px，如此类推
+$vw_fontsize: 75; // iPhone 6尺寸的根元素大小基准值
+@function rem($px) {
+     @return ($px / $vw_fontsize ) * 1rem;
+}
+// 根元素大小使用 vw 单位
+$vw_design: 750;
+html {
+    font-size: ($vw_fontsize / ($vw_design / 2)) * 100vw; 
+    // 同时，通过Media Queries 限制根元素最大最小值
+    @media screen and (max-width: 320px) {
+        font-size: 64px;
+    }
+    @media screen and (min-width: 540px) {
+        font-size: 108px;
+    }
+}
+// body 也增加最大最小宽度限制，避免默认100%宽度的 block 元素跟随 body 而过大过小
+body {
+    max-width: 540px;
+    min-width: 320px;
+}
+```
+
 
 
 ### 推荐资源
 
 * [移动端高清、多屏适配方案（上）](https://mp.weixin.qq.com/s/gS-odjwmojzeiR6ibEuWmg)  
-* [移动端高清、多屏适配方案（下）](https://mp.weixin.qq.com/s/8NIc7z4l0ZoAj9NRc3v22Q)  
+* [移动端高清、多屏适配方案（下）](https://mp.weixin.qq.com/s/8NIc7z4l0ZoAj9NRc3v22Q)
+
+* [CSS像素、物理像素、逻辑像素、设备像素比、PPI、Viewport](https://github.com/jawil/blog/issues/21)  
 
 
 
