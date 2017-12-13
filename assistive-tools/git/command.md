@@ -186,7 +186,7 @@ git checkout -b test dev # 基于dev新建test分支，并切换
 ```
 git merge test # 将test分支合并到当前分支,
 
-git merge –no-ff test # 强制指定为非快速合并（no-fast-forward）
+git merge –-no-ff test # 强制指定为非快速合并（no-fast-forward）
 
 git merge --squash test ## 合并压缩，将test上的commit压缩为一条,svn的在合并分支时采用的就是这种方式，squash会在当前分支新建一个提交节点
 squash和no-ff非常类似，区别只有一点不会保留对合入分支的引用
