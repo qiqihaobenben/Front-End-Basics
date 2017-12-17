@@ -64,6 +64,137 @@ Node.js模块不会被重复加载，这是因为Node.js通过文件名缓存所
 
 Node.js 中的模块在加载之后是以单例化运行，并且遵循值传递原则：如果是一个对象，就相当于这个对象的引用。
 
+> 模块载入过程
+
+加载文件模块的工作，主要由原生模块module来实现和完成，该原生模块在启动时已经被加载，进程直接调用到runMain静态方法。  
+```
+例如运行： node app.js
+
+Module.runMain = function () {
+    // Load the main module--the command line argument.
+    Module._load(process.argv[1], null, true);
+};
+
+//_load静态方法在分析文件名之后执行
+var module = new Module(id, parent);
+
+//并根据文件路径缓存当前模块对象，该模块实例对象则根据文件名加载。
+module.load(filename);
+```
+具体说一下上文提到了文件模块的三类模块,这三类文件模块以后缀来区分，Node.js会根据后缀名来决定加载方法，具体的加载方法在下文`require.extensions`中会介绍。  
+* `.js` 通过fs模块同步读取js文件并编译执行。
+* `.node` 通过C/C++进行编写的Addon。通过dlopen方法进行加载。
+* `.json` 读取文件，调用JSON.parse解析加载。
+
+接下来详细描述js后缀的编译过程。Node.js在编译js文件的过程中实际完成的步骤有对js文件内容进行头尾包装。以app.js为例，包装之后的app.js将会变成以下形式：  
+```
+//circle.js
+var PI = Math.PI;
+exports.area = function (r) {
+    return PI * r * r;
+};
+exports.circumference = function (r) {
+    return 2 * PI * r;
+};
+
+//app.js
+var circle = require('./circle.js');
+console.log( 'The area of a circle of radius 4 is ' + circle.area(4));
+
+//app包装后
+(function (exports, require, module, __filename, __dirname) {
+    var circle = require('./circle.js');
+    console.log('The area of a circle of radius 4 is ' + circle.area(4));
+});
+
+//这段代码会通过vm原生模块的runInThisContext方法执行（类似eval，只是具有明确上下文，不污染全局），返回为一个具体的function对象。最后传入module对象的exports，require方法，module，文件名，目录名作为实参并执行。
+```
+这就是为什么require并没有定义在app.js 文件中，但是这个方法却存在的原因。从Node.js的API文档中可以看到还有`__filename`、`__dirname`、`module`、`exports`几个没有定义但是却存在的变量。其中`__filename`和`__dirname`在查找文件路径的过程中分析得到后传入的。`module`变量是这个模块对象自身，`exports`是在module的构造函数中初始化的一个空对象（{}，而不是null）。  
+在这个主文件中，可以通过require方法去引入其余的模块。而其实这个require方法实际调用的就是load方法。  
+load方法在载入、编译、缓存了module后，返回module的exports对象。这就是circle.js文件中只有定义在exports对象上的方法才能被外部调用的原因。  
+
+**以上所描述的模块载入机制均定义在lib/module.js中。**
+
+> require 函数
+
+require 引入的对象主要是函数。当 Node 调用 require() 函数，并且传递一个文件路径给它的时候，Node 会经历如下几个步骤：  
+* Resolving：找到文件的绝对路径；
+
+* Loading：判断文件内容类型；
+
+* Wrapping：打包，给这个文件赋予一个私有作用范围。这是使 require 和 module 模块在本地引用的一种方法；
+
+* Evaluating：VM 对加载的代码进行处理的地方；
+
+* Caching：当再次需要用这个文件的时候，不需要重复一遍上面步骤。
+
+>require.extensions 来查看对三种文件的支持情况  
+![require.extensions](./images/123.png)
+可以清晰地看到 Node 对每种扩展名所使用的函数及其操作：对 .js 文件使用 module._compile；对 .json 文件使用 JSON.parse；对 .node 文件使用 process.dlopen。  
+
+
+*文件查找策略*  
+* 从文件模块缓存中加载  
+尽管原生模块与文件模块的优先级不同，但是优先级最高的是从文件模块的缓存中加载已经存在的模块。  
+
+* 从原生模块加载
+原生模块的优先级仅次于文件模块缓存的优先级。require方法在解析文件名之后，优先检查模块是否在原生模块列表中。以http模块为例，尽管在目录下存在一个`http`、`http.js`、`http.node`、`http.json`文件，`require(“http”)`都不会从这些文件中加载，而是从原生模块中加载。  
+原生模块也有一个缓存区，同样也是优先从缓存区加载。如果缓存区没有被加载过，则调用原生模块的加载方式进行加载和执行。  
+
+* 从文件加载  
+当文件模块缓存中不存在，而且不是原生模块的时候，Node.js会解析require方法传入的参数，并从文件系统中加载实际的文件，加载过程中的包装和编译细节在前面说过是调用module._load方法。 
+··
+
+``` 
+当 Node 遇到 require(X) 时，按下面的顺序处理。
+
+（1）如果 X 是内置模块（比如 require('http'）) 
+　　a. 返回该模块。 
+　　b. 不再继续执行。
+
+（2）如果 X 以 "./" 或者 "/" 或者 "../" 开头 
+　　a. 根据 X 所在的父模块，确定 X 的绝对路径。 
+　　b. 将 X 当成文件，依次查找下面文件，只要其中有一个存在，就返回该文件，不再继续执行。
+        X
+        X.js
+        X.json
+        X.node
+
+　　c. 将 X 当成目录，依次查找下面文件，只要其中有一个存在，就返回该文件，不再继续执行。
+        X/package.json（main字段）
+        X/index.js
+        X/index.json
+        X/index.node
+
+（3）如果 X 不带路径 
+　　a. 根据 X 所在的父模块，确定 X 可能的安装目录。 
+　　b. 依次在每个目录中，将 X 当成文件名或目录名加载。
+
+（4） 抛出 "not found"
+```
+![图示](./images/image1.jpg)  
+
+<br />
+
+>模块循环依赖
+
+```
+//创建两个文件，module1.js 和 module2.js，并且让它们相互引用
+    // module1.js
+    exports.a = 1;
+    require('./module2');
+    exports.b = 2;
+    exports.c = 3;
+    
+    // module2.js
+    const Module1 = require('./module1');
+    console.log('Module1 is partially loaded here', Module1);
+```  
+在 module1 完全加载之前需要先加载 module2，而 module2 的加载又需要 module1。这种状态下，我们从 exports 对象中能得到的就是在发生循环依赖之前的这部分。上面代码中，只有 a 属性被引入，因为 b 和 c 都需要在引入 module2 之后才能加载进来。
+
+Node 使这个问题简单化，在一个模块加载期间开始创建 exports 对象。如果它需要引入其他模块，并且有循环依赖，那么只能部分引入，也就是只能引入发生循环依赖之前所定义的这部分。
+
+
 ### AMD
 
 AMD 是 Asynchronous Module Definition 的简称，即“异步模块定义”，是从 CommonJS 讨论中诞生的。AMD 优先照顾浏览器的模块加载场景，使用了异步加载和回调的方式。  
@@ -418,6 +549,45 @@ export * from 'my_module';
 1、声明的变量，对外都是只读的。但是导出的是对象类型的值，就可修改。  
 2、导入不存在的变量，值为undefined。
 
+#### ES6 中的循环引用
+
+ES6 中，imports 是 exprts 的只读视图，直白一点就是，imports 都指向 exports 原本的数据，比如：
+```
+//------ lib.js ------
+export let counter = 3;
+export function incCounter() {
+    counter++;
+}
+
+//------ main.js ------
+import { counter, incCounter } from './lib';
+
+// The imported value `counter` is live
+console.log(counter); // 3
+incCounter();
+console.log(counter); // 4
+
+// The imported value can’t be changed
+counter++; // TypeError
+```
+因此在 ES6 中处理循环引用特别简单，看下面这段代码：
+```
+//------ a.js ------
+import {bar} from 'b'; // (1)
+export function foo() {
+  bar(); // (2)
+}
+
+//------ b.js ------
+import {foo} from 'a'; // (3)
+export function bar() {
+  if (Math.random()) {
+    foo(); // (4)
+  }
+}
+```
+假设先加载模块 a，在模块 a 加载完成之后，bar 间接性地指向的是模块 b 中的 bar。无论是加载完成的 imports 还是未完成的 imports，imports 和 exports 之间都有一个间接的联系，所以总是可以正常工作。
+
 
 
 #### 实例
@@ -479,16 +649,17 @@ obj.say();
 //结果：say hello
 ```
 
-
-
-
-
-
 ### 推荐资料
 * [ JavaSript模块规范 - AMD规范与CMD规范介绍 ](http://blog.chinaunix.net/uid-26672038-id-4112229.html)
 
 * [JavaScript 模块演化简史](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&mid=2651226355&idx=1&sn=aedf47d5a3be53f6c7d5562977624861&chksm=bd4959778a3ed06198cbb746067393cd0f189612f4fc577417e0741df3a2b620373ea025978b&scene=21#wechat_redirect)  
 
 * [JavaScript 模块演化简史](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&mid=2651226355&idx=1&sn=aedf47d5a3be53f6c7d5562977624861&chksm=bd4959778a3ed06198cbb746067393cd0f189612f4fc577417e0741df3a2b620373ea025978b&scene=21#wechat_redirect)
+
+* [require() 源码解读](http://www.ruanyifeng.com/blog/2015/05/require.html)
+
+* [在 Node.js 中引入模块：你所需要知道的一切都在这里](https://segmentfault.com/a/1190000009060866#articleHeader0)
+
+* [深入浅出Node.js（三）：深入Node.js的模块机制](http://www.infoq.com/cn/articles/nodejs-module-mechanism#)
 
 
