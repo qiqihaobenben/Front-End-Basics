@@ -652,8 +652,6 @@ obj.say();
 ### 推荐资料
 * [ JavaSript模块规范 - AMD规范与CMD规范介绍 ](http://blog.chinaunix.net/uid-26672038-id-4112229.html)
 
-* [JavaScript 模块演化简史](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&mid=2651226355&idx=1&sn=aedf47d5a3be53f6c7d5562977624861&chksm=bd4959778a3ed06198cbb746067393cd0f189612f4fc577417e0741df3a2b620373ea025978b&scene=21#wechat_redirect)  
-
 * [JavaScript 模块演化简史](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&mid=2651226355&idx=1&sn=aedf47d5a3be53f6c7d5562977624861&chksm=bd4959778a3ed06198cbb746067393cd0f189612f4fc577417e0741df3a2b620373ea025978b&scene=21#wechat_redirect)
 
 * [require() 源码解读](http://www.ruanyifeng.com/blog/2015/05/require.html)
