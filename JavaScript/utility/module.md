@@ -285,8 +285,8 @@ define( function(require, exports, module) {
 1. 遵循CMD规范，与NodeJS般的书写模块代码。
 2. 依赖自动加载，配置清晰简洁。
 
- `seajs.use` 用来在页面中加载一个或者多个模块
- ```
+`seajs.use` 用来在页面中加载一个或者多个模块
+```
  // 加载一个模块 
 seajs.use('./a');
 
