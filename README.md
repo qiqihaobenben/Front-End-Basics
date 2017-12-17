@@ -5,6 +5,8 @@
 
 ## JavaScript
 
+* [JavaScript的模块](./JavaScript/utility/module)
+
 * [本地存储](./JavaScript/utility/cache)
 
 ## 技术应用
