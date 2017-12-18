@@ -110,7 +110,7 @@ console.log( 'The area of a circle of radius 4 is ' + circle.area(4));
 //这段代码会通过vm原生模块的runInThisContext方法执行（类似eval，只是具有明确上下文，不污染全局），返回为一个具体的function对象。最后传入module对象的exports，require方法，module，文件名，目录名作为实参并执行。
 ```
 这就是为什么require并没有定义在app.js 文件中，但是这个方法却存在的原因。从Node.js的API文档中可以看到还有`__filename`、`__dirname`、`module`、`exports`几个没有定义但是却存在的变量。其中`__filename`和`__dirname`在查找文件路径的过程中分析得到后传入的。`module`变量是这个模块对象自身，`exports`是在module的构造函数中初始化的一个空对象（{}，而不是null）。  
-在这个主文件中，可以通过require方法去引入其余的模块。而其实这个require方法实际调用的就是load方法。  
+在这个主文件中，可以通过require方法去引入其余的模块。而其实这个require方法实际调用的就是module._load方法。  
 load方法在载入、编译、缓存了module后，返回module的exports对象。这就是circle.js文件中只有定义在exports对象上的方法才能被外部调用的原因。  
 
 **以上所描述的模块载入机制均定义在lib/module.js中。**
@@ -142,7 +142,7 @@ require 引入的对象主要是函数。当 Node 调用 require() 函数，并�
 原生模块也有一个缓存区，同样也是优先从缓存区加载。如果缓存区没有被加载过，则调用原生模块的加载方式进行加载和执行。  
 
 * 从文件加载  
-当文件模块缓存中不存在，而且不是原生模块的时候，Node.js会解析require方法传入的参数，并从文件系统中加载实际的文件，加载过程中的包装和编译细节在前面说过是调用module._load方法。 
+当文件模块缓存中不存在，而且不是原生模块的时候，Node.js会解析require方法传入的参数，并从文件系统中加载实际的文件，加载过程中的包装和编译细节在前面说过是调用load方法。 
 ··
 
 ``` 
