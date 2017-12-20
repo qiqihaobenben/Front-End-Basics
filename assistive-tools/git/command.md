@@ -234,11 +234,11 @@ git remote show origin # 查看指定源的全部信息
 * 操作远程仓库  
 
 ```
-git fetch origin remotebranch[:localbranch] # 从远端拉去分支[到本地指定分支]
+git fetch origin remotebranch[:localbranch] # 从远端拉取分支[到本地指定分支]
 
 git merge origin/branch # 合并远端上指定分支
 
-git pull origin remotebranch:localbranch # 拉去远端分支到本地分支
+git pull origin remotebranch:localbranch # 拉取远端分支到本地分支
 
 git push origin branch # 将当前分支，推送到远端上指定分支
 
