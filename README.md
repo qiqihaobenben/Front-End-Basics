@@ -21,6 +21,8 @@
 
 * [分布式版本控制系统——Git](https://qiqihaobenben.github.io/Front-End-Basics/assistive-tools/git/index 'git')
 
+* [下一代ES6模块打包工具—Rollup](https://github.com/qiqihaobenben/rollup-demos)
+
 ## 网络基础
 
 * [HTTP](https://qiqihaobenben.github.io/Front-End-Basics/network-basics/HTTP/index)
