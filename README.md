@@ -9,6 +9,8 @@
 
 ## JavaScript
 
+* [数据交互](https://qiqihaobenben.github.io/Front-End-Basics/JavaScript/utility/data-interaction)
+
 * [JavaScript的模块](https://qiqihaobenben.github.io/Front-End-Basics/JavaScript/utility/module)
 
 * [本地存储](https://qiqihaobenben.github.io/Front-End-Basics/JavaScript/utility/cache)
