@@ -1,4 +1,4 @@
-## 三种本地存储方式
+## 三种本地存储方式和一些扩展
 
 ## cookie
 
@@ -204,7 +204,7 @@ HTML5新方法，不过**IE8及以上**浏览器都兼容。
 ---
 ---
 
-### sessionStorage 
+## sessionStorage 
 
 其实跟localStorage差不多，也是本地存储，会话本地存储
 
@@ -232,6 +232,162 @@ HTML5新方法，不过**IE8及以上**浏览器都兼容。
   sessionStorage当会话结束（当前页面关闭的时候，自动销毁） 
 
   cookie的数据会在每一次发送http请求的时候，同时发送给服务器而localStorage、sessionStorage不会。
+
+<br />
+
+## 扩展其他的前端存储方式（不常用）
+
+### web SQL database  
+
+先说个会被取代的，为什么会被取代，主要有以下几个原因：  
+1. W3C舍弃 `Web SQL database`草案,而且是在2010年年底，规范不支持了，浏览器厂商已经支持的就支持了，没有支持的也不打算支持了，比如IE和Firefox。
+
+2. 为什么要舍弃？因为 `Web SQL database` 本质上是一个关系型数据库，后端可能熟悉，但是前端就有很多不熟悉了，虽然SQL的简单操作不难，但是也得需要学习。
+
+3. SQL熟悉后，真的操作中还得把你要存储的东西，比如对象，转成SQL语句，也挺麻烦的。
+
+### indexedDB  
+
+> 来自MDN的解释： ndexedDB 是一种低级API，用于客户端存储大量结构化数据(包括, 文件/ blobs)。该API使用索引来实现对该数据的高性能搜索。虽然 Web Storage 对于存储较少量的数据很有用，但对于存储更大量的结构化数据来说，这种方法不太有用。IndexedDB提供了一个解决方案。
+
+所以，`IndexedDB` API是强大的，但对于简单的情况可能看起来太复杂了，所以要看你的业务场景来选择到底是用还是不用。
+
+`indexedDB` 是一个基于JavaScript的面向对象的数据库。 `IndexedDB`允许你存储和检索用键索引的对象;
+
+IndexedDB 鼓励使用的基本模式如下所示：  
+* 打开数据库并且开始一个事务。
+* 创建一个 object store。
+* 构建一个请求来执行一些数据库操作，像增加或提取数据等。
+* 通过监听正确类型的 DOM 事件以等待操作完成。
+* 在操作结果上进行一些操作（可以在 request 对象中找到）
+
+#### 1、首先打开indexedDB数据库  
+
+语法：  
+`window.indexedDB.open(dbName, version)`  
+
+```
+var db;
+// 打开数据库,open还有第二个参数版本号
+var request = window.indexedDB.open('myTestDatabase');
+// 数据库打开成功后
+request.onsuccess = function (event) {
+    // 存储数据结果,后面所有的数据库操作都离不开它。
+    db = request.result;
+}
+request.onerror = function (event) {
+    alert("Why didn't you allow my web app to use IndexedDB?!");
+}
+
+// 数据库首次创建版本，或者window.indexedDB.open传递的新版本（版本数值要比现在的高）
+request.onupgradeneeded = function (event) {
+
+}
+```
+**onupgradeneeded事件：** 更新数据库的 schema，也就是创建或者删除对象存储空间，这个事件将会作为一个允许你处理对象存储空间的 `versionchange` 事务的一部分被调用。在数据库第一次被打开时或者当指定的版本号高于当前被持久化的数据库的版本号时，这个 `versionchange` 事务将被创建。`onupgradeneeded` 是我们唯一可以修改数据库结构的地方。在这里面，我们可以创建和删除对象存储空间以及构建和删除索引。
+
+#### 2、构建数据库
+
+IndexedDB 使用对象存储空间而不是表，并且一个单独的数据库可以包含任意数量的对象存储空间。每当一个值被存储进一个对象存储空间时，它会被和一个键相关联。
+
+```
+  // 数据库首次创建版本，或者window.indexedDB.open传递的新版本（版本数值要比现在的高）
+  request.onupgradeneeded = function (event) {
+
+      //之前咱们不是在success中得到了db了么，为什么还要在这获取，
+      //因为在当前事件函数执行后才会去执行success事件
+      var db = event.target.result;
+
+      // 创建一个对象存储空间，keyPath是id，keyGenerator是自增的
+      var objectStore = db.createObjectStore('testItem',{keyPath: 'id',autoIncrement: true});
+      // 创建一个索引来通过id搜索，id是自增的，不会有重复，所以可以用唯一索引
+      objectStore.createIndex('id','id',{unique: true})
+
+      objectStore.createIndex('name','name');
+      objectStore.createIndex('age','age');
+
+      //添加一条信息道数据库中
+      objectStore.add({name: 'cfangxu', age: '27'});
+
+  }
+```
+**注意：** 执行完后，在调试工具栏Application的indexedDB中也看不到，你得右键刷新一下。
+
+**创建索引的语法：**  
+```
+objectStore.createIndex(indexName, keyPath, objectParameters)
+
+indexName:创建的索引名称，可以使用空名称作为索引。
+keyPath:索引使用的关键路径，可以使用空的keyPath, 或者keyPath传为数组keyPath也是可以的。
+objectParameters:可选参数。常用参数之一是unique，表示该字段值是否唯一，不能重复。例如，本demo中id是不能重复的，于是有设置：
+```
+
+#### 3、添加数据
+
+上面的代码建好了字段，并且添加了一条数据，但是我们如果想在onupgradeneeded事件外面操作，接下来的步骤了。  
+由于数据库的操作都是基于事务（transaction）来进行，于是，无论是添加编辑还是删除数据库，我们都要先建立一个事务（transaction），然后才能继续下面的操作。  
+语法： `var transaction = db.transaction(dbName, "readwrite");`  
+第一个参数是事务希望跨越的对象存储空间的列表，可以是数组或者字符串。如果你希望事务能够跨越所有的对象存储空间你可以传入一个空数组。如果你没有为第二个参数指定任何内容，你得到的是只读事务。因为这里我们是想要写入所以我们需要传入 "readwrite" 标识。
+```
+var timer = setInterval(function () {
+    if(db) {
+        clearInterval(timer);
+        // 新建一个事务
+        var transaction = db.transaction(['testItem'], 'readwrite');
+        // 打开一个存储对象
+        var objectStore = transaction.objectStore('testItem');
+        // 添加数据到对象中
+        objectStore.add({ name: 'xiaoming', age: '12' });
+        objectStore.add({ name: 'xiaolong', age: '20' });
+    }
+},100)
+```
+**为什么要用一个间隔定时器？** 因为这是一个demo，正常的是要有操作才能进行数据库的写入，在我们的demo中，js执行到transaction会比indexedDB的onsuccess时间回调快，所以会拿到db为undefined，所以写了个间隔定时器等它一会。
+
+#### 4、获取数据
+
+```
+var transaction = db.transaction(['testItem'], 'readwrite');
+
+var objectStore = transaction.objectStore('testItem');
+
+var getRquest = objectStore.get(1);
+getRquest.onsuccess = function (event) {
+    console.log(getRquest.result);
+}
+//输出：{name: "cfangxu", age: "27", id: 1}
+```
+
+#### 5、修改数据
+
+```
+var transaction = db.transaction(['testItem'], 'readwrite');
+
+var objectStore = transaction.objectStore('testItem');
+
+var getRquest = objectStore.put({ name: 'chenfangxu', age: '27', id:1 });
+// 修改了id为1的那条数据
+```
+
+#### 6、删除数据
+
+```
+var transaction = db.transaction(['testItem'], 'readwrite');
+
+var objectStore = transaction.objectStore('testItem');
+
+var getRquest = objectStore.delete(1);
+// 删除了id为1的那条数据
+```
+
+> 上面的例子执行完后，一定一定要右键刷新indexedDB,它自己是不会变的。
+
+* 关于数据库的名词解释和indexedDB的游标介绍参阅：[HTML5 indexedDB前端本地存储数据库实例教程](http://www.zhangxinxu.com/wordpress/2017/07/html5-indexeddb-js-example/) 张大神的文中没有指出新手要踩的坑，我踩完也说明了。
+
+
+
+
+
 
 
 
