@@ -8,7 +8,8 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 
 在 flex 容器中默认存在两条轴，水平主轴(main axis) 和垂直的交叉轴(cross axis)，这是默认的设置，但是可以更改，所以不能一概认为宽度就是主轴，垂直就是侧轴，需要根据 `flex-direction` 来判断。  
 在 flex 容器中的每个子元素被称为 flex item 占据的主轴空间为 (main size), 占据的交叉轴的空间为 (cross size)。  
-如下图：
+如下图：  
+
 ![图示](./images/1.jpg)
 
 ### flex容器  
