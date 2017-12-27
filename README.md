@@ -6,6 +6,9 @@
 ## HTML
 * [HTML相关入口](https://qiqihaobenben.github.io/Front-End-Basics/HTML/index)
 
+## CSS
+* [CSS布局](https://qiqihaobenben.github.io/Front-End-Basics/layouts/index)
+
 ## JavaScript
 
 * [数据交互](https://qiqihaobenben.github.io/Front-End-Basics/JavaScript/utility/data-interaction)
