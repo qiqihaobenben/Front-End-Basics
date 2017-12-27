@@ -185,7 +185,7 @@ HTML5新方法，不过**IE8及以上**浏览器都兼容。
 `localStorage.key(0) #获取第一个键名 `
 
 ### 删除  
-`localStorage.remove('username')`  
+`localStorage.removeItem('username')`  
 也可以一次性清除所有存储  
 `localStorage.clear()`
 
@@ -244,11 +244,11 @@ HTML5新方法，不过**IE8及以上**浏览器都兼容。
 
 2. 为什么要舍弃？因为 `Web SQL database` 本质上是一个关系型数据库，后端可能熟悉，但是前端就有很多不熟悉了，虽然SQL的简单操作不难，但是也得需要学习。
 
-3. SQL熟悉后，真的操作中还得把你要存储的东西，比如对象，转成SQL语句，也挺麻烦的。
+3. SQL熟悉后，真实操作中还得把你要存储的东西，比如对象，转成SQL语句，也挺麻烦的。
 
 ### indexedDB  
 
-> 来自MDN的解释： ndexedDB 是一种低级API，用于客户端存储大量结构化数据(包括, 文件/ blobs)。该API使用索引来实现对该数据的高性能搜索。虽然 Web Storage 对于存储较少量的数据很有用，但对于存储更大量的结构化数据来说，这种方法不太有用。IndexedDB提供了一个解决方案。
+> 来自MDN的解释： indexedDB 是一种低级API，用于客户端存储大量结构化数据(包括, 文件/ blobs)。该API使用索引来实现对该数据的高性能搜索。虽然 Web Storage 对于存储较少量的数据很有用，但对于存储更大量的结构化数据来说，这种方法不太有用。IndexedDB提供了一个解决方案。
 
 所以，`IndexedDB` API是强大的，但对于简单的情况可能看起来太复杂了，所以要看你的业务场景来选择到底是用还是不用。
 
@@ -342,7 +342,7 @@ var timer = setInterval(function () {
     }
 },100)
 ```
-**为什么要用一个间隔定时器？** 因为这是一个demo，正常的是要有操作才能进行数据库的写入，在我们的demo中，js执行到transaction会比indexedDB的onsuccess时间回调快，所以会拿到db为undefined，所以写了个间隔定时器等它一会。
+**为什么要用一个间隔定时器？** 因为这是一个demo，正常的是要有操作才能进行数据库的写入，在我们的demo中，js执行到transaction会比indexedDB的onsuccess事件回调快，导致会拿到db为undefined，所以写了个间隔定时器等它一会。
 
 #### 4、获取数据
 
