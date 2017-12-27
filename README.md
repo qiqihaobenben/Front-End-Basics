@@ -7,7 +7,7 @@
 * [HTML相关入口](https://qiqihaobenben.github.io/Front-End-Basics/HTML/index)
 
 ## CSS
-* [CSS布局](https://qiqihaobenben.github.io/Front-End-Basics/layouts/index)
+* [CSS布局](https://qiqihaobenben.github.io/Front-End-Basics/CSS/layouts/index)
 
 ## JavaScript
 
