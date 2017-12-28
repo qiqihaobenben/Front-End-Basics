@@ -23,7 +23,7 @@ var ajax = new XMLHttpRequest();
 **2、传入请求参数**  
 ```
 //method,url,true	参数
-ajax.open('get','php/get.php?user='+encodeURI(text.value),true);
+ajax.open('get','php/get.php?user='+encodeURIComponent(value),true);
 ```
 
 **3、发送数据**
@@ -37,7 +37,7 @@ ajax.send();
 
 2、请求信息在地址栏中显示，直接暴露了用户填写的信息，并且访问的数据会被浏览器缓存到历史记录中，所以说不安全。
 
-3、在get拼接数据的时候要用encodeURI来包一下，不然在IE低版本浏览器中使用中文会乱码的。  
+3、在get拼接数据的时候要用encodeURIComponent来包一下，不然在IE低版本浏览器中使用中文会乱码的。  
 ```
 encodeURI('刘')  转成url
 decodeURI('%E5%88%98')  转成中文
@@ -71,6 +71,8 @@ ajax.open('post','php/post.php',true);
 **3、设置请求头**
 ```
 ajax.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+
+// 要成功的发送请求头部信息，必须在调用open() 方法之后且调用send()方法之前调用setRequestHeader()
 ```
 
 **4、发送数据**  
@@ -118,11 +120,11 @@ ajax.onload = function () {
 支持IE6，兼容性好。  
 ```
 其中的readyState属性：请求状态 
-0  （初始化）还没有调用open()方法0是监听不到的
-1  open() 方法已经被调用
-2  send() 方法已经被调用，响应头也已经被接收。 
-3  下载中； responseText 属性已经包含部分数据。 
-4  下载操作已完成
+0  （未初始化）还没有调用open()方法0是监听不到的
+1  启动，open() 方法已经被调用。
+2  发送，send() 方法已经被调用，但尚未接收到响应。 
+3  接收，已经接收到部分相应数据。 
+4  完成，已经接收到全部响应数据，而且可以在客户端使用了。
 ```
 readyState : ajax工作状态  
 onreadystatechange : 当readyState改变的时候触发  
@@ -135,10 +137,11 @@ responseText : 返回以文本形式存放的内容  ajax请求返回的内容�
 
 ## 扩展
 
-### `XMLHttpRequest` 兼容性问题
+### `XMLHttpRequest` 兼容性问题，单纯了解，可以直接略过
 
-`new XMLHttpRequest()` ie6 以下不支持，所以需要用到插件  
- `new ActiveXObject('Microsoft.XMLHTTP')`
+`new XMLHttpRequest()` ie6 及以下不支持，所以需要用到插件  
+ `new ActiveXObject('MSXML2.XMLHTTP')`
+ IE中会有三种不同的XHR版本： `MSXML2.XMLHTTP` 、 `MSXML2.XMLHTTP.3.0` 、 `MSXML2.XMLHTTP.6.0` 因为只做了解，这里用最老的那一版
 
  ```
 兼容写法如下：
@@ -147,14 +150,14 @@ if (window.XMLHttpRequest) {
     //直接用XMLHttpRequest是不能做判断的，因为IE6下没有，window.XMLHttpRequest会返回undefined
 	xhr = new XMLHttpRequest();
 } else {
-    xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    xhr = new ActiveXObject('MSXML2.XMLHTTP');
 }
 
 也可以用try catch来解决。
 try {
 	xhr = new XMLHttpRequest();
 } catch (e) {
-	xhr = new ActiveXObject('Microsoft.XMLHTTP');
+	xhr = new ActiveXObject('MSXML2.XMLHTTP');
 }
 ```  
 
@@ -217,6 +220,83 @@ value:file元素的files[0];
 
 3.send(这个对象)
 ```
+
+### XMLHttpRequest 2级
+
+#### FormData
+
+上面的ajax上传文件用到的 `FormData` 类型就是 `XMLHttpRequest 2级`中定义的。
+
+FormData 为序列化表单以及创建与表单格式相同的数据(用于XHR传输)提供了便利。
+```
+var data = new FormData();
+data.append('name','cfangxu');
+```
+`append()`方法接收两个参数：键和值，分别对应表单字段的名字和字段中包含的值。可以像上面代码一样添加任意多个值。
+
+FormData 构造函数可以直接传入表单元素，表单元素的数据预先向其中填入键值对。
+```
+var data = new FormData(document.forms[0]);
+```
+
+FormData的另一个方便之处在于用其发送POST请求可以不必明确地在XHR对象上设置请求头部，XHR对象能够识别传入的数据类型是FormData的实例，并配置适当的头部信息。
+
+#### overrideMimeType() 方法
+
+重写XHR响应的MIME类型，比如服务器返回的MIME类型是 `text/plain`，但是数据中实际包含的是XML。根据MIME类型，即使数据是XML， responseXML属性中仍然是null，通过调用 `overrideMimeType()`方法，可以保证把响应当做XML而并非文本来处理。
+```
+var xhr = new XMLHttpRequest();
+xhr.open('get','text.php',true);
+xhr.overrideMimeType('text/xml');
+xhr.send();
+```
+
+#### load 事件
+
+上面提到过，用load事件替代readystatechange,响应接收完毕后会触发load事件，所以也就没有必要去检查readyState属性了，不过只要浏览器接收到服务器的响应，不管状态如何，都会触发load事件。所以必须要检查status属性，才能确定数据是否真的是可用的。
+```
+var xhr = new XMLHttpRequest();
+xhr.onload = function () {
+    if(xhr.status >= 200 && xhr.status < 300) {
+        console.log(xhr.responseText);
+    }else {
+        console.log('Request is unsuccessful' + xhr.status)
+    }
+}
+xhr.open('get','test.php',true);
+xhr.send();
+```
+
+#### progress 事件
+
+这个事件会在浏览器接收新数据期间周期性地触发。事件监听函数会接收到一个event对象，其target属性是XHR对象，但是包含着三个额外的属性：lengthComputable、position和totalSize。
+
+* lengthComputable: 是一个表示进度信息是否可用的布尔值。
+
+* position: 表示已经接收的字节数
+
+* totalSize: 表示根据Content-Length响应头部确定的预期字节数。
+
+这些信息可以用来展示进度。
+```
+var xhr = new XMLHttpRequest();
+xhr.onload = function () {
+    if(xhr.status >= 200 && xhr.status < 300) {
+        console.log(xhr.responseText);
+    }else {
+        console.log('Request is unsuccessful' + xhr.status)
+    }
+}
+xhr.onprogress = function (event) {
+    var showEle = document.getElementById('status');
+    if(event.lengthComputable){
+        showEle.innerHTML = '接收' + event.position + 'of' + event.totalSize + '字节';
+    }
+}
+xhr.open('get','test.php',true);
+xhr.send();
+```
+为确保正常执行，必须在调用open()方法之前添加onprogress事件监听函数。
 
 
 
