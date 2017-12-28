@@ -28,8 +28,9 @@ ajax.open('get','php/get.php?user='+encodeURIComponent(value),true);
 
 **3、发送数据**
 ```
-ajax.send();
+ajax.send(null);
 ```
+send()方法传入一个参数，即要作为请求主体发送的数据。如果不需要通过请求主体发送数据，则必须传入null，因为这个参数对有些浏览器来说是必需的。
 
 #### 注意点
 
@@ -39,8 +40,8 @@ ajax.send();
 
 3、在get拼接数据的时候要用encodeURIComponent来包一下，不然在IE低版本浏览器中使用中文会乱码的。  
 ```
-encodeURI('刘')  转成url
-decodeURI('%E5%88%98')  转成中文
+encodeURIComponent('刘')  转成url
+decodeURIComponent('%E5%88%98')  转成中文
 ```
 
 4、有缓存问题	解决方法：在url？后面连接一个随机数，时间戳
@@ -95,7 +96,7 @@ post提交的数据格式有多种
     application/x-www-form-urlencoded - 默认
     multipart/form-data
 ```
-在post提交数据的时候，需要设置请求头`content-type:`值为上面三中类型之一  
+在post提交数据的时候，需要设置请求头`content-type:`值可以为上面三中类型之一  
 ```
 ajax.setRequestHeader( 'Content-Type','application/x-www-form-urlencoded');
 ```
@@ -248,7 +249,7 @@ FormData的另一个方便之处在于用其发送POST请求可以不必明确�
 var xhr = new XMLHttpRequest();
 xhr.open('get','text.php',true);
 xhr.overrideMimeType('text/xml');
-xhr.send();
+xhr.send(null);
 ```
 
 #### load 事件
@@ -264,7 +265,7 @@ xhr.onload = function () {
     }
 }
 xhr.open('get','test.php',true);
-xhr.send();
+xhr.send(null);
 ```
 
 #### progress 事件
@@ -294,11 +295,38 @@ xhr.onprogress = function (event) {
     }
 }
 xhr.open('get','test.php',true);
-xhr.send();
+xhr.send(null);
 ```
 为确保正常执行，必须在调用open()方法之前添加onprogress事件监听函数。
 
 
+## 总结
+
+### XMLHttpRequest实例的属性
+
+readyState   
+responseType  
+responseText  
+responseXML  
+status  
+statusText  
+withCredentials  
+
+### XMLHttpRequest实例的方法
+
+abort()  abort方法用来终止已经发出的HTTP请求。  
+getAllResponseHeaders()  
+getResponseHeader()  
+open()  
+send()  
+setRequestHeader()  
+overrideMimeType()  
+
+### XMLHttpRequest实例的事件
+
+readyStateChange事件  
+progress事件  
+load事件
 
 
 
