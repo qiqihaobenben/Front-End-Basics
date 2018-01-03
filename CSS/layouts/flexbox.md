@@ -42,12 +42,12 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
     flex-direction: row | row-reverse | column | column-reverse;
 }
 ```
-|属性值|描述|  
-|:---:|:---:|  
-|row(默认)|指定主轴水平, 子项目从左至右排列➜|  
-|row-reverse|指定主轴水平，子项目从右向左排列⬅︎|  
-|column|指定主轴垂直，子项目从上至下排列⬇︎|  
-|column-reverse|指定主轴垂直，子项目从下往上排列⬆︎|  
+| 属性值 | 描述 |  
+| :---: | :---: |  
+| row(默认) | 指定主轴水平, 子项目从左至右排列➜ |  
+| row-reverse | 指定主轴水平，子项目从右向左排列⬅︎ |  
+| column | 指定主轴垂直，子项目从上至下排列⬇︎ |  
+| column-reverse | 指定主轴垂直，子项目从下往上排列⬆︎ |  
 
 #### 2、flex-wrap：决定容器内子元素是否可换行
 
@@ -56,11 +56,11 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
     flex-wrap: no-wrap | wrap | wrap-reverse;
 }
 ```
-|属性值|描述|  
-|:---:|:---|  
-|no-wrap(默认值)|默认不换行,即当主轴尺寸固定时，当空间不足时，项目尺寸会随之调整(缩小)而并不会挤到下一行。|  
-|wrap|正常换行|  
-|wrap-reverse|换行，第一行在下方|  
+| 属性值 | 描述 |  
+| :---: | :--- |  
+| no-wrap(默认值) | 默认不换行,即当主轴尺寸固定时，当空间不足时，项目尺寸会随之调整(缩小)而并不会挤到下一行。 |  
+| wrap | 正常换行 |  
+| wrap-reverse | 换行，第一行在下方 |  
 
 #### 3、flex-flow: flex-direction 和 flex-wrap 的简写形式
 
@@ -78,13 +78,13 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
     justify-content: flex-start | flex-end | center | space-between | space-around;
 }
 ```
-|属性值|描述|  
-|:---:|:---|  
-|flex-start|子项目起始位置与main start位置对齐|  
-|flex-end|子项目末尾位置与main end位置对齐|  
-|center|在主轴方向居中于容器|  
-|space-between|两端对齐，项目之间的间隔相等，即剩余空间等分成间隙|  
-|space-around|每个项目两侧的间隔相等，所以项目之间的间隔比项目与边缘的间隔大一倍|  
+| 属性值 | 描述 |  
+| :---: | :--- |  
+| flex-start | 子项目起始位置与main start位置对齐 |  
+| flex-end | 子项目末尾位置与main end位置对齐 |  
+| center | 在主轴方向居中于容器 |  
+| space-between | 两端对齐，项目之间的间隔相等，即剩余空间等分成间隙 |  
+| space-around | 每个项目两侧的间隔相等，所以项目之间的间隔比项目与边缘的间隔大一倍 |  
 
 #### 5、align-items: 定义了子元素在交叉轴上的对齐方式
 
@@ -93,13 +93,13 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
     align-items: flex-start | flex-end | center | baseline | stretch;
 }
 ```
-|属性值|描述|  
-|:---:|:---|  
-|flex-start|子项目起始位置与cross start位置对齐|  
-|flex-end|子项目末尾位置与cross end位置对齐|  
-|center|在交叉轴方向居中于容器|  
-|baseline|第一行文字的基线对齐|  
-|stretch(默认)|高度未定(或auto)时, 将占满容器的高度|  
+| 属性值 | 描述 |  
+| :---: | :--- |  
+| flex-start | 子项目起始位置与cross start位置对齐 |  
+| flex-end | 子项目末尾位置与cross end位置对齐 |  
+| center | 在交叉轴方向居中于容器 |  
+| baseline | 第一行文字的基线对齐 |  
+| stretch(默认) | 高度未定(或auto)时, 将占满容器的高度 |  
 
 #### 6、align-content: 定义了多根轴线的对齐方式，如果项目只有一根轴线，那么该属性将不起作用
 
@@ -112,14 +112,14 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 
 当你 `flex-wrap` 设置为 `wrap` 的时候，容器可能会出现多条轴线，这时候你就需要去设置多条轴线之间的对齐方式了。
 
-|属性值|描述|  
-|:---:|:---|  
-|flex-start|顶部与cross start位置对齐|  
-|flex-end|底部与cross end位置对齐|  
-|center|在交叉轴方向居中于容器|  
-|space-between|与交叉轴两端对齐, 间隔全部相等|  
-|space-around|每个轴线两侧的间隔相等，所以轴线之间的间隔比轴线与边缘的间隔大一倍。|  
-|stretch|多根主轴上的子项目充满交叉轴|  
+| 属性值 | 描述 |  
+| :---: | :--- |  
+| flex-start | 顶部与cross start位置对齐 |  
+| flex-end | 底部与cross end位置对齐 |  
+| center | 在交叉轴方向居中于容器 |  
+| space-between | 与交叉轴两端对齐, 间隔全部相等 |  
+| space-around | 每个轴线两侧的间隔相等，所以轴线之间的间隔比轴线与边缘的间隔大一倍。 |  
+| stretch | 多根主轴上的子项目充满交叉轴 |  
 
 ### 设置在flex item上的属性
 
