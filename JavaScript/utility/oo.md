@@ -532,6 +532,227 @@ function deepCopy(parent, child) {
 }
 ```
 
+### ES6的面向对象
+
+上面所说的是JavaScript语言的传统方法，通过构造函数，定义并生成新的对象。  
+ES6中提供了更接近传统语言的写法，引入了Class(类)的概念，通过class关键字，可以定义类。  
+
+#### 语法
+
+ES6的类完全可以看成是构造函数的另外一种写法。  
+```
+var method = 'say';
+class Dog {
+    constructor (name,color) {
+        this.name = name;
+        this.color = color;
+    }
+    //注意，两个属性之间跟对象不同，不要加逗号，并且类的属性名可以使用表达式，如下
+    [method] () {
+        console.log('汪汪');
+    }
+}
+console.log(typeof Dog); // function 类的数据类型就是函数
+console.log(Dog === Dog.prototype.constructor); // true 类本身就是构造函数
+```
+
+既然是构造函数，所以在使用的时候，也是直接对类使用new命令，跟构造函数的用法完全一致。  
+```
+var hashiqi = new Dog('hashiqi', 'blackandwhite');
+console.log(hashiqi.color); // blackandwhite
+
+//上面采用表达式声明的类的属性可以用一下两种方式调用
+hashiqi[method](); // 汪汪
+hashiqi.say(); // 汪汪
+```
+
+**注意：**  
+1、先声明定义类，再创建实例，否则会报错  
+`class` 不存在变量提升，这一点与ES5的构造函数完全不同  
+```
+new Dog('hashiqi','blackandwhite')
+class Dog {
+    constructor (name,color) {
+        this.name = name;
+        this.color = color;
+    }
+}
+//Uncaught ReferenceError: Dog is not defined
+//上面代码，Dog类使用在前，定义在后，因为ES6不会把类的声明提升到代码头部，所以报错Dog没有定义。
+```
+
+2、必须使用new关键字来创建类的实例对象  
+*类的构造函数，不使用new是没法调用的，会报错。* 这是它跟普通构造函数的一个主要区别，后者不用new也可以执行。  
+```
+class Dog {
+    constructor (name,color) {
+        this.name = name;
+        this.color = color;
+    }
+}
+Dog(); // Uncaught TypeError: Class constructor Dog cannot be invoked without 'new'
+```
+
+3、定义“类”的方法的时候，前面不需要加上function这个关键字，直接把函数定义放进去了就可以了。并且，方法之间不需要逗号分隔，加了会报错。
+
+
+#### 属性概念  
+
+> constructor  构造函数
+
+构造方法constructor是一个类必须要有的方法，默认返回实例对象；创建类的实例对象的时候，会调用此方法来初始化实例对象。如果你没有编写constructor方法，执行的时候也会被加上一个默认的空的constructor方法。  
+
+constructor方法是必须的，也是唯一的，一个类体不能含有多个constructor构造方法。  
+```
+class Dog {
+    constructor (name,color) {
+        this.name = name;
+        this.color = color;
+    }
+    //定义了两个constructor，所以会报错
+    constructor () {
+        
+    }
+}
+new Dog('hashiqi', 'blackandwhite')
+//Uncaught SyntaxError: A class may only have one constructor
+```
+
+> Class表达式  
+
+与函数一样，类可以使用表达式的形式定义。  
+```
+const Hashiqi = class Dog {
+    constructor (name,color) {
+        this.name = name;
+        this.color = color;
+    }
+    getName () {
+        //此处的Dog就是Dog构造函数，在表达式形式中，只能在构造函数内部使用
+        console.log(Dog.name);
+    }
+}
+var hashiqi = new Hashiqi('hashiqi', 'blackandwhite'); // 真正的类名是Hashiqi
+var jinmao = new Dog('jinmao', 'yellow'); // 会报错，Dog没有定义
+```
+通常我们的表达式会写成如下，省略掉类后面的名称  
+```
+const Hashiqi = class {
+    constructor (name,color) {
+        this.name = name;
+        this.color = color;
+    }
+}
+var hashiqi = new Hashiqi('hashiqi', 'blackandwhite');
+```
+
+> 实例方法和静态方法  
+实例化后的对象才可以调用的方法叫做实例方法。  
+直接使用类名即可访问的方法，称之为“静态方法”  
+
+类相当于实例的原型，所有在类中定义的方法，都会被实例继承。如果在一个方法前，加上static关键字，就表示该方法不会被实例继承，而是直接通过类来调用，这就称为“静态方法”。  
+```
+class Dog {
+    constructor (name,color) {
+        this.name = name;
+        this.color = color;
+    }
+    static say () {
+        console.log('汪汪');
+    }
+}
+Dog.say(); //汪汪
+```
+
+**静态方法和实例方法不同的是：静态方法的定义需要使用static关键字来标识，而实例方法不需要；此外，静态方法通过类名来的调用，而实例方法通过实例对象来调用。**
+
+#### 类的继承
+
+> extends
+
+类之间可以通过extends关键字实现继承，这比ES5的通过修改原型链实现继承，要清晰和方便很多。
+```
+class Dog extends Animal{}
+```
+
+**extends的继承目标**  
+extends关键字后面可以跟多种类型的值，有三种特殊情况  
+
+1、子类继承Object类
+```
+class A extends Object {}
+console.log(A.__proto__ === Object) //true
+console.log(A.prototype.__proto__ == Object.prototype) //true
+//这种情况下，A其实就是构造函数Object的复制，A的实例就是Object的实例。
+```
+
+2、不存在继承
+```
+class A {}
+
+console.log(A.__proto__ === Function.prototype) // true
+console.log(A.prototype.__proto__ === Object.prototype) // true
+//这种情况下，A作为一个基类（即不存在任何继承），就是一个普通函数，所以直接继承Funciton.prototype。
+//但是，A调用后返回一个空对象（即Object实例），所以A.prototype.__proto__指向构造函数（Object）的prototype属性。
+
+```
+
+3、子类继承null
+```
+class A extends null {}
+console.log(A.__proto__ === Function.prototype) //true
+console.log(A.prototype) //只有一个constructor属性，没有__proto__属性
+这种情况与第二种情况非常像。A也是一个普通函数，所以直接继承Funciton.prototype。
+但是，A调用后返回的对象不继承任何方法，所以没有__proto__这属性
+```
+
+> super  
+
+uper这个关键字，既可以当作函数使用，也可以当作对象使用。  
+
+1、super作为函数调用时，代表父类的构造函数。作为函数时，super()只能用在子类的构造函数之中，用在其他地方就会报错。  
+
+2、super作为对象时，在普通方法中，指向父类的原型对象；在静态方法中，指向父类。
+
+
+```
+class Animal {
+    constructor (name) {
+        this.name = name;
+        this.species = '动物';
+    }
+    say (){
+        return this.species;
+    }
+}
+class Dog extends Animal{
+    constructor (name, color) {
+        // 只要是自己在子类中定义constructor，必须调用super方法，否则新建实例会报错
+        //super作为函数调用，只能用在子类的constructor中
+        super(name);
+        this.color = color;
+    }
+    getInfo () {
+        //普通方法中，super指向父类的原型对象
+        console.log(super.say()+': '+this.name +','+this.color);
+    }
+}
+var hashiqi = new Dog('hashiqi', 'blackandwhite');
+hashiqi.getInfo() //动物：hashiqi,balckandwhite
+```
+
+**注意：**  
+1、子类必须在constructor方法中调用super方法，否则新建实例时会报错。这是因为子类没有自己的this对象，而是继承父类的this对象，然后对其进行加工。如果不调用super方法，子类就得不到this对象。  
+
+2、在子类的普通方法中，由于super指向父类的原型对象，所以定义在父类实例上的方法或属性，是无法通过super调用的。  
+
+3、使用super的时候，必须显式指定是作为函数、还是作为对象使用，否则会报错。
+
+
+
+
+
+
 
 
 
