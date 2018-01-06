@@ -32,14 +32,14 @@ var book = {
 
 #### 2、通过new创建对象
 
-`new` 运算符创建并初始化一个新对象。关键字new后跟一个函数调用。这里的函数称做构造函数(constructor)，构造函数用以初始化一个新创建的对象。JavaScript中的数据类型都包含内置的构造函数。
+`new` 运算符创建并初始化一个新对象。关键字new后跟一个函数调用。这里的函数称做构造函数(constructor)，构造函数用以初始化一个新创建的对象。JavaScript中的数据类型都包含内置的构造函数。
 
 `var o = new Object();` //创建一个空对象，和{}一样。  
 `var arr = new Array();` //创建一个空数组，和[]一样。  
 
 >  **扩展 1：new**  
 
-`new` 是一个一元运算符，专门运算函数的。new后面调用的函数叫做构造函数，构造函数new的过程叫做实例化。  
+`new` 是一个一元运算符，专门运算函数的。new后面调用的函数叫做构造函数，构造函数new的过程叫做实例化。  
 当new去调用一个函数 : 这个时候函数中的this就指向创建出来的对象,而且函数的的返回值直接就是this(隐式返回)  
 有一个默认惯例就是构造函数的名字首字母大写。
 
@@ -155,10 +155,10 @@ console.log('c' in a); // false 'c'不是a的属性
 跟in运算符类似的，还可以用"!=="判断一个属性是否是undefined，但是有一种场景只能使用in运算符，in可以区分不存在的属性和存在但值为undefined的属性。
 ```
 var a = {b:undefined};
-console.log(a.b !== undefined);
-console.log(a.c !== undefined);
-console.log('b' in a);
-console.log('c' in a);
+console.log(a.b !== undefined); //false
+console.log(a.c !== undefined); //false
+console.log('b' in a); //true
+console.log('c' in a); //false
 ```
 
 #### hasOwnProperty
@@ -288,7 +288,7 @@ console.log(a.propertyIsEnumerable('toString'));
 <br />
 
 > constructor  
-返回创建实例对象的构造函数的引用,每个原型都会自动添加constructor属性,for..in..遍历原型是找不到这个属性的。
+返回创建实例对象的构造函数的引用,每个原型都会自动添加constructor属性,for..in..遍历原型是找不到这个属性的。
 
 ```
 var a = new A();
@@ -367,7 +367,7 @@ hashiqi.color = 'blackandwhite';
 ```
 
 **缺点：**  
-1、如果要生成多个实例对象，要重复写多次。  
+1、如果要生成多个实例对象，要重复写多次。  
 2、实例和原型之间没有联系。
 
 
@@ -391,7 +391,7 @@ var jinmao = Dog('jinmao', 'yellow');
 
 #### 3、构造函数模式
 
-用来创建对象的函数，叫做构造函数，其实就是一个普通函数，但是默认函数名首字母大写，对构造函数使用new运算符，就能生成实例，并且this变量会绑定在实例对象上。  
+用来创建对象的函数，叫做构造函数，其实就是一个普通函数，但是默认函数名首字母大写，对构造函数使用new运算符，就能生成实例，并且this变量会绑定在实例对象上。  
 ```
 function Dog(name, color) {
     this.name = name;
@@ -613,7 +613,7 @@ class Dog {
         this.name = name;
         this.color = color;
     }
-    //注意，两个属性之间跟对象不同，不要加逗号，并且类的属性名可以使用表达式，如下
+    //注意，两个属性之间跟对象不同，不要加逗号，并且类的属性名可以使用变量或者表达式，如下
     [method] () {
         console.log('汪汪');
     }
