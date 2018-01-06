@@ -285,6 +285,8 @@ console.log(a.propertyIsEnumerable('toString'));
 
 **对象身上只有 `__proto__` 构造函数身上有prototype也有 `__proto__`**
 
+<br />
+
 > constructor  
 返回创建实例对象的构造函数的引用,每个原型都会自动添加constructor属性,for..in..遍历原型是找不到这个属性的。
 
@@ -292,6 +294,8 @@ console.log(a.propertyIsEnumerable('toString'));
 var a = new A();
 console.log(a.constructor == A) //true
 ```
+
+<br />
 
 > hasOwnProperty  
 可以用来判断某属性是不是这个构造函数的内部属性（不包括继承的）
@@ -308,6 +312,8 @@ console.log(a.hasOwnProperty('toString')); //toString是继承属性 打印 fals
 console.log(a.hasOwnProperty('hasOwnProperty')); //同上，打印false
 ```
 
+<br />
+
 > instanceof  
 二元运算符,用来检测一个对象在其原型链中是否存在一个构造函数的 prototype 属性。
 
@@ -323,6 +329,8 @@ o instanceof D; // false，因为 D.prototype不在o的原型链上
 o instanceof Object; // true,因为Object.prototype.isPrototypeOf(o)返回true
 C.prototype instanceof Object // true,同上
 ```
+
+<br />
 
 > toString  
 返回一个表示该对象的字符串
@@ -506,6 +514,8 @@ var hashiqi = new Dog('hashiqi', 'blackandwhite');
 
 **缺点：** 每一次继承都得生成一个父类实例，比较占内存。
 
+<br />
+
 > 利用空对象作为中介
 
 ```
@@ -524,6 +534,8 @@ var hashiqi = new Dog('hashiqi', 'blackandwhite');
 console.log(hashiqi.species);
 ```
 几个月前在 `CSDN` 面试的时候，我说了这种继承方式，面试官就纠结这样修改子类的prototype不会影响父类么？是真的不会影响的，因为子类的prototype是指向Middle构造函数生成的实例，如果真的有心要改，得`Dog.prototype.__proto__`这么着来改。
+
+<br />
 
 > Object.create()
 
@@ -566,6 +578,8 @@ extend(Dog, Animal);
 var hashiqi = new Dog('hashiqi', 'blackandwhite');
 console.log(hashiqi.species) // 动物
 ```
+
+<br />
 
 > 深拷贝  
 
@@ -670,6 +684,8 @@ new Dog('hashiqi', 'blackandwhite')
 //Uncaught SyntaxError: A class may only have one constructor
 ```
 
+<br />
+
 > Class表达式  
 
 与函数一样，类可以使用表达式的形式定义。  
@@ -698,6 +714,8 @@ const Hashiqi = class {
 var hashiqi = new Hashiqi('hashiqi', 'blackandwhite');
 ```
 
+<br />
+
 > 实例方法和静态方法  
 实例化后的对象才可以调用的方法叫做实例方法。  
 直接使用类名即可访问的方法，称之为“静态方法”  
@@ -717,6 +735,7 @@ Dog.say(); //汪汪
 ```
 
 **静态方法和实例方法不同的是：静态方法的定义需要使用static关键字来标识，而实例方法不需要；此外，静态方法通过类名来的调用，而实例方法通过实例对象来调用。**
+
 
 #### 类的继承
 
@@ -757,6 +776,8 @@ console.log(A.prototype) //只有一个constructor属性，没有__proto__属性
 这种情况与第二种情况非常像。A也是一个普通函数，所以直接继承Funciton.prototype。
 但是，A调用后返回的对象不继承任何方法，所以没有__proto__这属性
 ```
+
+<br/>
 
 > super  
 
