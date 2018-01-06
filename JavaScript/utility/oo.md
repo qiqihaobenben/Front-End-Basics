@@ -25,16 +25,16 @@ var book = {
         }
 ```
 
-**注意：** 从ES5开始，对象直接量中的最后一个属性后的逗号将被忽略。  
+**注意：** 从ES5开始，对象直接量中的最后一个属性后的逗号将被忽略。  
 
 `扩展：` [JavaScript中的关键字和保留字
 ](http://blog.mingsixue.com/it/JS-keyword-reserved.html)
 
 #### 2、通过new创建对象
 
-`new` 运算符创建并初始化一个新对象。关键字new后跟一个函数调用。这里的函数称做构造函数(constructor)，构造函数用以初始化一个新创建的对象。JavaScript中的数据类型都包含内置的构造函数。
+`new` 运算符创建并初始化一个新对象。关键字new后跟一个函数调用。这里的函数称做构造函数(constructor)，构造函数用以初始化一个新创建的对象。JavaScript中的数据类型都包含内置的构造函数。
 
-`var o = new Object();` //创建一个空对象，和{}一样。  
+`var o = new Object();` //创建一个空对象，和{}一样。  
 `var arr = new Array();` //创建一个空数组，和[]一样。  
 
 >  **扩展 1：new**  
@@ -71,9 +71,9 @@ var book = {
 如果想创建一个普通的空对象，需要传入`Object.prototype`  
 `var o = Object.create(Object.prototype);` //o相当于{}
 
-### 对象属性的获取和设置
+### 对象属性的获取和设置
 
-可以通过点(.)或方括号([])运算符来获取和设置属性的值。
+可以通过点(.)或方括号([])运算符来获取和设置属性的值。
 ```
 var author = book.author;
 var title = book["main title"];
@@ -93,7 +93,7 @@ function getAttr (obj, attr) {
 ### 删除属性
 
 delete运算符可以删除对象的属性。  
-delete只是断开属性和宿主对象的联系，而不会去操作属性中的属性，如果删除的属性是个对象，那么这个对象的引用还是存在的。  
+delete只是断开属性和宿主对象的联系，而不会去操作属性中的属性，如果删除的属性是个对象，那么这个对象的引用还是存在的。  
 ```
 var a = {b:{c:1}};
 var b = a.b;
@@ -110,7 +110,7 @@ console.log(a.b); //undefined
 
 > 返回值为true
 
-当delete表达式删除成功或没有任何副作用(比如删除不存在的属性)，或者delete后不是一个属性访问表达式，delete会返回 `true` ；  
+当delete表达式删除成功或没有任何副作用(比如删除不存在的属性)，或者delete后不是一个属性访问表达式，delete会返回 `true` ；  
 ```
 var a = {b:{c:1}};
 console.log(delete a.b);
@@ -128,7 +128,7 @@ delete不能删除那些可配置性为false的属性，例如某些内置对象
 var a = {};
 Object.defineProperty(a,'b',{
     value:1,
-    configurable: false //设置为不可配置
+    configurable: false // 设置为不可配置
 })
 console.log(delete a.b)
 console.log(delete Object.prototype)
@@ -173,7 +173,7 @@ console.log(a.hasOwnProperty('toString')); //false toString是继承属性
 
 #### propertyIsEnumerable
 
-对象的`propertyIsEnumerable()`方法只有检测到是自身属性(不包括继承的属性)且这个属性的可枚举性为true时它才返回true。
+对象的`propertyIsEnumerable()`方法只有检测到是自身属性(不包括继承的属性)且这个属性的可枚举性为true时它才返回true。
 ```
 var a = {b:1};
 console.log(a.propertyIsEnumerable('b'));
@@ -391,7 +391,7 @@ var jinmao = Dog('jinmao', 'yellow');
 
 #### 3、构造函数模式
 
-用来创建对象的函数，叫做构造函数，其实就是一个普通函数，但是默认函数名首字母大写，对构造函数使用new运算符，就能生成实例，并且this变量会绑定在实例对象上。  
+用来创建对象的函数，叫做构造函数，其实就是一个普通函数，但是默认函数名首字母大写，对构造函数使用new运算符，就能生成实例，并且this变量会绑定在实例对象上。  
 ```
 function Dog(name, color) {
     this.name = name;
@@ -404,7 +404,7 @@ console.log(hashiqi.name); //hashiqi
 console.log(jinmao.name); //jinmao
 ```
 
-hasiqi 和 jinmao有一个共同的构造函数 `hashiqi.constructor === jinmao.constructor` 是true
+hasiqi 和 jinmao有一个共同的构造函数 `hashiqi.constructor === jinmao.constructor` 是true
 
 有以下几种方法可以验证原型对象与实例对象的关系：  
 ```
@@ -431,7 +431,7 @@ function New(func) {
         obj.__proto__ = func.prototype;
     }
 
-    // 模拟出构造函数内部this指向实例的过程，注意，我们会拿到构造函数的返回值
+    // 模拟出构造函数内部this指向实例的过程，注意，我们会拿到构造函数的返回值
     var res = func.apply(obj, Array.from(arguments).slice(1));
 
     // 正常构造函数是不需要显式声明返回值的，默认的返回值是生成的实例，但是一旦在构造函数中return 一个不是对象或者函数，就会改变构造函数的默认的返回值，其他的类型是不变的
@@ -451,8 +451,8 @@ var taidi = New(Dog, 'taidi', 'gray');
 
 #### 4、prototype模式
 
-每一个构造函数都有 `prototype` 属性，这个属性指向的是一个对象，这个对象的所有属性和方法，都会被构造函数的实例继承。  
-基于这个属性，我们就可以有选择性的将一些通用的属性和方法定义到 `prototype` 上，每一个通过 `new` 生成的实例，都会有一个 `__proto__` 属性指向构造函数的原型即 `prototype` ，这样我们定义到构造函数原型对象的属性和方法，就会被每一个实例访问到，从而变成公用的属性和方法。  
+每一个构造函数都有 `prototype` 属性，这个属性指向的是一个对象，这个对象的所有属性和方法，都会被构造函数的实例继承。  
+基于这个属性，我们就可以有选择性的将一些通用的属性和方法定义到 `prototype` 上，每一个通过 `new` 生成的实例，都会有一个 `__proto__` 属性指向构造函数的原型即 `prototype` ，这样我们定义到构造函数原型对象的属性和方法，就会被每一个实例访问到，从而变成公用的属性和方法。  
 
 ```
 function Dog(name, color) {
@@ -471,7 +471,7 @@ jinmao.say(); // 汪汪
 console.log(hashiqi.say === jinmao.say); // true
 ```
 
-**注意：当实例对象和原型对象有相同的属性或者方法时，会优先访问实例对象的属性或方法。**  
+**注意：当实例对象和原型对象有相同的属性或者方法时，会优先访问实例对象的属性或方法。**  
 
 ### 面向对象的继承  
 
@@ -533,7 +533,7 @@ Dog.prototype.constructor = Dog;
 var hashiqi = new Dog('hashiqi', 'blackandwhite');
 console.log(hashiqi.species);
 ```
-几个月前在 `CSDN` 面试的时候，我说了这种继承方式，面试官就纠结这样修改子类的prototype不会影响父类么？是真的不会影响的，因为子类的prototype是指向Middle构造函数生成的实例，如果真的有心要改，得`Dog.prototype.__proto__`这么着来改。
+几个月前在 `CSDN` 面试的时候，我说了这种继承方式，面试官就纠结这样修改子类的prototype不会影响父类么？是真的不会影响的，因为子类的prototype是指向Middle构造函数生成的实例，如果真的有心要改，得`Dog.prototype.__proto__`这么着来改。
 
 <br />
 
@@ -601,7 +601,7 @@ function deepCopy(parent, child) {
 ### ES6的面向对象
 
 上面所说的是JavaScript语言的传统方法，通过构造函数，定义并生成新的对象。  
-ES6中提供了更接近传统语言的写法，引入了Class(类)的概念，通过class关键字，可以定义类。  
+ES6中提供了更接近传统语言的写法，引入了Class(类)的概念，通过class关键字，可以定义类。  
 
 #### 语法
 
@@ -696,12 +696,12 @@ const Hashiqi = class Dog {
         this.color = color;
     }
     getName () {
-        //此处的Dog就是Dog构造函数，在表达式形式中，只能在构造函数内部使用
+        //此处的Dog就是Dog构造函数，在表达式形式中，只能在构造函数内部使用
         console.log(Dog.name);
     }
 }
 var hashiqi = new Hashiqi('hashiqi', 'blackandwhite'); // 真正的类名是Hashiqi
-var jinmao = new Dog('jinmao', 'yellow'); // 会报错，Dog没有定义
+var jinmao = new Dog('jinmao', 'yellow'); // 会报错，Dog没有定义
 ```
 通常我们的表达式会写成如下，省略掉类后面的名称  
 ```
@@ -768,7 +768,7 @@ console.log(A.prototype.__proto__ === Object.prototype) // true
 
 ```
 
-3、子类继承null
+3、子类继承null
 ```
 class A extends null {}
 console.log(A.__proto__ === Function.prototype) //true
