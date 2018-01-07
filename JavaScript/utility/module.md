@@ -52,7 +52,7 @@ Node.js模块可以分为两大类，一类是核心模块，另一类是文件�
 >加载方式
 
 * 按路径加载模块  
-如果require参数一"/"开头，那么就以绝对路径的方式查找模块名称，如果参数一"./"、"../"开头，那么则是以相对路径的方式来查找模块。
+如果require参数以"/"开头，那么就以绝对路径的方式查找模块名称，如果参数以"./"、"../"开头，那么则是以相对路径的方式来查找模块。
 
 * 通过查找node_modules目录加载模块  
 如果require参数不以"/"、"./"、"../"开头，而该模块又不是核心模块，那么就要通过查找node_modules加载模块了。我们使用的npm获取的包通常就是以这种方式加载的。  
@@ -180,15 +180,18 @@ require 引入的对象主要是函数。当 Node 调用 require() 函数，并�
 
 ```
 //创建两个文件，module1.js 和 module2.js，并且让它们相互引用
-    // module1.js
-    exports.a = 1;
-    require('./module2');
-    exports.b = 2;
-    exports.c = 3;
-    
-    // module2.js
-    const Module1 = require('./module1');
-    console.log('Module1 is partially loaded here', Module1);
+// module1.js
+exports.a = 1;
+require('./module2');
+exports.b = 2;
+exports.c = 3;
+
+// module2.js
+const Module1 = require('./module1');
+console.log('Module1 is partially loaded here', Module1);
+
+//执行 node module2.js 打印： {a:1,b:2,c:3}
+//执行 node module1.js 打印： {a:1}
 ```  
 在 module1 完全加载之前需要先加载 module2，而 module2 的加载又需要 module1。这种状态下，我们从 exports 对象中能得到的就是在发生循环依赖之前的这部分。上面代码中，只有 a 属性被引入，因为 b 和 c 都需要在引入 module2 之后才能加载进来。
 
