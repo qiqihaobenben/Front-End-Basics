@@ -554,7 +554,7 @@ export * from 'my_module';
 
 #### ES6 中的循环引用
 
-ES6 中，imports 是 exprts 的只读视图，直白一点就是，imports 都指向 exports 原本的数据，比如：
+ES6 中，imports 是 exports 的只读视图，直白一点就是，imports 都指向 exports 原本的数据，比如：
 ```
 //------ lib.js ------
 export let counter = 3;
