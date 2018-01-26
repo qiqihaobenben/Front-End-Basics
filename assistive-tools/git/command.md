@@ -240,7 +240,7 @@ git merge origin/branch # 合并远端上指定分支
 
 git pull origin remotebranch:localbranch # 拉取远端分支到本地分支
 
-git pull origin master --allow-unrelated-histories # 允许拉取远端无关历史的master分支到本地当前分支
+git pull origin master --allow-unrelated-histories # 允许拉取远端无关历史的master分支到本地当前分支
 
 git push origin branch # 将当前分支，推送到远端上指定分支
 
