@@ -170,7 +170,7 @@ git branch -d test # 删除test分支
 
 git branch -D test # 强制删除test分支
 
-git branch --set-upstream dev origin/dev # 将本地dev分支与远程dev分支之间建立链接
+git branch --set-upstream-to origin/dev # 在dev执行，将本地dev分支与远程dev分支之间建立链接
 
 
 git checkout test # 切换到test分支
@@ -240,7 +240,7 @@ git merge origin/branch # 合并远端上指定分支
 
 git pull origin remotebranch:localbranch # 拉取远端分支到本地分支
 
-git pull origin master --allow-unrelated-histories # 允许拉取远端无关历史的master分支到本地当前分支
+git pull origin master --allow-unrelated-histories # 允许拉取远端无关历史的master分支到本地当前分支
 
 git push origin branch # 将当前分支，推送到远端上指定分支
 

@@ -1,6 +1,6 @@
 ## Ajax
 
-**Asynchronous JavaScript and XML : 异步的js和XML，前后端数据交互的一种技术。**  
+**Asynchronous JavaScript and XML : 异步的js和XML，前后端数据交互的一种技术。**  
 
 > Ajax优点  
 
@@ -81,7 +81,7 @@ ajax.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
 ajax.send('user=cfangxu')
 ```
 
-#### 注意点
+#### 注意点
 
 1. 用post方式请求，理论上来说是没有长度或体积限制的，看具体浏览器和后端的设置。  
 
@@ -138,11 +138,11 @@ responseText : 返回以文本形式存放的内容  ajax请求返回的内容�
 
 ## 扩展
 
-### `XMLHttpRequest` 兼容性问题，单纯了解，可以直接略过
+### `XMLHttpRequest` 兼容性问题，单纯了解，可以直接略过
 
 `new XMLHttpRequest()` ie6 及以下不支持，所以需要用到插件  
  `new ActiveXObject('MSXML2.XMLHTTP')`
- IE中会有三种不同的XHR版本： `MSXML2.XMLHTTP` 、 `MSXML2.XMLHTTP.3.0` 、 `MSXML2.XMLHTTP.6.0` 因为只做了解，这里用最老的那一版
+ IE中会有三种不同的XHR版本： `MSXML2.XMLHTTP` 、 `MSXML2.XMLHTTP.3.0` 、 `MSXML2.XMLHTTP.6.0` 因为只做了解，这里用最老的那一版
 
  ```
 兼容写法如下：
@@ -224,9 +224,9 @@ value:file元素的files[0];
 
 ### XMLHttpRequest 2级
 
-#### FormData
+#### FormData
 
-上面的ajax上传文件用到的 `FormData` 类型就是 `XMLHttpRequest 2级`中定义的。
+上面的ajax上传文件用到的 `FormData` 类型就是 `XMLHttpRequest 2级`中定义的。
 
 FormData 为序列化表单以及创建与表单格式相同的数据(用于XHR传输)提供了便利。
 ```
@@ -270,7 +270,7 @@ xhr.send(null);
 
 #### progress 事件
 
-这个事件会在浏览器接收新数据期间周期性地触发。事件监听函数会接收到一个event对象，其target属性是XHR对象，但是包含着三个额外的属性：lengthComputable、position和totalSize。
+这个事件会在浏览器接收新数据期间周期性地触发。事件监听函数会接收到一个event对象，其target属性是XHR对象，但是包含着三个额外的属性：lengthComputable、position和totalSize。
 
 * lengthComputable: 是一个表示进度信息是否可用的布尔值。
 
