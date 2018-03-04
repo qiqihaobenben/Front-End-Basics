@@ -204,4 +204,58 @@ let Stack = (function () {
 
 > 其中包含创建队列，向队列中添加元素，从队列中移除元素，查看队列头元素，检查队列是否为空，打印队列元素。
 
+```
+// 直接用WeakMap来构造私有变量
 
+const items = new WeakMap();
+export default class Queue {
+    constructor () {
+        items.set(this, [])
+    }
+    enqueue (element) {
+        let s = items.get(this);
+        s.push(element);
+    }
+    dequeue () {
+        let s = items.get(this);
+        return s.shift();
+    }
+    front () {
+        let s = items.get(this);
+        return s[0]
+    }
+    isEmpty () {
+        let s = items.get(this);
+        return s.length == 0;
+    }
+    size () {
+        let s = items.get(this);
+        return s.length;
+    }
+    print () {
+        let s = items.get(this);
+        console.log(s.toString())
+    }
+}
+
+// 使用Queue类
+let queue = new Queue();
+console.log(queue.isEmpty()) //true
+queue.enqueue('fangxu')
+queue.enqueue('wenqi')
+queue.enqueue('benben')
+queue.print() //'fangxu', 'wenqi', 'benben'
+console.log(queue.size()) //3
+console.log(queue.isEmpty()) // fasle
+queue.dequeue()
+queue.dequeue()
+queue.print() //'benben'
+```
+
+### 3、优先队列
+
+> 优先队列就是元素的的添加和移除是基于优先级的。例如机场登机的顺序，虽然也是排队，但是头等舱比经济舱先登机。
+
+实现一个优先队列，有两种方式：  
+1、设置优先级，然后在正确的位置添加元素；
+2、用正常入列的方式操作添加元素，然后按照优先级移除她们。
