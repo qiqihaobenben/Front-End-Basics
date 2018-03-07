@@ -259,3 +259,75 @@ queue.print() //'benben'
 实现一个优先队列，有两种方式：  
 1、设置优先级，然后在正确的位置添加元素；
 2、用正常入列的方式操作添加元素，然后按照优先级移除她们。
+
+```
+const items = new WeakMap();
+// 整合元素和其对应优先级的类
+class QueueElement {
+    constructor (element, priority) {
+        this.element = element;
+        this.priority = priority;
+    }
+}
+export default class Queue {
+    constructor() {
+        items.set(this, [])
+    }
+    //更改了一下enqueue方法
+    enqueue(element, priority) {
+        let s = items.get(this);
+        let queueElement = new QueueElement(element, priority);
+        let added = false;
+        for(var i = 0; i < s.length; i++) {
+            if (queueElement.priority < s[i].priority) {
+                s.splice(i, 0, queueElement);
+                added = true;
+                break;
+            }
+        }
+        if(!added) {
+            s.push(queueElement);
+        }
+    }
+    dequeue() {
+        let s = items.get(this);
+        return s.shift();
+    }
+    front() {
+        let s = items.get(this);
+        return s[0]
+    }
+    isEmpty() {
+        let s = items.get(this);
+        return s.length == 0;
+    }
+    size() {
+        let s = items.get(this);
+        return s.length;
+    }
+    print() {
+        let s = items.get(this);
+        s.forEach((item, index) => {
+            console.log(`${item.element}-${item.priority}`)
+        })
+    }
+}
+
+// 使用Priorityqueue类
+let queue = new Priorityqueue();
+console.log(queue.isEmpty()) //true
+queue.enqueue('fangxu',2)
+queue.enqueue('wenqi',1)
+queue.enqueue('benben',1)
+queue.print() //'wenqi-1', 'benben-1','fangxu-2'
+console.log(queue.size()) //3
+console.log(queue.isEmpty()) // fasle
+queue.dequeue()
+queue.dequeue()
+queue.print() //'fangxu-2'
+```
+
+上述实现的优先队列是最小优先队列，因为优先级值较小的元素被放置在队列最前面。最大优先队列则相反，把优先级的值较大的元素放置在队列最前面。
+
+### 4、循环队列
+
