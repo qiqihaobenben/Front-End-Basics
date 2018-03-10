@@ -331,3 +331,42 @@ queue.print() //'fangxu-2'
 
 ### 4、循环队列
 
+> 循环队列是又一个修改版的队列，有一个很经典的例子就是击鼓传花（多人围成一个圆圈，把花尽快传递给下一个人。某一时刻传花停止，这个时候花在谁手里，谁就退出这个游戏，然后重复这个过程，直到只剩一个人）
+
+```
+import Queue from './queue'
+
+function hotPotato(nameList, time) {
+    let queue = new Queue();
+    nameList.forEach((item, index) => {
+        queue.enqueue(item)
+    })
+    let eliminated = '';
+    while(queue.size() > 1) {
+        for(let i = 0; i < time; i++) {
+            queue.enqueue(queue.dequeue())
+        }
+        eliminated = queue.dequeue();
+        console.log(`${eliminated}在击鼓传花的游戏中被淘汰。`)
+    }
+    return queue.dequeue();
+}
+
+// 使用hotPotato方法
+// 以下都是团队里的成员
+let names = ['zheming', 'sijie', 'chengyin', 'guangyu', 'yueying', 'xiaolujie', 'miaomiao', 'wenwu'];
+// 为了避免他们说我不公平，这里用了一个随机取1-7的次数
+let time = Math.ceil(7 * Math.random());
+let winner = hotPotato(names, time);
+console.log(`击鼓传花的胜者是${winner}`)
+
+// 打印其中某一次的结果
+guangyu在击鼓传花的游戏中被淘汰。
+wenwu在击鼓传花的游戏中被淘汰。
+yueying在击鼓传花的游戏中被淘汰。
+sijie在击鼓传花的游戏中被淘汰。
+zheming在击鼓传花的游戏中被淘汰。
+chengyin在击鼓传花的游戏中被淘汰。
+miaomiao在击鼓传花的游戏中被淘汰。
+击鼓传花的胜者是xiaolujie
+```
