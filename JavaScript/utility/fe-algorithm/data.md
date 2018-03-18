@@ -385,9 +385,306 @@ miaomiao在击鼓传花的游戏中被淘汰。
 
 ### 1、链表操作
 
+```
+// 需要一个Node辅助类
+class Node {
+    constructor(element) {
+        this.element = element;
+        this.next = null;
+    }
+}
 
+class LinkedList {
+    constructor() {
+        this.length = 0;
+        this.head = null;
+    }
+
+    // 向链表尾部追加元素
+    // 有两种场景，列表为空，添加的是第一个元素，或者列表不为空，向其追加元素
+    append(element) {
+        let current,
+            node = new Node(element);
+        if(this.head === null) {
+            this.head = node;
+        }else {
+            current = this.head;
+            while(current.next) {
+                current = current.next;
+            }
+            current.next = node;
+        }
+        this.length++;
+    }
+
+    // 从链表中移除元素
+    // 有两种场景，第一种是移除第一个元素，第二种是移除第一个以外的任一元素。
+    removeAt(position) {
+        // 处理位置，首先检查是否越界
+        if(position > -1 && position < this.length) {
+            let previous,
+                index = 0,
+                current = this.head;
+            if(position === 0) {
+                this.head = current.next;
+            }else {
+                while(index++ < position) {
+                    previous = current;
+                    current = current.next;
+                }
+                previous.next = current.next;
+            }
+            this.length--;
+            return current.element;
+        }else {
+            return null;
+        }
+    }
+
+    // 在任意位置插入元素
+    insert(element, position) {
+        if(position >= 0 && position <= this.length) {
+            let previous,
+                current = this.head,
+                index = 0,
+                node = new Node(element);
+            if(position === 0) {
+                node.next = current;
+                this.head = node;
+            }else {
+                while(index++ < position) {
+                    previous = current;
+                    current = current.next;
+                }
+                node.next = current;
+                previous.next = node;
+            }
+            this.length++;
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    // 返回元素在列表中的索引。如果列表中没有该元素则返回-1
+    indexOf(element) {
+        let current = this.head,
+            index = -1;
+        while(current) {
+            index++;
+            if(current.element === element) {
+                return index;
+            }
+            current = current.next;
+        }
+        return -1;
+    }
+
+    // 从列表中移除一项
+    remove(element) {
+        let index = this.indexOf(element);
+        return this.removeAt(index);
+    }
+
+    // 判断链表是否为空
+    isEmpty() {
+        return this.length === 0;
+    }
+
+    // 显示链表的大小，返回链表中包含的元素个数
+    size() {
+        return this.length;
+    }
+
+    // 获取链表的头
+    getHead() {
+        return this.head;
+    }
+
+    // 把链表对象转换成字符串
+    toString() {
+        let string = '',
+            current = this.head;
+        while(current) {
+            string += current.element + (current.next? 'n' : '');
+            current = current.next;
+        }
+        return string;
+    }
+}
+
+export default LinkedList
+
+
+
+// 具体使用
+import LinkedList from 'linkedList'
+let linkedList = new LinkedList();
+
+console.log(linkedList.size()) // 0
+console.log(linkedList.getHead()) // null
+console.log(linkedList.isEmpty()) // true
+linkedList.append('fangxu')
+linkedList.append('zheming')
+linkedList.append('wenwu')
+console.log(linkedList.size()) // 3
+console.log(linkedList.getHead()) // {element: 'fangxu', next: Node}
+console.log(linkedList.isEmpty()) // false
+console.log(linkedList.toString()) // fangxunzhemingnwenwu
+linkedList.insert('yueying', 0)
+linkedList.insert('chengyin', 4)
+console.log(linkedList.size()) // 5
+console.log(linkedList.getHead()) // {element: 'yueying', next: Node}
+console.log(linkedList.toString()) // yueyingnfangxunzhemingnwenwunchengyin
+console.log(linkedList.indexOf('fangxu')) // 1
+console.log(linkedList.removeAt(2)) // zheming
+console.log(linkedList.size()) // 4
+console.log(linkedList.toString()) // yueyingnfangxunwenwunchengyin
+console.log(linkedList.remove('fangxu')) // fangxu
+console.log(linkedList.size()) // 3
+console.log(linkedList.toString()) // yueyingnwenwunchengyin
+
+
+```
 
 
 > 注意
 
 1、列表中的最后一个节点的下一个元素始终是null。
+
+
+### 2、双向链表
+
+双向链表和普通链表的区别是，普通链表一个节点只有链向下一个节点的链接，在双向链表中，链接是双向的：一个链向下一个元素，另一个链向前一个元素
+
+```
+// 双向链表需要增加以下属性
+
+class Node {
+    constructor(element) {
+        this.element = element;
+        this.next = null;
+        this.prev = null; // 新增指向其哪一个元素的链接
+    }
+}
+
+class DoublyLinkedList {
+    constructor() {
+        this.length = 0;
+        this.head = null;
+        this.tail = null; // 链表类增加链表反向的头,也就是正向链表的尾巴
+    }
+
+    ...
+}
+```
+
+**注意：** 因为双向链表中有向前和向后两个指针，所以在插入和删除指定位置的元素等操作时，需要有比普通链表多的操作。
+
+### 3、循环链表
+
+循环链表可以像普通链表一样只有单向引用，也可以像双向链表一样有双向引用。循环链表和链表之间唯一的区别在于，最后一个元素指向下一个元素的指针（tail.next）不是null，而是指向第一个元素head。  
+双向循环链表有指向head的tail.next,也有指向tail的head.prev。
+
+
+## 5、集合
+
+> 集合是由一组无序且唯一（即不能重复）的项组成。可以把集合想象成一个既没有重复元素，也没有顺序概念的数组。
+
+### 1、创建集合
+
+ES6新增了Set类，我们可以基于ES6的Set开发我们的集合类
+
+先熟悉一下ES6原生的Set类怎么用
+```
+let set = new Set();
+set.add(1)
+console.log(set.values()) // 输出@Iterator
+console.log(set.has(1)) // 输出true
+console.log(set.size) // 输出1
+
+// 首先创建两个集合
+let setA = new Set();
+setA.add(1)
+setA.add(2)
+setA.add(3)
+
+let setB = new Set();
+setA.add(2)
+setA.add(3)
+setA.add(4)
+```
+
+### 2、集合的操作
+
+1. **并集：** 对于给定的两个集合，返回一个包含两个集合中所有元素的新集合。
+
+2. **交集：** 对于给定的两个集合，返回一个包含两个集合中共有元素的新集合。
+
+3. **差集：** 对于给定的两个集合，返回一个包含所有存在于第一个集合且不存在于第二个集合的元素的新集合
+
+4. **子集：** 验证一个给定的集合是否是另一集合的的子集。
+
+> 并集，集合A和集合B的并集，表示为 `A∪B` ，该集合定义是： `A∪B = {x|x ∈ A∨x ∈ B}` 意思是x元素存在于A中，或者x存在于B中
+
+```
+// A、B两个集合并集代码实现如下
+let unionAB = new Set();
+for(let x of setA) {
+    unionAB.add(x)
+}
+for (let x of setB) {
+    unionAB.add(x)
+}
+```
+
+> 交集 集合A和集合B的交集，表示为 `A∩B` ，该集合定义是： `A∩B = {x|x ∈ A∧x ∈ B}` 意思是x元素存在于A中，，且x存在于B中
+
+```
+// 模拟交集需要创建一个辅助函数
+
+function intersection(A, B) {
+    let intersectionSet = new Set();
+    for (let x of A) {
+        if (B.has(x)) {
+            intersectionSet.add(x)
+        }
+    }
+    return intersectionSet
+}
+let intersectionAB = intersection(setA, setB);
+```
+
+> 差集 集合A和集合B的差集，表示为 `A-B` ，该集合定义是： `A-B = {x|x ∈ A∧x ∉ B}` 意思是x元素存在于A中，，且x不存在于B中
+
+```
+function difference(A, B) {
+    let differenceSet = new Set();
+    for (let x of A) {
+        if (!B.has(x)) {
+            differenceSet.add(x)
+        }
+    }
+    return differenceSet
+}
+let differenceAB = difference(setA, setB);
+```
+
+> 子集 集合A是集合B的子集，表示为 `A⊆B` ，该集合定义是： `∀x {x ∈ A→x ∈ B}` 意思是集合A中的每一个x（元素），也需要存在于B中
+
+```
+// 这个返回值就不是新集合了,而是一个布尔值
+function subSet(A, B) {
+    if (A.size > B.size) {
+        return false;
+    }else {
+        for(let x of A) {
+            if(!B.has(x)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+let isSub = subSet(setA, setB);
+```
