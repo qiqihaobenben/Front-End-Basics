@@ -805,3 +805,28 @@ hash.print()
 
 #### 2.3、创建更好的散列函数
 
+> 上面的例子显示 `lose lose` 散列函数并不是一个表现良好的散列函数，因为他会产生太多的冲突。通常，一个表现良好的散列函数是由几个方面构成的：插入和检索的时间（即性能），还包括较低的冲突可能性。
+
+**`djb2散列函数`**
+
+```
+// djb2散列函数
+var djb2HashCode = function(key) {
+    var hash = 5381;
+    for(var i = 0; i < key.length; i++) {
+        hash = hash * 33 + key.charCodeAt(i);
+    }
+    return hash % 1013;
+}
+
+// 在上面HashTable类中使用djb2散列函数执行上面的例子
+// 159--wenting@email.com
+// 291--xufang@email.com
+// 360--tingwen@email.com
+// 777--yanqing@email.com
+// 944--fangxu@email.com
+// 没有冲突！
+```
+
+上面的djb2散列函数的内部是，初始化了一个hash变量并赋值为一个质数（大多数实现都是5381），然后迭代参数key，奖hash与33想成（用来当做一个魔力数），并和当前迭代的字符的ASCII码值相加。最后使用相加的和与另一个随机质数（比我们认为的散列表的大小要大，在上面的例子中，我们认为散列表的大小为1000）相除的余数。当然这并不是最好的散列函数，但这是最受社区推崇的散列函数之一。
+
