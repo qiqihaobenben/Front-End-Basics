@@ -703,3 +703,105 @@ ES6的`Map`类的实现，就是我们所说的字典。
 ### 2、散列表
 
 > `散列算法`的作用是尽可能快地在数据结构中找到一个值。在之前如果要在数据结构中获得一个值，需要遍历整个数据结构来找到它。如果使用散列函数，就知道值的具体位置，因此能够快速检索到该值。散列函数的作用是给定一个键值，然后返回值在表中的地址。
+
+
+#### 2.1、创建散列表
+
+我们来用最常见的散列函数-`lose lose` 散列函数来实现散列表，此方法最简单地将每个键值中的每个字母的ASCII值相加。
+
+```
+// 用最基本的方式实现HashTable类
+function HashTable() {
+    var table = [];
+
+    // 先实现一个散列函数方法，它是HashTable类中的一个私有方法
+    var loseloseHashCode = function (key) {
+        var hash = 0;
+        for(var i = 0; i < key.length; i++) {
+            hash += key.charCodeAt(i);
+        }
+        return hash % 37; // 减小hash的数值
+    }
+
+    // 向散列表增加一个新的项（也能更新散列表）
+    this.put = function(key, value) {
+        var position = loseloseHashCode(key);
+        console.log(position + '--' + value)
+        table[position] = value;
+    }
+
+    // 返回根据键值检索到的特定的值
+    this.get = function(key) {
+        return table[loseloseHashCode(key)];
+    }
+
+    // 根据键值从散列表中移除值
+    this.remove = function(key) {
+        table[loseloseHashCode(key)] = undefined;
+
+    }
+}
+
+// 使用HashTable
+var hash = new HashTable();
+hash.put('fangxu','fangxu@email.com')
+hash.put('wenting','wenting@email.com')
+hash.put('yanqing','yanqing@email.com')
+// 因为在put方法中我们打印了位置和值
+// 20--fangxu@email.com
+// 24--wenting@email.com
+// 19--yanqing@email.com
+console.log(hash.get('fangxu')) // fangxu@email.com
+console.log(hash.get('yanqing')) // yanqing@email.com
+hash.remove('yanqing')
+console.log(hash.get('yanqing')) // undefined
+```
+
+#### 2.2、处理散列表中的冲突
+
+> 有时候，一些键会有相同的散列值，不同的值在散列表中对应相同位置的时候，称之为冲突。
+
+```
+// 还是HashTable类
+var hash = new HashTable();
+hash.put('fangxu','fangxu@email.com')
+hash.put('wenting','wenting@email.com')
+hash.put('yanqing','yanqing@email.com')
+hash.put('xufang', 'xufang@email.com')
+hash.put('tingwen', 'tingwen@email.com')
+
+// 20--fangxu@email.com
+// 24--wenting@email.com
+// 19--yanqing@email.com
+// 20--xufang@email.com
+// 24--tingwen@email.com
+// 显而易见，上面的值重复了
+
+// 为了看一下散列表里到底存了些什么，我们加入一个print实例方法
+this.print = function() {
+    for(var i = 0; i < table.length; i++) {
+        if(table[i] !== undefined) {
+            console.log(i + '--' + table[i])
+        }
+    }
+}
+
+hash.print()
+// 19--yanqing@email.com
+// 20--xufang@email.com
+// 24--tingwen@email.com
+// 以上可以看到发生冲突的数据被后面的数据给覆盖了
+```
+
+> 使用一个数据结构来保存数据的目的显然不是去丢失这些数据，而是通过魔种方法将它们全部保存起来。处理冲突的方法有：分离链接，线性探查和双散列法
+
+#### 2.2.1、分离链接
+
+分离链接法包括为散列表的每一个位置创建一个链表并将元素存储在里面。相当于每个散列表的位置存储的是一个链表。
+
+#### 2.2.2、线性探查
+
+当想向表中摸个位置加入一个新元素的时候，如果索引为index的位置已经被占据了，就尝试index+1的位置。如果index+1的位置也被占据了，就尝试index+2的位置，以此类推。
+
+#### 2.3、创建更好的散列函数
+
