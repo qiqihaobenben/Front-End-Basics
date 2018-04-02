@@ -1112,7 +1112,80 @@ tree.inOrderTraverse(function (value){
 
 在关联矩阵中，矩阵的行表示顶点，列表示边。
 
-### 3、创建Graph类
+### 4、创建Graph类（邻接表表示法）
 
+```
+function Graph() {
+    let vertices = [],
+        adjList = new Map();
 
+    this.addVertex = function (v) {
+        vertices.push(v)
+        adjList.set(v, [])
+    }
+
+    this.addEdge = function (v,w) {
+        adjList.get(v).push(w)
+        adjList.get(w).push(v)
+    }
+
+    this.toString = function () {
+        let s = '';
+        for(var i = 0; i < vertices.length; i++) {
+            s += vertices[i] + '->';
+            let neighbors = adjList.get(vertices[i]);
+            for(var j = 0; j < neighbors.length; j ++) {
+                s += neighbors[j];
+            }
+            s += '\n'
+        }
+        return s;
+    }
+}
+
+//使用Graph类
+let graph = new Graph();
+let myVertices = ['A','B','C','D','E'];
+for(var i = 0; i < myVertices.length; i++){
+    graph.addVertex(myVertices[i])
+}
+graph.addEdge('A','B')
+graph.addEdge('A','C')
+graph.addEdge('A','D')
+graph.addEdge('C','D')
+graph.addEdge('C','E')
+graph.addEdge('B','E')
+console.log(graph.toString())
+打印结果：
+A->BCD
+B->AE
+C->ADE
+D->AC
+E->CB
+```
+
+### 5、图的遍历
+
+一般有两种算法可以对图进行遍历：广度优先搜索（BFS）和深度优先搜索（DFS）。图遍历可以用来寻找特定的顶点或寻找两个顶点之间的路径，检查图是否连通，检查图是否含有环等。  
+图遍历算法的思想是必须追踪每个第一次访问的节点，并且追踪有哪些节点还没有被完全探索。对于两种图遍历算法，都需要明确指出第一个被访问的顶点。  
+完全探索一个顶点要求我们查看该顶点的每一条边。对于每一条边所连接的没有被访问过的顶点，将其标注为被发现的，并将其加进待访问顶点列表中。  
+为了保证算法的效率，务必访问每个顶点至多两次。连通图中每条边和顶点都会被访问到。
+
+> 广度优先搜索算法和深度优先搜索算法基本上是相同的，只有一点不同，那就是待访问顶点列表的数据结构。
+
+|算法|数据结构|描述|
+|-----|-----|-----|
+|深度优先搜索|栈|通过将顶点存入栈中，顶点是沿着路径被探索的，存在新的相邻顶点就去访问|
+|广度优先搜索|队列|通过将顶点存入队列中，最先入队列的顶点先被探索|
+
+两种算法之前，先确定标注已经访问过的顶点状态颜色。
+|颜色|状态|
+|--|--|
+|白色|表示该节点没有被访问|
+|灰色|表示该顶点被访问过，但并未被探索过|
+|黑色|表示该顶点被访问过且被完全探索过|
+
+#### 1、广度优先搜索
+
+> 广度优先搜索算法会从指定的第一个顶点开始遍历图，先访问其所有的相邻点，就像一次访问图的一层。换句话说就是先宽后深地访问顶点。
 
