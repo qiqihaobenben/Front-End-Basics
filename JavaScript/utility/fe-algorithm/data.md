@@ -1143,7 +1143,7 @@ function Graph() {
     }
 }
 
-//使用Graph类
+//使用Graph类
 let graph = new Graph();
 let myVertices = ['A','B','C','D','E'];
 for(var i = 0; i < myVertices.length; i++){
@@ -1189,3 +1189,96 @@ E->CB
 
 > 广度优先搜索算法会从指定的第一个顶点开始遍历图，先访问其所有的相邻点，就像一次访问图的一层。换句话说就是先宽后深地访问顶点。
 
+广度优先搜索和深度优先搜索都需要标注被访问过的顶点，所以需要需要一个辅助数组color，当算法开始执行时，所有的顶点颜色都是白色，所以我们创建了一个initilizeColor的辅助函数，为这两个算法执行初始化颜色的操作  
+1、bfs方法接受一个顶点作为算法的起始点，将此顶点入队列。  
+2、如果队列非空，我们将通过出队列操作从队列中移除一个顶点，并取得一个包含其所有邻点的邻接表。该顶点江北标注为grey，表示我们发现了这个顶点，但是还没有对它进行完全的探索。  
+3、对于邻接表里的每个顶点，得到他们的值，从颜色辅助数组中查看此顶点，如果是white，表示从未被访问过，我们将它的颜色编程grey，并将这个顶点加入队列中，这样就可以等待它从队列中出队列时，就可以对它进行完全探索。  
+4、当完成探索该点，并且访问了其相邻顶点后，就可以认定该点被彻底探索过了，颜色设置为black。此后就可以执行回调函数，传入此点。
+```
+function Graph() {
+……
+//增加颜色初始化的方法
+let initilizeColor = function () {
+    let color = {};
+    for(let i = 0; i < vertices.length; i++) {
+        color[vertices[i]] = 'white';
+    }
+    return color;
+}
+//增加广度优先遍历方法
+this.bfs = function (v, callback) {
+    let color = initilizeColor(),
+        queue = new Queue();
+    queue.enqueue(v)
+    while(!queue.isEmpty()) {
+        let u = queue.dequeue(),
+            neighbors = adjList.get(u);
+        color[u] = 'grey';
+        for(let i = 0; i < neighbors.length; i++) {
+            let w = neighbors[i];
+            if(color[w] === 'white') {
+                color[w] = 'grey';
+                queue.enqueue(w)
+            }
+        }
+        color[u] = 'black';
+        if(callback) {
+            callback(u);
+        }
+    }
+}
+
+……
+}
+
+//使用广度优先遍历方法
+graph.bfs(myVertices[0],function (v) {
+    console.log('访问顶点'+v)
+})
+//打印
+//访问顶点A
+//访问顶点B
+//访问顶点C
+//访问顶点D
+//访问顶点E
+
+```
+**以上是介绍的BFS算法的工作原理，还可以再继续深入，寻找两个顶点的的最短路径距离，和每个顶点的上一个顶点。**
+
+```
+this.BFS = function (v) {
+    let color = initilizeColor(),
+        queue = new Queue(),
+        d = {},
+        pred = {};
+    queue.enqueue(v);
+    for(let i = 0; i < vertices.length; i++) {
+        d[vertices[i]] = 0;
+        pred[vertices[i]] = null;
+    }
+    while(!queue.isEmpty()) {
+        let u = queue.dequeue(),
+            neighbors = adjList.get(u);
+        color[u] = 'grey';
+        for(let i = 0; i < neighbors.length; i++) {
+            let w = neighbors[i];
+            if(color[w] === 'white') {
+                queue.enqueue(w);
+                color[w] = 'grey';
+                d[w] = d[u] + 1;
+                pred[w] = u;
+            }
+        }
+        color[u] = 'black';
+    }
+    return {
+        distances: d,
+        predecessors: pred
+    }
+}
+
+//使用BFS方法
+graph.BFS(myVertices[0])
+//返回：{"distances":{"A":0,"B":1,"C":1,"D":1,"E":2},"predecessors":{"A":null,"B":"A","C":"A","D":"A","E":"B"}}
+
+```
