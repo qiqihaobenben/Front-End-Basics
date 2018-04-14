@@ -1185,7 +1185,7 @@ E->CB
 |灰色|表示该顶点被访问过，但并未被探索过|
 |黑色|表示该顶点被访问过且被完全探索过|
 
-#### 1、广度优先搜索
+#### <font color="#e6a920">1、广度优先搜索</font>
 
 > 广度优先搜索算法会从指定的第一个顶点开始遍历图，先访问其所有的相邻点，就像一次访问图的一层。换句话说就是先宽后深地访问顶点。
 
@@ -1280,5 +1280,40 @@ this.BFS = function (v) {
 //使用BFS方法
 graph.BFS(myVertices[0])
 //返回：{"distances":{"A":0,"B":1,"C":1,"D":1,"E":2},"predecessors":{"A":null,"B":"A","C":"A","D":"A","E":"B"}}
+//即从A到B、C、D的距离是1，到E的距离是2
+
+// 我们通过BFS方法获取到的前溯点数组，可以构建从顶点到其他的顶点的路径
+let shortestPathA = graph.BFS(myVertices[0]);
+let fromVertex = myVertices[0];
+for(let i = 1; i < myVertices.length; i++) {
+    let toVertex = myVertices[i];
+    let path = new Stack();
+    for(let v = toVertex; v !== fromVertex; v = shortestPathA.predecessors[v]) {
+        path.push(v)
+    }
+    path.push(fromVertex)
+    let s = path.pop();
+    while(!path.isEmpty()) {
+        s += ` - ${path.pop()}`;
+    }
+    console.log(s)
+}
+//输出
+//A - B
+//A - C
+//A - D
+//A - B - E
 
 ```
+
+以上说的图不是加权图，如果要计算加权图中的最短路径（例如，城市A和城市B之间的最短路径——GPS和Google Maps中用到的算法），广度优先搜索未必合适。
+
+>举例  
+**Dijkstra算法** 解决了单源最短路径问题。 **[1、Dijkstra实现](http://www.zhiwenli.com/wordpress/?p=745)**  **[2、理解Dijkstra](http://www.bijishequ.com/detail/439838?p=)**  
+**Bellman-Ford算法** 解决了边权值为负的单源最短路径问题。 **[Bellman-Ford实现](https://segmentfault.com/a/1190000012691823)** **[理解Bellman-Ford](https://my.oschina.net/qiaotoubao/blog/735890)**  
+**A*搜索算法** 解决了求仅一对顶点间的最短路径问题，它用经验法则来加速搜索过程。 **[A*搜索算法实现](https://my.oschina.net/parker/blog/711300)**  
+**Floyd-Warshall算法** 解决了求所有顶点对间的最短路径这一问题。  **[理解Floyd-Warshall算法](https://my.oschina.net/qiaotoubao/blog/738646)**  
+
+  
+#### <font color="#e6a920">2、深度优先搜索</font>
+
