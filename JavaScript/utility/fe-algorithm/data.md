@@ -1317,3 +1317,42 @@ for(let i = 1; i < myVertices.length; i++) {
   
 #### <font color="#e6a920">2、深度优先搜索</font>
 
+> 深度优先搜索算法将会从第一个指定的顶点开始遍历图，沿着路径直到这条路径最后一个顶点被访问了，接着原路回退并搜索下一条路径。
+
+```
+this.dfs = function (callback) {
+    let dfsVisit = function (u, color, callback) {
+        color[u] = 'grey';
+        if(callback) {
+            callback(u)
+        }
+        let neighbors = adjList.get(u);
+        for(var i = 0; i < neighbors.length; i++) {
+            let w = neighbors[i];
+            if(color[w] === 'white') {
+                dfsVisit(w, color, callback)
+            }
+        }
+        color[u] = 'black';
+    }
+    let color = initilizeColor();
+    for(let i = 0; i < vertices.length; i++) {
+        if(color[vertices[i]] === 'white') {
+            dfsVisit(vertices[i], color, callback)
+        }
+    }
+}
+
+// 在上面已经添加节点的后面执行
+
+graph.dfs(function (v) {
+    console.log('访问顶点'+v)
+})
+//打印 
+// 访问顶点A
+// 访问顶点B
+// 访问顶点E
+// 访问顶点C
+// 访问顶点D
+```
+
