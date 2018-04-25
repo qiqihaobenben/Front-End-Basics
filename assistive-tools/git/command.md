@@ -170,7 +170,7 @@ git branch -d test # 删除test分支
 
 git branch -D test # 强制删除test分支
 
-git branch --set-upstream-to origin/dev # 在dev执行，将本地dev分支与远程dev分支之间建立链接
+git branch --set-upstream-to origin/dev dev # 在dev执行，将本地dev分支与远程dev分支之间建立链接
 
 
 git checkout test # 切换到test分支
