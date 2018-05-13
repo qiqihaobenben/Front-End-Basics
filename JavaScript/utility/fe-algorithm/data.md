@@ -1356,3 +1356,58 @@ graph.dfs(function (v) {
 // 访问顶点D
 ```
 
+上面展示了深度优先搜索算法的工作原理。我们也可以对于给定的图G，我们通过深度优先搜索算法遍历图G的所有节点，构建“森林”（有跟树的一个集合）以及一组源顶点（根），并输出两个数组：发现时间和完成探索时间。
+
+```
+// 接上面例子
+
+this.DFS = function () {
+    let time = 0;
+    let color = initilizeColor(),
+    d = {},
+    f = {},
+    p = {};
+    let DFSVisit = function (u,color,d,f,p) {
+        console.log('discovered' + u)
+        color[u] = 'grey';
+        d[u] = ++time;
+        let neighbors = adjList.get(u);
+        for(let i = 0; i < neighbors.length; i++) {
+            var w = neighbors[i];
+            if(color[w] === 'white') {
+                p[w] = u;
+                DFSVisit(w,color,d,f,p)
+            }
+        }
+        color[u] = 'black';
+        f[u] = ++time;
+        console.log('explored' + u)
+        
+    }
+    for(let i = 0; i < vertices.length; i++) {
+        f[vertices[i]] = 0;
+        d[vertices[i]] = 0;
+        p[vertices[i]] = null;
+    }
+    for(let i = 0; i < vertices.length; i++) {
+        if(color[vertices[i]] === 'white') {
+            DFSVisit(vertices[i],color,d,f,p)
+        }
+    }
+    return {
+        discovery: d,
+        finished: f,
+        perdecessors: p
+    }
+}
+
+// 执行
+console.log(graph.DFS())
+
+// 其中有两个打印
+//descoveredA、descoveredB、descoveredE、descoveredC、descoveredD
+//exploredD、exploredC、exploredE、exploredB、exploredA
+//返回值
+{"discovery":{"A":1,"B":2,"C":4,"D":5,"E":3},"finished":{"A":10,"B":9,"C":7,"D":6,"E":8},"perdecessors":{"A":null,"B":"A","C":"E","D":"C","E":"B"}}
+```
+
