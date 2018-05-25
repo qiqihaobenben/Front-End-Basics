@@ -4,7 +4,7 @@
 
 ## 子元素定宽高
 
-### 1、absolute + margin负值
+### 1、absolute + margin负值
 
 ![absolute+margin负值](./images/11.png)
 
