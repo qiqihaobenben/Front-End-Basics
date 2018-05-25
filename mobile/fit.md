@@ -17,7 +17,7 @@ px实际是pixel（像素）的缩写，它是图像显示的基本单元，既�
 * **物理像素(physical pixel或device pixel)**  
  一个物理像素是显示器(手机屏幕)上最小的物理显示单元，在操作系统的调度下，每一个设备像素都有自己的颜色值和亮度值。  
 
-* **设备独立像素(density-independent pixel或device independent pixel)**  
+* **设备独立像素(density-independent pixel或device independent pixel)**  
 设备独立像素(也叫密度无关像素、逻辑像素)，可以认为是计算机坐标系统中的一个点，这个点代表一个可以由程序使用的虚拟像素(比如: css像素)，然后由相关系统转换为物理像素。  
 
 * **设备像素比(device pixel ratio)**  
@@ -80,7 +80,7 @@ layout viewport 的宽度是大于浏览器可视区域的宽度的
 
 ### 多屏适配布局问题
 
-移动端布局，为了适配各种大屏手机，目前最好用的方案莫过于使用相对单位rem。rem的应用其本质就是等比缩放，就是屏幕分成多少个rem份，然后每一份大小就会根据根节点html的font-size大小动态改变。  
+移动端布局，为了适配各种大屏手机，目前最好用的方案莫过于使用相对单位rem。rem的应用其本质就是等比缩放，就是屏幕分成多少个rem份，然后每一份大小就会根据根节点html的font-size大小动态改变。  
 基于rem的原理，我们要做的就是: 针对不同手机屏幕尺寸和dpr动态的改变根节点html的font-size大小(基准值)。  
 ```
 font-size = document.documentElement.clientWidth * dpr / 10;
@@ -93,7 +93,7 @@ iphone3gs: 320px / 10 = 32px
 iphone4/5: 320px * 2 / 10 = 64px  
 iphone6: 375px * 2 / 10 = 75px  
 
-* **方案一：**  
+* **方案一：**  
 ![方案一](./images/642.webp)  
 
 缺点：要加载一段js代码  

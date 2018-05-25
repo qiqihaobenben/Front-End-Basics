@@ -62,7 +62,7 @@ Set-Cookie: value[; expires=date][; domain=domain][; path=path][; secure]
 
 #### 注意
 
-如果只设置一个值，那么算cookie中的value; 设置的两个cookie,key值如果设置的相同，下面的也会把上面的覆盖。
+如果只设置一个值，那么算cookie中的value; 设置的两个cookie,key值如果设置的相同，下面的也会把上面的覆盖。
 
 
 ### **cookie的属性（可选项）**   
@@ -240,7 +240,7 @@ HTML5新方法，不过**IE8及以上**浏览器都兼容。
 ### web SQL database  
 
 先说个会被取代的，为什么会被取代，主要有以下几个原因：  
-1. W3C舍弃 `Web SQL database`草案,而且是在2010年年底，规范不支持了，浏览器厂商已经支持的就支持了，没有支持的也不打算支持了，比如IE和Firefox。
+1. W3C舍弃 `Web SQL database`草案,而且是在2010年年底，规范不支持了，浏览器厂商已经支持的就支持了，没有支持的也不打算支持了，比如IE和Firefox。
 
 2. 为什么要舍弃？因为 `Web SQL database` 本质上是一个关系型数据库，后端可能熟悉，但是前端就有很多不熟悉了，虽然SQL的简单操作不难，但是也得需要学习。
 
@@ -250,7 +250,7 @@ HTML5新方法，不过**IE8及以上**浏览器都兼容。
 
 > 来自MDN的解释： indexedDB 是一种低级API，用于客户端存储大量结构化数据(包括, 文件/ blobs)。该API使用索引来实现对该数据的高性能搜索。虽然 Web Storage 对于存储较少量的数据很有用，但对于存储更大量的结构化数据来说，这种方法不太有用。IndexedDB提供了一个解决方案。
 
-所以，`IndexedDB` API是强大的，但对于简单的情况可能看起来太复杂了，所以要看你的业务场景来选择到底是用还是不用。
+所以，`IndexedDB` API是强大的，但对于简单的情况可能看起来太复杂了，所以要看你的业务场景来选择到底是用还是不用。
 
 `indexedDB` 是一个基于JavaScript的面向对象的数据库。 `IndexedDB`允许你存储和检索用键索引的对象;
 
@@ -295,7 +295,7 @@ IndexedDB 使用对象存储空间而不是表，并且一个单独的数据库�
   request.onupgradeneeded = function (event) {
 
       //之前咱们不是在success中得到了db了么，为什么还要在这获取，
-      //因为在当前事件函数执行后才会去执行success事件
+      //因为在当前事件函数执行后才会去执行success事件
       var db = event.target.result;
 
       // 创建一个对象存储空间，keyPath是id，keyGenerator是自增的
@@ -313,7 +313,7 @@ IndexedDB 使用对象存储空间而不是表，并且一个单独的数据库�
 ```
 **注意：** 执行完后，在调试工具栏Application的indexedDB中也看不到，你得右键刷新一下。
 
-**创建索引的语法：**  
+**创建索引的语法：**  
 ```
 objectStore.createIndex(indexName, keyPath, objectParameters)
 
@@ -342,7 +342,7 @@ var timer = setInterval(function () {
     }
 },100)
 ```
-**为什么要用一个间隔定时器？** 因为这是一个demo，正常的是要有操作才能进行数据库的写入，在我们的demo中，js执行到transaction会比indexedDB的onsuccess事件回调快，导致会拿到db为undefined，所以写了个间隔定时器等它一会。
+**为什么要用一个间隔定时器？** 因为这是一个demo，正常的是要有操作才能进行数据库的写入，在我们的demo中，js执行到transaction会比indexedDB的onsuccess事件回调快，导致会拿到db为undefined，所以写了个间隔定时器等它一会。
 
 #### 4、获取数据
 
@@ -380,9 +380,9 @@ var getRquest = objectStore.delete(1);
 // 删除了id为1的那条数据
 ```
 
-> 上面的例子执行完后，一定一定要右键刷新indexedDB,它自己是不会变的。
+> 上面的例子执行完后，一定一定要右键刷新indexedDB,它自己是不会变的。
 
-* 关于数据库的名词解释和indexedDB的游标介绍参阅：[HTML5 indexedDB前端本地存储数据库实例教程](http://www.zhangxinxu.com/wordpress/2017/07/html5-indexeddb-js-example/) 张大神的文中没有指出新手要踩的坑，我踩完也说明了。
+* 关于数据库的名词解释和indexedDB的游标介绍参阅：[HTML5 indexedDB前端本地存储数据库实例教程](http://www.zhangxinxu.com/wordpress/2017/07/html5-indexeddb-js-example/) 张大神的文中没有指出新手要踩的坑，我踩完也说明了。
 
 
 
