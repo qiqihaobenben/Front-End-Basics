@@ -13,7 +13,7 @@
 
 <br/>
 
-## Ajax跨域解决
+## Ajax跨域解决
 
 ### JSONP
 
@@ -21,7 +21,7 @@ JSONP是之前服务器与客户端跨源通信的常用方法。最大特点就
 
 #### 基本思想
 
-网页通过添加一个`<script>`元素，向服务器请求JSON数据，这种做法不受同源政策限制(因为`script`、`img`这些带src请求资源的都能请求网络的任意位置资源)；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。
+网页通过添加一个`<script>`元素，向服务器请求JSON数据，这种做法不受同源政策限制(因为`script`、`img`这些带src请求资源的都能请求网络的任意位置资源)；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。
 
 #### 具体方法
 
@@ -126,7 +126,7 @@ Content-Type: text/html; charset=utf-8
 
 #### 扩展——withCredentials
 
-CORS请求默认不发送Cookie和HTTP认证信息。如果要把Cookie发到服务器，一方面要服务器同意，指定`Access-Control-Allow-Credentials`字段。另一方面，开发者必须在AJAX请求中打开`withCredentials`属性。否则，即使服务器同意发送Cookie，浏览器也不会发送。或者，服务器要求设置Cookie，浏览器也不会处理。如下：
+CORS请求默认不发送Cookie和HTTP认证信息。如果要把Cookie发到服务器，一方面要服务器同意，指定`Access-Control-Allow-Credentials`字段。另一方面，开发者必须在AJAX请求中打开`withCredentials`属性。否则，即使服务器同意发送Cookie，浏览器也不会发送。或者，服务器要求设置Cookie，浏览器也不会处理。如下：
 ```
 //服务器端设置
 Access-Control-Allow-Credentials: true
@@ -146,7 +146,7 @@ xhr.withCredentials = false;
 
 > 非简单请求
 
-非简单请求是那种对服务器有特殊要求的请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。即不同时满足简单请求两个条件的就是非简单请求。
+非简单请求是那种对服务器有特殊要求的请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。即不同时满足简单请求两个条件的就是非简单请求。
 
 #### 预检请求
 
