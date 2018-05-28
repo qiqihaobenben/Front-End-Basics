@@ -22,6 +22,8 @@
 
 * [移动端开发](https://qiqihaobenben.github.io/Front-End-Basics/mobile/index)
 
+* [项目技术专栏](https://qiqihaobenben.github.io/Front-End-Basics/project/index)
+
 ## 辅助工具
 
 * [分布式版本控制系统——Git](https://qiqihaobenben.github.io/Front-End-Basics/assistive-tools/git/index 'git')
