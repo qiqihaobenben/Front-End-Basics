@@ -372,6 +372,9 @@ let num = [{num: 1},2,3];
 let str1 = num.join('-'); // [object Object]-2-3
 ```
 
+<br>
+
+> 2. toString() 方法将数组的每个元素转化为字符串(如有必要将调用元素的toString()方法)并且输出用逗号分割的字符串列表。
 
 
 ### 扩展几个概念
