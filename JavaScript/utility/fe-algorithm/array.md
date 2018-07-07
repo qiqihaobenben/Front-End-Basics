@@ -347,7 +347,7 @@ arr1[1] = "two"; // arr是[1,2,3]，arr1是[1,"tow",3]
 
 **参数：**
 
-separator
+separator （可选）
 指定一个字符串来分隔数组的每个元素。
 如果有(separator)，将分隔符转换为字符串。
 如果省略()，数组元素用逗号分隔。默认为 ","。
@@ -382,6 +382,9 @@ let str1 = num.join('-'); // [object Object]-2-3
 [1,2,3].toString(); // 1,2,3
 [1,[2,'c']].toString(); //1,2,c
 // 以上与不使用任何参数调用join()方法返回的字符串是一样的。
+
+// 以下的这个例子要跟下面的toLocaleString对照看
+[{a:1},1,new Date()].toString() //"[object Object],1,Sat Jul 07 2018 18:43:45 GMT+0800 (中国标准时间)"
 ```
 **注意：** 当数组和字符串操作的时候，js 会调用这个方法将数组自动转换成字符串
 ```
@@ -393,6 +396,166 @@ let str1 = num.join('-'); // [object Object]-2-3
 <br>
 
 > 3. toLocaleString() 数组中的元素将使用各自的 toLocaleString 方法转成字符串，这些字符串将使用一个特定语言环境的字符串（例如一个逗号 ","）隔开。
+
+**参数：(还有待考证,我试了一下没用，看了一下ECMA的官网，确实是标注有两个可选参数的)**
+
+locales （可选） 带有BCP 47语言标记的字符串或字符串数组
+
+options （可选） 一个可配置属性的对象
+
+```
+//数组中的元素将会使用各自的 toLocaleString 方法：
+// Object: Object.prototype.toLocaleString()
+// Number: Number.prototype.toLocaleString()
+// Date: Date.prototype.toLocaleString()
+
+let prices = ['￥7', 500, 8123, 12];
+
+// 不带参数
+prices.toLocaleString(); // "￥7,500,8,123,12"
+
+//带参数
+prices.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }); // "￥7,500,8,123,12"
+//MDN上的举例中说是 "￥7,￥500,￥8,123,￥12"，在浏览器和Node中验证了返回的都是 "￥7,500,8,123,12" 啊！
+
+// 以下的这个例子要跟上面的toString对照看
+[{a:1},1,new Date()].toLocaleString() //"[object Object],1,2018/7/7 下午6:45:00"
+```
+
+**返回值：** 表示数组元素的字符串。
+
+<br>
+
+> 4. concat() 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。
+
+它的元素包括调用concat()的原始数组的元素和concat()的每个参数，但是要注意，concat()不会递归扁平化数组的数组，concat()也不会修改调用的数组。
+
+**参数：**
+
+valueN （可选） 将(多个)数组和/或值连接成新数组。
+
+```
+[1,2,3].concat([4,5,6],[7,8,9]) // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+['a','b','c'].concat(1,[2,3],[[4,5]]) // ["a", "b", "c", 1, 2, 3, [4,5]]
+
+// concat方法不会改变this或任何作为参数提供的数组，而是返回一个浅拷贝,所以原始数组和新数组都引用相同的对象。 如果引用的对象被修改，新数组和原始数组都会变。
+let obj = {a: 1};
+let arr1 = [2,obj];
+let arr2 = [1].concat(arr1);
+console.log(arr1,arr2) //[2,{a:1}],[1,2,{a:1}]
+
+//记录下上面的打印结果之后修改obj
+obj.a = 2;
+console.log(arr1,arr2) ////[2,{a:2}],[1,2,{a:2}]
+
+// 说了是浅拷贝，而且原数组也不改变，那我们就可以用它来实现数组的浅拷贝功能
+let num1 = [1,2,3];
+//第一种
+let num2 = num1.concat();
+//第二种
+let num2 = [].concat(num1);
+num2[0] = 'a';
+console.log(num1,num2); // [1, 2, 3] ["a", 2, 3]
+```
+
+**返回值：** 新的 Array 实例
+
+
+<br>
+
+> 5. indexof() 方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1。
+
+**参数：**
+
+searchElement 要查找的元素
+
+fromIndex （可选）开始查找的位置。
+如果该索引值大于或等于数组长度，意味着不会在数组里查找，返回-1。
+
+如果该索引值是负值，代表相对数组末尾的偏移量，即-1表示从最后一个元素开始查找，-2表示从倒数第二个元素开始查找，**注意的是，这并不改变其查找顺序，查找顺序仍然是从前向后查询数组。**
+
+如果该索引值是负值，其绝对值大于数组长度，则整个数组都将会被查询。其默认值为0。
+
+**注意：** indexOf 使用严格相等（即 ===）比较 searchElement 和数组中的元素。而且indexOf()不能识别 `NaN`
+
+```
+let array = [2, 5, 9];
+array.indexOf(2)     // 0
+array.indexOf(7)     // -1
+array.indexOf(9, 2)  // 2
+array.indexOf(9, 3)  // -1
+array.indexOf(2, -1) // -1
+array.indexOf(2, -3) // 0
+array.indexOf(2, -4) // 0
+```
+
+**返回值：** 首个被找到的元素在数组中的索引位置; 若没有找到则返回 -1
+
+<br>
+
+> 6. lastIndexOf() 跟indexOf()查找方向相反，方法返回指定元素在数组中的最后一个的索引，如果不存在则返回 -1。从数组的后面向前查找，从 fromIndex 处开始
+
+
+**参数：**
+
+searchElement 要查找的元素
+
+fromIndex （可选）开始查找的位置。默认为数组的长度减 1，即整个数组都被查找。
+如果该值大于或等于数组的长度，则整个数组会被查找。
+如果为负值，将其视为从数组末尾向前的偏移。即使该值为负，数组仍然会被从后向前查找。
+如果该值为负时，其绝对值大于数组长度，则方法返回 -1，即数组不会被查找。
+
+**注意：** lastIndexOf 使用严格相等（即 ===）比较 searchElement 和数组中的元素。而且lastIndexOf()不能识别 `NaN`
+
+```
+let array = [2,5,9,2];
+array.lastIndexOf(9) // 2
+array.lastIndexOf('9') // -1 严格相等
+array.lastIndexOf(7) // -1
+array.lastIndexOf(2,4) // 3
+array.lastIndexOf(2,3) // 3
+array.lastIndexOf(2,2) // 0
+array.lastIndexOf(2,-1) // 3
+array.lastIndexOf(2,-2) // 0
+array.lastIndexOf(2,-4) // 0
+array.lastIndexOf(2,-5) // -1
+```
+
+**返回值：** 数组中最后一个元素的索引，如未找到返回-1
+
+
+<br>
+
+> 7. includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。
+
+**includes解决了两个indexOf的问题:**
+
+indexOf方法不能识别NaN
+
+indexOf方法检查是否包含某个值不够语义化，需要判断是否不等于-1，表达不够直观
+
+**参数：**
+
+searchElement 需要查找的元素值。
+
+fromIndex （可选） 从该索引处开始查找 searchElement。默认为 0。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。负值绝对值超过长数组度，从0开始搜索。
+
+如果fromIndex 大于等于数组长度 ，则返回 false 。该数组不会被搜索。
+
+```
+[1, 2, 3].includes(2);     // true
+[1, 2, 3].includes(4);     // false
+[1, 2, 3].includes(3, 3);  // false
+[1, 2, 3].includes(3, -1); // true
+[1, 2, 3].includes(3, -4); // true
+[1, 2, NaN].includes(NaN); // true
+```
+
+**返回值：** 一个布尔值，根据情况，如果包含则返回 true，否则返回false。
+
+
+#### <p style="color: #3f87a6;">3、数组遍历</p>
 
 
 ### 扩展几个概念
