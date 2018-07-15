@@ -565,6 +565,15 @@ fromIndex （可选） 从该索引处开始查找 searchElement。默认为 0�
 
 * 方法的返回值很重要，不同的方法处理返回值的方式也不一样。
 
+**下面这些方法运行时的规则：**
+1. 对于空数组是不会执行回调函数的
+2. 对于已在迭代过程中删除的元素，或者空元素会跳过回调函数
+3. 遍历次数在第一次循环前就会确定，再添加到数组中的元素不会被遍历。
+4. 如果已经存在的值被改变，则传递给 callback 的值是遍历到他们那一刻的值。
+5. 已删除的项不会被遍历到。如果已访问的元素在迭代时被删除了(例如使用 shift()) ，之后的元素将被跳过
+
+<br>
+
 > 1. forEach() 方法从头到尾遍历数组，为每个元素调用指定的函数。
 
 **参数：**
@@ -577,13 +586,137 @@ index(索引) 数组中正在处理的当前元素的索引。
 
 array forEach()方法正在操作的数组。
 
+<br>
 thisArg （可选） 当执行回调函数时用作this的值(参考对象)。默认值为undefined
 
+
+**注意：**
+1. forEach无法中途退出循环，只能用return退出本次回调，进行下一次回调，如果要提前终止，可以把forEach方法放在try块中，并能抛出一个异常，但这种方法是不推荐的。
+2. 它与之后会说到的几个方法不同，总是返回 undefined值,即使你return了一个值。
+
 ```
+// 1、 空元素不遍历,undefined和null是会遍历的。
+let numberArr = [1,2,,3];
+numberArr.forEach(function (value,index,array) {
+  console.log(value,index,array)
+})
+//打印信息如下，可见空元素是不会遍历的
+//1 0 [1, 2, empty, 3]
+//3 2 1 [1, 2, empty, 3]
+//3 3 3 [1, 2, empty, 3]
+
+let nullArr = [1,2,null,3];
+nullArr.forEach(function (value,index,array) {
+  console.log(value,index,array)
+})
+//打印信息如下，null是会遍历的
+//1 0 (4) [1, 2, null, 3]
+//2 1 (4) [1, 2, null, 3]
+//null 2 (4) [1, 2, null, 3]
+//3 3 (4) [1, 2, null, 3]
+
+//2、已删除的项不会被遍历到。如果已访问的元素在迭代时被删除了,之后的元素将被跳过
+let numberArr = [1,2,3];
+numberArr.forEach(function (value,index,array) {
+  if(index === 0) {
+    delete numberArr[2]; //删除第三项
+    //或者numberArr.pop()
+  }
+  console.log(value,index,array)
+})
+//打印信息如下：
+// 1 0 (3) [1, 2, empty]
+// 2 1 (3) [1, 2, empty]
+
+
+let numberArr1 = [1,2,3,4];
+numberArr1.forEach(function (value,index,array) {
+  if(index === 1) {
+    numberArr1.shift() //遍历到第二项的时候，删除第一项
+  }
+  console.log(value,index,array)
+})
+// 打印信息如下,遍历到第二项的时候，删除第一项，会跳过第三项
+// 1 0 (4) [1, 2, 3, 4]
+// 2 1 (3) [2, 3, 4]
+// 4 2 (3) [2, 3, 4]
+
+// 3、forEach 遍历的范围在第一次调用 callback 前就会确定。调用forEach 后添加到数组中的项不会被 callback 访问到。如果已经存在的值被改变，则传递给 callback 的值是 forEach 遍历到他们那一刻的值。
+let arr = [1,2,3];
+arr.forEach(function (value,index,array) {
+  if(index === 0) {
+    arr.push('新增的不会被遍历到')
+    arr[2] = 4;
+  }
+  console.log(value,index,array)
+})
+// 1 0 (4) [1, 2, 4, "新增的不会被遍历到"]
+// 2 1 (4) [1, 2, 4, "新增的不会被遍历到"]
+// 4 2 (4) [1, 2, 4, "新增的不会被遍历到"]
+
+// 4、使用thisArg参数 和 箭头函数使用thisArg
+let arr = [1,2,3];
+let obj = {arr: 'thisArg'}
+arr.forEach(function () {
+  console.log(this.arr)
+},obj)
+// 打印三次 'thisArg'
+
+let arr = [1,2,3];
+let obj = {arr: 'thisArg'}
+arr.forEach(() => {
+  console.log(this.arr)
+},obj)
+// 打印三次 undefined
+
+// 5、forEach无法中途退出循环，只能用return退出本次回调，进行下一次回调
+let arr = [1,2,3];
+let result = arr.forEach((value) => {
+  if(value == 2) {
+    return value;
+  }
+  console.log(value)
+})
+console.log(result) // undefined ，即使中间return vlaue，也还是undefined
+//打印value的值如下，说明return 并不能终止循环
+// 1
+// 3
 
 ```
 
 **返回值：** undefined
+
+
+<br>
+
+> 2. map() 方法创建一个新数组，其结果是该数组中的每个元素都调用一个callback函数后返回的结果。
+
+**参数：**(之前说过，大多说方法都会是这样一些参数)
+
+callback 生成新数组元素的函数，使用三个参数：这个函数跟forEach()的函数不同的是，传递给map()的函数应该有返回值。
+
+currentValue callback 的第一个参数，数组中正在处理的当前元素。
+
+index callback 的第二个参数，数组中正在处理的当前元素的索引。
+
+array callback 的第三个参数，map 方法被调用的数组。
+
+<br>
+thisArg 可选的。执行 callback 函数时 使用的this 值。
+
+**注意：** map() 返回的是新数组，它不修改调用的数组。如果是稀疏数组，返回的也是相同方式的稀疏数组：它具有相同的长度，相同索引的缺失元素(因为空值不会调用函数)
+
+```
+let number = [1,2,3];
+let doubles = number.map(function (value) {
+  return value * 2;
+})
+console.log(number, doubles)
+// [1,2,3] [2,4,6]
+
+```
+
+**返回值：** 一个新数组，每个元素都是回调函数的结果。
 
 
 
