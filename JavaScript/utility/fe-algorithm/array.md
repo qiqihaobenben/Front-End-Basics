@@ -736,7 +736,8 @@ array（可选）调用了filter筛选器的数组
 thisArg（可选）可选。执行 callback 时的用于 this 的值。
 
 **注意：**
-callback 只会在已经赋值的索引上被调用，对于那些已经被删除或者从未被赋值的索引不会被调用。也就是说filter()会跳过稀疏数组中缺少的元素，它的返回数组总是稠密的，可以用这个方法压缩稀疏数组的空缺。
+1. callback 只会在已经赋值的索引上被调用，对于那些已经被删除或者从未被赋值的索引不会被调用。也就是说filter()会跳过稀疏数组中缺少的元素，它的返回数组总是稠密的，可以用这个方法压缩稀疏数组的空缺。
+2. filter 不会改变原数组，它返回过滤后的新数组。
 
 ```
 let number = [1,2,3,4,5,6];
@@ -755,7 +756,53 @@ console.log(arr,arr1)
 
 ```
 
-**返回值：** 一个新的通过测试的元素的集合的数组，如果没有通过测试则返回空数组,filter 不会改变原数组，它返回过滤后的新数组。
+**返回值：** 一个新的通过测试的元素的集合的数组，如果没有通过测试则返回空数组。
+
+<br>
+
+> 4. every() 方法测试数组的所有元素是否都通过了指定函数的测试。当且仅当针对数组中的所有元素调用判定函数都返回true，它才返回true。
+
+**参数：**
+
+callback  用来测试每个元素的函数。
+
+thisArg  执行 callback 时使用的 this 值。
+
+**注意：**
+
+1. every 方法为数组中的每个元素执行一次 callback 函数，callback 只会为那些已经被赋值的索引调用。不会为那些被删除或从来没被赋值的索引调用。every 方法在callback第一次返回false后就返回false，然后终止遍历。但如果callback一直返回true，它将会遍历整个数组，最终返回true。
+2. 空数组上调用every方法，返回 true
+3. every 不会改变原数组
+
+```
+let arr = [12,34,5,23,44];
+let num = 0;
+let result = arr.every(function (element, index, array) {
+  num++;
+  return element > 10;
+})
+console.log(result,num) // 打印 false 3
+// 可见发现5这个小于10的元素后，遍历立即终止，num为3
+
+let arr = [12,34,,23,44];
+let num = 0;
+let result = arr.every(function (element, index, array) {
+  num++;
+  return element > 10;
+})
+console.log(result,num) // 打印 true 4
+// 不会遍历没有赋值的索引位置，所以num为4
+
+let result = [].every(function (element, index, array) {
+  return element > 10;
+})
+
+console.log(result) // 打印 true
+
+
+```
+
+**返回值：** 一个布尔值，当所有的元素都符合条件才返回true，否则返回false
 
 
 
