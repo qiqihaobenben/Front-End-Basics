@@ -771,7 +771,7 @@ thisArg  执行 callback 时使用的 this 值。
 **注意：**
 
 1. every 方法为数组中的每个元素执行一次 callback 函数，callback 只会为那些已经被赋值的索引调用。不会为那些被删除或从来没被赋值的索引调用。every 方法在callback第一次返回false后就返回false，然后终止遍历。但如果callback一直返回true，它将会遍历整个数组，最终返回true。
-2. 空数组上调用every方法，返回 true
+2. 空数组上调用every方法，返回 true，因为空数组没有元素，所以空数组中所有元素都符合给定的条件
 3. every 不会改变原数组
 
 ```
@@ -803,6 +803,141 @@ console.log(result) // 打印 true
 ```
 
 **返回值：** 一个布尔值，当所有的元素都符合条件才返回true，否则返回false
+
+<br>
+
+> 5. some() 方法测试数组中的某些元素是否通过由提供的函数实现的测试。当数组中至少有一个元素调用判定函数返回true，它就返回true，当且仅当数组中的所有元素调用判定函数都返回false，它才返回false。
+
+**参数：**
+
+callback 用来测试每个元素的函数
+
+thisArg 可选 执行 callback 时使用的 this 值。
+
+**注意：**
+
+1. some 为数组中的每一个元素执行一次 callback 函数，直到找到一个使得 callback 返回一个“真值”，这时，some 将会立即返回 true。否则，some 返回 false。callback 只会在那些”有值“的索引上被调用，不会在那些被删除或从来未被赋值的索引上调用。
+2. some 被调用时不会改变数组。
+3. 空数组调用some，返回false
+
+```
+// 一个简单的例子说明
+function isBiggerThan10(element, index, array) {
+  return element > 10;
+}
+
+[2, 5, 8, 1, 4].some(isBiggerThan10);  // false
+[12, 5, 8, 1, 4].some(isBiggerThan10); // true
+
+// 实现一个跟includes方法类似的功能
+let arr = [1,2,3];
+function include(value) {
+  return arr.some((element) => {
+    return element === value;
+  })
+}
+include(2) // true
+include(4) // false
+
+let result = [].some(function (element, index, array) {
+  return element > 10;
+})
+
+console.log(result) // 打印 false
+```
+
+**返回值：** 只要数组中的任意一个元素在回调函数中返回的是真值，就返回true，否则为false
+
+<br>
+
+> 5. reduce() 和 reduceRight() 这两个方法使用指定的函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以成为“注入”和“折叠”。reduceRight() 和 reduce() 工作原理是一样的，不同的是reduceRight() 按照数组索引从高到低（从右到左）处理数组，而不是从高到低。
+
+**参数：**
+
+callback 执行数组中每个值的函数，包含四个参数：
+
+1. accumulator 累加器累加回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue（如下所示）。
+2. currentValue数组中正在处理的元素。
+3. currentIndex可选 数组中正在处理的当前元素的索引。 如果提供了initialValue，则索引号为0，否则为索引为1。
+4. array可选 调用reduce的数组
+
+initialValue可选 用作第一个调用 callback的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
+
+**注意：**
+
+1. reduce为数组中的每一个元素依次执行callback函数，不包括数组中被删除或从未被赋值的元素，回调函数第一次执行时，accumulator 和currentValue的取值有两种情况：调用reduce时提供initialValue，accumulator取值为initialValue，currentValue取数组中的第一个值；没有提供 initialValue，accumulator取数组中的第一个值，currentValue取数组中的第二个值。即：如果没有提供initialValue，reduce 会从索引1的地方开始执行 callback 方法，跳过第一个索引。如果提供initialValue，从索引0开始。
+
+2. 如果数组为空且没有提供initialValue，会抛出TypeError 。如果数组仅有一个元素（无论位置如何）并且没有提供initialValue， 或者有提供initialValue但是数组为空，那么此唯一值将被返回**并且callback不会被执行**。
+
+```
+let arr = [1,2,3,4,5];
+let sum = arr.reduce((x,y) => x + y,0);
+console.log(sum) // 15
+
+// 看一下initialValue传和不传的区别
+let arr = [1,2,3,4,5];
+arr.reduce(function (accumulator,currentValue,currentIndex,arr) {
+  console.log(currentIndex)
+  return accumulator + currentValue;
+})
+// 1,2,3,4,5 没传入initialValue，索引是从1开始
+arr.reduce(function (accumulator,currentValue,currentIndex,arr) {
+  console.log(currentIndex)
+  return accumulator + currentValue;
+},10)
+// 0,1,2,3,4,5 传入initialValue，索引从0开始
+
+// 应用到二维数组展开
+let arr = [[0, 1], [2, 3], [4, 5]].reduce(
+  (a, b) => a.concat(b)
+);
+console.log(arr)
+// [0, 1, 2, 3, 4, 5]
+```
+
+**返回值：** 函数累计处理的结果
+
+
+<br>
+
+> 6. indexOf和lastIndexOf 这两个方法，搜索整个数组中具有给定值的元素，返回找到的第一个元素的索引，如果没找到就返回 -1，indexOf() 是从头至尾搜索，而laseIndexOf() 则是从尾到头反向搜索。
+
+**参数：**
+
+searchElement 要查找的元素
+
+fromIndex 开始查找的位置。
+
+1. 在indexOf 中的情况
+
+如果该索引值大于或等于数组长度，意味着不会在数组里查找，返回-1。如果参数中提供的索引值是一个负值，则将其作为数组末尾的一个抵消，即-1表示从最后一个元素开始查找，-2表示从倒数第二个元素开始查找 ，以此类推。 注意：如果参数中提供的索引值是一个负值，并不改变其查找顺序，查找顺序仍然是从前向后查询数组。如果抵消后的索引值仍小于0，则整个数组都将会被查询。其默认值为0. 
+
+2. 在lastIndexOf 中的情况
+
+从此位置开始逆向查找。默认为数组的长度减 1，即整个数组都被查找。如果该值大于或等于数组的长度，则整个数组会被查找。如果为负值，将其视为从数组末尾向前的偏移。即使该值为负，数组仍然会被从后向前查找。如果该值为负时，其绝对值大于数组长度，则方法返回 -1，即数组不会被查找。
+
+**注意：** 这里对于元素是否相等的判断是严格相等，而且也不能识别 `NaN`
+
+```
+let array = [2, 5, 9];
+array.indexOf(2);     // 0
+array.lastIndexOf(2); // 0
+array.indexOf(7);     // -1
+array.lastIndexOf(7); // -1
+array.indexOf(9, 2);  // 2
+array.lastIndexOf(9, 2); // 2
+array.indexOf(2, -1); // -1
+array.lastIndexOf(2, -1); // 0
+array.indexOf(2, -3); // 0
+array.lastIndexOf(2, -3); // 0
+
+```
+
+**返回值：**
+
+indexOf 是首个被找到的元素在数组中的索引位置; 若没有找到则返回 -1
+
+lastIndexOf 是数组中最后一个被找到的元素的索引，如未找到返回-1
 
 
 
