@@ -462,99 +462,6 @@ console.log(num1,num2); // [1, 2, 3] ["a", 2, 3]
 **返回值：** 新的 Array 实例
 
 
-<br>
-
-> 5. indexof() 方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1。
-
-**参数：**
-
-searchElement 要查找的元素
-
-fromIndex （可选）开始查找的位置。
-如果该索引值大于或等于数组长度，意味着不会在数组里查找，返回-1。
-
-如果该索引值是负值，代表相对数组末尾的偏移量，即-1表示从最后一个元素开始查找，-2表示从倒数第二个元素开始查找，**注意的是，这并不改变其查找顺序，查找顺序仍然是从前向后查询数组。**
-
-如果该索引值是负值，其绝对值大于数组长度，则整个数组都将会被查询。其默认值为0。
-
-**注意：** indexOf 使用严格相等（即 ===）比较 searchElement 和数组中的元素。而且indexOf()不能识别 `NaN`
-
-```
-let array = [2, 5, 9];
-array.indexOf(2)     // 0
-array.indexOf(7)     // -1
-array.indexOf(9, 2)  // 2
-array.indexOf(9, 3)  // -1
-array.indexOf(2, -1) // -1
-array.indexOf(2, -3) // 0
-array.indexOf(2, -4) // 0
-```
-
-**返回值：** 首个被找到的元素在数组中的索引位置; 若没有找到则返回 -1
-
-<br>
-
-> 6. lastIndexOf() 跟indexOf()查找方向相反，方法返回指定元素在数组中的最后一个的索引，如果不存在则返回 -1。从数组的后面向前查找，从 fromIndex 处开始
-
-
-**参数：**
-
-searchElement 要查找的元素
-
-fromIndex （可选）开始查找的位置。默认为数组的长度减 1，即整个数组都被查找。
-如果该值大于或等于数组的长度，则整个数组会被查找。
-如果为负值，将其视为从数组末尾向前的偏移。即使该值为负，数组仍然会被从后向前查找。
-如果该值为负时，其绝对值大于数组长度，则方法返回 -1，即数组不会被查找。
-
-**注意：** lastIndexOf 使用严格相等（即 ===）比较 searchElement 和数组中的元素。而且lastIndexOf()不能识别 `NaN`
-
-```
-let array = [2,5,9,2];
-array.lastIndexOf(9) // 2
-array.lastIndexOf('9') // -1 严格相等
-array.lastIndexOf(7) // -1
-array.lastIndexOf(2,4) // 3
-array.lastIndexOf(2,3) // 3
-array.lastIndexOf(2,2) // 0
-array.lastIndexOf(2,-1) // 3
-array.lastIndexOf(2,-2) // 0
-array.lastIndexOf(2,-4) // 0
-array.lastIndexOf(2,-5) // -1
-```
-
-**返回值：** 数组中最后一个元素的索引，如未找到返回-1
-
-
-<br>
-
-> 7. includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。
-
-**includes解决了两个indexOf的问题:**
-
-indexOf方法不能识别NaN
-
-indexOf方法检查是否包含某个值不够语义化，需要判断是否不等于-1，表达不够直观
-
-**参数：**
-
-searchElement 需要查找的元素值。
-
-fromIndex （可选） 从该索引处开始查找 searchElement。默认为 0。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。负值绝对值超过长数组度，从0开始搜索。
-
-如果fromIndex 大于等于数组长度 ，则返回 false 。该数组不会被搜索。
-
-```
-[1, 2, 3].includes(2);     // true
-[1, 2, 3].includes(4);     // false
-[1, 2, 3].includes(3, 3);  // false
-[1, 2, 3].includes(3, -1); // true
-[1, 2, 3].includes(3, -4); // true
-[1, 2, NaN].includes(NaN); // true
-```
-
-**返回值：** 一个布尔值，根据情况，如果包含则返回 true，否则返回false。
-
-
 ### <p style="color: #3f87a6;">3、数组遍历、映射、过滤、检测、简化等方法</p>
 
 介绍方法之前，先对这些数组方法做一个概述：
@@ -900,44 +807,101 @@ console.log(arr)
 
 <br>
 
-> 6. indexOf和lastIndexOf 这两个方法，搜索整个数组中具有给定值的元素，返回找到的第一个元素的索引，如果没找到就返回 -1，indexOf() 是从头至尾搜索，而laseIndexOf() 则是从尾到头反向搜索。
+> 6. indexof() 方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1。
 
 **参数：**
 
 searchElement 要查找的元素
 
-fromIndex 开始查找的位置。
+fromIndex （可选）开始查找的位置。
+如果该索引值大于或等于数组长度，意味着不会在数组里查找，返回-1。
 
-1. 在indexOf 中的情况
+如果该索引值是负值，代表相对数组末尾的偏移量，即-1表示从最后一个元素开始查找，-2表示从倒数第二个元素开始查找，**注意的是，这并不改变其查找顺序，查找顺序仍然是从前向后查询数组。**
 
-如果该索引值大于或等于数组长度，意味着不会在数组里查找，返回-1。如果参数中提供的索引值是一个负值，则将其作为数组末尾的一个抵消，即-1表示从最后一个元素开始查找，-2表示从倒数第二个元素开始查找 ，以此类推。 注意：如果参数中提供的索引值是一个负值，并不改变其查找顺序，查找顺序仍然是从前向后查询数组。如果抵消后的索引值仍小于0，则整个数组都将会被查询。其默认值为0. 
+如果该索引值是负值，其绝对值大于数组长度，则整个数组都将会被查询。其默认值为0。
 
-2. 在lastIndexOf 中的情况
-
-从此位置开始逆向查找。默认为数组的长度减 1，即整个数组都被查找。如果该值大于或等于数组的长度，则整个数组会被查找。如果为负值，将其视为从数组末尾向前的偏移。即使该值为负，数组仍然会被从后向前查找。如果该值为负时，其绝对值大于数组长度，则方法返回 -1，即数组不会被查找。
-
-**注意：** 这里对于元素是否相等的判断是严格相等，而且也不能识别 `NaN`
+**注意：** indexOf 使用严格相等（即 ===）比较 searchElement 和数组中的元素。而且indexOf()不能识别 `NaN`
 
 ```
 let array = [2, 5, 9];
-array.indexOf(2);     // 0
-array.lastIndexOf(2); // 0
-array.indexOf(7);     // -1
-array.lastIndexOf(7); // -1
-array.indexOf(9, 2);  // 2
-array.lastIndexOf(9, 2); // 2
-array.indexOf(2, -1); // -1
-array.lastIndexOf(2, -1); // 0
-array.indexOf(2, -3); // 0
-array.lastIndexOf(2, -3); // 0
-
+array.indexOf(2)     // 0
+array.indexOf(7)     // -1
+array.indexOf(9, 2)  // 2
+array.indexOf(9, 3)  // -1
+array.indexOf(2, -1) // -1
+array.indexOf(2, -3) // 0
+array.indexOf(2, -4) // 0
 ```
 
-**返回值：**
+**返回值：** 首个被找到的元素在数组中的索引位置; 若没有找到则返回 -1
 
-indexOf 是首个被找到的元素在数组中的索引位置; 若没有找到则返回 -1
+<br>
 
-lastIndexOf 是数组中最后一个被找到的元素的索引，如未找到返回-1
+> 7. lastIndexOf() 跟indexOf()查找方向相反，方法返回指定元素在数组中的最后一个的索引，如果不存在则返回 -1。从数组的后面向前查找，从 fromIndex 处开始
+
+
+**参数：**
+
+searchElement 要查找的元素
+
+fromIndex （可选）开始查找的位置。默认为数组的长度减 1，即整个数组都被查找。
+如果该值大于或等于数组的长度，则整个数组会被查找。
+如果为负值，将其视为从数组末尾向前的偏移。即使该值为负，数组仍然会被从后向前查找。
+如果该值为负时，其绝对值大于数组长度，则方法返回 -1，即数组不会被查找。
+
+**注意：** lastIndexOf 使用严格相等（即 ===）比较 searchElement 和数组中的元素。而且lastIndexOf()不能识别 `NaN`
+
+```
+let array = [2,5,9,2];
+array.lastIndexOf(9) // 2
+array.lastIndexOf('9') // -1 严格相等
+array.lastIndexOf(7) // -1
+array.lastIndexOf(2,4) // 3
+array.lastIndexOf(2,3) // 3
+array.lastIndexOf(2,2) // 0
+array.lastIndexOf(2,-1) // 3
+array.lastIndexOf(2,-2) // 0
+array.lastIndexOf(2,-4) // 0
+array.lastIndexOf(2,-5) // -1
+```
+
+**返回值：** 数组中最后一个元素的索引，如未找到返回-1
+
+
+<br>
+
+> 8. includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。
+
+**参数：**
+
+searchElement 需要查找的元素值。
+
+fromIndex （可选） 从该索引处开始查找 searchElement。默认为 0。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。负值绝对值超过长数组度，从0开始搜索。
+
+如果fromIndex 大于等于数组长度 ，则返回 false 。该数组不会被搜索。
+
+**注意：**
+
+includes解决了两个indexOf的问题:
+
+1. indexOf方法不能识别NaN
+2. indexOf方法检查是否包含某个值不够语义化，需要判断是否不等于-1，表达不够直观
+
+```
+[1, 2, 3].includes(2);     // true
+[1, 2, 3].includes(4);     // false
+[1, 2, 3].includes(3, 3);  // false
+[1, 2, 3].includes(3, -1); // true
+[1, 2, 3].includes(3, -4); // true
+[1, 2, NaN].includes(NaN); // true
+```
+
+**返回值：** 一个布尔值，根据情况，如果包含则返回 true，否则返回false。
+
+
+<br>
+
+> 9. find() 和 findIndex() 方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。
 
 
 
