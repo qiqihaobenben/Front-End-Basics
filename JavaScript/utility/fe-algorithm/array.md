@@ -48,13 +48,24 @@ var arr = new Array(1,2,3,"one");
 #### 3、ES6的一些方法
 
 （1）`Array.of()` 返回由所有参数组成的数组，如果没有参数就返回一个新数组
-可以解决上述构造器因参数个数不同，导致的行为有差异的问题(参数只有一个数值时，构造函数会把它当成数组的长度)。
+
+**参数：**
+
+elementN 任意个参数，将按顺序成为返回数组中的元素。
+
+**注意：**
+
+of() 可以解决上述构造器因参数个数不同，导致的行为有差异的问题(参数只有一个数值时，构造函数会把它当成数组的长度)。
+
+
 ```
 let A = Array.of(1,2,3);
 
 let B = new Array(3);   // (3) [empty × 3]
 let C = Array.of(3);    // [3]
 ```
+
+**返回值：** 新的 Array 实例。
 
 （2）`Array.from()`从一个类数组或可迭代对象中创建一个新的数组
 **参数：**
@@ -76,6 +87,19 @@ let arr2 = Array.from(arr);
 arr2[1] = 4;
 console.log(arr1,arr2)
 //[1, 2, 3] [1, 4, 3]
+```
+
+<b style="color:#FF7614;">知识点</b>
+
+```
+//数组合并去重
+function combine(){
+    let arr = [].concat.apply([], arguments);  //没有去重复的新数组，之后用Set数据结构的特性来去重
+    return Array.from(new Set(arr));
+}
+
+var m = [1, 2, 2], n = [2,3,3];
+console.log(combine(m,n));
 ```
 
 ### 数组方法
@@ -460,6 +484,76 @@ console.log(num1,num2); // [1, 2, 3] ["a", 2, 3]
 ```
 
 **返回值：** 新的 Array 实例
+
+
+<br>
+
+> 5. isArray() 用于确定传递的值是否是一个 Array。
+
+**参数：**
+
+obj 需要检测的值。
+
+```
+// 下面的函数调用都返回 true
+Array.isArray([]);
+Array.isArray([1]);
+Array.isArray(new Array());
+// 这里注意：Array.prototype 也是一个数组。[constructor: ƒ, concat: ƒ, find: ƒ, findIndex: ƒ, pop: ƒ, …]
+Array.isArray(Array.prototype);
+
+// 下面的函数调用都返回 false
+Array.isArray();
+Array.isArray({});
+Array.isArray(null);
+Array.isArray(undefined);
+Array.isArray(17);
+Array.isArray('Array');
+Array.isArray(true);
+Array.isArray(false);
+Array.isArray({ __proto__: Array.prototype });
+```
+
+**返回值：** 如果对象是 Array，则为true; 否则为false。
+
+<b style="color:#FF7614;">知识点</b>
+
+```
+//判断数组的历程
+// step one: 使用constructor
+var a = [1];
+console.log(a.constructor === Array) // true
+// 但是原型的contructor属性是可以被改写的，例如在原型继承的时候，我们都是要把继承过来的prototype的constructor改写成我们当前的
+var a = [1];
+a.__proto__.constructor = '1';
+console.log(a.constructor === Array) // false
+
+// step tow : 使用instanceof
+var a = [1];
+console.log(a instanceof Array) // true
+//但是instanceof不能检测iframes的数组
+var iframe = document.createElement('iframe');
+document.body.appendChild(iframe);
+xArray = window.frames[window.frames.length-1].Array;
+var arr = new xArray(1,2,3); // [1,2,3]
+
+arr instanceof Array; // false
+
+// step three :万无一失的Object.prototype.toString.call
+Array.isArray = function(arg) {
+  return Object.prototype.toString.call(arg) === '[object Array]';
+};
+
+// step four : Array.isArray()
+
+var iframe = document.createElement('iframe');
+document.body.appendChild(iframe);
+xArray = window.frames[window.frames.length-1].Array;
+var arr = new xArray(1,2,3); // [1,2,3]
+
+Array.isArray(arr);  // true,可以检测iframes的数组
+
+```
 
 
 ### <p style="color: #3f87a6;">3、数组遍历、映射、过滤、检测、简化等方法</p>
@@ -926,6 +1020,47 @@ thisArg 可选，指定 callback 的 this 参数。
 1. find 方法，当某个元素通过 callback 的测试时，返回数组中的一个值，否则返回 undefined。
 2. findIndex方法，返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。
 
+
+<br>
+
+> 10. keys() 方法返回一个新的Array迭代器，它包含数组中每个索引的键。
+
+
+> 11. values() 方法返回一个新的Array迭代器，它包含数组中每个索引的值。
+
+> 12. @@iterator 属性和 values() 属性的初始值均为同一个函数对象。数组的 iterator 方法，默认情况下与 values() 返回值相同,调用语法是 `arr[Symbol.iterator]()`
+
+> 13. entries() 方法返回一个新的Array迭代器，该对象包含数组中每个索引的键/值对。
+
+**参数：** 都是无。
+
+**返回值：** 都是一个新的 Array 迭代器对象。
+
+```
+for (let key of ['a', 'b'].keys()) {
+  console.log(key);
+}
+// 0
+// 1
+
+for (let value of ['a', 'b'].values()) {
+  console.log(value);
+}
+// 'a'
+// 'b'
+
+for (let value of ['a', 'b'][Symbol.iterator]()) {
+  console.log(value);
+}
+// 'a'
+// 'b'
+
+for (let [key, value] of ['a', 'b'].entries()) {
+  console.log(key, value);
+}
+// 0 "a"
+// 1 "b"
+```
 
 
 ### 扩展几个概念
