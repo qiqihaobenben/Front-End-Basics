@@ -47,7 +47,7 @@ var arr = new Array(1,2,3,"one");
 
 #### 3、ES6的一些方法
 
-（1）`Array.of()` 返回由所有参数组成的数组，如果没有参数就返回一个新数组
+（1）`Array.of()` 返回由所有参数组成的数组，如果没有参数就返回一个新数组 <b style="color:#17E6CA;">ES6新增</b>
 
 **参数：**
 
@@ -67,7 +67,8 @@ let C = Array.of(3);    // [3]
 
 **返回值：** 新的 Array 实例。
 
-（2）`Array.from()`从一个类数组或可迭代对象中创建一个新的数组
+（2）`Array.from()`从一个类数组或可迭代对象中创建一个新的数组 <b style="color:#17E6CA;">ES6新增</b>
+
 **参数：**
 * 第一个参数：想要转换成数组的类数组或可迭代对象
 * 第二个参数（可选）：回调函数，类似数组的map方法，对每个元素进行处理，将处理后的值放入返回的数组。
@@ -75,7 +76,7 @@ let C = Array.of(3);    // [3]
 
 ```
 // 有length属性的类数组
-Array.from({length：5}，(v,i) => i)     //[0, 1, 2, 3, 4]
+Array.from({length：5},(v,i) => i)     //[0, 1, 2, 3, 4]
 
 // 部署了Iterator接口的数据结构 比如:字符串、Set、NodeList对象
 Array.from('hello')    // ['h','e','l','l','o']
@@ -239,7 +240,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 ```
 <br>
 
-> 8. copyWithin() 方法浅复制数组的一部分到同一数组中的另一个位置，并返回它，而不修改其大小。
+> 8. copyWithin() 方法浅复制数组的一部分到同一数组中的另一个位置，并返回它，而不修改其大小。 <b style="color:#17E6CA;">ES6新增</b>
 
 **语法：**
 `arr.copyWithin(target[, start[, end]])`
@@ -285,7 +286,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 ```
 <br>
 
-> 9. fill() 方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。
+> 9. fill() 方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。 <b style="color:#17E6CA;">ES6新增</b>
 
 **语法:**
 `arr.fill(value[, start[, end]])`
@@ -749,6 +750,9 @@ console.log(number, doubles)
 
 **返回值：** 一个新数组，每个元素都是回调函数的结果。
 
+<b style="color:#FF7614;">知识点</b>
+不要用 map 代替 forEach,map 会创建一个新的数组，占用内存。如果你不用 map 的返回值，那你就应当使用 forEach
+
 <br>
 
 > 3. filter() 方法返回的数组元素是调用的数组的一个子集。传入的函数时用来逻辑判定的，该函数返回 true 或 false,如果返回值为true或能转化为true的值，那么传递给判断函数的元素就是这个子集的成员，它将被添加倒一个作为返回值的数组中。
@@ -994,7 +998,7 @@ array.lastIndexOf(2,-5) // -1
 
 <br>
 
-> 8. includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。
+> 8. includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。 <b style="color:#17E6CA;">ES7新增</b>
 
 **参数：**
 
@@ -1025,7 +1029,7 @@ includes解决了两个indexOf的问题:
 
 <br>
 
-> 9. find() 和 findIndex() find 方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。findIndex 方法返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。
+> 9. find() 和 findIndex() find 方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。findIndex 方法返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。<b style="color:#17E6CA;">ES6新增</b>
 
 **参数：** 这两个方法跟其他的方法类似
 
@@ -1050,17 +1054,21 @@ thisArg 可选，指定 callback 的 this 参数。
 1. find 方法，当某个元素通过 callback 的测试时，返回数组中的一个值，否则返回 undefined。
 2. findIndex方法，返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。
 
+<b style="color:#FF7614;">知识点</b>
+不要用 find() 代替 some(),通常混用是这种场景，find 返回第一个符合条件的值，直接拿这个值做 if 判断是否存在，但是这个符合条件的值恰好是 0 怎么办？
+find 是找到数组中的值后对其进一步处理，一般用于对象数组的情况；some 才是检查存在性；两者不可混用。
+
 
 <br>
 
-> 10. keys() 方法返回一个新的Array迭代器，它包含数组中每个索引的键。
+> 10. keys() 方法返回一个新的Array迭代器，它包含数组中每个索引的键。 <b style="color:#17E6CA;">ES6新增</b>
 
 
-> 11. values() 方法返回一个新的Array迭代器，它包含数组中每个索引的值。
+> 11. values() 方法返回一个新的Array迭代器，它包含数组中每个索引的值。 <b style="color:#17E6CA;">ES6新增</b>
 
-> 12. @@iterator 属性和 values() 属性的初始值均为同一个函数对象。数组的 iterator 方法，默认情况下与 values() 返回值相同,调用语法是 `arr[Symbol.iterator]()`
+> 12. @@iterator 属性和 values() 属性的初始值均为同一个函数对象。数组的 iterator 方法，默认情况下与 values() 返回值相同,调用语法是 `arr[Symbol.iterator]()`  <b style="color:#17E6CA;">ES6新增</b>
 
-> 13. entries() 方法返回一个新的Array迭代器，该对象包含数组中每个索引的键/值对。
+> 13. entries() 方法返回一个新的Array迭代器，该对象包含数组中每个索引的键/值对。 <b style="color:#17E6CA;">ES6新增</b>
 
 **参数：** 都是无。
 
@@ -1171,6 +1179,10 @@ JavaScript 数组有很多方法特意定义通用，因此他们不仅应用在
 类数组对象显然没有继承自Array.prototype，所以它们不能直接调用数组方法，不过可以间接地使用Function.call方法调用。
 
 ```
+// 类数组应用通用方法
+let arrayLike = {0: 'name', 1: 'age', 2: 'address', length: 3 }
+Array.prototype.join.call(arrayLike,'*') // "name*age*address"
+
 // 还记得当初获取的DOM元素怎么转化成数组么？
 functon toArray (DOM) {
   return Array.prototype.slice.call(DOM);
@@ -1180,6 +1192,16 @@ functon toArray (DOM) {
 let htmlCollection = document.getElementsByTagName('h2');
 let arr1 = Array.prototype.map.call(htmlCollection,function (ele,index){return ele});
 console.log(Array.isArray(arr1)) // true
+
+// 还有这样
+let arrayLike = {0: 'name', 1: 'age', 2: 'address', length: 3 }
+let arr2  = Array.prototype.concat.apply([],arrayLike);
+console.log(arr) //["name", "age", "address"]
+
+// ES6现在这样
+let arrayLike = {0: 'name', 1: 'age', 2: 'address', length: 3 }
+let arr3 = Array.from(arrayLike);
+console.log(arr3) // ["name", "age", "address"]
 ```
 
 
