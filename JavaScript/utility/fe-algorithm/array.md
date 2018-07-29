@@ -22,10 +22,10 @@ var number = 1;
 var list = [number, number+1, number+2];
 ```
 
-如果省略数组直接量中的某个值，省略的元素将被赋予undefined。
+如果省略数组直接量中的某个值，省略的元素是empty，访问的话会返回undefined。
 ```
 var count = [1,,3];     // 数组打印出来是(3) [1, empty, 3], count[1] === undefined是true。
-var undefs = [,,];      // 数组直接量语法允许有可选的结尾的逗号，顾】[,,]只有两个元素而非三个
+var undefs = [,,];      // 数组直接量语法允许有可选的结尾的逗号，顾[,,]只有两个元素而非三个，undefs.length 是2
 ```
 
 #### 2、构造函数Array()创建数组
@@ -103,6 +103,9 @@ console.log(combine(m,n));
 ```
 
 ### 数组方法
+
+
+![数组方法](../images/array.png)
 
 ### <p style="color: #3f87a6;">1、会改变原数组的方法</p>
 
@@ -526,7 +529,7 @@ obj 需要检测的值。
 Array.isArray([]);
 Array.isArray([1]);
 Array.isArray(new Array());
-// 这里注意：Array.prototype 也是一个数组。[constructor: ƒ, concat: ƒ, find: ƒ, findIndex: ƒ, pop: ƒ, …]
+// 这里注意：Array.prototype 也是一个数组,一个属性值不是索引的数组。[constructor: ƒ, concat: ƒ, find: ƒ, findIndex: ƒ, pop: ƒ, …]
 Array.isArray(Array.prototype);
 
 // 下面的函数调用都返回 false
@@ -1094,13 +1097,90 @@ for (let [key, value] of ['a', 'b'].entries()) {
 
 #### 1、数组的索引和对象key有什么关系？
 
-数组是对象的特殊形式，使用方括号访问数组元素和使用方括号访问对象属性一样。数组的特别之处在于
+数组是对象的特殊形式，使用方括号访问数组元素和使用方括号访问对象属性一样。JavaScript将指定的数字索引值转换成字符串——索引1变成"1"——然后将其作为属性名来使用。数组的特别之处在于，当使用小于2^32的非负整数作为属性名时数组会自动维护其length属性。
+```
+// 索引到属性名的转化
+let arr = [1,2,3];
+console.log(arr[1]) // 2
+console.log(arr["1"]) // 2
+```
+<br>
+
+所有的数组都是对象，可以为其创建任意名字的属性，不过，只有在小于2^32的非负整数才是索引，数组才会根据需要更新length。事实上数组的索引仅仅是对象属性名的一种特殊类型，这意味着JavaScript数组没有“越界”错误的概念。当查询任何对象中不存在的属性时，不会报错，只会得到undefined
+```
+let arr = [];
+arr["a"] = 1;
+console.log(arr,arr.length) // arr是[a:1] length是0
+```
+<br>
+
+对于使用负数或非整数的情况，数值会转换为字符串，字符串作为属性名来用，当时只能当做常规的对象属性，而非数组的索引。
+```
+let arr = [];
+arr[-1.23] = 0;
+console.log(arr,arr.length) // arr是[-1.23: 0] length是0
+```
+<br>
+
+使用非负整数的字符串或者一个跟整数相等的浮点数时，它就当做数组的索引而非对象属性。
+
+```
+let arr = [];
+arr["100"] = 'a';
+console.log(arr,arr.length) // arr 是[empty × 100, "a"]，length 是101
+
+let arr1 = [];
+arr1[1.0000] = 'b';
+console.log(arr1,arr1.length) // arr 是[empty, "b"]，length 是2
+```
 
 #### 2、稀疏数组
+
+> 稀疏数组就是包含从0开始的不连续索引的数组。通常数组的length属性值代表数组中元素的个数。如果数组是稀疏的，length属性值大于元素的个数
+
+足够稀疏的数组通常在实现上比稠密的数组更慢，更耗内存，在这样的数组中查找元素所用的时间就变得跟常规对象的查找时间一样长了，失去了性能的优势。
+
+**注意：** 在数组直接量中省略值时不会创建稀疏数组。省略的元素在数组中是存在的，其值为undefined。这和数组元素根本不存在是有一些微妙的区别的。不过也有例外，在省略数组直接量中的某些值时（例如：[1,,3]），这时所得到的数组也是稀疏数组，省略掉的值是不存在的。
+
+```
+let a1 = [,,]; // 数组直接量，该数组是[empty × 2]
+0 in a1 // false: a1在索引0处没有元素
+
+let a2 = [,2,3];
+0 in a2 // false: // false: a2在索引0处没有元素
+
+let a3 = new Array(3); //[empty × 3],该数组根本没有元素
+0 in a3 // false: a2在索引0处没有元素
+
+let a4 = [undefined];
+0 in a4 // true: a4在索引0处有一个值为undefined的元素
+```
 
 #### 3、类数组对象
 
 > 拥有一个数值length属性和对应非负整数属性的对象看做一种类型的数组
+
+数组跟类数组相比有以下不同：
+1. 当有新元素添加到数组中时，自动更新length属性
+2. 设置length为一个较小值将截断数组
+3. 从Array.prototype中继承了一些方法
+4. 其类属性为'Array'
+
+JavaScript 数组有很多方法特意定义通用，因此他们不仅应用在真正的数组而且在类数组对象上都能正确工作，JavaScript权威指南一书说的是：ES5中所有的方法都是通用的，ES3中除了toString()和toLocaleString()意外所有方法也是通用的。不过concat是一个特例，虽然可以用在类数组对象上，但它没有将那个对象扩充进返回的数组中。
+
+类数组对象显然没有继承自Array.prototype，所以它们不能直接调用数组方法，不过可以间接地使用Function.call方法调用。
+
+```
+// 还记得当初获取的DOM元素怎么转化成数组么？
+functon toArray (DOM) {
+  return Array.prototype.slice.call(DOM);
+}
+
+//对的，这样也可以的
+let htmlCollection = document.getElementsByTagName('h2');
+let arr1 = Array.prototype.map.call(htmlCollection,function (ele,index){return ele});
+console.log(Array.isArray(arr1)) // true
+```
 
 
 
