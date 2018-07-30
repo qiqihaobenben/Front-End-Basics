@@ -65,7 +65,7 @@ let B = new Array(3);   // (3) [empty × 3]
 let C = Array.of(3);    // [3]
 ```
 
-**返回值：** 新的 Array 实例。
+<span style="color: #30A9DE;">**返回值：** 新的 Array 实例。</span>
 
 （2）`Array.from()`从一个类数组或可迭代对象中创建一个新的数组 <b style="color:#17E6CA;">ES6新增</b>
 
@@ -90,10 +90,12 @@ console.log(arr1,arr2)
 //[1, 2, 3] [1, 4, 3]
 ```
 
+<span style="color: #30A9DE;">**返回值：** 新的 Array 实例。</span>
+
 <b style="color:#FF7614;">知识点</b>
 
 ```
-//数组合并去重
+//数组合并去重
 function combine(){
     let arr = [].concat.apply([], arguments);  //没有去重复的新数组，之后用Set数据结构的特性来去重
     return Array.from(new Set(arr));
@@ -119,6 +121,9 @@ let length = arr.push('末尾1','末尾2');     // 返回数组长度
 console.log(arr,length)
 // [1, 2, 3, "末尾1", "末尾2"] 5
 ```
+
+<span style="color: #30A9DE;">**返回值：** 数组的长度</span>
+
 <br>
 
 > 2. pop() 方法删除数组的最后一个元素，减小数组长度并**返回它删除的值**。
@@ -130,6 +135,9 @@ let stack = [];
 stack.push(1,2) // 返回长度2，这时stack的值是[1,2]
 stack.pop()     // 返回删除的值2，这时stack的值是[1]
 ```
+
+<span style="color: #30A9DE;">**返回值：** 从数组中删除的元素(当数组为空时返回undefined)。</span>
+
 <br>
 
 > 3. unshift() 方法在数组的头部添加一个或多个元素，并将已存在的元素移动到更高索引的位置来获得足够的空间，最后**返回数组新的长度**。
@@ -143,6 +151,8 @@ console.log(arr, length)
 ```
 *注意：* 当调用unshift()添加多个参数时，参数时一次性插入的，而非一次一个地插入。就像是上例添加1和2，他们插入到数组中的顺序跟参数列表中的顺序一致，而不是[2,1,3,4,5]。
 
+<span style="color: #30A9DE;">**返回值：** 返回数组新的长度。</span>
+
 <br>
 
 > 4. shift() 方法删除数组的第一个元素并将其返回，然后把所有随后的元素下移一个位置来填补数组头部的空缺，返回值是**删除的元素**
@@ -154,6 +164,8 @@ let item = arr.shift(); // 返回删除的值1
 console.log(arr, item)
 // [2, 3] 1
 ```
+<span style="color: #30A9DE;">**返回值：** 从数组中删除的元素; 如果数组为空则返回undefined 。</span>
+
 <br>
 
 > 5. splice() 方法是在数组中插入或删除元素的通用方法
@@ -172,8 +184,8 @@ deleteCount 可选
 item1, item2, ... 可选
 要添加进数组的元素,从start 位置开始。如果不指定，则 splice() 将只删除数组元素。
 
-**返回值:**
-由被删除的元素组成的一个数组。如果只删除了一个元素，则返回只包含一个元素的数组。如果没有删除元素，则返回空数组。
+<span style="color: #30A9DE;">**返回值：** 由被删除的元素组成的一个数组。如果只删除了一个元素，则返回只包含一个元素的数组。如果没有删除元素，则返回空数组。</span>
+
 ```
 // start不超过数组长度
 let arr = [1,2,3,4,5];
@@ -229,6 +241,8 @@ console.log('Sorted with compareNumbers:'+ numberArray.sort(compareNumbers));
 // Sorted without a compare function: 1,200,40,5
 // Sorted with compareNumbers: 1,5,40,200
 ```
+<span style="color: #30A9DE;">**返回值：** 返回排序后的数组。原数组已经被排序后的数组代替。</span>
+
 <br>
 
 > 7. reverse() 方法将数组中的元素颠倒顺序，返回逆序的数组。
@@ -238,6 +252,8 @@ console.log('Sorted with compareNumbers:'+ numberArray.sort(compareNumbers));
 let arr = [1,2,3];
 arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 ```
+<span style="color: #30A9DE;">**返回值：** 返回顺序颠倒后的数组。原数组已经被排序后的数组代替。</span>
+
 <br>
 
 > 8. copyWithin() 方法浅复制数组的一部分到同一数组中的另一个位置，并返回它，而不修改其大小。 <b style="color:#17E6CA;">ES6新增</b>
@@ -264,7 +280,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 
 如果 end 被忽略，copyWithin 将会复制到 arr.length。
 
-**返回值：** 改变了的数组。
+<span style="color: #30A9DE;">**返回值：** 改变了的数组。</span>
 
 ```
 [1, 2, 3, 4, 5].copyWithin(-2);
@@ -304,7 +320,8 @@ end 可选
 
 如果 start 是个负数, 则开始索引会被自动计算成为 length+start, 其中 length 是 this 对象的 length 属性值. 如果 end 是个负数, 则结束索引会被自动计算成为 length+end。
 
-**返回值：**修改后的数组
+<span style="color: #30A9DE;">**返回值：** 修改后的数组</span>
+
 ```
 [1, 2, 3].fill(4);               // [4, 4, 4]
 [1, 2, 3].fill(4, 1);            // [1, 4, 4]
@@ -347,7 +364,7 @@ slice(1,4) 提取原数组中的第二个元素开始直到第四个元素的所
 
 **如果 end 大于数组长度，slice 也会一直提取到原数组末尾**。
 
-**返回值：** 一个含有提取元素的新数组
+<span style="color: #30A9DE;">**返回值：** 一个含有提取元素的新数组</span>
 
 ```
 let arr = [1,2,3,4,5];
@@ -373,7 +390,7 @@ arr1[1] = "two"; // arr是[1,2,3]，arr1是[1,"tow",3]
 
 > 2. join() 方法将数组（或一个类数组对象）中所有元素都转化为字符串并连接在一起，返回最后生成的字符串。
 
-**参数：**
+**参数：**
 
 separator （可选）
 指定一个字符串来分隔数组的每个元素。
@@ -400,7 +417,7 @@ let num = [{num: 1},2,3];
 let str1 = num.join('-'); // [object Object]-2-3
 ```
 
-**返回值：**
+<span style="color: #30A9DE;">**返回值：** 一个所有数组元素连接的字符串。如果 arr.length 为0，则返回空字符串</span>
 
 <b style="color:#FF7614;">知识点</b>
 
@@ -412,7 +429,7 @@ const flatArr = arr.join().split(','); // ["11", "22", "33", "44", "55", "66"]
 
 <br>
 
-> 2. toString() 方法将数组的每个元素转化为字符串(如有必要将调用元素的toString()方法)并且输出用逗号分割的字符串列表。返回一个字符串表示数组中的元素
+> 3. toString() 方法将数组的每个元素转化为字符串(如有必要将调用元素的toString()方法)并且输出用逗号分割的字符串列表。返回一个字符串表示数组中的元素
 
 **参数：** 无
 
@@ -429,7 +446,7 @@ const flatArr = arr.join().split(','); // ["11", "22", "33", "44", "55", "66"]
 [1,2,3]+'abc'  //1,2,3abc
 ```
 
-**返回值：** 返回一个字符串表示数组中的元素
+<span style="color: #30A9DE;">**返回值：** 返回一个字符串表示数组中的元素</span>
 
 
 <b style="color:#FF7614;">知识点</b>
@@ -442,7 +459,7 @@ const flatArr = arr.toString().split(','); // ["11", "22", "33", "44", "55", "66
 
 <br>
 
-> 3. toLocaleString() 数组中的元素将使用各自的 toLocaleString 方法转成字符串，这些字符串将使用一个特定语言环境的字符串（例如一个逗号 ","）隔开。
+> 4. toLocaleString() 数组中的元素将使用各自的 toLocaleString 方法转成字符串，这些字符串将使用一个特定语言环境的字符串（例如一个逗号 ","）隔开。
 
 **参数：(还有待考证,我试了一下没用，看了一下ECMA的官网，确实是标注有两个可选参数的)**
 
@@ -469,11 +486,11 @@ prices.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }); // "￥7
 [{a:1},1,new Date()].toLocaleString() //"[object Object],1,2018/7/7 下午6:45:00"
 ```
 
-**返回值：** 表示数组元素的字符串。
+<span style="color: #30A9DE;">**返回值：** 表示数组元素的字符串。</span>
 
 <br>
 
-> 4. concat() 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。
+> 5. concat() 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。
 
 它的元素包括调用concat()的原始数组的元素和concat()的每个参数，但是要注意，concat()不会递归扁平化数组的数组，concat()也不会修改调用的数组。
 
@@ -506,7 +523,7 @@ num2[0] = 'a';
 console.log(num1,num2); // [1, 2, 3] ["a", 2, 3]
 ```
 
-**返回值：** 新的 Array 实例
+<span style="color: #30A9DE;">**返回值：** 新的 Array 实例</span>
 
 <b style="color:#FF7614;">知识点</b>
 
@@ -515,7 +532,6 @@ console.log(num1,num2); // [1, 2, 3] ["a", 2, 3]
 const arr = [11, [22, 33], [44, 55], 66];
 const flatArr = [].concat(...arr); // [11, 22, 33, 44, 55, 66]
 ```
-
 
 <br>
 
@@ -545,7 +561,7 @@ Array.isArray(false);
 Array.isArray({ __proto__: Array.prototype });
 ```
 
-**返回值：** 如果对象是 Array，则为true; 否则为false。
+<span style="color: #30A9DE;">**返回值：** 如果对象是 Array，则为true; 否则为false。</span>
 
 <b style="color:#FF7614;">知识点</b>
 
@@ -582,7 +598,7 @@ document.body.appendChild(iframe);
 xArray = window.frames[window.frames.length-1].Array;
 var arr = new xArray(1,2,3); // [1,2,3]
 
-Array.isArray(arr);  // true,可以检测iframes的数组
+Array.isArray(arr);  // true,可以检测iframes的数组
 
 ```
 
@@ -591,7 +607,7 @@ Array.isArray(arr);  // true,可以检测iframes的数组
 
 介绍方法之前，先对这些数组方法做一个概述：
 
-* 首先，大多数方法的第一个参数接收一个函数，并且对数组的每个元素（或一些元素）调用一次该函数。如果是稀疏数组，对不存在的元素不调用该函数。大多数情况下，调用提供的函数使用三个参数：数组元素、元素的索引和数组本身。通常，只需要第一个参数值，可以忽略后两个参数。
+* 首先，大多数方法的第一个参数接收一个函数，并且对数组的每个元素（或一些元素）调用一次该函数。如果是稀疏数组，对不存在的元素不调用该函数。大多数情况下，调用提供的函数使用三个参数：数组元素、元素的索引和数组本身。通常，只需要第一个参数值，可以忽略后两个参数。
 
 * 大多数方法，第二个参数是可选的。如果有第二个参数，则调用的第一个函数参数被看做是第二个参数的方法，即当执行第一个函数参数时用作this的值(参考对象)。
 
@@ -606,7 +622,7 @@ Array.isArray(arr);  // true,可以检测iframes的数组
 
 <br>
 
-> 1. forEach() 方法从头到尾遍历数组，为每个元素调用指定的函数。
+> 1. forEach() 方法从头到尾遍历数组，为每个元素调用指定的函数。
 
 **参数：**
 
@@ -710,18 +726,18 @@ let result = arr.forEach((value) => {
   console.log(value)
 })
 console.log(result) // undefined ，即使中间return vlaue，也还是undefined
-//打印value的值如下，说明return 并不能终止循环
+//打印value的值如下，说明return 并不能终止循环
 // 1
 // 3
 
 ```
 
-**返回值：** undefined
+<span style="color: #30A9DE;">**返回值：** undefined</span>
 
 
 <br>
 
-> 2. map() 方法创建一个新数组，其结果是该数组中的每个元素都调用一个callback函数后返回的结果。
+> 2. map() 方法创建一个新数组，其结果是该数组中的每个元素都调用一个callback函数后返回的结果。
 
 **参数：**(之前说过，大多说方法都会是这样一些参数)
 
@@ -748,14 +764,14 @@ console.log(number, doubles)
 
 ```
 
-**返回值：** 一个新数组，每个元素都是回调函数的结果。
+<span style="color: #30A9DE;">**返回值：**  一个新数组，每个元素都是回调函数的结果</span>
 
 <b style="color:#FF7614;">知识点</b>
 不要用 map 代替 forEach,map 会创建一个新的数组，占用内存。如果你不用 map 的返回值，那你就应当使用 forEach
 
 <br>
 
-> 3. filter() 方法返回的数组元素是调用的数组的一个子集。传入的函数时用来逻辑判定的，该函数返回 true 或 false,如果返回值为true或能转化为true的值，那么传递给判断函数的元素就是这个子集的成员，它将被添加倒一个作为返回值的数组中。
+> 3. filter() 方法返回的数组元素是调用的数组的一个子集。传入的函数时用来逻辑判定的，该函数返回 true 或 false,如果返回值为true或能转化为true的值，那么传递给判断函数的元素就是这个子集的成员，它将被添加倒一个作为返回值的数组中。
 
 **参数：**
 
@@ -791,11 +807,11 @@ console.log(arr,arr1)
 
 ```
 
-**返回值：** 一个新的通过测试的元素的集合的数组，如果没有通过测试则返回空数组。
+<span style="color: #30A9DE;">**返回值：** 一个新的通过测试的元素的集合的数组，如果没有通过测试则返回空数组。</span>
 
 <br>
 
-> 4. every() 方法测试数组的所有元素是否都通过了指定函数的测试。当且仅当针对数组中的所有元素调用判定函数都返回true，它才返回true。
+> 4. every() 方法测试数组的所有元素是否都通过了指定函数的测试。当且仅当针对数组中的所有元素调用判定函数都返回true，它才返回true。
 
 **参数：**
 
@@ -837,11 +853,11 @@ console.log(result) // 打印 true
 
 ```
 
-**返回值：** 一个布尔值，当所有的元素都符合条件才返回true，否则返回false
+<span style="color: #30A9DE;">**返回值：** 一个布尔值，当所有的元素都符合条件才返回true，否则返回false</span>
 
 <br>
 
-> 5. some() 方法测试数组中的某些元素是否通过由提供的函数实现的测试。当数组中至少有一个元素调用判定函数返回true，它就返回true，当且仅当数组中的所有元素调用判定函数都返回false，它才返回false。
+> 5. some() 方法测试数组中的某些元素是否通过由提供的函数实现的测试。当数组中至少有一个元素调用判定函数返回true，它就返回true，当且仅当数组中的所有元素调用判定函数都返回false，它才返回false。
 
 **参数：**
 
@@ -881,11 +897,11 @@ let result = [].some(function (element, index, array) {
 console.log(result) // 打印 false
 ```
 
-**返回值：** 只要数组中的任意一个元素在回调函数中返回的是真值，就返回true，否则为false
+<span style="color: #30A9DE;">**返回值：** 只要数组中的任意一个元素在回调函数中返回的是真值，就返回true，否则为false</span>
 
 <br>
 
-> 5. reduce() 和 reduceRight() 这两个方法使用指定的函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以成为“注入”和“折叠”。reduceRight() 和 reduce() 工作原理是一样的，不同的是reduceRight() 按照数组索引从高到低（从右到左）处理数组，而不是从高到低。
+> 5. reduce() 和 reduceRight() 这两个方法使用指定的函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以成为“注入”和“折叠”。reduceRight() 和 reduce() 工作原理是一样的，不同的是reduceRight() 按照数组索引从高到低（从右到左）处理数组，而不是从高到低。
 
 **参数：**
 
@@ -930,7 +946,7 @@ console.log(arr)
 // [0, 1, 2, 3, 4, 5]
 ```
 
-**返回值：** 函数累计处理的结果
+<span style="color: #30A9DE;">**返回值：** 函数累计处理的结果</span>
 
 
 <br>
@@ -961,7 +977,7 @@ array.indexOf(2, -3) // 0
 array.indexOf(2, -4) // 0
 ```
 
-**返回值：** 首个被找到的元素在数组中的索引位置; 若没有找到则返回 -1
+<span style="color: #30A9DE;">**返回值：** 首个被找到的元素在数组中的索引位置; 若没有找到则返回 -1</span>
 
 <br>
 
@@ -993,8 +1009,7 @@ array.lastIndexOf(2,-4) // 0
 array.lastIndexOf(2,-5) // -1
 ```
 
-**返回值：** 数组中最后一个元素的索引，如未找到返回-1
-
+<span style="color: #30A9DE;">**返回值：** 数组中最后一个符合元素的索引，如未找到返回-1</span>
 
 <br>
 
@@ -1024,8 +1039,7 @@ includes解决了两个indexOf的问题:
 [1, 2, NaN].includes(NaN); // true
 ```
 
-**返回值：** 一个布尔值，根据情况，如果包含则返回 true，否则返回false。
-
+<span style="color: #30A9DE;">**返回值：**  一个布尔值，根据情况，如果包含则返回 true，否则返回false。</span>
 
 <br>
 
@@ -1042,17 +1056,26 @@ thisArg 可选，指定 callback 的 this 参数。
 
 **注意：**
 
-1. 这两个方法对数组中的每一项元素执行一次 callback 函数，直至有一个 callback 返回 true，在稀疏数组中，即使对于数组中不存在的条目的索引也会调用回调函数。这意味着对于稀疏数组来说，该方法的效率要低于那些只遍历有值的索引的方法。
-2. 当找到一个callback判断为true的元素，find方法会立即返回这个元素的值，否则返回 undefined。findIndex会立即返回该元素的索引。如果回调从不返回真值，或者数组的length为0，则findIndex返回-1。
+1. 这两个方法对数组中的每一项元素执行一次 callback 函数，直至有一个 callback 返回 true，在稀疏数组中，即使对于数组中不存在的条目的索引也会调用回调函数。这意味着对于稀疏数组来说，该方法的效率要低于那些只遍历有值的索引的方法。
+2. 当找到一个callback判断为true的元素，find方法会立即返回这个元素的值，否则返回 undefined。findIndex会立即返回该元素的索引。如果回调从不返回真值，或者数组的length为0，则findIndex返回-1。
 3. 这两个方法都不会修改所调用的数组
 
 ```
-
+// find
+let a = [1, 4, -5, 10].find((n) => n < 0); // 返回元素-5
+let b = [1, 4, -5, 10,NaN].find((n) => Object.is(NaN, n));  // 返回元素NaN
+// findIndex
+let a = [1, 4, -5, 10].findIndex((n) => n < 0); // 返回索引2
+let b = [1, 4, -5, 10,NaN].findIndex((n) => isNaN(n));  // 返回索引4
 ```
 
-**返回值：**
+<span style="color: #30A9DE;">
+**返回值：**  
+
 1. find 方法，当某个元素通过 callback 的测试时，返回数组中的一个值，否则返回 undefined。
 2. findIndex方法，返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。
+
+</span>
 
 <b style="color:#FF7614;">知识点</b>
 不要用 find() 代替 some(),通常混用是这种场景，find 返回第一个符合条件的值，直接拿这个值做 if 判断是否存在，但是这个符合条件的值恰好是 0 怎么办？
@@ -1072,7 +1095,7 @@ find 是找到数组中的值后对其进一步处理，一般用于对象数组
 
 **参数：** 都是无。
 
-**返回值：** 都是一个新的 Array 迭代器对象。
+<span style="color: #30A9DE;">都是一个新的 Array 迭代器对象。</span>
 
 ```
 for (let key of ['a', 'b'].keys()) {
