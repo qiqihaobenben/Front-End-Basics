@@ -1279,6 +1279,14 @@ view[0] = 100;
 console.log(view)// [100,0],一个八个字节，Int32Array一个元素大小是4个字节，所以只能放下两个元素
 ```
 
+### 参考和链接
+
+1. 《JavaScript权威指南》数组部分
+2. [详解JS遍历](http://louiszhai.github.io/2015/12/18/traverse/)
+3. [给初学者：JavaScript 中数组操作注意点](https://segmentfault.com/a/1190000012463583)
+4. [一次掌握 JavaScript ES5 到 ES8 数组内容](https://hufangyun.com/2017/array-learn/)
+5. [【干货】js 数组详细操作方法及解析合集](https://juejin.im/post/5b0903b26fb9a07a9d70c7e0)
+
 
 
 
