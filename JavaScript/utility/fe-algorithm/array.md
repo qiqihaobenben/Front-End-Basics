@@ -1204,6 +1204,59 @@ let arr3 = Array.from(arrayLike);
 console.log(arr3) // ["name", "age", "address"]
 ```
 
+#### 4、 JavaScript数组的进化——类型化数组的引入
+
+先说一下普遍意义上的Array,数组是一串 **连续** 的内存位置，用来保存某些值。JavaScript 中的数组是哈希映射，可以使用不同的数据结构来实现，如链表,上一个元素包含下一个元素的引用。这样其他语言中数组的取值是根据内存位置进行数学计算就能找到，而在JavaScript中就需要遍历链表之类的结构，数组越长，遍历链表跟数据计算相比就越慢。
+
+现代 JavaScript 引擎是会给数组分配连续内存的 —— 如果数组是同质的（所有元素类型相同）。所以在写代码时保证数组同质，以便 JIT（即时编译器）能够使用 c 编译器式的计算方法读取元素是一种优雅的方式。
+
+不过，一旦你想要在某个同质数组中插入一个其他类型的元素，JIT 将解构整个数组，并按照旧有的方式重新创建。
+
+ES6 增加了 ArrayBuffer， 提供一块连续内存供我们随意操作。然而，直接操作内存还是太复杂、偏底层。于是便有了处理 ArrayBuffer 的视图（View）。
+
+`ArrayBuffer` 对象用来表示通用的、固定长度的原始二进制数据缓冲区。ArrayBuffer 不能直接操作，而是要通过类型数组对象或 DataView 对象来操作，它们会将缓冲区中的数据表示为特定的格式，并通过这些格式来读写缓冲区的内容。
+```
+语法: new ArrayBuffer(length)
+
+参数
+length:要创建的 ArrayBuffer 的大小，单位为字节。
+
+返回值:一个指定大小的 ArrayBuffer 对象，其内容被初始化为 0。
+
+异常:如果 length 大于 Number.MAX_SAFE_INTEGER（>= 2 ** 53）或为负数，则抛出一个  RangeError  异常。
+```
+
+`类型数组对象` 一个TypedArray 对象描述一个底层的二进制数据缓存区的一个类似数组(array-like)视图。事实上，没有名为 TypedArray的全局对象，也没有一个名为的 TypedArray构造函数。相反，有许多不同的全局对象，下面会列出这些针对特定元素类型的类型化数组的构造函数。
+
+```
+new TypedArray(); // ES2017中新增
+new TypedArray(length);
+new TypedArray(typedArray);
+new TypedArray(object);
+new TypedArray(buffer [, byteOffset [, length]]);
+
+TypedArray()指的是以下的其中之一：
+
+Int8Array();//8位二进制带符号整数 -2^7~(2^7) - 1,大小1个字节
+Uint8Array();//8位无符号整数 0~(2^8) - 1,大小1个字节
+Int16Array();//16位二进制带符号整数 -2^15~(2^15)-1,大小2个字节
+Uint16Array();//16位无符号整数 0~(2^16) - 1,大小2个字节
+Int32Array();//	32位二进制带符号整数 -2^31~(2^31)-1,大小4个字节
+Uint32Array();//32位无符号整数 0~(2^32) - 1,大小4个字节
+Float32Array();//32位IEEE浮点数,大小4个字节
+Float64Array(); //64位IEEE浮点数,大小8个字节
+```
+
+应用：
+
+```
+var buffer = new ArrayBuffer(8);
+var view   = new Int32Array(buffer);
+view[0] = 100;
+console.log(view)// [100,0],一个八个字节，Int32Array一个元素大小是4个字节，所以只能放下两个元素
+```
+
+
 
 
 
