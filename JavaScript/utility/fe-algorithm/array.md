@@ -67,6 +67,8 @@ let C = Array.of(3);    // [3]
 
 <span style="color: #30A9DE;">**返回值：** 新的 Array 实例。</span>
 
+<br>
+
 （2）`Array.from()`从一个类数组或可迭代对象中创建一个新的数组 <b style="color:#17E6CA;">ES6新增</b>
 
 **参数：**
@@ -105,7 +107,9 @@ var m = [1, 2, 2], n = [2,3,3];
 console.log(combine(m,n));
 ```
 
-### 数组方法
+<br>
+
+## 数组方法
 
 
 ![数组方法](../images/array.png)
@@ -174,14 +178,18 @@ console.log(arr, item)
 `array.splice(start[, deleteCount[, item1[, item2[, ...]]]])`
 
 **参数：**
-start​
+
+`start`​ 
+
 指定修改的开始位置（从0计数）。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数）；若只使用start参数而不使用deleteCount、item，如：array.splice(start) ，表示删除[start，end]的元素。
 
-deleteCount 可选
-整数，表示要移除的数组元素的个数。如果 deleteCount 是 0，则不移除元素。这种情况下，至少应添加一个新元素。如果 deleteCount 大于start 之后的元素的总数，则从 start 后面的元素都将被删除（含第 start 位）。
+`deleteCount` (可选)
+
+ 整数，表示要移除的数组元素的个数。如果 deleteCount 是 0，则不移除元素。这种情况下，至少应添加一个新元素。如果 deleteCount 大于start 之后的元素的总数，则从 start 后面的元素都将被删除（含第 start 位）。
 如果deleteCount被省略，则其相当于(arr.length - start)。
 
-item1, item2, ... 可选
+`item1, item2, ...` (可选) 
+
 要添加进数组的元素,从start 位置开始。如果不指定，则 splice() 将只删除数组元素。
 
 <span style="color: #30A9DE;">**返回值：** 由被删除的元素组成的一个数组。如果只删除了一个元素，则返回只包含一个元素的数组。如果没有删除元素，则返回空数组。</span>
@@ -209,7 +217,7 @@ arr.splice(1,0,[2,3])   // arr是[1,[2,3],4,5]，返回值是[]
 ```
 <br>
 
-> 6. sort() 方法将数组中的元素排序并**返回排序后的数组**
+> 6. sort() 方法将数组中的元素排序并**返回排序后的数组**
 
 参数：compareFunction
 可选。用来指定按某种顺序进行排列的函数。如果省略，元素按照转换为的字符串的各个字符的Unicode位点进行排序。
@@ -262,6 +270,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 `arr.copyWithin(target[, start[, end]])`
 
 **参数：**
+
 `target`
 
 0 为基底的索引，复制序列到该位置。如果是负数，target 将从末尾开始计算。
@@ -309,14 +318,11 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 
 **参数：**
 
-value
-用来填充数组元素的值。
+`value` 用来填充数组元素的值。
 
-start 可选
-起始索引，默认值为0。
+`start` (可选) 起始索引，默认值为0。
 
-end 可选
-终止索引，默认值为 this.length
+`end` (可选) 终止索引，默认值为 this.length
 
 如果 start 是个负数, 则开始索引会被自动计算成为 length+start, 其中 length 是 this 对象的 length 属性值. 如果 end 是个负数, 则结束索引会被自动计算成为 length+end。
 
@@ -337,13 +343,15 @@ Array(3).fill(4);                // [4, 4, 4]
 [].fill.call({ length: 3 }, 4);  // {0: 4, 1: 4, 2: 4, length: 3}
 ```
 
+<br>
+
 ### <p style="color: #3f87a6;">2、不改变原数组的方法</p>
 
 > 1. slice() 方法返回一个从开始到结束（不包括结束）选择的数组的一部分**浅拷贝**到一个新数组对象。且原始数组不会被修改。
 
 **参数：**
 
-begin 可选
+`begin` (可选)
 
 从该索引处开始提取原数组中的元素（从0开始）。
 
@@ -351,7 +359,7 @@ begin 可选
 
 如果省略 begin，则 slice 从索引 0 开始。
 
-end 可选
+`end` (可选)
 
 在该索引处结束提取原数组元素（从0开始）。
 
@@ -386,13 +394,14 @@ arr1[1] = "two"; // arr是[1,2,3]，arr1是[1,"tow",3]
 
 // 当然，如果向两个数组任一中添加了新元素（简单或者引用类型），则另一个不会受到影响。
 ```
+
 <br>
 
 > 2. join() 方法将数组（或一个类数组对象）中所有元素都转化为字符串并连接在一起，返回最后生成的字符串。
 
 **参数：**
 
-separator （可选）
+`separator` （可选）
 指定一个字符串来分隔数组的每个元素。
 如果有(separator)，将分隔符转换为字符串。
 如果省略()，数组元素用逗号分隔。默认为 ","。
@@ -438,7 +447,7 @@ const flatArr = arr.join().split(','); // ["11", "22", "33", "44", "55", "66"]
 [1,[2,'c']].toString(); //1,2,c
 // 以上与不使用任何参数调用join()方法返回的字符串是一样的。
 
-// 以下的这个例子要跟下面的toLocaleString对照看
+// 以下的这个例子要跟下面的toLocaleString对照看
 [{a:1},1,new Date()].toString() //"[object Object],1,Sat Jul 07 2018 18:43:45 GMT+0800 (中国标准时间)"
 ```
 **注意：** 当数组和字符串操作的时候，js 会调用这个方法将数组自动转换成字符串
@@ -463,9 +472,9 @@ const flatArr = arr.toString().split(','); // ["11", "22", "33", "44", "55", "66
 
 **参数：(还有待考证,我试了一下没用，看了一下ECMA的官网，确实是标注有两个可选参数的)**
 
-locales （可选） 带有BCP 47语言标记的字符串或字符串数组
+`locales` （可选） 带有BCP 47语言标记的字符串或字符串数组
 
-options （可选） 一个可配置属性的对象
+`options` （可选） 一个可配置属性的对象
 
 ```
 //数组中的元素将会使用各自的 toLocaleString 方法：
@@ -496,7 +505,7 @@ prices.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }); // "￥7
 
 **参数：**
 
-valueN （可选） 将(多个)数组和/或值连接成新数组。
+`valueN` （可选） 将(多个)数组和/或值连接成新数组。
 
 ```
 [1,2,3].concat([4,5,6],[7,8,9]) // [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -535,11 +544,11 @@ const flatArr = [].concat(...arr); // [11, 22, 33, 44, 55, 66]
 
 <br>
 
-> 5. isArray() 用于确定传递的值是否是一个 Array。
+> 6. isArray() 用于确定传递的值是否是一个 Array。
 
 **参数：**
 
-obj 需要检测的值。
+`obj` 需要检测的值。
 
 ```
 // 下面的函数调用都返回 true
@@ -578,7 +587,7 @@ console.log(a.constructor === Array) // false
 // step tow : 使用instanceof
 var a = [1];
 console.log(a instanceof Array) // true
-//但是instanceof不能检测iframes的数组
+//但是instanceof不能检测iframes的数组
 var iframe = document.createElement('iframe');
 document.body.appendChild(iframe);
 xArray = window.frames[window.frames.length-1].Array;
@@ -598,10 +607,11 @@ document.body.appendChild(iframe);
 xArray = window.frames[window.frames.length-1].Array;
 var arr = new xArray(1,2,3); // [1,2,3]
 
-Array.isArray(arr);  // true,可以检测iframes的数组
+Array.isArray(arr);  // true,也可以检测iframes的数组
 
 ```
 
+<br>
 
 ### <p style="color: #3f87a6;">3、数组遍历、映射、过滤、检测、简化等方法</p>
 
@@ -626,20 +636,17 @@ Array.isArray(arr);  // true,可以检测iframes的数组
 
 **参数：**
 
-callback 为数组中每个元素执行的函数，该函数接收三个参数：
+`callback` 为数组中每个元素执行的函数，该函数接收三个参数：
 
-currentValue(当前值) 数组中正在处理的当前元素。
+1. `currentValue(当前值)` 数组中正在处理的当前元素。
+2. `index(索引)` 数组中正在处理的当前元素的索引。
+3. `array` forEach()方法正在操作的数组。
 
-index(索引) 数组中正在处理的当前元素的索引。
-
-array forEach()方法正在操作的数组。
-
-<br>
-thisArg （可选） 当执行回调函数时用作this的值(参考对象)。默认值为undefined
+`thisArg` （可选） 当执行回调函数时用作this的值(参考对象)。默认值为undefined
 
 
 **注意：**
-1. forEach无法中途退出循环，只能用return退出本次回调，进行下一次回调，如果要提前终止，可以把forEach方法放在try块中，并能抛出一个异常，但这种方法是不推荐的。
+1. forEach无法中途退出循环，只能用return退出本次回调，进行下一次回调，如果要提前终止，可以把forEach方法放在try块中，并能抛出一个异常，但这种方法是不推荐的。
 2. 它与之后会说到的几个方法不同，总是返回 undefined值,即使你return了一个值。
 
 ```
@@ -650,8 +657,8 @@ numberArr.forEach(function (value,index,array) {
 })
 //打印信息如下，可见空元素是不会遍历的
 //1 0 [1, 2, empty, 3]
-//3 2 1 [1, 2, empty, 3]
-//3 3 3 [1, 2, empty, 3]
+//2 1 [1, 2, empty, 3]
+//3 3 [1, 2, empty, 3]
 
 let nullArr = [1,2,null,3];
 nullArr.forEach(function (value,index,array) {
@@ -741,16 +748,13 @@ console.log(result) // undefined ，即使中间return vlaue，也还是undefin
 
 **参数：**(之前说过，大多说方法都会是这样一些参数)
 
-callback 生成新数组元素的函数，使用三个参数：这个函数跟forEach()的函数不同的是，传递给map()的函数应该有返回值。
+`callback` 生成新数组元素的函数，使用三个参数：这个函数跟forEach()的函数不同的是，传递给map()的函数应该有返回值。
 
-currentValue callback 的第一个参数，数组中正在处理的当前元素。
+1. `currentValue` callback 的第一个参数，数组中正在处理的当前元素。
+2. `index` callback 的第二个参数，数组中正在处理的当前元素的索引。
+3. `array` callback 的第三个参数，map 方法被调用的数组。
 
-index callback 的第二个参数，数组中正在处理的当前元素的索引。
-
-array callback 的第三个参数，map 方法被调用的数组。
-
-<br>
-thisArg 可选的。执行 callback 函数时 使用的this 值。
+`thisArg` (可选) 执行 callback 函数时 使用的this 值。
 
 **注意：** map() 返回的是新数组，它不修改调用的数组。如果是稀疏数组，返回的也是相同方式的稀疏数组：它具有相同的长度，相同索引的缺失元素(因为空值不会调用函数)
 
@@ -775,16 +779,13 @@ console.log(number, doubles)
 
 **参数：**
 
-callback 用来测试数组的每个元素的函数。调用时使用参数 (element, index, array)。返回true表示保留该元素（通过测试），false则不保留。它接受三个参数：
+`callback` 用来测试数组的每个元素的函数。调用时使用参数 (element, index, array)。返回true表示保留该元素（通过测试），false则不保留。它接受三个参数：
 
-element 当前在数组中处理的元素
+1. `element` 当前在数组中处理的元素
+2. `index`（可选） 正在处理元素在数组中的索引
+3. `array`（可选）调用了filter筛选器的数组
 
-index（可选） 正在处理元素在数组中的索引
-
-array（可选）调用了filter筛选器的数组
-
-<br>
-thisArg（可选）可选。执行 callback 时的用于 this 的值。
+`thisArg`（可选）可选。执行 callback 时的用于 this 的值。
 
 **注意：**
 1. callback 只会在已经赋值的索引上被调用，对于那些已经被删除或者从未被赋值的索引不会被调用。也就是说filter()会跳过稀疏数组中缺少的元素，它的返回数组总是稠密的，可以用这个方法压缩稀疏数组的空缺。
@@ -815,9 +816,9 @@ console.log(arr,arr1)
 
 **参数：**
 
-callback  用来测试每个元素的函数。
+`callback`  用来测试每个元素的函数。
 
-thisArg  执行 callback 时使用的 this 值。
+`thisArg`  执行 callback 时使用的 this 值。
 
 **注意：**
 
@@ -833,7 +834,7 @@ let result = arr.every(function (element, index, array) {
   return element > 10;
 })
 console.log(result,num) // 打印 false 3
-// 可见发现5这个小于10的元素后，遍历立即终止，num为3
+// 可见发现5这个小于10的元素后，遍历立即终止，num为3
 
 let arr = [12,34,,23,44];
 let num = 0;
@@ -861,15 +862,15 @@ console.log(result) // 打印 true
 
 **参数：**
 
-callback 用来测试每个元素的函数
+`callback` 用来测试每个元素的函数
 
-thisArg 可选 执行 callback 时使用的 this 值。
+`thisArg` 可选 执行 callback 时使用的 this 值。
 
 **注意：**
 
 1. some 为数组中的每一个元素执行一次 callback 函数，直到找到一个使得 callback 返回一个“真值”，这时，some 将会立即返回 true。否则，some 返回 false。callback 只会在那些”有值“的索引上被调用，不会在那些被删除或从来未被赋值的索引上调用。
 2. some 被调用时不会改变数组。
-3. 空数组调用some，返回false
+3. 空数组调用some，返回false
 
 ```
 // 一个简单的例子说明
@@ -905,14 +906,14 @@ console.log(result) // 打印 false
 
 **参数：**
 
-callback 执行数组中每个值的函数，包含四个参数：
+`callback` 执行数组中每个值的函数，包含四个参数：
 
-1. accumulator 累加器累加回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue（如下所示）。
-2. currentValue数组中正在处理的元素。
-3. currentIndex可选 数组中正在处理的当前元素的索引。 如果提供了initialValue，则索引号为0，否则为索引为1。
-4. array可选 调用reduce的数组
+1. `accumulator` 累加器累加回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue（如下所示）。
+2. `currentValue` 数组中正在处理的元素。
+3. `currentIndex` (可选) 数组中正在处理的当前元素的索引。 如果提供了initialValue，则索引号为0，否则为索引为1。
+4. `array` (可选) 调用reduce的数组
 
-initialValue可选 用作第一个调用 callback的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
+`initialValue` (可选) 用作第一个调用 callback的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
 
 **注意：**
 
@@ -955,9 +956,9 @@ console.log(arr)
 
 **参数：**
 
-searchElement 要查找的元素
+`searchElement` 要查找的元素
 
-fromIndex （可选）开始查找的位置。
+`fromIndex` （可选）开始查找的位置。
 如果该索引值大于或等于数组长度，意味着不会在数组里查找，返回-1。
 
 如果该索引值是负值，代表相对数组末尾的偏移量，即-1表示从最后一个元素开始查找，-2表示从倒数第二个元素开始查找，**注意的是，这并不改变其查找顺序，查找顺序仍然是从前向后查询数组。**
@@ -975,6 +976,9 @@ array.indexOf(9, 3)  // -1
 array.indexOf(2, -1) // -1
 array.indexOf(2, -3) // 0
 array.indexOf(2, -4) // 0
+
+let array1 = [1,2,NaN];
+array1.indexOf(NaN) // -1
 ```
 
 <span style="color: #30A9DE;">**返回值：** 首个被找到的元素在数组中的索引位置; 若没有找到则返回 -1</span>
@@ -1017,9 +1021,9 @@ array.lastIndexOf(2,-5) // -1
 
 **参数：**
 
-searchElement 需要查找的元素值。
+`searchElement` 需要查找的元素值。
 
-fromIndex （可选） 从该索引处开始查找 searchElement。默认为 0。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。负值绝对值超过长数组度，从0开始搜索。
+`fromIndex` （可选） 从该索引处开始查找 searchElement。默认为 0。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。负值绝对值超过长数组度，从0开始搜索。
 
 如果fromIndex 大于等于数组长度 ，则返回 false 。该数组不会被搜索。
 
@@ -1047,16 +1051,16 @@ includes解决了两个indexOf的问题:
 
 **参数：** 这两个方法跟其他的方法类似
 
-callback 在数组每一项上执行的函数，接收 3 个参数：
-1. element 当前遍历到的元素。
-2. index 当前遍历到的索引。
-3. array 数组本身。
+`callback` 在数组每一项上执行的函数，接收 3 个参数：
+1. `element` 当前遍历到的元素。
+2. `index` 当前遍历到的索引。
+3. `array` 数组本身。
 
-thisArg 可选，指定 callback 的 this 参数。
+`thisArg` 可选，指定 callback 的 this 参数。
 
 **注意：**
 
-1. 这两个方法对数组中的每一项元素执行一次 callback 函数，直至有一个 callback 返回 true，在稀疏数组中，即使对于数组中不存在的条目的索引也会调用回调函数。这意味着对于稀疏数组来说，该方法的效率要低于那些只遍历有值的索引的方法。
+1. 这两个方法对数组中的每一项元素执行一次 callback 函数，直至有一个 callback 返回 true。**在稀疏数组中，即使对于数组中不存在的条目的索引也会调用回调函数。** 这意味着对于稀疏数组来说，该方法的效率要低于那些只遍历有值的索引的方法。
 2. 当找到一个callback判断为true的元素，find方法会立即返回这个元素的值，否则返回 undefined。findIndex会立即返回该元素的索引。如果回调从不返回真值，或者数组的length为0，则findIndex返回-1。
 3. 这两个方法都不会修改所调用的数组
 
@@ -1067,6 +1071,14 @@ let b = [1, 4, -5, 10,NaN].find((n) => Object.is(NaN, n));  // 返回元素NaN
 // findIndex
 let a = [1, 4, -5, 10].findIndex((n) => n < 0); // 返回索引2
 let b = [1, 4, -5, 10,NaN].findIndex((n) => isNaN(n));  // 返回索引4
+
+// 稀疏数组
+let a =[1,,3,4];
+let index = 0;
+a.find((n) => {
+  console.log(index++) //0,1,2 第二次是empty也会调用一次，而且返回为true，立即退出 
+  return n === 3;
+})
 ```
 
 <span style="color: #30A9DE;">
@@ -1123,12 +1135,13 @@ for (let [key, value] of ['a', 'b'].entries()) {
 // 1 "b"
 ```
 
+<br>
 
-### 扩展几个概念
+## 扩展几个概念
 
 #### 1、数组的索引和对象key有什么关系？
 
-数组是对象的特殊形式，使用方括号访问数组元素和使用方括号访问对象属性一样。JavaScript将指定的数字索引值转换成字符串——索引1变成"1"——然后将其作为属性名来使用。数组的特别之处在于，当使用小于2^32的非负整数作为属性名时数组会自动维护其length属性。
+数组是对象的特殊形式，使用方括号访问数组元素和使用方括号访问对象属性一样。JavaScript将指定的数字索引值转换成字符串——索引1变成"1"——然后将其作为属性名来使用。数组的特别之处在于，当使用小于2^32的非负整数作为属性名时数组会自动维护其length属性。
 ```
 // 索引到属性名的转化
 let arr = [1,2,3];
@@ -1145,7 +1158,7 @@ console.log(arr,arr.length) // arr是[a:1] length是0
 ```
 <br>
 
-对于使用负数或非整数的情况，数值会转换为字符串，字符串作为属性名来用，当时只能当做常规的对象属性，而非数组的索引。
+对于使用负数或非整数的情况，数值会转换为字符串，字符串作为属性名来用，当时只能当做常规的对象属性，而非数组的索引。
 ```
 let arr = [];
 arr[-1.23] = 0;
@@ -1153,7 +1166,7 @@ console.log(arr,arr.length) // arr是[-1.23: 0] length是0
 ```
 <br>
 
-使用非负整数的字符串或者一个跟整数相等的浮点数时，它就当做数组的索引而非对象属性。
+使用非负整数的字符串或者一个跟整数相等的浮点数时，它就当做数组的索引而非对象属性。
 
 ```
 let arr = [];
@@ -1169,7 +1182,7 @@ console.log(arr1,arr1.length) // arr 是[empty, "b"]，length 是2
 
 > 稀疏数组就是包含从0开始的不连续索引的数组。通常数组的length属性值代表数组中元素的个数。如果数组是稀疏的，length属性值大于元素的个数
 
-足够稀疏的数组通常在实现上比稠密的数组更慢，更耗内存，在这样的数组中查找元素所用的时间就变得跟常规对象的查找时间一样长了，失去了性能的优势。
+足够稀疏的数组通常在实现上比稠密的数组更慢，更耗内存，在这样的数组中查找元素所用的时间就变得跟常规对象的查找时间一样长了，失去了性能的优势。
 
 **注意：** 在数组直接量中省略值时不会创建稀疏数组。省略的元素在数组中是存在的，其值为undefined。这和数组元素根本不存在是有一些微妙的区别的。不过也有例外，在省略数组直接量中的某些值时（例如：[1,,3]），这时所得到的数组也是稀疏数组，省略掉的值是不存在的。
 
@@ -1206,12 +1219,12 @@ JavaScript 数组有很多方法特意定义通用，因此他们不仅应用在
 let arrayLike = {0: 'name', 1: 'age', 2: 'address', length: 3 }
 Array.prototype.join.call(arrayLike,'*') // "name*age*address"
 
-// 还记得当初获取的DOM元素怎么转化成数组么？
+// 还记得当初获取的DOM元素怎么转化成数组么？
 functon toArray (DOM) {
   return Array.prototype.slice.call(DOM);
 }
 
-//对的，这样也可以的
+//对的，这样也可以的
 let htmlCollection = document.getElementsByTagName('h2');
 let arr1 = Array.prototype.map.call(htmlCollection,function (ele,index){return ele});
 console.log(Array.isArray(arr1)) // true
@@ -1229,7 +1242,7 @@ console.log(arr3) // ["name", "age", "address"]
 
 #### 4、 JavaScript数组的进化——类型化数组的引入
 
-先说一下普遍意义上的Array,数组是一串 **连续** 的内存位置，用来保存某些值。JavaScript 中的数组是哈希映射，可以使用不同的数据结构来实现，如链表,上一个元素包含下一个元素的引用。这样其他语言中数组的取值是根据内存位置进行数学计算就能找到，而在JavaScript中就需要遍历链表之类的结构，数组越长，遍历链表跟数据计算相比就越慢。
+先说一下普遍意义上的Array,数组是一串 **连续** 的内存位置，用来保存某些值。JavaScript 中的数组是哈希映射，可以使用不同的数据结构来实现，如链表,上一个元素包含下一个元素的引用。这样其他语言中数组的取值是根据内存位置进行数学计算就能找到，而在JavaScript中就需要遍历链表之类的结构，数组越长，遍历链表跟数据计算相比就越慢。
 
 现代 JavaScript 引擎是会给数组分配连续内存的 —— 如果数组是同质的（所有元素类型相同）。所以在写代码时保证数组同质，以便 JIT（即时编译器）能够使用 c 编译器式的计算方法读取元素是一种优雅的方式。
 
