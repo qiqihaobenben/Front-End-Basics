@@ -2,14 +2,14 @@
 
 > 数组是值的有序集合，每个值叫做一个元素，而每个元素在数组中有一个位置，以数字表示，称为索引。
 
-* JavaScript数组的索引是基于零的32位数值，第一个元素索引为0，数组最大能容纳4294967295个元素。
+* JavaScript数组的索引是基于零的32位数值，第一个元素索引为0，数组最大能容纳4294967295（即2^32-1）个元素。
 * JavaScript数组是动态的，根据需要它们会增长或缩减，并且在创建数组时无需声明一个固定的大小或者在数组大小变化时无需重新分配空间。
-* JavaScript数组可能是稀疏的，数组元素的索引不一定要连续的，它们之间可以由空缺。
+* JavaScript数组可能是稀疏的，数组元素的索引不一定要连续的，它们之间可以有空缺。
 * 每个JavaScript数组都有一个length属性，针对非稀疏数组，该属性就是数组元素的个数。针对稀疏数组，length比所有元素的索引都要大。
 
-### 创建数组
+## 创建数组
 
-#### 1、最简单的方法是使用数组直接量(字面量)创建数组。
+### 1、最简单的方法是使用数组直接量(字面量)创建数组。
 
 ```
 var empty = [];     //没有元素的数组
@@ -25,10 +25,10 @@ var list = [number, number+1, number+2];
 如果省略数组直接量中的某个值，省略的元素是empty，访问的话会返回undefined。
 ```
 var count = [1,,3];     // 数组打印出来是(3) [1, empty, 3], count[1] === undefined是true。
-var undefs = [,,];      // 数组直接量语法允许有可选的结尾的逗号，顾[,,]只有两个元素而非三个，undefs.length 是2
+var undefs = [,,];      // 数组直接量语法允许有可选的结尾的逗号，顾[,,]只有两个元素而非三个，undefs.length 是 2
 ```
 
-#### 2、构造函数Array()创建数组
+### 2、构造函数Array()创建数组
 
 调用时没有参数，等同于[]，创建一个没有任何元素的空数组
 ```
@@ -45,9 +45,9 @@ var arr = new Array(10)     // (10) [empty × 10]
 var arr = new Array(1,2,3,"one");
 ```
 
-#### 3、ES6的一些方法
+### 3、ES6的一些方法
 
-（1）`Array.of()` 返回由所有参数组成的数组，如果没有参数就返回一个新数组 <b style="color:#17E6CA;">ES6新增</b>
+（1）`Array.of()` 返回由所有参数组成的数组，不考虑参数的数量或类型，如果没有参数就返回一个空数组 <b style="color:#17E6CA;">(ES6新增)</b>
 
 **参数：**
 
@@ -59,8 +59,10 @@ of() 可以解决上述构造器因参数个数不同，导致的行为有差异
 
 
 ```
-let A = Array.of(1,2,3);
+Array.of(1,2,3); // [1,2,3]
+Array.of(1,{a:1},null,undefined) // [1, {a:1}, null, undefined]
 
+// 只有一个数值参数时
 let B = new Array(3);   // (3) [empty × 3]
 let C = Array.of(3);    // [3]
 ```
@@ -69,7 +71,7 @@ let C = Array.of(3);    // [3]
 
 <br>
 
-（2）`Array.from()`从一个类数组或可迭代对象中创建一个新的数组 <b style="color:#17E6CA;">ES6新增</b>
+（2）`Array.from()`从一个类数组或可迭代对象中创建一个新的数组 <b style="color:#17E6CA;">(ES6新增)</b>
 
 **参数：**
 * 第一个参数：想要转换成数组的类数组或可迭代对象
@@ -153,7 +155,7 @@ let length = arr.unshift(1,2);  // 返回长度是5
 console.log(arr, length)
 //[1, 2, 3, 4, 5] 5
 ```
-*注意：* 当调用unshift()添加多个参数时，参数时一次性插入的，而非一次一个地插入。就像是上例添加1和2，他们插入到数组中的顺序跟参数列表中的顺序一致，而不是[2,1,3,4,5]。
+**注意：** 当调用unshift()添加多个参数时，参数时一次性插入的，而非一次一个地插入。就像是上例添加1和2，他们插入到数组中的顺序跟参数列表中的顺序一致，而不是[2,1,3,4,5]。
 
 <span style="color: #30A9DE;">**返回值：** 返回数组新的长度。</span>
 
@@ -195,21 +197,22 @@ console.log(arr, item)
 <span style="color: #30A9DE;">**返回值：** 由被删除的元素组成的一个数组。如果只删除了一个元素，则返回只包含一个元素的数组。如果没有删除元素，则返回空数组。</span>
 
 ```
-// start不超过数组长度
+// start不超过数组长度(以下操作是连续的)
 let arr = [1,2,3,4,5];
 arr.splice(2)   // arr是[1,2]，返回值是[3,4,5]
 arr.splice(1,1) // arr是[1]，返回值是[2]
 arr.splice(0,3) // arr是[]，返回值是[1],因为此时数组从第0位开始不够3位，所以是删除从0开始到最后的所有元素。
 
-// start大于数组长度
+// start大于数组长度(以下操作是连续的)
 let arr = [1,2,3,4,5];
 arr.splice(5)   // arr是[1,2,3,4,5]，返回值是[]
 arr.splice(5,3,6) // arr是[1,2,3,4,5,6]，返回值是[]
 arr.splice(5,3,7) // arr是[1,2,3,4,5,7] 返回值是[6]
 
-// start是负数
+// start是负数(以下操作是连续的)
 let arr = [1,2,3,4,5];
 arr.splice(-3,2); // arr是[1,2,5], 返回值是[3,4]
+arr.splice(-4); // arr是[],返回值是[1,2,5]
 
 // 插入数组时，是插入数组本身，而不是数组元素
 let arr = [1,4,5];
@@ -219,8 +222,9 @@ arr.splice(1,0,[2,3])   // arr是[1,[2,3],4,5]，返回值是[]
 
 > 6. sort() 方法将数组中的元素排序并**返回排序后的数组**
 
-参数：compareFunction
-可选。用来指定按某种顺序进行排列的函数。如果省略，元素按照转换为的字符串的各个字符的Unicode位点进行排序。
+参数：
+
+`compareFunction` (可选) 用来指定按某种顺序进行排列的函数。如果省略，元素按照转换为的字符串的各个字符的Unicode位点进行排序。
 如果指明了 compareFunction ，那么数组会按照调用该函数的返回值排序。即 a 和 b 是两个将要被比较的元素：
 * 如果 compareFunction(a, b) 小于 0 ，那么 a 会被排列到 b 之前；
 * 如果 compareFunction(a, b) 等于 0 ， a 和 b 的相对位置不变。备注： ECMAScript 标准并不保证这一行为，而且也不是所有浏览器都会遵守（例如 Mozilla 在 2003 年之前的版本）；
@@ -229,7 +233,7 @@ arr.splice(1,0,[2,3])   // arr是[1,[2,3],4,5]，返回值是[]
 
 ```
 var stringArray = ["Blue", "Humpback", "Beluga"];
-var numericStringArray = ["80", "9", "700"];
+var numberArray = [40, 1, 5, 200];
 function compareNumbers(a, b){
   return a - b;
 }
@@ -237,7 +241,7 @@ console.log('stringArray:' + stringArray.join());
 console.log('Sorted:' + stringArray.sort());
 
 console.log('numberArray:' + numberArray.join());
-// 没有使用比较函数时，数字并不会按照我们设想的那样排序
+// 没有使用比较函数时，数字并不会按照我们设想的那样排序
 console.log('Sorted without a compare function:'+ numberArray.sort());
 console.log('Sorted with compareNumbers:'+ numberArray.sort(compareNumbers));
 
@@ -264,7 +268,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 
 <br>
 
-> 8. copyWithin() 方法浅复制数组的一部分到同一数组中的另一个位置，并返回它，而不修改其大小。 <b style="color:#17E6CA;">ES6新增</b>
+> 8. copyWithin() 方法浅复制数组的一部分到同一数组中的另一个位置，并返回它，而不修改其大小。 <b style="color:#17E6CA;">(ES6新增)</b>
 
 **语法：**
 `arr.copyWithin(target[, start[, end]])`
@@ -285,7 +289,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 
 `end`
 
-0 为基底的索引，开始复制元素的结束位置。copyWithin 将会拷贝到该位置，但不包括 end 这个位置的元素。如果是负数， end 将从末尾开始计算。
+0 为基底的索引，开始复制元素的结束位置。copyWithin 将会拷贝到该位置，**但不包括 end 这个位置的元素**。如果是负数， end 将从末尾开始计算。
 
 如果 end 被忽略，copyWithin 将会复制到 arr.length。
 
@@ -311,7 +315,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 ```
 <br>
 
-> 9. fill() 方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。 <b style="color:#17E6CA;">ES6新增</b>
+> 9. fill() 方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。 <b style="color:#17E6CA;">(ES6新增)</b>
 
 **语法:**
 `arr.fill(value[, start[, end]])`
@@ -322,7 +326,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 
 `start` (可选) 起始索引，默认值为0。
 
-`end` (可选) 终止索引，默认值为 this.length
+`end` (可选) 终止索引，默认值为 this.length。
 
 如果 start 是个负数, 则开始索引会被自动计算成为 length+start, 其中 length 是 this 对象的 length 属性值. 如果 end 是个负数, 则结束索引会被自动计算成为 length+end。
 
@@ -339,7 +343,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 [1, 2, 3].fill(4, 3, 5);         // [1, 2, 3]
 Array(3).fill(4);                // [4, 4, 4]
 
-//fill 方法故意被设计成通用方法, 该方法不要求 this 是数组对象.
+//fill 方法故意被设计成通用方法, 该方法不要求 this 是数组对象。
 [].fill.call({ length: 3 }, 4);  // {0: 4, 1: 4, 2: 4, length: 3}
 ```
 
@@ -417,7 +421,7 @@ let str3 = num.join('') // 123
 let num = [1,null,3];
 let str1 = num.join(); // 1,,3
 
-//如果数组中的元素是数组，会将里面的数组也调用join()
+//如果数组中的元素是数组，会将里面的数组也调用join()
 let num = [[1,2],3];
 let str1 = num.join('-'); // 1,2-3
 
@@ -438,7 +442,7 @@ const flatArr = arr.join().split(','); // ["11", "22", "33", "44", "55", "66"]
 
 <br>
 
-> 3. toString() 方法将数组的每个元素转化为字符串(如有必要将调用元素的toString()方法)并且输出用逗号分割的字符串列表。返回一个字符串表示数组中的元素
+> 3. toString() 方法将数组的每个元素转化为字符串(如有必要将调用元素的toString()方法)并且输出用逗号分割的字符串列表。返回一个字符串表示数组中的元素
 
 **参数：** 无
 
@@ -491,7 +495,7 @@ prices.toLocaleString(); // "￥7,500,8,123,12"
 prices.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }); // "￥7,500,8,123,12"
 //MDN上的举例中说是 "￥7,￥500,￥8,123,￥12"，在浏览器和Node中验证了返回的都是 "￥7,500,8,123,12" 啊！
 
-// 以下的这个例子要跟上面的toString对照看
+// 以下的这个例子要跟上面的toString对照看
 [{a:1},1,new Date()].toLocaleString() //"[object Object],1,2018/7/7 下午6:45:00"
 ```
 
@@ -522,7 +526,7 @@ console.log(arr1,arr2) //[2,{a:1}],[1,2,{a:1}]
 obj.a = 2;
 console.log(arr1,arr2) ////[2,{a:2}],[1,2,{a:2}]
 
-// 说了是浅拷贝，而且原数组也不改变，那我们就可以用它来实现数组的浅拷贝功能
+// 说了是浅拷贝，而且原数组也不改变，那我们就可以用它来实现数组的浅拷贝功能
 let num1 = [1,2,3];
 //第一种
 let num2 = num1.concat();
@@ -902,7 +906,7 @@ console.log(result) // 打印 false
 
 <br>
 
-> 5. reduce() 和 reduceRight() 这两个方法使用指定的函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以成为“注入”和“折叠”。reduceRight() 和 reduce() 工作原理是一样的，不同的是reduceRight() 按照数组索引从高到低（从右到左）处理数组，而不是从高到低。
+> 6. reduce() 和 reduceRight() 这两个方法使用指定的函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以成为“注入”和“折叠”。reduceRight() 和 reduce() 工作原理是一样的，不同的是reduceRight() 按照数组索引从高到低（从右到左）处理数组，而不是从高到低。
 
 **参数：**
 
@@ -952,7 +956,7 @@ console.log(arr)
 
 <br>
 
-> 6. indexof() 方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1。
+> 7. indexof() 方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1。
 
 **参数：**
 
@@ -985,7 +989,7 @@ array1.indexOf(NaN) // -1
 
 <br>
 
-> 7. lastIndexOf() 跟indexOf()查找方向相反，方法返回指定元素在数组中的最后一个的索引，如果不存在则返回 -1。从数组的后面向前查找，从 fromIndex 处开始
+> 8. lastIndexOf() 跟indexOf()查找方向相反，方法返回指定元素在数组中的最后一个的索引，如果不存在则返回 -1。从数组的后面向前查找，从 fromIndex 处开始
 
 
 **参数：**
@@ -1017,7 +1021,7 @@ array.lastIndexOf(2,-5) // -1
 
 <br>
 
-> 8. includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。 <b style="color:#17E6CA;">ES7新增</b>
+> 9. includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。 <b style="color:#17E6CA;">ES7新增</b>
 
 **参数：**
 
@@ -1047,7 +1051,7 @@ includes解决了两个indexOf的问题:
 
 <br>
 
-> 9. find() 和 findIndex() find 方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。findIndex 方法返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。<b style="color:#17E6CA;">ES6新增</b>
+> 10. find() 和 findIndex() find 方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。findIndex 方法返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。<b style="color:#17E6CA;">(ES6新增)</b>
 
 **参数：** 这两个方法跟其他的方法类似
 
@@ -1096,14 +1100,14 @@ find 是找到数组中的值后对其进一步处理，一般用于对象数组
 
 <br>
 
-> 10. keys() 方法返回一个新的Array迭代器，它包含数组中每个索引的键。 <b style="color:#17E6CA;">ES6新增</b>
+> 11. keys() 方法返回一个新的Array迭代器，它包含数组中每个索引的键。 <b style="color:#17E6CA;">(ES6新增)</b>
 
 
-> 11. values() 方法返回一个新的Array迭代器，它包含数组中每个索引的值。 <b style="color:#17E6CA;">ES6新增</b>
+> 12. values() 方法返回一个新的Array迭代器，它包含数组中每个索引的值。 <b style="color:#17E6CA;">(ES6新增)</b>
 
-> 12. @@iterator 属性和 values() 属性的初始值均为同一个函数对象。数组的 iterator 方法，默认情况下与 values() 返回值相同,调用语法是 `arr[Symbol.iterator]()`  <b style="color:#17E6CA;">ES6新增</b>
+> 13. @@iterator 属性和 values() 属性的初始值均为同一个函数对象。数组的 iterator 方法，默认情况下与 values() 返回值相同,调用语法是 `arr[Symbol.iterator]()`  <b style="color:#17E6CA;">(ES6新增)</b>
 
-> 13. entries() 方法返回一个新的Array迭代器，该对象包含数组中每个索引的键/值对。 <b style="color:#17E6CA;">ES6新增</b>
+> 14. entries() 方法返回一个新的Array迭代器，该对象包含数组中每个索引的键/值对。 <b style="color:#17E6CA;">(ES6新增)</b>
 
 **参数：** 都是无。
 
@@ -1204,8 +1208,8 @@ let a4 = [undefined];
 
 > 拥有一个数值length属性和对应非负整数属性的对象看做一种类型的数组
 
-数组跟类数组相比有以下不同：
-1. 当有新元素添加到数组中时，自动更新length属性
+数组跟类数组相比有以下不同：
+1. 当有新元素添加到数组中时，自动更新length属性
 2. 设置length为一个较小值将截断数组
 3. 从Array.prototype中继承了一些方法
 4. 其类属性为'Array'
@@ -1299,6 +1303,7 @@ console.log(view)// [100,0],一个八个字节，Int32Array一个元素大小是
 3. [给初学者：JavaScript 中数组操作注意点](https://segmentfault.com/a/1190000012463583)
 4. [一次掌握 JavaScript ES5 到 ES8 数组内容](https://hufangyun.com/2017/array-learn/)
 5. [【干货】js 数组详细操作方法及解析合集](https://juejin.im/post/5b0903b26fb9a07a9d70c7e0)
+6. [[译] 深入 JavaScript 数组：进化与性能](http://www.wemlion.com/post/javascript-array-evolution-performance/)
 
 
 
