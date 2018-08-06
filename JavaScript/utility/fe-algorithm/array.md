@@ -22,7 +22,7 @@ var number = 1;
 var list = [number, number+1, number+2];
 ```
 
-如果省略数组直接量中的某个值，省略的元素是empty，访问的话会返回undefined。
+如果省略数组直接量中的某个值，省略的元素用empty表示（就是没有这个元素），访问的话会返回undefined。
 ```
 var count = [1,,3];     // 数组打印出来是(3) [1, empty, 3], count[1] === undefined是true。
 var undefs = [,,];      // 数组直接量语法允许有可选的结尾的逗号，顾[,,]只有两个元素而非三个，undefs.length 是 2
