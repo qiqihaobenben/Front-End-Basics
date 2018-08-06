@@ -1094,7 +1094,7 @@ a.find((n) => {
 </span>
 
 <b style="color:#FF7614;">知识点</b>
-不要用 find() 代替 some(),通常混用是这种场景，find 返回第一个符合条件的值，直接拿这个值做 if 判断是否存在，但是这个符合条件的值恰好是 0 怎么办？
+不要用 find() 代替 some(),通常混用是这种场景，find 返回第一个符合条件的值，直接拿这个值做 if 判断是否存在，但是这个符合条件的值也有可能恰好为 0。
 find 是找到数组中的值后对其进一步处理，一般用于对象数组的情况；some 才是检查存在性；两者不可混用。
 
 
@@ -1188,20 +1188,20 @@ console.log(arr1,arr1.length) // arr 是[empty, "b"]，length 是2
 
 足够稀疏的数组通常在实现上比稠密的数组更慢，更耗内存，在这样的数组中查找元素所用的时间就变得跟常规对象的查找时间一样长了，失去了性能的优势。
 
-**注意：** 在数组直接量中省略值时不会创建稀疏数组。省略的元素在数组中是存在的，其值为undefined。这和数组元素根本不存在是有一些微妙的区别的。不过也有例外，在省略数组直接量中的某些值时（例如：[1,,3]），这时所得到的数组也是稀疏数组，省略掉的值是不存在的。
-
 ```
 let a1 = [,,]; // 数组直接量，该数组是[empty × 2]
 0 in a1 // false: a1在索引0处没有元素
 
-let a2 = [,2,3];
-0 in a2 // false: // false: a2在索引0处没有元素
+let a2 = new Array(3); //[empty × 3],该数组根本没有元素
+0 in a2 // false: a2在索引0处没有元素
 
-let a3 = new Array(3); //[empty × 3],该数组根本没有元素
-0 in a3 // false: a2在索引0处没有元素
+let a3 = [undefined];
+0 in a3 // true: a3在索引0处有一个值为undefined的元素
 
-let a4 = [undefined];
-0 in a4 // true: a4在索引0处有一个值为undefined的元素
+let a4 = [,undefined];
+0 in a4 // fasle: a4在索引0处有一个值为undefined的元素
+0 in a4 // true: a4在索引1处有一个值为undefined的元素
+console.log(a4[0],a4[1]) // undefined undefined,可见数组访问返回undefined,可能是稀疏数组，也可能是数组元素为undefined
 ```
 
 #### 3、类数组对象
@@ -1214,7 +1214,7 @@ let a4 = [undefined];
 3. 从Array.prototype中继承了一些方法
 4. 其类属性为'Array'
 
-JavaScript 数组有很多方法特意定义通用，因此他们不仅应用在真正的数组而且在类数组对象上都能正确工作，JavaScript权威指南一书说的是：ES5中所有的方法都是通用的，ES3中除了toString()和toLocaleString()意外所有方法也是通用的。不过concat是一个特例，虽然可以用在类数组对象上，但它没有将那个对象扩充进返回的数组中。
+JavaScript 数组有很多方法特意定义通用，因此他们不仅应用在真正的数组而且在类数组对象上都能正确工作，JavaScript权威指南一书说的是：ES5中所有的方法都是通用的，ES3中除了toString()和toLocaleString()意外所有方法也是通用的。
 
 类数组对象显然没有继承自Array.prototype，所以它们不能直接调用数组方法，不过可以间接地使用Function.call方法调用。
 
