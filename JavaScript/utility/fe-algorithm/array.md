@@ -24,7 +24,7 @@ var list = [number, number+1, number+2];
 
 如果省略数组直接量中的某个值，省略的元素用empty表示（就是没有这个元素），访问的话会返回undefined。
 ```
-var count = [1,,3];     // 数组打印出来是(3) [1, empty, 3], count[1] === undefined是true。
+var count = [1,,3];     // 数组打印出来是(3) [1, empty, 3], count[1] === undefined是true。
 var undefs = [,,];      // 数组直接量语法允许有可选的结尾的逗号，顾[,,]只有两个元素而非三个，undefs.length 是 2
 ```
 
@@ -37,7 +37,7 @@ var arr = new Array();
 
 调用时有一个数值参数，它指定长度
 ```
-var arr = new Array(10)     // (10) [empty × 10]
+var arr = new Array(10)     // (10) [empty × 10]
 ```
 
 显式指定两个或者多个数组元素或者数组元素的一个非数值元素
@@ -63,7 +63,7 @@ Array.of(1,2,3); // [1,2,3]
 Array.of(1,{a:1},null,undefined) // [1, {a:1}, null, undefined]
 
 // 只有一个数值参数时
-let B = new Array(3);   // (3) [empty × 3]
+let B = new Array(3);   // (3) [empty × 3]
 let C = Array.of(3);    // [3]
 ```
 
@@ -118,7 +118,7 @@ console.log(combine(m,n));
 
 ### <p style="color: #3f87a6;">1、会改变原数组的方法</p>
 
-> 1. push() 方法在数组的尾部添加一个或多个元素，并**返回数组的长度**
+#### 1. push() 方法在数组的尾部添加一个或多个元素，并**返回数组的长度**
 
 参数: item1, item2, ..., itemX ,要添加到数组末尾的元素
 ```
@@ -132,7 +132,7 @@ console.log(arr,length)
 
 <br>
 
-> 2. pop() 方法删除数组的最后一个元素，减小数组长度并**返回它删除的值**。
+#### 2. pop() 方法删除数组的最后一个元素，减小数组长度并**返回它删除的值**。
 
 参数：无
 ```
@@ -146,7 +146,7 @@ stack.pop()     // 返回删除的值2，这时stack的值是[1]
 
 <br>
 
-> 3. unshift() 方法在数组的头部添加一个或多个元素，并将已存在的元素移动到更高索引的位置来获得足够的空间，最后**返回数组新的长度**。
+#### 3. unshift() 方法在数组的头部添加一个或多个元素，并将已存在的元素移动到更高索引的位置来获得足够的空间，最后**返回数组新的长度**。
 
 参数: item1, item2, ..., itemX ,要添加到数组开头的元素
 ```
@@ -161,7 +161,7 @@ console.log(arr, length)
 
 <br>
 
-> 4. shift() 方法删除数组的第一个元素并将其返回，然后把所有随后的元素下移一个位置来填补数组头部的空缺，返回值是**删除的元素**
+#### 4. shift() 方法删除数组的第一个元素并将其返回，然后把所有随后的元素下移一个位置来填补数组头部的空缺，返回值是**删除的元素**
 
 参数: 无。
 ```
@@ -174,14 +174,14 @@ console.log(arr, item)
 
 <br>
 
-> 5. splice() 方法是在数组中插入或删除元素的通用方法
+#### 5. splice() 方法是在数组中插入或删除元素的通用方法
 
 **语法**
 `array.splice(start[, deleteCount[, item1[, item2[, ...]]]])`
 
 **参数：**
 
-`start`​ 
+`start`​
 
 指定修改的开始位置（从0计数）。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数）；若只使用start参数而不使用deleteCount、item，如：array.splice(start) ，表示删除[start，end]的元素。
 
@@ -220,7 +220,7 @@ arr.splice(1,0,[2,3])   // arr是[1,[2,3],4,5]，返回值是[]
 ```
 <br>
 
-> 6. sort() 方法将数组中的元素排序并**返回排序后的数组**
+#### 6. sort() 方法将数组中的元素排序并**返回排序后的数组**
 
 参数：
 
@@ -257,7 +257,7 @@ console.log('Sorted with compareNumbers:'+ numberArray.sort(compareNumbers));
 
 <br>
 
-> 7. reverse() 方法将数组中的元素颠倒顺序，返回逆序的数组。
+#### 7. reverse() 方法将数组中的元素颠倒顺序，返回逆序的数组。
 
 参数: 无
 ```
@@ -268,7 +268,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 
 <br>
 
-> 8. copyWithin() 方法浅复制数组的一部分到同一数组中的另一个位置，并返回它，而不修改其大小。 <b style="color:#17E6CA;">(ES6新增)</b>
+#### 8. copyWithin() 方法浅复制数组的一部分到同一数组中的另一个位置，并返回它，而不修改其大小。 <b style="color:#17E6CA;">(ES6新增)</b>
 
 **语法：**
 `arr.copyWithin(target[, start[, end]])`
@@ -315,7 +315,7 @@ arr.reverse()   // arr是[3,2,1]，返回值是[3,2,1]
 ```
 <br>
 
-> 9. fill() 方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。 <b style="color:#17E6CA;">(ES6新增)</b>
+#### 9. fill() 方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。 <b style="color:#17E6CA;">(ES6新增)</b>
 
 **语法:**
 `arr.fill(value[, start[, end]])`
@@ -351,7 +351,7 @@ Array(3).fill(4);                // [4, 4, 4]
 
 ### <p style="color: #3f87a6;">2、不改变原数组的方法</p>
 
-> 1. slice() 方法返回一个从开始到结束（不包括结束）选择的数组的一部分**浅拷贝**到一个新数组对象。且原始数组不会被修改。
+#### 1. slice() 方法返回一个从开始到结束（不包括结束）选择的数组的一部分**浅拷贝**到一个新数组对象。且原始数组不会被修改。
 
 **参数：**
 
@@ -401,7 +401,7 @@ arr1[1] = "two"; // arr是[1,2,3]，arr1是[1,"tow",3]
 
 <br>
 
-> 2. join() 方法将数组（或一个类数组对象）中所有元素都转化为字符串并连接在一起，返回最后生成的字符串。
+#### 2. join() 方法将数组（或一个类数组对象）中所有元素都转化为字符串并连接在一起，返回最后生成的字符串。
 
 **参数：**
 
@@ -442,7 +442,7 @@ const flatArr = arr.join().split(','); // ["11", "22", "33", "44", "55", "66"]
 
 <br>
 
-> 3. toString() 方法将数组的每个元素转化为字符串(如有必要将调用元素的toString()方法)并且输出用逗号分割的字符串列表。返回一个字符串表示数组中的元素
+#### 3. toString() 方法将数组的每个元素转化为字符串(如有必要将调用元素的toString()方法)并且输出用逗号分割的字符串列表。返回一个字符串表示数组中的元素
 
 **参数：** 无
 
@@ -472,7 +472,7 @@ const flatArr = arr.toString().split(','); // ["11", "22", "33", "44", "55", "66
 
 <br>
 
-> 4. toLocaleString() 数组中的元素将使用各自的 toLocaleString 方法转成字符串，这些字符串将使用一个特定语言环境的字符串（例如一个逗号 ","）隔开。
+#### 4. toLocaleString() 数组中的元素将使用各自的 toLocaleString 方法转成字符串，这些字符串将使用一个特定语言环境的字符串（例如一个逗号 ","）隔开。
 
 **参数：(还有待考证,我试了一下没用，看了一下ECMA的官网，确实是标注有两个可选参数的)**
 
@@ -503,7 +503,7 @@ prices.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }); // "￥7
 
 <br>
 
-> 5. concat() 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。
+#### 5. concat() 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。
 
 它的元素包括调用concat()的原始数组的元素和concat()的每个参数，但是要注意，concat()不会递归扁平化数组的数组，concat()也不会修改调用的数组。
 
@@ -533,7 +533,7 @@ let num2 = num1.concat();
 //第二种
 let num2 = [].concat(num1);
 num2[0] = 'a';
-console.log(num1,num2); // [1, 2, 3] ["a", 2, 3]
+console.log(num1,num2); // [1, 2, 3] ["a", 2, 3]
 ```
 
 <span style="color: #30A9DE;">**返回值：** 新的 Array 实例</span>
@@ -548,7 +548,7 @@ const flatArr = [].concat(...arr); // [11, 22, 33, 44, 55, 66]
 
 <br>
 
-> 6. isArray() 用于确定传递的值是否是一个 Array。
+#### 6. isArray() 用于确定传递的值是否是一个 Array。
 
 **参数：**
 
@@ -559,7 +559,7 @@ const flatArr = [].concat(...arr); // [11, 22, 33, 44, 55, 66]
 Array.isArray([]);
 Array.isArray([1]);
 Array.isArray(new Array());
-// 这里注意：Array.prototype 也是一个数组,一个属性值不是索引的数组。[constructor: ƒ, concat: ƒ, find: ƒ, findIndex: ƒ, pop: ƒ, …]
+// 这里注意：Array.prototype 也是一个数组,一个属性值不是索引的数组。[constructor: ƒ, concat: ƒ, find: ƒ, findIndex: ƒ, pop: ƒ, …]
 Array.isArray(Array.prototype);
 
 // 下面的函数调用都返回 false
@@ -583,7 +583,7 @@ Array.isArray({ __proto__: Array.prototype });
 // step one: 使用constructor
 var a = [1];
 console.log(a.constructor === Array) // true
-// 但是原型的contructor属性是可以被改写的，例如在原型继承的时候，我们都是要把继承过来的prototype的constructor改写成我们当前的
+// 但是原型的contructor属性是可以被改写的，例如在原型继承的时候，我们都是要把继承过来的prototype的constructor改写成我们当前的
 var a = [1];
 a.__proto__.constructor = '1';
 console.log(a.constructor === Array) // false
@@ -621,7 +621,7 @@ Array.isArray(arr);  // true,也可以检测iframes的数组
 
 介绍方法之前，先对这些数组方法做一个概述：
 
-* 首先，大多数方法的第一个参数接收一个函数，并且对数组的每个元素（或一些元素）调用一次该函数。如果是稀疏数组，对不存在的元素不调用该函数。大多数情况下，调用提供的函数使用三个参数：数组元素、元素的索引和数组本身。通常，只需要第一个参数值，可以忽略后两个参数。
+* 首先，大多数方法的第一个参数接收一个函数，并且对数组的每个元素（或一些元素）调用一次该函数。如果是稀疏数组，对不存在的元素不调用该函数。大多数情况下，调用提供的函数使用三个参数：数组元素、元素的索引和数组本身。通常，只需要第一个参数值，可以忽略后两个参数。
 
 * 大多数方法，第二个参数是可选的。如果有第二个参数，则调用的第一个函数参数被看做是第二个参数的方法，即当执行第一个函数参数时用作this的值(参考对象)。
 
@@ -636,7 +636,7 @@ Array.isArray(arr);  // true,也可以检测iframes的数组
 
 <br>
 
-> 1. forEach() 方法从头到尾遍历数组，为每个元素调用指定的函数。
+#### 1. forEach() 方法从头到尾遍历数组，为每个元素调用指定的函数。
 
 **参数：**
 
@@ -661,18 +661,18 @@ numberArr.forEach(function (value,index,array) {
 })
 //打印信息如下，可见空元素是不会遍历的
 //1 0 [1, 2, empty, 3]
-//2 1 [1, 2, empty, 3]
-//3 3 [1, 2, empty, 3]
+//2 1 [1, 2, empty, 3]
+//3 3 [1, 2, empty, 3]
 
 let nullArr = [1,2,null,3];
 nullArr.forEach(function (value,index,array) {
   console.log(value,index,array)
 })
 //打印信息如下，null是会遍历的
-//1 0 (4) [1, 2, null, 3]
-//2 1 (4) [1, 2, null, 3]
-//null 2 (4) [1, 2, null, 3]
-//3 3 (4) [1, 2, null, 3]
+//1 0 (4) [1, 2, null, 3]
+//2 1 (4) [1, 2, null, 3]
+//null 2 (4) [1, 2, null, 3]
+//3 3 (4) [1, 2, null, 3]
 
 //2、已删除的项不会被遍历到。如果已访问的元素在迭代时被删除了,之后的元素将被跳过
 let numberArr = [1,2,3];
@@ -684,8 +684,8 @@ numberArr.forEach(function (value,index,array) {
   console.log(value,index,array)
 })
 //打印信息如下：
-// 1 0 (3) [1, 2, empty]
-// 2 1 (3) [1, 2, empty]
+// 1 0 (3) [1, 2, empty]
+// 2 1 (3) [1, 2, empty]
 
 
 let numberArr1 = [1,2,3,4];
@@ -696,9 +696,9 @@ numberArr1.forEach(function (value,index,array) {
   console.log(value,index,array)
 })
 // 打印信息如下,遍历到第二项的时候，删除第一项，会跳过第三项
-// 1 0 (4) [1, 2, 3, 4]
-// 2 1 (3) [2, 3, 4]
-// 4 2 (3) [2, 3, 4]
+// 1 0 (4) [1, 2, 3, 4]
+// 2 1 (3) [2, 3, 4]
+// 4 2 (3) [2, 3, 4]
 
 // 3、forEach 遍历的范围在第一次调用 callback 前就会确定。调用forEach 后添加到数组中的项不会被 callback 访问到。如果已经存在的值被改变，则传递给 callback 的值是 forEach 遍历到他们那一刻的值。
 let arr = [1,2,3];
@@ -709,9 +709,9 @@ arr.forEach(function (value,index,array) {
   }
   console.log(value,index,array)
 })
-// 1 0 (4) [1, 2, 4, "新增的不会被遍历到"]
-// 2 1 (4) [1, 2, 4, "新增的不会被遍历到"]
-// 4 2 (4) [1, 2, 4, "新增的不会被遍历到"]
+// 1 0 (4) [1, 2, 4, "新增的不会被遍历到"]
+// 2 1 (4) [1, 2, 4, "新增的不会被遍历到"]
+// 4 2 (4) [1, 2, 4, "新增的不会被遍历到"]
 
 // 4、使用thisArg参数 和 箭头函数使用thisArg
 let arr = [1,2,3];
@@ -736,7 +736,7 @@ let result = arr.forEach((value) => {
   }
   console.log(value)
 })
-console.log(result) // undefined ，即使中间return vlaue，也还是undefined
+console.log(result) // undefined ，即使中间return vlaue，也还是undefined
 //打印value的值如下，说明return 并不能终止循环
 // 1
 // 3
@@ -748,11 +748,11 @@ console.log(result) // undefined ，即使中间return vlaue，也还是undefin
 
 <br>
 
-> 2. map() 方法创建一个新数组，其结果是该数组中的每个元素都调用一个callback函数后返回的结果。
+#### 2. map() 方法创建一个新数组，其结果是该数组中的每个元素都调用一个callback函数后返回的结果。
 
 **参数：**(之前说过，大多说方法都会是这样一些参数)
 
-`callback` 生成新数组元素的函数，使用三个参数：这个函数跟forEach()的函数不同的是，传递给map()的函数应该有返回值。
+`callback` 生成新数组元素的函数，使用三个参 这个函数跟forEach()的函数不同的是，传递给map()的函数应该有返回值。
 
 1. `currentValue` callback 的第一个参数，数组中正在处理的当前元素。
 2. `index` callback 的第二个参数，数组中正在处理的当前元素的索引。
@@ -779,7 +779,7 @@ console.log(number, doubles)
 
 <br>
 
-> 3. filter() 方法返回的数组元素是调用的数组的一个子集。传入的函数时用来逻辑判定的，该函数返回 true 或 false,如果返回值为true或能转化为true的值，那么传递给判断函数的元素就是这个子集的成员，它将被添加倒一个作为返回值的数组中。
+#### 3. filter() 方法返回的数组元素是调用的数组的一个子集。传入的函数时用来逻辑判定的，该函数返回 true 或 false,如果返回值为true或能转化为true的值，那么传递给判断函数的元素就是这个子集的成员，它将被添加倒一个作为返回值的数组中。
 
 **参数：**
 
@@ -801,14 +801,14 @@ let small = number.filter((value) => {
   return value < 4;
 })
 console.log(number,small)
-// 打印 [1, 2, 3, 4, 5, 6]  [1, 2, 3]
+// 打印 [1, 2, 3, 4, 5, 6] [1, 2, 3]
 
 
 //压缩稀疏数组的空缺
 let arr = [1,2,3,,5];
 let arr1 = arr.filter(() => true);
 console.log(arr,arr1)
-// 打印 [1, 2, 3, empty, 5]  [1, 2, 3, 5]
+// 打印 [1, 2, 3, empty, 5] [1, 2, 3, 5]
 
 ```
 
@@ -816,7 +816,7 @@ console.log(arr,arr1)
 
 <br>
 
-> 4. every() 方法测试数组的所有元素是否都通过了指定函数的测试。当且仅当针对数组中的所有元素调用判定函数都返回true，它才返回true。
+#### 4. every() 方法测试数组的所有元素是否都通过了指定函数的测试。当且仅当针对数组中的所有元素调用判定函数都返回true，它才返回true。
 
 **参数：**
 
@@ -862,7 +862,7 @@ console.log(result) // 打印 true
 
 <br>
 
-> 5. some() 方法测试数组中的某些元素是否通过由提供的函数实现的测试。当数组中至少有一个元素调用判定函数返回true，它就返回true，当且仅当数组中的所有元素调用判定函数都返回false，它才返回false。
+#### 5. some() 方法测试数组中的某些元素是否通过由提供的函数实现的测试。当数组中至少有一个元素调用判定函数返回true，它就返回true，当且仅当数组中的所有元素调用判定函数都返回false，它才返回false。
 
 **参数：**
 
@@ -906,7 +906,7 @@ console.log(result) // 打印 false
 
 <br>
 
-> 6. reduce() 和 reduceRight() 这两个方法使用指定的函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以成为“注入”和“折叠”。reduceRight() 和 reduce() 工作原理是一样的，不同的是reduceRight() 按照数组索引从高到低（从右到左）处理数组，而不是从高到低。
+#### 6. reduce() 和 reduceRight() 这两个方法使用指定的函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以成为“注入”和“折叠”。reduceRight() 和 reduce() 工作原理是一样的，不同的是reduceRight() 按照数组索引从高到低（从右到左）处理数组，而不是从高到低。
 
 **参数：**
 
@@ -956,7 +956,7 @@ console.log(arr)
 
 <br>
 
-> 7. indexof() 方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1。
+#### 7. indexof() 方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1。
 
 **参数：**
 
@@ -989,7 +989,7 @@ array1.indexOf(NaN) // -1
 
 <br>
 
-> 8. lastIndexOf() 跟indexOf()查找方向相反，方法返回指定元素在数组中的最后一个的索引，如果不存在则返回 -1。从数组的后面向前查找，从 fromIndex 处开始
+#### 8. lastIndexOf() 跟indexOf()查找方向相反，方法返回指定元素在数组中的最后一个的索引，如果不存在则返回 -1。从数组的后面向前查找，从 fromIndex 处开始
 
 
 **参数：**
@@ -1021,7 +1021,7 @@ array.lastIndexOf(2,-5) // -1
 
 <br>
 
-> 9. includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。 <b style="color:#17E6CA;">ES7新增</b>
+#### 9. includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。 <b style="color:#17E6CA;">ES7新增</b>
 
 **参数：**
 
@@ -1051,7 +1051,7 @@ includes解决了两个indexOf的问题:
 
 <br>
 
-> 10. find() 和 findIndex() find 方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。findIndex 方法返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。<b style="color:#17E6CA;">(ES6新增)</b>
+#### 10. find() 和 findIndex() find 方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。findIndex 方法返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。<b style="color:#17E6CA;">(ES6新增)</b>
 
 **参数：** 这两个方法跟其他的方法类似
 
@@ -1100,14 +1100,14 @@ find 是找到数组中的值后对其进一步处理，一般用于对象数组
 
 <br>
 
-> 11. keys() 方法返回一个新的Array迭代器，它包含数组中每个索引的键。 <b style="color:#17E6CA;">(ES6新增)</b>
+#### 11. keys() 方法返回一个新的Array迭代器，它包含数组中每个索引的键。 <b style="color:#17E6CA;">(ES6新增)</b>
 
 
-> 12. values() 方法返回一个新的Array迭代器，它包含数组中每个索引的值。 <b style="color:#17E6CA;">(ES6新增)</b>
+#### 12. values() 方法返回一个新的Array迭代器，它包含数组中每个索引的值。 <b style="color:#17E6CA;">(ES6新增)</b>
 
-> 13. @@iterator 属性和 values() 属性的初始值均为同一个函数对象。数组的 iterator 方法，默认情况下与 values() 返回值相同,调用语法是 `arr[Symbol.iterator]()`  <b style="color:#17E6CA;">(ES6新增)</b>
+#### 13. @@iterator 属性和 values() 属性的初始值均为同一个函数对象。数组的 iterator 方法，默认情况下与 values() 返回值相同,调用语法是 `arr[Symbol.iterator]()`  <b style="color:#17E6CA;">(ES6新增)</b>
 
-> 14. entries() 方法返回一个新的Array迭代器，该对象包含数组中每个索引的键/值对。 <b style="color:#17E6CA;">(ES6新增)</b>
+#### 14. entries() 方法返回一个新的Array迭代器，该对象包含数组中每个索引的键/值对。 <b style="color:#17E6CA;">(ES6新增)</b>
 
 **参数：** 都是无。
 
