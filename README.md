@@ -11,8 +11,10 @@
 
 ## JavaScript
 
-* [面向对象](https://qiqihaobenben.github.io/Front-End-Basics/JavaScript/utility/oo)
+* [JavaScript的面向对象](https://qiqihaobenben.github.io/Front-End-Basics/JavaScript/utility/oo)
 * [数据交互](https://qiqihaobenben.github.io/Front-End-Basics/JavaScript/utility/data-interaction/index)
+
+* [JavaScript的数据结构](https://qiqihaobenben.github.io/Front-End-Basics/JavaScript/utility/fe-algorithm/index)
 
 * [JavaScript的模块](https://qiqihaobenben.github.io/Front-End-Basics/JavaScript/utility/module)
 
