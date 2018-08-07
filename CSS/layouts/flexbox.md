@@ -270,3 +270,5 @@ flex 的默认值是以上三个属性值的组合。假设以上三个属性同
 * [30 分钟学会 Flex 布局](https://zhuanlan.zhihu.com/p/25303493)
 * [Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 * [Flex 布局示例](http://static.vgee.cn/static/index.html)
+* [Flexbox彻底研究——PPT](https://ppt.baomitu.com/d/9ab67fdb)
+* [FLEXBOX FROGGY——一款边学边玩的小游戏](http://flexboxfroggy.com/#zh-cn)
