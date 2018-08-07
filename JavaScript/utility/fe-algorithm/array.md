@@ -906,7 +906,7 @@ console.log(result) // 打印 false
 
 <br>
 
-#### 6. reduce() 和 reduceRight() 这两个方法使用指定的函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以成为“注入”和“折叠”。reduceRight() 和 reduce() 工作原理是一样的，不同的是reduceRight() 按照数组索引从高到低（从右到左）处理数组，而不是从高到低。
+#### 6. reduce() 和 reduceRight() 这两个方法使用指定的函数将数组元素进行组合，生成单个值。这在函数式编程中是常见的操作，也可以称为“注入”和“折叠”。reduceRight() 和 reduce() 工作原理是一样的，不同的是reduceRight() 按照数组索引从高到低（从右到左）处理数组，而不是从低到高。
 
 **参数：**
 
@@ -1199,8 +1199,8 @@ let a3 = [undefined];
 0 in a3 // true: a3在索引0处有一个值为undefined的元素
 
 let a4 = [,undefined];
-0 in a4 // fasle: a4在索引0处有一个值为undefined的元素
-0 in a4 // true: a4在索引1处有一个值为undefined的元素
+0 in a4 // fasle: a4在索引0处没有元素
+1 in a4 // true: a4在索引1处有一个值为undefined的元素
 console.log(a4[0],a4[1]) // undefined undefined,可见数组访问返回undefined,可能是稀疏数组，也可能是数组元素为undefined
 ```
 
