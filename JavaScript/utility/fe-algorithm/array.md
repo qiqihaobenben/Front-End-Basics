@@ -879,11 +879,12 @@ console.log(result) // 打印 true
 ```
 // 一个简单的例子说明
 function isBiggerThan10(element, index, array) {
+  console.log(index)
   return element > 10;
 }
 
-[2, 5, 8, 1, 4].some(isBiggerThan10);  // false
-[12, 5, 8, 1, 4].some(isBiggerThan10); // true
+[2, 5, 8, 1, 4].some(isBiggerThan10);  // 返回值是false，打印的index是0,1,2,3,4
+[12, 5, 8, 1, 4].some(isBiggerThan10); // 返回值是true，打印的index是0，找到符合元素之后立即返回
 
 // 实现一个跟includes方法类似的功能
 let arr = [1,2,3];
