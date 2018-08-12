@@ -879,11 +879,12 @@ console.log(result) // 打印 true
 ```
 // 一个简单的例子说明
 function isBiggerThan10(element, index, array) {
+  console.log(index)
   return element > 10;
 }
 
-[2, 5, 8, 1, 4].some(isBiggerThan10);  // false
-[12, 5, 8, 1, 4].some(isBiggerThan10); // true
+[2, 5, 8, 1, 4].some(isBiggerThan10);  // 返回值是false，打印的index是0,1,2,3,4
+[12, 5, 8, 1, 4].some(isBiggerThan10); // 返回值是true，打印的index是0，找到符合元素之后立即返回
 
 // 实现一个跟includes方法类似的功能
 let arr = [1,2,3];
@@ -1303,7 +1304,7 @@ console.log(view)// [100,0],一个八个字节，Int32Array一个元素大小是
 3. [给初学者：JavaScript 中数组操作注意点](https://segmentfault.com/a/1190000012463583)
 4. [一次掌握 JavaScript ES5 到 ES8 数组内容](https://hufangyun.com/2017/array-learn/)
 5. [【干货】js 数组详细操作方法及解析合集](https://juejin.im/post/5b0903b26fb9a07a9d70c7e0)
-6. [[译] 深入 JavaScript 数组：进化与性能](http://www.wemlion.com/post/javascript-array-evolution-performance/)
+6. [【译】 深入 JavaScript 数组：进化与性能](http://www.wemlion.com/post/javascript-array-evolution-performance/)
 
 
 
