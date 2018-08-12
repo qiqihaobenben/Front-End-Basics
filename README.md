@@ -1,6 +1,6 @@
 # Front-End-Basics
 
-前端基础知识的总结，可以当笔记用的那种。  
+前端基础知识的总结，可以当笔记用的那种。
 
 
 ## HTML
@@ -36,7 +36,12 @@
 
 * [HTTP](https://qiqihaobenben.github.io/Front-End-Basics/network-basics/HTTP/index)
 
+<br>
+<br>
 
+## 捡贝壳
+
+日常看到的文章，担心某些原因，文章不存在了，只是留作备份，供自己日后翻阅，[点击进入](https://qiqihaobenben.github.io/Front-End-Basics/article/index)
 <br>
 <br>
 <br>
