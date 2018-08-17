@@ -88,7 +88,7 @@ if(true) {
 
 ```
 // typeof 说是相对安全，确实是，永远拿不到想要的结果
-console.log(typeof value);
+console.log(typeof value); // 打印 undefined，没有报错
 if(true) {
     let value = 'red';
 }
