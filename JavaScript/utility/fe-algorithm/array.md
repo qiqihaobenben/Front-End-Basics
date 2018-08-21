@@ -88,7 +88,7 @@ Array.from(new Set(['a','b']))   // ['a','b']
 
 // 传入一个数组生成的是一个新的数组，引用不同，修改新数组不会改变原数组
 let arr1 = [1,2,3]
-let arr2 = Array.from(arr);
+let arr2 = Array.from(arr1);
 arr2[1] = 4;
 console.log(arr1,arr2)
 //[1, 2, 3] [1, 4, 3]
