@@ -34,11 +34,8 @@ function getValue (condition) {
 getValue()
 
 // 例子二
-//{{{{{
-  //{let value = 'red';}
-  //console.log(value)
-  // 报错 value is not defined
-//}}}}}
+{{{{{{let value = 'red';}console.log(value)}}}}}
+// 报错 value is not defined
 ```
 
 2. 在同一个作用域内不能使用let声明同名的变量
@@ -63,11 +60,8 @@ if(true) {
   // 不同的作用域，不会报错
 }
 
-//{{{{{
-    //{let count = 30;}
-    //let count = 40;
-    // 不同作用域，不会报错
-//}}}}}
+{{{{{{let count = 30;}let count = 40;}}}}}
+// 不同作用域，不会报错
 
 ```
 
