@@ -35,9 +35,11 @@ getValue()
 
 // 例子二
 {{{{{
-  {let value = 'red';}
-  console.log(value)
-  // 报错 value is not defined
+    { 
+      let value = 'red';
+    }
+    console.log(value)
+    // 报错 value is not defined
 }}}}}
 ```
 
