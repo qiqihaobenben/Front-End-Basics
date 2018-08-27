@@ -286,7 +286,7 @@ ECMAScript 6中，如果shouldDefineZero是false，则永远不会定义zero,因
 
 ### 2.1 先来聊聊字符编码的历程
 
-![](./images/unicode.png)
+![](./images/unicode.jpg)
 
 #### （1） ASCII 码
 
