@@ -428,15 +428,163 @@ console.log(text.charAt(0)) // � 前后两个字节码位都是落在U+D800到
 console.log(text.charAt(1)) // �
 console.log(text.charCodeAt(0)) // 55357 转成十六进制 0xd83d
 console.log(text.charCodeAt(1) //56834 转成十六进制 0xde02
+
+// 经过查询Unicode的字符表，😂的码位是U+1f602
+console.log('\u1f602' === '😂') //false
+console.log('\ud83d\ude02' === '😂') // true
 ```
+
+<b style="color: #fc913a">扩展：� 的Unicode码点是 U+FFFD，通常用来表示Unicode转换时无法识别的字符（也就是乱码）</b>
 
 #### 2.3 ECMAScript 6 解决字符编码的问题
 
-<b style="color: #00dffc;"> (1) 解决`charCodeAt()`方法获取字符乱码问题，新增`codePointAt()`方法</b>
+<b style="color: #00dffc;"> (1) 为解决`charCodeAt()`方法获取字符乱码问题，新增`codePointAt()`方法</b>
 
 `codePointAt()`方法完全支持UTF-16,参数接受的是编码单元的位置而非字符位置，返回与字符串中给定位置对应的码位，即一个整数。
 
 <b style="color: #fc913a">对于BMP字符集中的字符，codePointAt()方法的返回值跟charCodeAt()相同，而对于非BMP字符集来说，返回值不同。</b>
+
+```
+const text = '😂';
+
+console.log(text.charCodeAt(0)) // 位置0处的一个编码单元 55357
+console.log(text.charCodeAt(1)) // 位置1处的一个编码单元 56834
+
+console.log(text.codePointAt(0)) // 位置0处的编码单元开始的码位，此例是从这个编码单位开始的两个编码单元组合的字符（四个字节），所以会打印出所有码位，即四字节的码位 128514 即0x1f602，大于0xffff，也证明了是占四个字节的存储空间。
+console.log(text.codePointAt(1)) // 位置1处的编码单元开始的码位 56834
+```
+
+<b style="color: #00dffc;"> (2) 为解决超过两个字节的码点与字符转换问题，新增了`fromCodePoint()`方法</b>
+
+```
+// 打印😂
+console.log(String.fromCharCode(128514)) // 打印失败 
+console.log(String.fromCharCode(55357,56834)) // 参数可以接收一组序列数字，表示 Unicode 值。打印成功😂
+
+console.log(String.fromCodePoint(128514)) // 打印成功 😂
+console.log(String.fromCodePoint(128514)) // 可以接收不同进制的参数，打印成功 😂
+```
+
+<b style="color: #00dffc;"> (3) 为解决正则表达式无法正确匹配超过两个字节的字符问题，ES6定义了一个支持Unicode的 `u` 修饰符</b>
+
+```
+const text = '😂';
+
+console.log(/^.$/.test(text)) // false , 正则匹配出了问题，说不是一个字符
+console.log(/^..$/.test(text)) // true , 是两个字符
+
+console.log(/^.$/u.test(text)) // true， 加入 u 修饰符，匹配正确
+```
+
+<b style="color: #fc913a">注意：u修饰符是语法层面的变更，在不支持ES6的JavaScript的引擎中使用它会导致语法错误，可以使用RegExp构造函数和try……catch来检测，避免发生语法错误</b>
+
+<b style="color: #00dffc;"> (4) 为解决超过\uffff码点的字符无法直接用码点表示的问题，引入了\u{xxxxx}</b>
+
+```
+console.log('\u1f602' === '😂') //false
+console.log('\ud83d\ude02' === '😂') // true
+
+console.log('\u{1f602}' === '😂') // true
+```
+
+<b style="color: #00dffc;"> (5) 解决字符串中有四个字节的字符的length问题</b>
+
+```
+const text = '笑哭了😂';
+
+// 解决一
+// 上线UTF-16如果是在辅助平面（占4个字节）的话，会有代理对，U+D800-U+DBFF和U+DC00-U+DFFF
+var surrogatePair = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g; // 匹配UTF-16的代理对
+
+function firstGetRealLength(string) {
+	return string
+		// 把代理对改为一个BMP的字符,然后获取长度
+		.replace(surrogatePair, '_')
+		.length;
+}
+firstGetRealLength(text); // 4
+
+// 解决二（推荐）
+// 字符串是可迭代的，可以用Array.from()来转化成数组计算length
+function secondGetRealLength(string) {
+	return Array.from(string).length;
+}
+secondGetRealLength(text); // 4
+
+// 解决三
+// 使用正则新增加的修饰符u
+function thirdGetRealLength(string) {
+    let result = text.match(/[\s\S]/gu);
+	return result?result.length:0;
+}
+thirdGetRealLength(text); // 4
+```
+
+<b style="color: #00dffc;"> (5) 解决字符串中有四个字节的字符的字符串反转问题</b>
+
+```
+const text = '笑哭了😂';
+
+function reverse(string) {
+    return string.split('').reverse().join('');
+}
+
+function reversePlus(string) {
+	return Array.from(string).reverse().join('');
+}
+
+console.log(reverse(text)) // ��了哭笑 因为😂是\ud83d\ude02反转后是\ude02\ud83d,不是一个合法的代理对（高低字节范围不同）
+console.log(reversePlus(text)) // 😂了哭笑
+```
+
+#### 2.4 ECMAScript 6 模板字面量
+
+模板字面量的填补的ES5的一些特性
+
+* 多行字符串
+* 基本的字符串格式化,有将变量的值嵌入字符串的能力
+* HTML转义，向HTML中插入经过安全转换后的字符串的能力
+
+<b style="color: #00dffc;">(1)多行字符串中反撇号中的所有空白符都属于字符串的一部分</b>
+
+```
+let message = `a
+            b`;
+console.log(message.length) //15
+```
+
+<b style="color: #00dffc;">(2)标签模板：模板字符串可以紧跟在一个函数名后面，该函数将被调用来处理这个模板字符串。这被称为“标签模板”功能（tagged template）。</b>
+
+标签模板其实不是模板，而是函数调用的一种特殊形式。“标签”指的就是函数，紧跟在后面的模板字符串就是它的参数。
+
+```
+let a = 5;
+let b = 10;
+function tag(s, v1, v2) {
+  console.log(s[0]);
+  console.log(s[1]);
+  console.log(s[2]);
+  console.log(v1);
+  console.log(v2);
+
+  return "OK";
+}
+
+// 标签模板调用
+tag`Hello ${ a + b } world ${ a * b }`;
+// 等同于
+tag(['Hello ', ' world ', ''], 15, 50);
+
+//打印
+// "Hello "
+// " world "
+// ""
+// 15
+// 50
+// "OK"
+```
+
+“标签模板”的一个重要应用，就是过滤 HTML 字符串，防止用户输入恶意内容。标签模板的另一个应用，就是多语言转换（国际化处理）。
 
 
 
