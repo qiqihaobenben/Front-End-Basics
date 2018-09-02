@@ -1,292 +1,12 @@
-## ES6 备忘录
+## ES6走走看看—字符到底发生了什么变化
 
-## 1. 由块级作用域引出的一场变革
-
-1、块级作用域又称词法作用域，存在于：
-
-* 函数内部（函数作用域）
-* 块中（字符 { 和 } 之间的区域）
-
-<b style="color: #c03546">注意：ES6允许块级作用域任意嵌套</b>
-
-```
-{{{{{{let text = 'Hello World!'}}}}}}
-```
-
-### 1.1 块级声明
-
-块级声明是用于声明在指定块的作用域之外无法访问的变量。
-
-### 1.2 let声明：用来声明一个块级作用域变量
-
-1. 声明的变量具有块级作用域的特性
-
-```
-// 例子
-function getValue (condition) {
-    if (condition) {
-        let value = 'blue';
-        return value;
-    }
-    console.log(value)
-    // 报错 value is not defined
-}
-getValue()
-```
-
-2. 在同一个作用域内不能使用let声明同名的变量
-
-```
-// 不管是var,const或者let,新的let声明之前同名的变量，都会报错
-var count = 30;
-let count = 40;
-// 报错 Identifier 'count' has already been declared
-
-// 函数形参和函数内部的let声明变量重名，报错
-function test(value) {
-    let value = 3;
-}
-test()
-// 报错 Identifier 'value' has already been declared
-
-// 在不同的作用域声明的变量重名是没问题的
-let count = 30;
-if(true) {
-  let count = 40;
-  // 不同的作用域，不会报错
-}
-
-```
-
-3. 声明没有预解析，不存在变量提升，有“临时死区”(TDZ)
-
-从块的开始到变量声明这段的区域被称为临时死区，ES6明确规定，如果区块中存在let和const命令，则这个区块对这些命令声明的变量从一开始就形成封闭作用域，只要在声明之前就使用这些变量（赋值，引用等等），就会报错。
-
-```
-if(true) {
-    console.log(typeof value);
-    // 报错 value is not defined
-
-    let value = 'blue';
-}
-```
-
-<b style="color: #c03546">注意：TDZ是区域是“块开始”到“变量声明”，下面的例子不报错</b>
-
-```
-// typeof 说是相对安全，确实是，永远拿不到想要的结果
-console.log(typeof value); // 打印 undefined，没有报错
-if(true) {
-    let value = 'red';
-}
-```
-
-### 1.3 const声明：声明常量（如PI），值一旦被设定后不可更改
-
-1. 常量声明的值是不可变的
-
-<b style="color: #c03546">注意：const声明的对象不允许修改绑定，但可以修改该对象的属性值。</b>
-
-```
-const number = 6;
-number = 5;
-// 报错 Assignment to constant variable
-
-const obj = {number: 1};
-obj.number = 2; // 不报错
-
-obj = {number: 3};
-// 报错 Assignment to constant variable
-```
-
-2. 因为常量声明后值就不可更改了，所以声明时必须赋值
-
-```
-// 有效的常量
-const count = 30;
-
-// 报错 Missing initializer in const declaration
-const name;
-```
-
-3. 声明的常量具有块级作用域的特性
-
-```
-if(true) {
-    const number = 5;
-}
-console.log(number)
-// 报错 number is not defined
-```
-
-4. 在同一个作用域内不能使用const声明同名的变量
-
-```
-var message = 'Hello';
-let age = 25;
-
-// 这两条语句都会报错
-const message = 'Good';
-const age = 30;
-```
-
-5. 声明没有预解析，不存在变量提升，有“临时死区”(TDZ)
-
-<br>
-
-<b style="color: #00dffc;">总结：一张表格</b>
-
-| 声明方式 | 变量提升 | 作用域 | 是否需要初始值 | 重复定义 |
-| ----- | --- | --- | ------ | --- |
-| var | 是 | 函数级 | 不需要 | 允许 |
-| let | 否 | 块级 | 不需要 | 不允许 |
-| const | 否 | 块级 | 需要 | 不允许 |
-
-<b style="color: #fc913a;">扩展：再提一下变量命名，不管是var、let、const声明的变量名，可以由数字，字母，下划线及美元符号组成，但是不能以数字开头。美元符号可以放到任何一个位置，甚至单独一个美元符号。</b>
-
-
-### 1.4 循环中的块作用域绑定
-
-> 循环中的let声明
-
-```
-// 第一个对比
-// before
-for(var i = 0; i < 5; i++) {
-    // ... 省略一些代码
-}
-console.log(i)  // 5
-
-//after
-for(let i = 0; i < 5; i++) {
-    // ... 省略一些代码
-}
-console.log(i) // 报错 i is not defined
-
-
-// 第二个对比
-// before
-var funcs = [];
-for(var i = 0; i < 10; i++) {
-    funcs.push(() => {console.log(i)})
-}
-funcs.forEach((ele) => {
-	ele()
-})
-// 打印 10次 10
-
-// after
-var funcs = [];
-for(let i = 0; i < 10; i++) {
-    funcs.push(() => {console.log(i)})
-}
-funcs.forEach((ele) => {
-	ele()
-})
-// 打印 0 1 2 3 4 5 6 7 8 9
-```
-
-<b style="color: #c03546">注意：有一点很重要，let 声明在循环内部的行为是标准中专门定义的，它不一定与 let 不提升特性有关。</b>
-
-> 循环中的const声明
-
-```
-// for 循环会报错
-for (const i = 0; i < 1; i++) {
-    console.log(i)
-}
-// 打印 0 ，然后报错 Assignment to constant variable.
-
-// for-in 和 for-of 不会报错
-var object = {
-    a: true,
-    b: true,
-    c: true
-};
-for (const key in object) {
-    // 不要在循环体内更改key的值，会报错
-    console.log(key)
-}
-// 打印 a b c
-```
-<b style="color: #c03546">注意：const可以应用在 for-in 和 for-of 循环中，是因为每次迭代不会修改已有绑定，而是会创建一个新绑定。</b>
-
-### 1.5 块级绑定最佳实践的进化
-
-> ES6 早期
-
-普遍认为默认使用let来替代var,对于写保护的变量使用const
-
-> ES6 使用中
-
-普遍默认使用const，只有确实需要改变变量的值时使用let。因为大部分变量的值在初始化后不应再改变，而预料之外的变量值的改变是许多bug的源头。这样就可以在某种程度上实现代码的不可变，从而防止某些错误的发生。
-
-
-### 1.5 全局变量将逐步与顶层对象的属性脱钩
-
-顶层对象，在浏览器环境指的是window对象，在Node指的是global对象。
-
-为了保持兼容性，var命令和function命令声明的全局变量，依旧是顶层对象的属性；
-```
-var a = 1;
-window.a // 1
-```
-
-![var 声明的a，在右侧 global 里面](./images/var.jpg)
-
-另一方面规定，let命令、const命令、class命令声明的全局变量，不属于顶层对象的属性。
-
-![](./images/let.jpg)
-上图可见let 声明的变量，并没有在Window对象里，而是一个新的Script对象。
-
-<b style="color: #fc913a;">扩展：如果需要在浏览器中跨frame或window访问代码，仍然可以用var在全局对象下定义变量。</b>
-
-
-### 1.6 块级函数
-
-从ECMAScript 6开始，在严格模式下，块里的函数作用域为这个块。ECMAScript 6之前不建议块级函数在严格模式下使用。
-
-```
-'use strict';
-
-function f() {
-  return 1;
-}
-
-{
-  function f() {
-    return 2;
-  }
-}
-
-f() === 1; // true
-
-// f() === 2 在非严格模式下相等
-```
-
-<b style="color: #c03546">注意：在非严格模式下不要用块级函数，因为在非严格模式下，块中函数的声明表现奇怪，有兼容性风险</b>
-
-```
-if (shouldDefineZero) {
-   function zero() {     // DANGER: 兼容性风险
-      console.log("This is zero.");
-   }
-}
-```
-
-ECMAScript 6中，如果shouldDefineZero是false，则永远不会定义zero,因为这个块不执行。这是新标准定义的。然而，这里存在历史遗留问题，无论这个块是否执行，一些浏览器会定义zero。
-
-在严格模式下，所有支持ECMAScript 6的浏览器以相同的方式处理：只有在shouldDefineZero为true的情况下定义zero，并且作用域只是这个块内。
-
-## 2、字符相关的变化
-
-### 2.1 JavaScript字符编码的“坑”和“填坑”
+## 1、 JavaScript字符编码的“坑”和“填坑”
 
 计算机内部处理的信息，都是一个些二进制值，每一个二进制位（bit）有0和1两种状态。
 一个字节（byte）有八个二进制位，也就是说，一个字节一共可以用来表示256种不同的状态，每一个状态对应一个符号，就是256个符号，从`00000000`到`11111111`。转换成十六进制，一个字节就是`0x00`到`OxFF`。
 
 
-#### 2.1 先来聊聊字符编码的历程
+### 1.1 先来聊聊字符编码的历程
 
 ![](./images/unicode.jpg)
 
@@ -347,7 +67,7 @@ a的码点 U+0061
 💩的码点 U+1F4A9
 ```
 
-正式因为上面说的，没有规定怎么存储，所以出现了Unicode 的多种存储方式，不同的实现导致了Unicode 在很长一段时间内无法推广，而且本来英文字母只用一个字节存储就够了，如果 Unicode 统一规定，每个符号用三个或四个字节表示，那么每个英文字母前都必然有二到三个字节是0，这对于存储来说是极大的浪费，文本文件的大小会因此大出二三倍，这是无法接受的。
+正是因为上面说的，没有规定怎么存储，所以出现了Unicode 的多种存储方式，不同的实现导致了Unicode 在很长一段时间内无法推广，而且本来英文字母只用一个字节存储就够了，如果 Unicode 统一规定，每个符号用三个或四个字节表示，那么每个英文字母前都必然有二到三个字节是0，这对于存储来说是极大的浪费，文本文件的大小会因此大出二三倍，这是无法接受的。
 
 在这个时候往往需要一个强大的外力推动，大家诉诸于利益，共同实现一个目标。所以，真正意义上的互联网普及了，地球变成了村子，交流越来越多，乱码是怎么能行。
 
@@ -361,7 +81,7 @@ UTF（Unicode transformation format）Unicode转换格式，是服务于Unicode�
 
 1992年开始设计，1993年首次被正式介绍，1996年UTF-8标准还没有正式落实前，微软的CAB（MS Cabinet）规格就明确容许在任何地方使用UTF-8编码系统。但有关的编码器实际上从来没有实现这方面的规格。2003年11月UTF-8被RFC 3629重新规范，只能使用原来Unicode定义的区域，U+0000到U+10FFFF，也就是说最多四个字节（之前可以使用一至六个字节为每个字符编码）
 
-UTF-8 是一种变长的编码方式。它可以使用1~4个字节表示一个符号，根据不同的符号而变化字节长度。越是常用的字符，字节越短，最前面的128个字符，只使用1个字节表示，与ASCII码完全相同（也就是所说的兼容ASCII码）。这样就比UTF-16 和 UTF-32节省空间。
+UTF-8 是一种变长的编码方式。它可以使用1~4个字节表示一个符号，根据不同的符号而变化字节长度。越是常用的字符，字节越短，最前面的128个字符，只使用1个字节表示，与ASCII码完全相同（也就是所说的兼容ASCII码）。在英文下这样就比UTF-16 和 UTF-32节省空间。
 
 UTF-8 的编码规则很简单，只有二条：
 
@@ -388,7 +108,7 @@ UTF-16编码介于UTF-32与UTF-8之间，同时结合了定长和变长两种编
 
 UTF-32 最直观的编码方法，每个码点使用四个字节表示，字节内容一一对应码点。
 
-UTF-32的优点在于，转换规则简单直观，查找效率高。缺点在于浪费空间，同样内容的英语文本，它会比ASCII编码大四倍。这个缺点很致命，导致实际上没有人使用这种编码方法，HTML 5标准就明文规定，网页不得编码成UTF-32。
+UTF-32的优点在于，转换规则简单直观，查找效率高。缺点在于浪费空间，同样内容的英语文本，它会比ASCII编码大三倍。这个缺点很致命，导致实际上没有人使用这种编码方法，HTML 5标准就明文规定，网页不得编码成UTF-32。
 
 <b style="color: #00dffc;"> (5) UCS UCS-2 </b>
 
@@ -409,9 +129,9 @@ Unicode 规范定义，每一个文件的最前面分别加入一个表示编码
 
 如果一个文本文件的头两个字节是FE FF，就表示该文件采用大尾方式；如果头两个字节是FF FE，就表示该文件采用小尾方式。
 
-#### 2.2 JavaScript 编码方法存在的问题
+### 1.2 JavaScript 编码方法存在的问题
 
-最开始给出的图中字符的发展历史和JavaScript的诞生时间对比下，可以知道JavaScript如果要想用Unicode字符集，**比较恰的选择是UCS-2编码方法**，UTF-8,UTF-16都来的晚了一些，UCS-4倒是有的，但是英文字符本来一个字节就可以的，现在也要用4个字节，还是挺严重的事情的。96年那个时候，电脑普遍配置内存 8MB-16MB，硬盘850MB—1.2GB。
+最上面给出的图中字符的发展历史和JavaScript的诞生时间对比下，可以知道JavaScript如果要想用Unicode字符集，**比较恰的选择是UCS-2编码方法**，UTF-8,UTF-16都来的晚了一些，UCS-4倒是有的，但是英文字符本来一个字节就可以的，现在也要用4个字节，还是挺严重的事情的。96年那个时候，电脑普遍配置内存 8MB-16MB，硬盘850MB—1.2GB。
 
 <b style="color: #c03546">ECMAScript 6 之前，JavaScript字符编码方式使用UCS-2，是导致之后JavaScript对位于辅助平面的字符（超过两个字节的字符）操作出现异常情况的根本原因。</b>
 
@@ -436,11 +156,11 @@ console.log('\ud83d\ude02' === '😂') // true
 
 <b style="color: #fc913a">扩展：� 的Unicode码点是 U+FFFD，通常用来表示Unicode转换时无法识别的字符（也就是乱码）</b>
 
-#### 2.3 ECMAScript 6 解决字符编码的问题
+### 1.3 ECMAScript 6 解决字符编码的问题
 
 <b style="color: #00dffc;"> (1) 为解决`charCodeAt()`方法获取字符乱码问题，新增`codePointAt()`方法</b>
 
-`codePointAt()`方法完全支持UTF-16,参数接受的是编码单元的位置而非字符位置，返回与字符串中给定位置对应的码位，即一个整数。
+`codePointAt()`方法完全支持UTF-16,参数接收的是编码单元的位置而非字符位置，返回与字符串中给定位置对应的码位，即一个整数。
 
 <b style="color: #fc913a">对于BMP字符集中的字符，codePointAt()方法的返回值跟charCodeAt()相同，而对于非BMP字符集来说，返回值不同。</b>
 
@@ -459,10 +179,10 @@ console.log(text.codePointAt(1)) // 位置1处的编码单元开始的码位 568
 ```
 // 打印😂
 console.log(String.fromCharCode(128514)) // 打印失败 
-console.log(String.fromCharCode(55357,56834)) // 参数可以接收一组序列数字，表示 Unicode 值。打印成功😂
+console.log(String.fromCharCode(55357,56834)) // 参数可以接收一组序列数字，表示 Unicode 值。打印成功 😂
 
 console.log(String.fromCodePoint(128514)) // 打印成功 😂
-console.log(String.fromCodePoint(128514)) // 可以接收不同进制的参数，打印成功 😂
+console.log(String.fromCodePoint(0x1f602)) // 可以接收不同进制的参数，打印成功 😂
 ```
 
 <b style="color: #00dffc;"> (3) 为解决正则表达式无法正确匹配超过两个字节的字符问题，ES6定义了一个支持Unicode的 `u` 修饰符</b>
@@ -537,7 +257,7 @@ console.log(reverse(text)) // ��了哭笑 因为😂是\ud83d\ude02反转�
 console.log(reversePlus(text)) // 😂了哭笑
 ```
 
-#### 2.4 ECMAScript 6 模板字面量
+### 2、 ECMAScript 6 模板字面量
 
 模板字面量的填补的ES5的一些特性
 
