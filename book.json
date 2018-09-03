@@ -1,0 +1,16 @@
+{
+  "title": "Front-End-Basics",
+  "author": "chenfangxu",
+  "description": "前端基础体系养成和一些有趣的文章",
+  "language": "zh-hans",
+  "gitbook": "3.2.2",
+  "plugins": [
+    "-lunr",
+    "-search",
+    "search-pro",
+    "anchor-navigation-ex"
+  ],
+  "pluginsConfig": {
+
+  }
+}

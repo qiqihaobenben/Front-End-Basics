@@ -1,0 +1,499 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>居中布局 · Front-End-Basics</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="author" content="chenfangxu">
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search-pro/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-anchor-navigation-ex/style/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="flexbox.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    HTML
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../../HTML/global-attr.html">
+            
+                <a href="../../HTML/global-attr.html">
+            
+                    
+                    HTML5全局属性汇总
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    CSS
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    CSS布局篇
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="flexbox.html">
+            
+                <a href="flexbox.html">
+            
+                    
+                    flexbox 布局
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.1.2" data-path="middle.html">
+            
+                <a href="middle.html">
+            
+                    
+                    居中布局
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    JavaScript
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../../JavaScript/utility/cache.html">
+            
+                <a href="../../JavaScript/utility/cache.html">
+            
+                    
+                    深入篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >居中布局</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon "></span><a href="#&#x6C34;&#x5E73;&#x5782;&#x76F4;&#x5C45;&#x4E2D;&#x5E03;&#x5C40;"><b>1. </b>&#x6C34;&#x5E73;&#x5782;&#x76F4;&#x5C45;&#x4E2D;&#x5E03;&#x5C40;</a></li><ul><li><span class="title-icon "></span><a href="#&#x5B50;&#x5143;&#x7D20;&#x5B9A;&#x5BBD;&#x9AD8;"><b>1.1. </b>&#x5B50;&#x5143;&#x7D20;&#x5B9A;&#x5BBD;&#x9AD8;</a></li><ul><li><span class="title-icon "></span><a href="#1&#x3001;absolute--margin&#x8D1F;&#x503C;"><b>1.1.1. </b>1&#x3001;absolute + margin&#x8D1F;&#x503C;</a></li><li><span class="title-icon "></span><a href="#2&#x3001;absoluteleftrighttopbottom--margin--width--height"><b>1.1.2. </b>2&#x3001;absolute(left,right,top,bottom) + margin + width + height</a></li></ul><li><span class="title-icon "></span><a href="#&#x5B50;&#x5143;&#x7D20;&#x4E0D;&#x5B9A;&#x5BBD;&#x9AD8;"><b>1.2. </b>&#x5B50;&#x5143;&#x7D20;&#x4E0D;&#x5B9A;&#x5BBD;&#x9AD8;</a></li><ul><li><span class="title-icon "></span><a href="#1&#x3001;displaytable-cell"><b>1.2.1. </b>1&#x3001;display:table-cell;</a></li><li><span class="title-icon "></span><a href="#2&#x3001;absolute--transform"><b>1.2.2. </b>2&#x3001;absolute + transform</a></li><li><span class="title-icon "></span><a href="#3&#x3001;display-flex"><b>1.2.3. </b>3&#x3001;display: flex;</a></li><li><span class="title-icon "></span><a href="#4&#x3001;text-aligncentervertical-alignmiddle"><b>1.2.4. </b>4&#x3001;text-align:center;vertical-align:middle;</a></li><li><span class="title-icon "></span><a href="#5&#x3001;calc"><b>1.2.5. </b>5&#x3001;calc</a></li><li><span class="title-icon "></span><a href="#&#x63A8;&#x8350;&#x8D44;&#x6E90;"><b>1.2.6. </b>&#x63A8;&#x8350;&#x8D44;&#x6E90;</a></li></ul></ul></ul></div><a href="#&#x6C34;&#x5E73;&#x5782;&#x76F4;&#x5C45;&#x4E2D;&#x5E03;&#x5C40;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="&#x6C34;&#x5E73;&#x5782;&#x76F4;&#x5C45;&#x4E2D;&#x5E03;&#x5C40;"><a name="&#x6C34;&#x5E73;&#x5782;&#x76F4;&#x5C45;&#x4E2D;&#x5E03;&#x5C40;" class="anchor-navigation-ex-anchor" href="#&#x6C34;&#x5E73;&#x5782;&#x76F4;&#x5C45;&#x4E2D;&#x5E03;&#x5C40;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x6C34;&#x5E73;&#x5782;&#x76F4;&#x5C45;&#x4E2D;&#x5E03;&#x5C40;</h1>
+<p><a href="https://qiqihaobenben.github.io/layout/pages/middle" target="_blank">demo:&#x6C34;&#x5E73;&#x5782;&#x76F4;&#x5C45;&#x4E2D;&#x7684;&#x5C55;&#x793A;&#x9875;&#x9762;</a></p>
+<h2 id="&#x5B50;&#x5143;&#x7D20;&#x5B9A;&#x5BBD;&#x9AD8;"><a name="&#x5B50;&#x5143;&#x7D20;&#x5B9A;&#x5BBD;&#x9AD8;" class="anchor-navigation-ex-anchor" href="#&#x5B50;&#x5143;&#x7D20;&#x5B9A;&#x5BBD;&#x9AD8;"><i class="fa fa-link" aria-hidden="true"></i></a>1.1. &#x5B50;&#x5143;&#x7D20;&#x5B9A;&#x5BBD;&#x9AD8;</h2>
+<h3 id="1&#x3001;absolute--margin&#x8D1F;&#x503C;"><a name="1&#x3001;absolute--margin&#x8D1F;&#x503C;" class="anchor-navigation-ex-anchor" href="#1&#x3001;absolute--margin&#x8D1F;&#x503C;"><i class="fa fa-link" aria-hidden="true"></i></a>1.1.1. 1&#x3001;absolute + margin&#x8D1F;&#x503C;</h3>
+<p><img src="images/11.png" alt="absolute+margin&#x8D1F;&#x503C;"></p>
+<pre><code>.container {
+    position: relative;
+    margin: 0 auto;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #666;
+}
+.item {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -100px;
+    margin-top: -100px;
+    width: 200px;
+    height: 200px;
+    background-color: #8c7676;
+}
+</code></pre><h3 id="2&#x3001;absoluteleftrighttopbottom--margin--width--height"><a name="2&#x3001;absoluteleftrighttopbottom--margin--width--height" class="anchor-navigation-ex-anchor" href="#2&#x3001;absoluteleftrighttopbottom--margin--width--height"><i class="fa fa-link" aria-hidden="true"></i></a>1.1.2. 2&#x3001;absolute(left,right,top,bottom) + margin + width + height</h3>
+<p><img src="images/12.png" alt="absolute(left,right,top,bottom) + margin + width + height"></p>
+<pre><code>.container {
+    position: relative;
+    margin: 0 auto;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #666;
+}
+.item {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 200px;
+    height: 200px;
+    background-color: #8c7676;
+}
+</code></pre><p>&#x517C;&#x5BB9;&#x6027;&#xFF1A;&#x4E3B;&#x6D41;&#x6D4F;&#x89C8;&#x5668;&#x5747;&#x652F;&#x6301;&#x3002;
+<strong>&#x6CE8;&#x610F;&#xFF1A;&#x5B50;&#x5143;&#x7D20;&#x5FC5;&#x987B;&#x4E3A;&#x56FA;&#x5B9A;&#x5BBD;&#x9AD8;</strong></p>
+<p><br></p>
+<h2 id="&#x5B50;&#x5143;&#x7D20;&#x4E0D;&#x5B9A;&#x5BBD;&#x9AD8;"><a name="&#x5B50;&#x5143;&#x7D20;&#x4E0D;&#x5B9A;&#x5BBD;&#x9AD8;" class="anchor-navigation-ex-anchor" href="#&#x5B50;&#x5143;&#x7D20;&#x4E0D;&#x5B9A;&#x5BBD;&#x9AD8;"><i class="fa fa-link" aria-hidden="true"></i></a>1.2. &#x5B50;&#x5143;&#x7D20;&#x4E0D;&#x5B9A;&#x5BBD;&#x9AD8;</h2>
+<h3 id="1&#x3001;displaytable-cell"><a name="1&#x3001;displaytable-cell" class="anchor-navigation-ex-anchor" href="#1&#x3001;displaytable-cell"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.1. 1&#x3001;display:table-cell;</h3>
+<p><img src="images/13.png" alt="display:table-cell;"></p>
+<pre><code>.container {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 auto;/*margin&#x5728;table-cell&#x4E0B;&#x5DF2;&#x7ECF;&#x4E0D;&#x8D77;&#x7528;&#x4E86;*/
+    width: 600px;
+    height: 400px;
+    border: 2px solid #666;
+}
+.item {
+    display: inline-block;
+    padding: 100px; /*&#x7528;padding&#x6765;&#x6491;&#x5F00;&#x5143;&#x7D20;&#xFF0C;&#x6CA1;&#x6709;&#x8BBE;&#x7F6E;&#x5BBD;&#x9AD8;*/
+    background-color: #8c7676;
+}
+</code></pre><p>&#x517C;&#x5BB9;&#x6027;&#xFF1A;&#x7531;&#x4E8E;display:table-cell&#x7684;&#x539F;&#x56E0;&#xFF0C;IE6\7&#x4E0D;&#x517C;&#x5BB9;&#x3002;  </p>
+<p><strong>&#x6CE8;&#x610F;&#xFF1A;&#x65E0;&#x8BBA;&#x7236;&#x5143;&#x7D20;&#x8FD8;&#x662F;&#x5B50;&#x5143;&#x7D20;&#x90FD;&#x4E0D;&#x80FD;&#x6D6E;&#x52A8;&#xFF0C;&#x5982;&#x679C;&#x7236;&#x5143;&#x7D20;&#x6D6E;&#x52A8;&#xFF0C;&#x5143;&#x7D20;&#x5C31;&#x53EA;&#x80FD;&#x6C34;&#x5E73;&#x5C45;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x5B50;&#x5143;&#x7D20;&#x6D6E;&#x52A8;&#xFF0C;&#x5219;&#x5B50;&#x5143;&#x7D20;&#x6309;&#x7167;&#x6D6E;&#x52A8;&#x7684;&#x65B9;&#x5411;&#x8D70;&#x3002;</strong></p>
+<h3 id="2&#x3001;absolute--transform"><a name="2&#x3001;absolute--transform" class="anchor-navigation-ex-anchor" href="#2&#x3001;absolute--transform"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.2. 2&#x3001;absolute + transform</h3>
+<p><img src="images/14.png" alt="absolute + transform"></p>
+<pre><code>.container {
+    position: relative;
+    margin: 0 auto;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #666;
+}
+.item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 100px;/*&#x7528;padding&#x6765;&#x6491;&#x5F00;&#x5143;&#x7D20;&#xFF0C;&#x6CA1;&#x6709;&#x8BBE;&#x7F6E;&#x5BBD;&#x9AD8;*/
+    background-color: #8c7676;
+}
+</code></pre><p>&#x517C;&#x5BB9;&#x6027;&#xFF1A;&#x6D4F;&#x89C8;&#x5668;&#x5FC5;&#x987B;&#x652F;&#x6301;transform&#x3002;</p>
+<h3 id="3&#x3001;display-flex"><a name="3&#x3001;display-flex" class="anchor-navigation-ex-anchor" href="#3&#x3001;display-flex"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.3. 3&#x3001;display: flex;</h3>
+<p><img src="images/15.png" alt="display: flex;"></p>
+<pre><code>.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #666;
+}
+.item {
+    display: inline-block;
+    padding: 100px;/*&#x7528;padding&#x6765;&#x6491;&#x5F00;&#x5143;&#x7D20;&#xFF0C;&#x6CA1;&#x6709;&#x8BBE;&#x7F6E;&#x5BBD;&#x9AD8;*/
+    background-color: #8c7676;
+}
+</code></pre><p>&#x517C;&#x5BB9;&#x6027;&#xFF1A;&#x6D4F;&#x89C8;&#x5668;&#x5FC5;&#x987B;&#x652F;&#x6301;flex&#x3002;</p>
+<h3 id="4&#x3001;text-aligncentervertical-alignmiddle"><a name="4&#x3001;text-aligncentervertical-alignmiddle" class="anchor-navigation-ex-anchor" href="#4&#x3001;text-aligncentervertical-alignmiddle"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.4. 4&#x3001;text-align:center;vertical-align:middle;</h3>
+<p><img src="images/16.png" alt="text-align:center;vertical-align:middle;"></p>
+<pre><code>.container {
+    text-align: center;
+    font-size: 0;
+    margin: 0 auto;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #666;
+}
+.container::before {
+    display: inline-block;
+    content: &apos;&apos;;
+    width: 0;
+    height: 100%;
+    vertical-align: middle;
+}
+.item {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 100px;/*&#x7528;padding&#x6491;&#x5F00;&#x5143;&#x7D20;&#xFF0C;&#x6CA1;&#x6709;&#x8BBE;&#x7F6E;&#x5BBD;&#x9AD8;*/
+    font-size: 12px;/*&#x91CD;&#x65B0;&#x8BBE;&#x7F6E;&#x5B50;&#x5143;&#x7D20;&#x5185;&#x7684;&#x5B57;&#x4F53;&#x5927;&#x5C0F;*/
+    background-color: #8c7676;
+}
+</code></pre><p>&#x517C;&#x5BB9;&#x6027;&#xFF1A;&#x4E3B;&#x6D41;&#x6D4F;&#x89C8;&#x5668;&#x5747;&#x652F;&#x6301;&#x3002;
+<strong>&#x6CE8;&#x610F;&#xFF1A;&#x5B50;&#x5143;&#x7D20;&#x5FC5;&#x987B;&#x8981;&#x662F;inline-block&#x6216;&#x8005;inline&#x7684;&#x5143;&#x7D20;&#xFF0C;&#x5E76;&#x4E14;&#x5B50;&#x5143;&#x7D20;&#x4E0D;&#x80FD;&#x7EDD;&#x5BF9;&#x5B9A;&#x4F4D;&#x548C;&#x6D6E;&#x52A8;&#x3002;</strong></p>
+<h3 id="5&#x3001;calc"><a name="5&#x3001;calc" class="anchor-navigation-ex-anchor" href="#5&#x3001;calc"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.5. 5&#x3001;calc</h3>
+<p><img src="images/17.png" alt="calc"></p>
+<pre><code>.container {
+    position: relative;
+    margin: 0 auto;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #666;
+}
+
+.item {
+    position: absolute;
+    left: calc(50% - 200px / 2);
+    top: calc(50% - 200px / 2);
+    width: 200px;
+    height: 200px;
+    background-color: #8c7676;
+}
+</code></pre><p>&#x517C;&#x5BB9;&#x6027;&#xFF1A;&#x6D4F;&#x89C8;&#x5668;&#x5FC5;&#x987B;&#x652F;&#x6301;calc&#x3002;</p>
+<h3 id="&#x63A8;&#x8350;&#x8D44;&#x6E90;"><a name="&#x63A8;&#x8350;&#x8D44;&#x6E90;" class="anchor-navigation-ex-anchor" href="#&#x63A8;&#x8350;&#x8D44;&#x6E90;"><i class="fa fa-link" aria-hidden="true"></i></a>1.2.6. &#x63A8;&#x8350;&#x8D44;&#x6E90;</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/Dudy/p/4085292.html" target="_blank">CSS&#x5143;&#x7D20;&#x6C34;&#x5E73;&#x5782;&#x76F4;&#x5C45;&#x4E2D;&#x65B9;&#x6CD5;&#x603B;&#x7ED3;</a><br>&#x91CC;&#x9762;&#x8FD8;&#x6709;&#x5173;&#x4E8E;&#x80CC;&#x666F;&#x56FE;&#x7684;&#x5C45;&#x4E2D;&#x548C;&#x517C;&#x5BB9;&#x4F4E;&#x7248;&#x672C;&#x6D4F;&#x89C8;&#x5668;&#x7684;&#x5199;&#x6CD5;</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="flexbox.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: flexbox 布局">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"居中布局","level":"1.3.1.2","depth":3,"next":{"title":"JavaScript","level":"1.4","depth":1,"ref":"","articles":[{"title":"深入篇","level":"1.4.1","depth":2,"path":"JavaScript/utility/cache.md","ref":"JavaScript/utility/cache.md","articles":[]}]},"previous":{"title":"flexbox 布局","level":"1.3.1.1","depth":3,"path":"CSS/layouts/flexbox.md","ref":"CSS/layouts/flexbox.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-lunr","-search","search-pro","anchor-navigation-ex","livereload"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"search-pro":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"","level2Icon":"","level3Icon":"","showLevelIcon":false},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"","level2Icon":"","level3Icon":"","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"livereload":{},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"chenfangxu","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Front-End-Basics","language":"zh-hans","gitbook":"3.2.2","description":"前端基础体系养成和一些有趣的文章"},"file":{"path":"CSS/layouts/middle.md","mtime":"2018-05-25T11:00:30.268Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-09-03T14:42:31.466Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
