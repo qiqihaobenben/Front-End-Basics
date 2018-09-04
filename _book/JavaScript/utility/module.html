@@ -1,0 +1,1568 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>JavaScript的模块 · Front-End-Basics</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="author" content="chenfangxu">
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search-pro/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-anchor-navigation-ex/style/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="oo.html" />
+    
+    
+    <link rel="prev" href="cache.html" />
+    
+
+    <style>
+    @media only screen and (max-width: 640px) {
+        .book-header .hidden-mobile {
+            display: none;
+        }
+    }
+    </style>
+    <script>
+        window["gitbook-plugin-github-buttons"] = {"buttons":[{"user":"qiqihaobenben","repo":"Front-End-Basics","type":"star","size":"small"}]};
+    </script>
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    HTML
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../../HTML/global-attr.html">
+            
+                <a href="../../HTML/global-attr.html">
+            
+                    
+                    HTML5全局属性汇总
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    CSS
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" >
+            
+                <span>
+            
+                    
+                    布局篇
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="../../CSS/layouts/flexbox.html">
+            
+                <a href="../../CSS/layouts/flexbox.html">
+            
+                    
+                    flexbox 布局
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.2" data-path="../../CSS/layouts/middle.html">
+            
+                <a href="../../CSS/layouts/middle.html">
+            
+                    
+                    居中布局
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    JavaScript
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" >
+            
+                <span>
+            
+                    
+                    数据交互
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1.1" data-path="data-interaction/ajax.html">
+            
+                <a href="data-interaction/ajax.html">
+            
+                    
+                    Ajax通俗讲解
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.2" data-path="data-interaction/cross-origin.html">
+            
+                <a href="data-interaction/cross-origin.html">
+            
+                    
+                    前端请求跨域
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" >
+            
+                <span>
+            
+                    
+                    数据结构和算法
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.2.1" data-path="fe-algorithm/array.html">
+            
+                <a href="fe-algorithm/array.html">
+            
+                    
+                    数组的十八般武艺
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" >
+            
+                <span>
+            
+                    
+                    深入篇
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.3.1" data-path="cache.html">
+            
+                <a href="cache.html">
+            
+                    
+                    三种本地存储方式和一些扩展
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4.3.2" data-path="module.html">
+            
+                <a href="module.html">
+            
+                    
+                    JavaScript的模块
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3.3" data-path="oo.html">
+            
+                <a href="oo.html">
+            
+                    
+                    JavaScript的面向对象
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" >
+            
+                <span>
+            
+                    
+                    ES6走走看看
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.4.1" data-path="../ES6/block.html">
+            
+                <a href="../ES6/block.html">
+            
+                    
+                    由块级作用域引出的一场变革
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4.2" data-path="../ES6/string.html">
+            
+                <a href="../ES6/string.html">
+            
+                    
+                    字符到底发生了什么变化
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" >
+            
+                <span>
+            
+                    
+                    TypeScript
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.5.1" data-path="../typescript/intro.html">
+            
+                <a href="../typescript/intro.html">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5.2" data-path="../typescript/synax.html">
+            
+                <a href="../typescript/synax.html">
+            
+                    
+                    基本语法
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" >
+            
+                <span>
+            
+                    
+                    移动端
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" >
+            
+                <span>
+            
+                    
+                    HTML5
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.1" data-path="../../mobile/fit.html">
+            
+                <a href="../../mobile/fit.html">
+            
+                    
+                    移动端适配
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" >
+            
+                <span>
+            
+                    
+                    Node.js
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" >
+            
+                <span>
+            
+                    
+                    文档
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.1" data-path="../../node/">
+            
+                <a href="../../node/">
+            
+                    
+                    基础介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" >
+            
+                <span>
+            
+                    
+                    网络基础
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" >
+            
+                <span>
+            
+                    
+                    HTTP
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1.1" data-path="../../network-basics/HTTP/">
+            
+                <a href="../../network-basics/HTTP/">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.2" data-path="../../network-basics/request/">
+            
+                <a href="../../network-basics/request/">
+            
+                    
+                    网络请求
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    工具类
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" >
+            
+                <span>
+            
+                    
+                    Git
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1.1" data-path="../../assistive-tools/git/intro.html">
+            
+                <a href="../../assistive-tools/git/intro.html">
+            
+                    
+                    版本控制系统简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.2" data-path="../../assistive-tools/git/workflow.html">
+            
+                <a href="../../assistive-tools/git/workflow.html">
+            
+                    
+                    安装和入门
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.3" data-path="../../assistive-tools/git/theory.html">
+            
+                <a href="../../assistive-tools/git/theory.html">
+            
+                    
+                    基础和原理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.4" data-path="../../assistive-tools/git/directory.html">
+            
+                <a href="../../assistive-tools/git/directory.html">
+            
+                    
+                    目录讲解
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.5" data-path="../../assistive-tools/git/setconfig.html">
+            
+                <a href="../../assistive-tools/git/setconfig.html">
+            
+                    
+                    基础操作配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.6" data-path="../../assistive-tools/git/command.html">
+            
+                <a href="../../assistive-tools/git/command.html">
+            
+                    
+                    命令汇总
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" >
+            
+                <span>
+            
+                    
+                    实践沉淀
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../../project/el-scrollbar.html">
+            
+                <a href="../../project/el-scrollbar.html">
+            
+                    
+                    el-scrollbar讲解
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" >
+            
+                <span>
+            
+                    
+                    捡贝壳
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" >
+            
+                <span>
+            
+                    
+                    有趣的文章
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1.1" data-path="../../article/book.html">
+            
+                <a href="../../article/book.html">
+            
+                    
+                    买了书也不读，还要不要买？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.2" data-path="../../article/critical-knowledge.html">
+            
+                <a href="../../article/critical-knowledge.html">
+            
+                    
+                    临界知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.3" data-path="../../article/seven-thing.html">
+            
+                <a href="../../article/seven-thing.html">
+            
+                    
+                    七件事
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.4" data-path="../../article/zhihu48.html">
+            
+                <a href="../../article/zhihu48.html">
+            
+                    
+                    知乎上的神回复
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" >
+            
+                <span>
+            
+                    
+                    老技术文章备份
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.2.1" data-path="../../article/oldTechnologyArticle/ThinkPHP_template.html">
+            
+                <a href="../../article/oldTechnologyArticle/ThinkPHP_template.html">
+            
+                    
+                    ThinkPHP 模板中的语法知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2.2" data-path="../../article/oldTechnologyArticle/zifubianma.html">
+            
+                <a href="../../article/oldTechnologyArticle/zifubianma.html">
+            
+                    
+                    字符编码趣闻
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >JavaScript的模块</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon "></span><a href="#javascript&#x7684;&#x6A21;&#x5757;"><b></b>JavaScript&#x7684;&#x6A21;&#x5757;</a></li><ul><li><span class="title-icon "></span><a href="#&#x4ECB;&#x7ECD;"><b></b>&#x4ECB;&#x7ECD;</a></li><ul><li><span class="title-icon "></span><a href="#&#x6A21;&#x5757;&#x7684;&#x4F18;&#x70B9;"><b></b>&#x6A21;&#x5757;&#x7684;&#x4F18;&#x70B9;</a></li></ul><li><span class="title-icon "></span><a href="#commonjs"><b></b>CommonJS</a></li><ul><li><span class="title-icon "></span><a href="#nodejs"><b></b>Node.js</a></li></ul><li><span class="title-icon "></span><a href="#amd"><b></b>AMD</a></li><ul><li><span class="title-icon "></span><a href="#requirejs"><b></b>RequireJS</a></li></ul><li><span class="title-icon "></span><a href="#cmd"><b></b>CMD</a></li><ul><li><span class="title-icon "></span><a href="#seajs"><b></b>SeaJS</a></li></ul><li><span class="title-icon "></span><a href="#umd"><b></b>UMD</a></li><li><span class="title-icon "></span><a href="#es6&#x6A21;&#x5757;module"><b></b>ES6&#x6A21;&#x5757;(module)</a></li><ul><li><span class="title-icon "></span><a href="#&#x4E25;&#x683C;&#x6A21;&#x5F0F;"><b></b>&#x4E25;&#x683C;&#x6A21;&#x5F0F;</a></li><li><span class="title-icon "></span><a href="#&#x6A21;&#x5757;module"><b></b>&#x6A21;&#x5757;Module</a></li><li><span class="title-icon "></span><a href="#&#x5BFC;&#x51FA;export"><b></b>&#x5BFC;&#x51FA;Export</a></li><li><span class="title-icon "></span><a href="#&#x5BFC;&#x5165;import"><b></b>&#x5BFC;&#x5165;import</a></li></ul><li><span class="title-icon "></span><a href="#&#x9ED8;&#x8BA4;&#x5BFC;&#x51FA;export-default"><b></b>&#x9ED8;&#x8BA4;&#x5BFC;&#x51FA;(export default)</a></li><li><span class="title-icon "></span><a href="#export-&#x4E0E;-import-&#x7684;&#x590D;&#x5408;&#x5199;&#x6CD5;"><b></b>export &#x4E0E; import &#x7684;&#x590D;&#x5408;&#x5199;&#x6CD5;</a></li><ul><li><span class="title-icon "></span><a href="#es6-&#x4E2D;&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;"><b></b>ES6 &#x4E2D;&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;</a></li><li><span class="title-icon "></span><a href="#&#x5B9E;&#x4F8B;"><b></b>&#x5B9E;&#x4F8B;</a></li></ul><li><span class="title-icon "></span><a href="#&#x63A8;&#x8350;&#x8D44;&#x6599;"><b></b>&#x63A8;&#x8350;&#x8D44;&#x6599;</a></li></ul></ul></div><a href="#javascript&#x7684;&#x6A21;&#x5757;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="javascript&#x7684;&#x6A21;&#x5757;"><a name="javascript&#x7684;&#x6A21;&#x5757;" class="anchor-navigation-ex-anchor" href="#javascript&#x7684;&#x6A21;&#x5757;"><i class="fa fa-link" aria-hidden="true"></i></a>JavaScript&#x7684;&#x6A21;&#x5757;</h1>
+<h2 id="&#x4ECB;&#x7ECD;"><a name="&#x4ECB;&#x7ECD;" class="anchor-navigation-ex-anchor" href="#&#x4ECB;&#x7ECD;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x4ECB;&#x7ECD;</h2>
+<p>&#x6A21;&#x5757;&#x901A;&#x5E38;&#x662F;&#x6307;&#x7F16;&#x7A0B;&#x8BED;&#x8A00;&#x6240;&#x63D0;&#x4F9B;&#x7684;&#x4EE3;&#x7801;&#x7EC4;&#x7EC7;&#x673A;&#x5236;&#xFF0C;&#x5229;&#x7528;&#x6B64;&#x673A;&#x5236;&#x53EF;&#x5C06;&#x7A0B;&#x5E8F;&#x62C6;&#x89E3;&#x4E3A;&#x72EC;&#x7ACB;&#x4E14;&#x901A;&#x7528;&#x7684;&#x4EE3;&#x7801;&#x5355;&#x5143;&#x3002;&#x6240;&#x8C13;&#x6A21;&#x5757;&#x5316;&#x4E3B;&#x8981;&#x662F;&#x89E3;&#x51B3;&#x4EE3;&#x7801;&#x5206;&#x5272;&#x3001;&#x4F5C;&#x7528;&#x57DF;&#x9694;&#x79BB;&#x3001;&#x6A21;&#x5757;&#x4E4B;&#x95F4;&#x7684;&#x4F9D;&#x8D56;&#x7BA1;&#x7406;&#x4EE5;&#x53CA;&#x53D1;&#x5E03;&#x5230;&#x751F;&#x4EA7;&#x73AF;&#x5883;&#x65F6;&#x7684;&#x81EA;&#x52A8;&#x5316;&#x6253;&#x5305;&#x4E0E;&#x5904;&#x7406;&#x7B49;&#x591A;&#x4E2A;&#x65B9;&#x9762;&#x3002;</p>
+<h3 id="&#x6A21;&#x5757;&#x7684;&#x4F18;&#x70B9;"><a name="&#x6A21;&#x5757;&#x7684;&#x4F18;&#x70B9;" class="anchor-navigation-ex-anchor" href="#&#x6A21;&#x5757;&#x7684;&#x4F18;&#x70B9;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x6A21;&#x5757;&#x7684;&#x4F18;&#x70B9;</h3>
+<ol>
+<li><strong>&#x53EF;&#x7EF4;&#x62A4;&#x6027;&#x3002;</strong>  &#x56E0;&#x4E3A;&#x6A21;&#x5757;&#x662F;&#x72EC;&#x7ACB;&#x7684;&#xFF0C;&#x4E00;&#x4E2A;&#x8BBE;&#x8BA1;&#x826F;&#x597D;&#x7684;&#x6A21;&#x5757;&#x4F1A;&#x8BA9;&#x5916;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x5BF9;&#x81EA;&#x5DF1;&#x7684;&#x4F9D;&#x8D56;&#x8D8A;&#x5C11;&#x8D8A;&#x597D;&#xFF0C;&#x8FD9;&#x6837;&#x81EA;&#x5DF1;&#x5C31;&#x53EF;&#x4EE5;&#x72EC;&#x7ACB;&#x53BB;&#x66F4;&#x65B0;&#x548C;&#x6539;&#x8FDB;&#x3002;</li>
+<li><strong>&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x3002;</strong> &#x5728; JavaScript &#x91CC;&#x9762;&#xFF0C;&#x5982;&#x679C;&#x4E00;&#x4E2A;&#x53D8;&#x91CF;&#x5728;&#x6700;&#x9876;&#x7EA7;&#x7684;&#x51FD;&#x6570;&#x4E4B;&#x5916;&#x58F0;&#x660E;&#xFF0C;&#x5B83;&#x5C31;&#x76F4;&#x63A5;&#x53D8;&#x6210;&#x5168;&#x5C40;&#x53EF;&#x7528;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x5E38;&#x5E38;&#x4E0D;&#x5C0F;&#x5FC3;&#x51FA;&#x73B0;&#x547D;&#x540D;&#x51B2;&#x7A81;&#x7684;&#x60C5;&#x51B5;&#x3002;&#x4F7F;&#x7528;&#x6A21;&#x5757;&#x5316;&#x5F00;&#x53D1;&#x6765;&#x5C01;&#x88C5;&#x53D8;&#x91CF;&#xFF0C;&#x53EF;&#x4EE5;&#x907F;&#x514D;&#x6C61;&#x67D3;&#x5168;&#x5C40;&#x73AF;&#x5883;&#x3002;</li>
+<li><strong>&#x91CD;&#x7528;&#x4EE3;&#x7801;&#x3002;</strong> &#x6211;&#x4EEC;&#x6709;&#x65F6;&#x5019;&#x4F1A;&#x559C;&#x6B22;&#x4ECE;&#x4E4B;&#x524D;&#x5199;&#x8FC7;&#x7684;&#x9879;&#x76EE;&#x4E2D;&#x62F7;&#x8D1D;&#x4EE3;&#x7801;&#x5230;&#x65B0;&#x7684;&#x9879;&#x76EE;&#xFF0C;&#x8FD9;&#x6CA1;&#x6709;&#x95EE;&#x9898;&#xFF0C;&#x4F46;&#x662F;&#x66F4;&#x597D;&#x7684;&#x65B9;&#x6CD5;&#x662F;&#xFF0C;&#x901A;&#x8FC7;&#x6A21;&#x5757;&#x5F15;&#x7528;&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x6765;&#x907F;&#x514D;&#x91CD;&#x590D;&#x7684;&#x4EE3;&#x7801;&#x5E93;&#x3002;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;&#x66F4;&#x65B0;&#x4E86;&#x6A21;&#x5757;&#x4E4B;&#x540E;&#xFF0C;&#x8BA9;&#x5F15;&#x7528;&#x4E86;&#x8BE5;&#x6A21;&#x5757;&#x7684;&#x6240;&#x6709;&#x9879;&#x76EE;&#x90FD;&#x540C;&#x6B65;&#x66F4;&#x65B0;&#xFF0C;&#x8FD8;&#x80FD;&#x6307;&#x5B9A;&#x7248;&#x672C;&#x53F7;&#xFF0C;&#x907F;&#x514D; API &#x53D8;&#x66F4;&#x5E26;&#x6765;&#x7684;&#x9EBB;&#x70E6;&#x3002;</li>
+</ol>
+<h2 id="commonjs"><a name="commonjs" class="anchor-navigation-ex-anchor" href="#commonjs"><i class="fa fa-link" aria-hidden="true"></i></a>CommonJS</h2>
+<p>CommonJS &#x6700;&#x5F00;&#x59CB;&#x662F; Mozilla &#x7684;&#x5DE5;&#x7A0B;&#x5E08;&#x4E8E; 2009 &#x5E74;&#x5F00;&#x59CB;&#x7684;&#x4E00;&#x4E2A;&#x9879;&#x76EE;&#xFF0C;&#x5B83;&#x7684;&#x76EE;&#x7684;&#x662F;&#x8BA9;&#x6D4F;&#x89C8;&#x5668;&#x4E4B;&#x5916;&#x7684; JavaScript &#xFF08;&#x6BD4;&#x5982;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x6216;&#x8005;&#x684C;&#x9762;&#x7AEF;&#xFF09;&#x80FD;&#x591F;&#x901A;&#x8FC7;&#x6A21;&#x5757;&#x5316;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x5F00;&#x53D1;&#x548C;&#x534F;&#x4F5C;&#x3002;  </p>
+<p>&#x5728; CommonJS &#x7684;&#x89C4;&#x8303;&#x4E2D;&#xFF0C;&#x6BCF;&#x4E2A; JavaScript &#x6587;&#x4EF6;&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x72EC;&#x7ACB;&#x7684;&#x6A21;&#x5757;&#x4E0A;&#x4E0B;&#x6587;&#xFF08;module context&#xFF09;&#xFF0C;&#x5728;&#x8FD9;&#x4E2A;&#x4E0A;&#x4E0B;&#x6587;&#x4E2D;&#x9ED8;&#x8BA4;&#x521B;&#x5EFA;&#x7684;&#x5C5E;&#x6027;&#x90FD;&#x662F;&#x79C1;&#x6709;&#x7684;&#x3002;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#xFF0C;&#x5728;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x5B9A;&#x4E49;&#x7684;&#x53D8;&#x91CF;&#xFF08;&#x8FD8;&#x5305;&#x62EC;&#x51FD;&#x6570;&#x548C;&#x7C7B;&#xFF09;&#xFF0C;&#x90FD;&#x662F;&#x79C1;&#x6709;&#x7684;&#xFF0C;&#x5BF9;&#x5176;&#x4ED6;&#x6587;&#x4EF6;&#x662F;&#x4E0D;&#x53EF;&#x89C1;&#x7684;&#x3002;  </p>
+<p>&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;CommonJS &#x89C4;&#x8303;&#x7684;&#x4E3B;&#x8981;&#x9002;&#x7528;&#x573A;&#x666F;&#x662F;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x7F16;&#x7A0B;&#xFF0C;&#x6240;&#x4EE5;&#x91C7;&#x7528;&#x540C;&#x6B65;&#x52A0;&#x8F7D;&#x6A21;&#x5757;&#x7684;&#x7B56;&#x7565;&#x3002;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x4F9D;&#x8D56;3&#x4E2A;&#x6A21;&#x5757;&#xFF0C;&#x4EE3;&#x7801;&#x4F1A;&#x4E00;&#x4E2A;&#x4E00;&#x4E2A;&#x4F9D;&#x6B21;&#x52A0;&#x8F7D;&#x5B83;&#x4EEC;&#x3002;  </p>
+<p>&#x8BE5;&#x6A21;&#x5757;&#x5B9E;&#x73B0;&#x65B9;&#x6848;&#x4E3B;&#x8981;&#x5305;&#x542B; require &#x4E0E; module &#x8FD9;&#x4E24;&#x4E2A;&#x5173;&#x952E;&#x5B57;&#xFF0C;&#x5176;&#x5141;&#x8BB8;&#x67D0;&#x4E2A;&#x6A21;&#x5757;&#x5BF9;&#x5916;&#x66B4;&#x9732;&#x90E8;&#x5206;&#x63A5;&#x53E3;&#x5E76;&#x4E14;&#x7531;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x5BFC;&#x5165;&#x4F7F;&#x7528;&#x3002;  </p>
+<pre><code>//sayModule.js
+function SayModule () {
+    this.hello = function () {
+        console.log(&apos;hello&apos;);
+    };
+
+    this.goodbye = function () {
+        console.log(&apos;goodbye&apos;);
+    };
+}
+
+module.exports = SayModule;
+
+//main.js &#x5F15;&#x5165;sayModule.js
+var Say = require(&apos;./sayModule.js&apos;);
+var sayer = new Say();
+sayer.hello(); //hello
+</code></pre><p>&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#xFF0C;CommonJS &#x9700;&#x8981;&#x4E00;&#x4E2A;&#x517C;&#x5BB9;&#x7684;&#x811A;&#x672C;&#x52A0;&#x8F7D;&#x5668;&#x4F5C;&#x4E3A;&#x524D;&#x63D0;&#x6761;&#x4EF6;&#x3002;&#x8BE5;&#x811A;&#x672C;&#x52A0;&#x8F7D;&#x5668;&#x5FC5;&#x987B;&#x652F;&#x6301;&#x540D;&#x4E3A; require &#x548C; module.exports &#x7684;&#x51FD;&#x6570;&#xFF0C;&#x5B83;&#x4EEC;&#x5C06;&#x6A21;&#x5757;&#x76F8;&#x4E92;&#x5BFC;&#x5165;&#x5BFC;&#x51FA;&#x3002;</p>
+<h3 id="nodejs"><a name="nodejs" class="anchor-navigation-ex-anchor" href="#nodejs"><i class="fa fa-link" aria-hidden="true"></i></a><code>Node.js</code></h3>
+<p>Node &#x4ECE; CommonJS &#x7684;&#x4E00;&#x4E9B;&#x521B;&#x610F;&#x4E2D;&#xFF0C;&#x521B;&#x9020;&#x51FA;&#x81EA;&#x5DF1;&#x7684;&#x6A21;&#x5757;&#x5316;&#x5B9E;&#x73B0;&#x3002;&#x7531;&#x4E8E;Node &#x5728;&#x670D;&#x52A1;&#x7AEF;&#x7684;&#x6D41;&#x884C;&#xFF0C;Node &#x7684;&#x6A21;&#x5757;&#x5F62;&#x5F0F;&#x88AB;&#xFF08;&#x4E0D;&#x6B63;&#x786E;&#x5730;&#xFF09;&#x79F0;&#x4E3A; CommonJS&#x3002;</p>
+<p>Node.js&#x6A21;&#x5757;&#x53EF;&#x4EE5;&#x5206;&#x4E3A;&#x4E24;&#x5927;&#x7C7B;&#xFF0C;&#x4E00;&#x7C7B;&#x662F;&#x6838;&#x5FC3;&#x6A21;&#x5757;&#xFF0C;&#x53E6;&#x4E00;&#x7C7B;&#x662F;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x3002;<br><strong>&#x6838;&#x5FC3;&#x6A21;&#x5757;</strong> &#x5C31;&#x662F;Node.js&#x6807;&#x51C6;&#x7684;API&#x4E2D;&#x63D0;&#x4F9B;&#x7684;&#x6A21;&#x5757;&#xFF0C;&#x5982;fs&#x3001;http&#x3001;net&#x7B49;&#xFF0C;&#x8FD9;&#x4E9B;&#x90FD;&#x662F;&#x7531;Node.js&#x5B98;&#x65B9;&#x63D0;&#x4F9B;&#x7684;&#x6A21;&#x5757;&#xFF0C;&#x7F16;&#x8BD1;&#x6210;&#x4E86;&#x4E8C;&#x8FDB;&#x5236;&#x4EE3;&#x7801;&#xFF0C;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x901A;&#x8FC7;require&#x83B7;&#x53D6;&#x6838;&#x5FC3;&#x6A21;&#x5757;&#xFF0C;&#x4F8B;&#x5982;require(&apos;fs&apos;)&#xFF0C;&#x6838;&#x5FC3;&#x6A21;&#x5757;&#x62E5;&#x6709;&#x6700;&#x9AD8;&#x7684;&#x52A0;&#x8F7D;&#x4F18;&#x5148;&#x7EA7;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x6A21;&#x5757;&#x4E0E;&#x6838;&#x5FC3;&#x6A21;&#x5757;&#x547D;&#x540D;&#x51B2;&#x7A81;&#xFF0C;Node.js&#x603B;&#x662F;&#x4F1A;&#x52A0;&#x8F7D;&#x6838;&#x5FC3;&#x6A21;&#x5757;&#x3002;<br><strong>&#x6587;&#x4EF6;&#x6A21;&#x5757;</strong> &#x662F;&#x5B58;&#x50A8;&#x4E3A;&#x5355;&#x72EC;&#x7684;&#x6587;&#x4EF6;&#xFF08;&#x6216;&#x6587;&#x4EF6;&#x5939;&#xFF09;&#x7684;&#x6A21;&#x5757;&#xFF0C;&#x53EF;&#x80FD;&#x662F;JavaScript&#x4EE3;&#x7801;&#x3001;JSON&#x6216;&#x7F16;&#x8BD1;&#x597D;&#x7684;C/C++&#x4EE3;&#x7801;&#x3002;&#x5728;&#x4E0D;&#x663E;&#x5F0F;&#x6307;&#x5B9A;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x6269;&#x5C55;&#x540D;&#x7684;&#x65F6;&#x5019;&#xFF0C;Node.js&#x4F1A;&#x5206;&#x522B;&#x8BD5;&#x56FE;&#x52A0;&#x4E0A;.js&#x3001;.json&#x3001;.node(&#x7F16;&#x8BD1;&#x597D;&#x7684;C/C++&#x4EE3;&#x7801;)&#x3002;</p>
+<blockquote>
+<p>&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;</p>
+</blockquote>
+<ul>
+<li><p>&#x6309;&#x8DEF;&#x5F84;&#x52A0;&#x8F7D;&#x6A21;&#x5757;<br>&#x5982;&#x679C;require&#x53C2;&#x6570;&#x4EE5;&quot;/&quot;&#x5F00;&#x5934;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x4EE5;&#x7EDD;&#x5BF9;&#x8DEF;&#x5F84;&#x7684;&#x65B9;&#x5F0F;&#x67E5;&#x627E;&#x6A21;&#x5757;&#x540D;&#x79F0;&#xFF0C;&#x5982;&#x679C;&#x53C2;&#x6570;&#x4EE5;&quot;./&quot;&#x3001;&quot;../&quot;&#x5F00;&#x5934;&#xFF0C;&#x90A3;&#x4E48;&#x5219;&#x662F;&#x4EE5;&#x76F8;&#x5BF9;&#x8DEF;&#x5F84;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x67E5;&#x627E;&#x6A21;&#x5757;&#x3002;</p>
+</li>
+<li><p>&#x901A;&#x8FC7;&#x67E5;&#x627E;node_modules&#x76EE;&#x5F55;&#x52A0;&#x8F7D;&#x6A21;&#x5757;<br>&#x5982;&#x679C;require&#x53C2;&#x6570;&#x4E0D;&#x4EE5;&quot;/&quot;&#x3001;&quot;./&quot;&#x3001;&quot;../&quot;&#x5F00;&#x5934;&#xFF0C;&#x800C;&#x8BE5;&#x6A21;&#x5757;&#x53C8;&#x4E0D;&#x662F;&#x6838;&#x5FC3;&#x6A21;&#x5757;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x8981;&#x901A;&#x8FC7;&#x67E5;&#x627E;node_modules&#x52A0;&#x8F7D;&#x6A21;&#x5757;&#x4E86;&#x3002;&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x7684;npm&#x83B7;&#x53D6;&#x7684;&#x5305;&#x901A;&#x5E38;&#x5C31;&#x662F;&#x4EE5;&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x52A0;&#x8F7D;&#x7684;&#x3002;  </p>
+</li>
+</ul>
+<blockquote>
+<p>&#x52A0;&#x8F7D;&#x7F13;&#x5B58;</p>
+</blockquote>
+<p>Node.js&#x6A21;&#x5757;&#x4E0D;&#x4F1A;&#x88AB;&#x91CD;&#x590D;&#x52A0;&#x8F7D;&#xFF0C;&#x8FD9;&#x662F;&#x56E0;&#x4E3A;Node.js&#x901A;&#x8FC7;&#x6587;&#x4EF6;&#x540D;&#x7F13;&#x5B58;&#x6240;&#x6709;&#x52A0;&#x8F7D;&#x8FC7;&#x7684;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#xFF0C;&#x6240;&#x4EE5;&#x4EE5;&#x540E;&#x518D;&#x8BBF;&#x95EE;&#x5230;&#x65F6;&#x5C31;&#x4E0D;&#x4F1A;&#x91CD;&#x65B0;&#x52A0;&#x8F7D;&#x4E86;&#x3002;<br><em>&#x6CE8;&#x610F;&#xFF1A;</em> Node.js&#x662F;&#x6839;&#x636E;&#x5B9E;&#x9645;&#x6587;&#x4EF6;&#x540D;&#x7F13;&#x5B58;&#x7684;&#xFF0C;&#x800C;&#x4E0D;&#x662F;require()&#x63D0;&#x4F9B;&#x7684;&#x53C2;&#x6570;&#x7F13;&#x5B58;&#x7684;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x5373;&#x4F7F;&#x4F60;&#x5206;&#x522B;&#x901A;&#x8FC7;require(&apos;express&apos;)&#x548C;require(&apos;./node_modules/express&apos;)&#x52A0;&#x8F7D;&#x4E24;&#x6B21;&#xFF0C;&#x4E5F;&#x4E0D;&#x4F1A;&#x91CD;&#x590D;&#x52A0;&#x8F7D;&#xFF0C;&#x56E0;&#x4E3A;&#x5C3D;&#x7BA1;&#x4E24;&#x6B21;&#x53C2;&#x6570;&#x4E0D;&#x540C;&#xFF0C;&#x89E3;&#x6790;&#x5230;&#x7684;&#x6587;&#x4EF6;&#x5374;&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x3002;  </p>
+<p>Node.js &#x4E2D;&#x7684;&#x6A21;&#x5757;&#x5728;&#x52A0;&#x8F7D;&#x4E4B;&#x540E;&#x662F;&#x4EE5;&#x5355;&#x4F8B;&#x5316;&#x8FD0;&#x884C;&#xFF0C;&#x5E76;&#x4E14;&#x9075;&#x5FAA;&#x503C;&#x4F20;&#x9012;&#x539F;&#x5219;&#xFF1A;&#x5982;&#x679C;&#x662F;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C;&#x5C31;&#x76F8;&#x5F53;&#x4E8E;&#x8FD9;&#x4E2A;&#x5BF9;&#x8C61;&#x7684;&#x5F15;&#x7528;&#x3002;</p>
+<blockquote>
+<p>&#x6A21;&#x5757;&#x8F7D;&#x5165;&#x8FC7;&#x7A0B;</p>
+</blockquote>
+<p>&#x52A0;&#x8F7D;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x7684;&#x5DE5;&#x4F5C;&#xFF0C;&#x4E3B;&#x8981;&#x7531;&#x539F;&#x751F;&#x6A21;&#x5757;module&#x6765;&#x5B9E;&#x73B0;&#x548C;&#x5B8C;&#x6210;&#xFF0C;&#x8BE5;&#x539F;&#x751F;&#x6A21;&#x5757;&#x5728;&#x542F;&#x52A8;&#x65F6;&#x5DF2;&#x7ECF;&#x88AB;&#x52A0;&#x8F7D;&#xFF0C;&#x8FDB;&#x7A0B;&#x76F4;&#x63A5;&#x8C03;&#x7528;&#x5230;runMain&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x3002;  </p>
+<pre><code>&#x4F8B;&#x5982;&#x8FD0;&#x884C;&#xFF1A; node app.js
+
+Module.runMain = function () {
+    // Load the main module--the command line argument.
+    Module._load(process.argv[1], null, true);
+};
+
+//_load&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x5728;&#x5206;&#x6790;&#x6587;&#x4EF6;&#x540D;&#x4E4B;&#x540E;&#x6267;&#x884C;
+var module = new Module(id, parent);
+
+//&#x5E76;&#x6839;&#x636E;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#x7F13;&#x5B58;&#x5F53;&#x524D;&#x6A21;&#x5757;&#x5BF9;&#x8C61;&#xFF0C;&#x8BE5;&#x6A21;&#x5757;&#x5B9E;&#x4F8B;&#x5BF9;&#x8C61;&#x5219;&#x6839;&#x636E;&#x6587;&#x4EF6;&#x540D;&#x52A0;&#x8F7D;&#x3002;
+module.load(filename);
+</code></pre><p>&#x5177;&#x4F53;&#x8BF4;&#x4E00;&#x4E0B;&#x4E0A;&#x6587;&#x63D0;&#x5230;&#x4E86;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x7684;&#x4E09;&#x7C7B;&#x6A21;&#x5757;,&#x8FD9;&#x4E09;&#x7C7B;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x4EE5;&#x540E;&#x7F00;&#x6765;&#x533A;&#x5206;&#xFF0C;Node.js&#x4F1A;&#x6839;&#x636E;&#x540E;&#x7F00;&#x540D;&#x6765;&#x51B3;&#x5B9A;&#x52A0;&#x8F7D;&#x65B9;&#x6CD5;&#xFF0C;&#x5177;&#x4F53;&#x7684;&#x52A0;&#x8F7D;&#x65B9;&#x6CD5;&#x5728;&#x4E0B;&#x6587;<code>require.extensions</code>&#x4E2D;&#x4F1A;&#x4ECB;&#x7ECD;&#x3002;  </p>
+<ul>
+<li><code>.js</code> &#x901A;&#x8FC7;fs&#x6A21;&#x5757;&#x540C;&#x6B65;&#x8BFB;&#x53D6;js&#x6587;&#x4EF6;&#x5E76;&#x7F16;&#x8BD1;&#x6267;&#x884C;&#x3002;</li>
+<li><code>.node</code> &#x901A;&#x8FC7;C/C++&#x8FDB;&#x884C;&#x7F16;&#x5199;&#x7684;Addon&#x3002;&#x901A;&#x8FC7;dlopen&#x65B9;&#x6CD5;&#x8FDB;&#x884C;&#x52A0;&#x8F7D;&#x3002;</li>
+<li><code>.json</code> &#x8BFB;&#x53D6;&#x6587;&#x4EF6;&#xFF0C;&#x8C03;&#x7528;JSON.parse&#x89E3;&#x6790;&#x52A0;&#x8F7D;&#x3002;</li>
+</ul>
+<p>&#x63A5;&#x4E0B;&#x6765;&#x8BE6;&#x7EC6;&#x63CF;&#x8FF0;js&#x540E;&#x7F00;&#x7684;&#x7F16;&#x8BD1;&#x8FC7;&#x7A0B;&#x3002;Node.js&#x5728;&#x7F16;&#x8BD1;js&#x6587;&#x4EF6;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x5B9E;&#x9645;&#x5B8C;&#x6210;&#x7684;&#x6B65;&#x9AA4;&#x6709;&#x5BF9;js&#x6587;&#x4EF6;&#x5185;&#x5BB9;&#x8FDB;&#x884C;&#x5934;&#x5C3E;&#x5305;&#x88C5;&#x3002;&#x4EE5;app.js&#x4E3A;&#x4F8B;&#xFF0C;&#x5305;&#x88C5;&#x4E4B;&#x540E;&#x7684;app.js&#x5C06;&#x4F1A;&#x53D8;&#x6210;&#x4EE5;&#x4E0B;&#x5F62;&#x5F0F;&#xFF1A;  </p>
+<pre><code>//circle.js
+var PI = Math.PI;
+exports.area = function (r) {
+    return PI * r * r;
+};
+exports.circumference = function (r) {
+    return 2 * PI * r;
+};
+
+//app.js
+var circle = require(&apos;./circle.js&apos;);
+console.log( &apos;The area of a circle of radius 4 is &apos; + circle.area(4));
+
+//app&#x5305;&#x88C5;&#x540E;
+(function (exports, require, module, __filename, __dirname) {
+    var circle = require(&apos;./circle.js&apos;);
+    console.log(&apos;The area of a circle of radius 4 is &apos; + circle.area(4));
+});
+
+//&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x4F1A;&#x901A;&#x8FC7;vm&#x539F;&#x751F;&#x6A21;&#x5757;&#x7684;runInThisContext&#x65B9;&#x6CD5;&#x6267;&#x884C;&#xFF08;&#x7C7B;&#x4F3C;eval&#xFF0C;&#x53EA;&#x662F;&#x5177;&#x6709;&#x660E;&#x786E;&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x4E0D;&#x6C61;&#x67D3;&#x5168;&#x5C40;&#xFF09;&#xFF0C;&#x8FD4;&#x56DE;&#x4E3A;&#x4E00;&#x4E2A;&#x5177;&#x4F53;&#x7684;function&#x5BF9;&#x8C61;&#x3002;&#x6700;&#x540E;&#x4F20;&#x5165;module&#x5BF9;&#x8C61;&#x7684;exports&#xFF0C;require&#x65B9;&#x6CD5;&#xFF0C;module&#xFF0C;&#x6587;&#x4EF6;&#x540D;&#xFF0C;&#x76EE;&#x5F55;&#x540D;&#x4F5C;&#x4E3A;&#x5B9E;&#x53C2;&#x5E76;&#x6267;&#x884C;&#x3002;
+</code></pre><p>&#x8FD9;&#x5C31;&#x662F;&#x4E3A;&#x4EC0;&#x4E48;require&#x5E76;&#x6CA1;&#x6709;&#x5B9A;&#x4E49;&#x5728;app.js &#x6587;&#x4EF6;&#x4E2D;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x5374;&#x5B58;&#x5728;&#x7684;&#x539F;&#x56E0;&#x3002;&#x4ECE;Node.js&#x7684;API&#x6587;&#x6863;&#x4E2D;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x8FD8;&#x6709;<code>__filename</code>&#x3001;<code>__dirname</code>&#x3001;<code>module</code>&#x3001;<code>exports</code>&#x51E0;&#x4E2A;&#x6CA1;&#x6709;&#x5B9A;&#x4E49;&#x4F46;&#x662F;&#x5374;&#x5B58;&#x5728;&#x7684;&#x53D8;&#x91CF;&#x3002;&#x5176;&#x4E2D;<code>__filename</code>&#x548C;<code>__dirname</code>&#x5728;&#x67E5;&#x627E;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x5206;&#x6790;&#x5F97;&#x5230;&#x540E;&#x4F20;&#x5165;&#x7684;&#x3002;<code>module</code>&#x53D8;&#x91CF;&#x662F;&#x8FD9;&#x4E2A;&#x6A21;&#x5757;&#x5BF9;&#x8C61;&#x81EA;&#x8EAB;&#xFF0C;<code>exports</code>&#x662F;&#x5728;module&#x7684;&#x6784;&#x9020;&#x51FD;&#x6570;&#x4E2D;&#x521D;&#x59CB;&#x5316;&#x7684;&#x4E00;&#x4E2A;&#x7A7A;&#x5BF9;&#x8C61;&#xFF08;{}&#xFF0C;&#x800C;&#x4E0D;&#x662F;null&#xFF09;&#x3002;<br>&#x5728;&#x8FD9;&#x4E2A;&#x4E3B;&#x6587;&#x4EF6;&#x4E2D;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;require&#x65B9;&#x6CD5;&#x53BB;&#x5F15;&#x5165;&#x5176;&#x4F59;&#x7684;&#x6A21;&#x5757;&#x3002;&#x800C;&#x5176;&#x5B9E;&#x8FD9;&#x4E2A;require&#x65B9;&#x6CD5;&#x5B9E;&#x9645;&#x8C03;&#x7528;&#x7684;&#x5C31;&#x662F;module._load&#x65B9;&#x6CD5;&#x3002;<br>load&#x65B9;&#x6CD5;&#x5728;&#x8F7D;&#x5165;&#x3001;&#x7F16;&#x8BD1;&#x3001;&#x7F13;&#x5B58;&#x4E86;module&#x540E;&#xFF0C;&#x8FD4;&#x56DE;module&#x7684;exports&#x5BF9;&#x8C61;&#x3002;&#x8FD9;&#x5C31;&#x662F;circle.js&#x6587;&#x4EF6;&#x4E2D;&#x53EA;&#x6709;&#x5B9A;&#x4E49;&#x5728;exports&#x5BF9;&#x8C61;&#x4E0A;&#x7684;&#x65B9;&#x6CD5;&#x624D;&#x80FD;&#x88AB;&#x5916;&#x90E8;&#x8C03;&#x7528;&#x7684;&#x539F;&#x56E0;&#x3002;  </p>
+<p><strong>&#x4EE5;&#x4E0A;&#x6240;&#x63CF;&#x8FF0;&#x7684;&#x6A21;&#x5757;&#x8F7D;&#x5165;&#x673A;&#x5236;&#x5747;&#x5B9A;&#x4E49;&#x5728;lib/module.js&#x4E2D;&#x3002;</strong></p>
+<blockquote>
+<p>require &#x51FD;&#x6570;</p>
+</blockquote>
+<p>require &#x5F15;&#x5165;&#x7684;&#x5BF9;&#x8C61;&#x4E3B;&#x8981;&#x662F;&#x51FD;&#x6570;&#x3002;&#x5F53; Node &#x8C03;&#x7528; require() &#x51FD;&#x6570;&#xFF0C;&#x5E76;&#x4E14;&#x4F20;&#x9012;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#x7ED9;&#x5B83;&#x7684;&#x65F6;&#x5019;&#xFF0C;Node &#x4F1A;&#x7ECF;&#x5386;&#x5982;&#x4E0B;&#x51E0;&#x4E2A;&#x6B65;&#x9AA4;&#xFF1A;  </p>
+<ul>
+<li><p>Resolving&#xFF1A;&#x627E;&#x5230;&#x6587;&#x4EF6;&#x7684;&#x7EDD;&#x5BF9;&#x8DEF;&#x5F84;&#xFF1B;</p>
+</li>
+<li><p>Loading&#xFF1A;&#x5224;&#x65AD;&#x6587;&#x4EF6;&#x5185;&#x5BB9;&#x7C7B;&#x578B;&#xFF1B;</p>
+</li>
+<li><p>Wrapping&#xFF1A;&#x6253;&#x5305;&#xFF0C;&#x7ED9;&#x8FD9;&#x4E2A;&#x6587;&#x4EF6;&#x8D4B;&#x4E88;&#x4E00;&#x4E2A;&#x79C1;&#x6709;&#x4F5C;&#x7528;&#x8303;&#x56F4;&#x3002;&#x8FD9;&#x662F;&#x4F7F; require &#x548C; module &#x6A21;&#x5757;&#x5728;&#x672C;&#x5730;&#x5F15;&#x7528;&#x7684;&#x4E00;&#x79CD;&#x65B9;&#x6CD5;&#xFF1B;</p>
+</li>
+<li><p>Evaluating&#xFF1A;VM &#x5BF9;&#x52A0;&#x8F7D;&#x7684;&#x4EE3;&#x7801;&#x8FDB;&#x884C;&#x5904;&#x7406;&#x7684;&#x5730;&#x65B9;&#xFF1B;</p>
+</li>
+<li><p>Caching&#xFF1A;&#x5F53;&#x518D;&#x6B21;&#x9700;&#x8981;&#x7528;&#x8FD9;&#x4E2A;&#x6587;&#x4EF6;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x91CD;&#x590D;&#x4E00;&#x904D;&#x4E0A;&#x9762;&#x6B65;&#x9AA4;&#x3002;</p>
+</li>
+</ul>
+<blockquote>
+<p>require.extensions &#x6765;&#x67E5;&#x770B;&#x5BF9;&#x4E09;&#x79CD;&#x6587;&#x4EF6;&#x7684;&#x652F;&#x6301;&#x60C5;&#x51B5;<br><img src="images/123.png" alt="require.extensions">
+&#x53EF;&#x4EE5;&#x6E05;&#x6670;&#x5730;&#x770B;&#x5230; Node &#x5BF9;&#x6BCF;&#x79CD;&#x6269;&#x5C55;&#x540D;&#x6240;&#x4F7F;&#x7528;&#x7684;&#x51FD;&#x6570;&#x53CA;&#x5176;&#x64CD;&#x4F5C;&#xFF1A;&#x5BF9; .js &#x6587;&#x4EF6;&#x4F7F;&#x7528; module._compile&#xFF1B;&#x5BF9; .json &#x6587;&#x4EF6;&#x4F7F;&#x7528; JSON.parse&#xFF1B;&#x5BF9; .node &#x6587;&#x4EF6;&#x4F7F;&#x7528; process.dlopen&#x3002;  </p>
+</blockquote>
+<p><em>&#x6587;&#x4EF6;&#x67E5;&#x627E;&#x7B56;&#x7565;</em>  </p>
+<ul>
+<li><p>&#x4ECE;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x7F13;&#x5B58;&#x4E2D;&#x52A0;&#x8F7D;<br>&#x5C3D;&#x7BA1;&#x539F;&#x751F;&#x6A21;&#x5757;&#x4E0E;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x7684;&#x4F18;&#x5148;&#x7EA7;&#x4E0D;&#x540C;&#xFF0C;&#x4F46;&#x662F;&#x4F18;&#x5148;&#x7EA7;&#x6700;&#x9AD8;&#x7684;&#x662F;&#x4ECE;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x7684;&#x7F13;&#x5B58;&#x4E2D;&#x52A0;&#x8F7D;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x7684;&#x6A21;&#x5757;&#x3002;  </p>
+</li>
+<li><p>&#x4ECE;&#x539F;&#x751F;&#x6A21;&#x5757;&#x52A0;&#x8F7D;
+&#x539F;&#x751F;&#x6A21;&#x5757;&#x7684;&#x4F18;&#x5148;&#x7EA7;&#x4EC5;&#x6B21;&#x4E8E;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x7F13;&#x5B58;&#x7684;&#x4F18;&#x5148;&#x7EA7;&#x3002;require&#x65B9;&#x6CD5;&#x5728;&#x89E3;&#x6790;&#x6587;&#x4EF6;&#x540D;&#x4E4B;&#x540E;&#xFF0C;&#x4F18;&#x5148;&#x68C0;&#x67E5;&#x6A21;&#x5757;&#x662F;&#x5426;&#x5728;&#x539F;&#x751F;&#x6A21;&#x5757;&#x5217;&#x8868;&#x4E2D;&#x3002;&#x4EE5;http&#x6A21;&#x5757;&#x4E3A;&#x4F8B;&#xFF0C;&#x5C3D;&#x7BA1;&#x5728;&#x76EE;&#x5F55;&#x4E0B;&#x5B58;&#x5728;&#x4E00;&#x4E2A;<code>http</code>&#x3001;<code>http.js</code>&#x3001;<code>http.node</code>&#x3001;<code>http.json</code>&#x6587;&#x4EF6;&#xFF0C;<code>require(&#x201C;http&#x201D;)</code>&#x90FD;&#x4E0D;&#x4F1A;&#x4ECE;&#x8FD9;&#x4E9B;&#x6587;&#x4EF6;&#x4E2D;&#x52A0;&#x8F7D;&#xFF0C;&#x800C;&#x662F;&#x4ECE;&#x539F;&#x751F;&#x6A21;&#x5757;&#x4E2D;&#x52A0;&#x8F7D;&#x3002;<br>&#x539F;&#x751F;&#x6A21;&#x5757;&#x4E5F;&#x6709;&#x4E00;&#x4E2A;&#x7F13;&#x5B58;&#x533A;&#xFF0C;&#x540C;&#x6837;&#x4E5F;&#x662F;&#x4F18;&#x5148;&#x4ECE;&#x7F13;&#x5B58;&#x533A;&#x52A0;&#x8F7D;&#x3002;&#x5982;&#x679C;&#x7F13;&#x5B58;&#x533A;&#x6CA1;&#x6709;&#x88AB;&#x52A0;&#x8F7D;&#x8FC7;&#xFF0C;&#x5219;&#x8C03;&#x7528;&#x539F;&#x751F;&#x6A21;&#x5757;&#x7684;&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#x8FDB;&#x884C;&#x52A0;&#x8F7D;&#x548C;&#x6267;&#x884C;&#x3002;  </p>
+</li>
+<li><p>&#x4ECE;&#x6587;&#x4EF6;&#x52A0;&#x8F7D;<br>&#x5F53;&#x6587;&#x4EF6;&#x6A21;&#x5757;&#x7F13;&#x5B58;&#x4E2D;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;&#x800C;&#x4E14;&#x4E0D;&#x662F;&#x539F;&#x751F;&#x6A21;&#x5757;&#x7684;&#x65F6;&#x5019;&#xFF0C;Node.js&#x4F1A;&#x89E3;&#x6790;require&#x65B9;&#x6CD5;&#x4F20;&#x5165;&#x7684;&#x53C2;&#x6570;&#xFF0C;&#x5E76;&#x4ECE;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x4E2D;&#x52A0;&#x8F7D;&#x5B9E;&#x9645;&#x7684;&#x6587;&#x4EF6;&#xFF0C;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;&#x5305;&#x88C5;&#x548C;&#x7F16;&#x8BD1;&#x7EC6;&#x8282;&#x5728;&#x524D;&#x9762;&#x8BF4;&#x8FC7;&#x662F;&#x8C03;&#x7528;load&#x65B9;&#x6CD5;&#x3002; 
+&#xB7;&#xB7;</p>
+</li>
+</ul>
+<pre><code>&#x5F53; Node &#x9047;&#x5230; require(X) &#x65F6;&#xFF0C;&#x6309;&#x4E0B;&#x9762;&#x7684;&#x987A;&#x5E8F;&#x5904;&#x7406;&#x3002;
+
+&#xFF08;1&#xFF09;&#x5982;&#x679C; X &#x662F;&#x5185;&#x7F6E;&#x6A21;&#x5757;&#xFF08;&#x6BD4;&#x5982; require(&apos;http&apos;&#xFF09;) 
+&#x3000;&#x3000;a. &#x8FD4;&#x56DE;&#x8BE5;&#x6A21;&#x5757;&#x3002; 
+&#x3000;&#x3000;b. &#x4E0D;&#x518D;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#x3002;
+
+&#xFF08;2&#xFF09;&#x5982;&#x679C; X &#x4EE5; &quot;./&quot; &#x6216;&#x8005; &quot;/&quot; &#x6216;&#x8005; &quot;../&quot; &#x5F00;&#x5934; 
+&#x3000;&#x3000;a. &#x6839;&#x636E; X &#x6240;&#x5728;&#x7684;&#x7236;&#x6A21;&#x5757;&#xFF0C;&#x786E;&#x5B9A; X &#x7684;&#x7EDD;&#x5BF9;&#x8DEF;&#x5F84;&#x3002; 
+&#x3000;&#x3000;b. &#x5C06; X &#x5F53;&#x6210;&#x6587;&#x4EF6;&#xFF0C;&#x4F9D;&#x6B21;&#x67E5;&#x627E;&#x4E0B;&#x9762;&#x6587;&#x4EF6;&#xFF0C;&#x53EA;&#x8981;&#x5176;&#x4E2D;&#x6709;&#x4E00;&#x4E2A;&#x5B58;&#x5728;&#xFF0C;&#x5C31;&#x8FD4;&#x56DE;&#x8BE5;&#x6587;&#x4EF6;&#xFF0C;&#x4E0D;&#x518D;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#x3002;
+        X
+        X.js
+        X.json
+        X.node
+
+&#x3000;&#x3000;c. &#x5C06; X &#x5F53;&#x6210;&#x76EE;&#x5F55;&#xFF0C;&#x4F9D;&#x6B21;&#x67E5;&#x627E;&#x4E0B;&#x9762;&#x6587;&#x4EF6;&#xFF0C;&#x53EA;&#x8981;&#x5176;&#x4E2D;&#x6709;&#x4E00;&#x4E2A;&#x5B58;&#x5728;&#xFF0C;&#x5C31;&#x8FD4;&#x56DE;&#x8BE5;&#x6587;&#x4EF6;&#xFF0C;&#x4E0D;&#x518D;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#x3002;
+        X/package.json&#xFF08;main&#x5B57;&#x6BB5;&#xFF09;
+        X/index.js
+        X/index.json
+        X/index.node
+
+&#xFF08;3&#xFF09;&#x5982;&#x679C; X &#x4E0D;&#x5E26;&#x8DEF;&#x5F84; 
+&#x3000;&#x3000;a. &#x6839;&#x636E; X &#x6240;&#x5728;&#x7684;&#x7236;&#x6A21;&#x5757;&#xFF0C;&#x786E;&#x5B9A; X &#x53EF;&#x80FD;&#x7684;&#x5B89;&#x88C5;&#x76EE;&#x5F55;&#x3002; 
+&#x3000;&#x3000;b. &#x4F9D;&#x6B21;&#x5728;&#x6BCF;&#x4E2A;&#x76EE;&#x5F55;&#x4E2D;&#xFF0C;&#x5C06; X &#x5F53;&#x6210;&#x6587;&#x4EF6;&#x540D;&#x6216;&#x76EE;&#x5F55;&#x540D;&#x52A0;&#x8F7D;&#x3002;
+
+&#xFF08;4&#xFF09; &#x629B;&#x51FA; &quot;not found&quot;
+</code></pre><p><img src="images/image1.jpg" alt="&#x56FE;&#x793A;">  </p>
+<p><br></p>
+<blockquote>
+<p>&#x6A21;&#x5757;&#x5FAA;&#x73AF;&#x4F9D;&#x8D56;</p>
+</blockquote>
+<pre><code>//&#x521B;&#x5EFA;&#x4E24;&#x4E2A;&#x6587;&#x4EF6;&#xFF0C;module1.js &#x548C; module2.js&#xFF0C;&#x5E76;&#x4E14;&#x8BA9;&#x5B83;&#x4EEC;&#x76F8;&#x4E92;&#x5F15;&#x7528;
+// module1.js
+exports.a = 1;
+require(&apos;./module2&apos;);
+exports.b = 2;
+exports.c = 3;
+
+// module2.js
+const Module1 = require(&apos;./module1&apos;);
+console.log(&apos;Module1 is partially loaded here&apos;, Module1);
+
+//&#x6267;&#x884C; node module2.js &#x6253;&#x5370;&#xFF1A; {a:1,b:2,c:3}
+//&#x6267;&#x884C; node module1.js &#x6253;&#x5370;&#xFF1A; {a:1}
+</code></pre><p>&#x5728; module1 &#x5B8C;&#x5168;&#x52A0;&#x8F7D;&#x4E4B;&#x524D;&#x9700;&#x8981;&#x5148;&#x52A0;&#x8F7D; module2&#xFF0C;&#x800C; module2 &#x7684;&#x52A0;&#x8F7D;&#x53C8;&#x9700;&#x8981; module1&#x3002;&#x8FD9;&#x79CD;&#x72B6;&#x6001;&#x4E0B;&#xFF0C;&#x6211;&#x4EEC;&#x4ECE; exports &#x5BF9;&#x8C61;&#x4E2D;&#x80FD;&#x5F97;&#x5230;&#x7684;&#x5C31;&#x662F;&#x5728;&#x53D1;&#x751F;&#x5FAA;&#x73AF;&#x4F9D;&#x8D56;&#x4E4B;&#x524D;&#x7684;&#x8FD9;&#x90E8;&#x5206;&#x3002;&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x4E2D;&#xFF0C;&#x53EA;&#x6709; a &#x5C5E;&#x6027;&#x88AB;&#x5F15;&#x5165;&#xFF0C;&#x56E0;&#x4E3A; b &#x548C; c &#x90FD;&#x9700;&#x8981;&#x5728;&#x5F15;&#x5165; module2 &#x4E4B;&#x540E;&#x624D;&#x80FD;&#x52A0;&#x8F7D;&#x8FDB;&#x6765;&#x3002;</p>
+<p>Node &#x4F7F;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#x7B80;&#x5355;&#x5316;&#xFF0C;&#x5728;&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#x52A0;&#x8F7D;&#x671F;&#x95F4;&#x5F00;&#x59CB;&#x521B;&#x5EFA; exports &#x5BF9;&#x8C61;&#x3002;&#x5982;&#x679C;&#x5B83;&#x9700;&#x8981;&#x5F15;&#x5165;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#xFF0C;&#x5E76;&#x4E14;&#x6709;&#x5FAA;&#x73AF;&#x4F9D;&#x8D56;&#xFF0C;&#x90A3;&#x4E48;&#x53EA;&#x80FD;&#x90E8;&#x5206;&#x5F15;&#x5165;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x53EA;&#x80FD;&#x5F15;&#x5165;&#x53D1;&#x751F;&#x5FAA;&#x73AF;&#x4F9D;&#x8D56;&#x4E4B;&#x524D;&#x6240;&#x5B9A;&#x4E49;&#x7684;&#x8FD9;&#x90E8;&#x5206;&#x3002;</p>
+<h2 id="amd"><a name="amd" class="anchor-navigation-ex-anchor" href="#amd"><i class="fa fa-link" aria-hidden="true"></i></a>AMD</h2>
+<p>AMD &#x662F; Asynchronous Module Definition &#x7684;&#x7B80;&#x79F0;&#xFF0C;&#x5373;&#x201C;&#x5F02;&#x6B65;&#x6A21;&#x5757;&#x5B9A;&#x4E49;&#x201D;&#xFF0C;&#x662F;&#x4ECE; CommonJS &#x8BA8;&#x8BBA;&#x4E2D;&#x8BDE;&#x751F;&#x7684;&#x3002;AMD &#x4F18;&#x5148;&#x7167;&#x987E;&#x6D4F;&#x89C8;&#x5668;&#x7684;&#x6A21;&#x5757;&#x52A0;&#x8F7D;&#x573A;&#x666F;&#xFF0C;&#x4F7F;&#x7528;&#x4E86;&#x5F02;&#x6B65;&#x52A0;&#x8F7D;&#x548C;&#x56DE;&#x8C03;&#x7684;&#x65B9;&#x5F0F;&#x3002;  </p>
+<p>AMD &#x548C; CommonJS &#x4E00;&#x6837;&#x9700;&#x8981;&#x811A;&#x672C;&#x52A0;&#x8F7D;&#x5668;&#xFF0C;&#x5C3D;&#x7BA1; AMD &#x53EA;&#x9700;&#x8981;&#x5BF9; define &#x65B9;&#x6CD5;&#x7684;&#x652F;&#x6301;&#x3002;define &#x65B9;&#x6CD5;&#x9700;&#x8981;&#x4E09;&#x4E2A;&#x53C2;&#x6570;&#xFF1A;&#x6A21;&#x5757;&#x540D;&#x79F0;&#xFF0C;&#x6A21;&#x5757;&#x8FD0;&#x884C;&#x7684;&#x4F9D;&#x8D56;&#x6570;&#x7EC4;&#xFF0C;&#x6240;&#x6709;&#x4F9D;&#x8D56;&#x90FD;&#x53EF;&#x7528;&#x4E4B;&#x540E;&#x6267;&#x884C;&#x7684;&#x51FD;&#x6570;&#xFF08;&#x8BE5;&#x51FD;&#x6570;&#x6309;&#x7167;&#x4F9D;&#x8D56;&#x58F0;&#x660E;&#x7684;&#x987A;&#x5E8F;&#xFF0C;&#x63A5;&#x6536;&#x4F9D;&#x8D56;&#x4F5C;&#x4E3A;&#x53C2;&#x6570;&#xFF09;&#x3002;&#x53EA;&#x6709;&#x51FD;&#x6570;&#x53C2;&#x6570;&#x662F;&#x5FC5;&#x987B;&#x7684;&#x3002;define &#x65E2;&#x662F;&#x4E00;&#x79CD;&#x5F15;&#x7528;&#x6A21;&#x5757;&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x4E5F;&#x662F;&#x5B9A;&#x4E49;&#x6A21;&#x5757;&#x7684;&#x65B9;&#x5F0F;&#x3002;  </p>
+<pre><code>// file lib/sayModule.js
+define(function (){
+    return {
+        sayHello: function () {
+            console.log(&apos;hello&apos;);
+        }
+    };
+});
+
+//file main.js
+define([&apos;./lib/sayModule&apos;], function (say){
+    say.sayHello(); //hello
+})
+</code></pre><p>main.js &#x4F5C;&#x4E3A;&#x6574;&#x4E2A;&#x5E94;&#x7528;&#x7684;&#x5165;&#x53E3;&#x6A21;&#x5757;&#xFF0C;&#x6211;&#x4EEC;&#x4F7F;&#x7528; define &#x5173;&#x952E;&#x5B57;&#x58F0;&#x660E;&#x4E86;&#x8BE5;&#x6A21;&#x5757;&#x4EE5;&#x53CA;&#x5916;&#x90E8;&#x4F9D;&#x8D56;(&#x6CA1;&#x6709;&#x751F;&#x547D;&#x6A21;&#x5757;&#x540D;&#x79F0;)&#xFF1B;&#x5F53;&#x6211;&#x4EEC;&#x6267;&#x884C;&#x8BE5;&#x6A21;&#x5757;&#x4EE3;&#x7801;&#x65F6;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x6267;&#x884C; define &#x51FD;&#x6570;&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x51FD;&#x6570;&#x529F;&#x80FD;&#xFF0C;&#x5176;&#x4F1A;&#x5728;&#x6846;&#x67B6;&#x5C06;&#x6240;&#x6709;&#x7684;&#x5176;&#x4ED6;&#x4F9D;&#x8D56;&#x6A21;&#x5757;&#x52A0;&#x8F7D;&#x5B8C;&#x6BD5;&#x540E;&#x88AB;&#x6267;&#x884C;&#x3002;&#x8FD9;&#x79CD;&#x5EF6;&#x8FDF;&#x4EE3;&#x7801;&#x6267;&#x884C;&#x7684;&#x6280;&#x672F;&#x4E5F;&#x5C31;&#x4FDD;&#x8BC1;&#x4E86;&#x4F9D;&#x8D56;&#x7684;&#x5E76;&#x53D1;&#x52A0;&#x8F7D;&#x3002;  </p>
+<h3 id="requirejs"><a name="requirejs" class="anchor-navigation-ex-anchor" href="#requirejs"><i class="fa fa-link" aria-hidden="true"></i></a><code>RequireJS</code></h3>
+<p>RequireJS &#x662F;&#x4E00;&#x4E2A;&#x524D;&#x7AEF;&#x7684;&#x6A21;&#x5757;&#x5316;&#x7BA1;&#x7406;&#x7684;&#x5DE5;&#x5177;&#x5E93;&#xFF0C;&#x9075;&#x5FAA;AMD&#x89C4;&#x8303;,&#x901A;&#x8FC7;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x6765;&#x5C06;&#x6240;&#x6709;&#x6240;&#x9700;&#x8981;&#x7684;&#x6216;&#x8005;&#x8BF4;&#x6240;&#x4F9D;&#x8D56;&#x7684;&#x6A21;&#x5757;&#x5B9E;&#x73B0;&#x88C5;&#x8F7D;&#x8FDB;&#x6765;&#xFF0C;&#x7136;&#x540E;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x51FD;&#x6570;&#xFF08;&#x6A21;&#x5757;&#xFF09;&#xFF0C;&#x6211;&#x4EEC;&#x6240;&#x6709;&#x7684;&#x5173;&#x4E8E;&#x65B0;&#x6A21;&#x5757;&#x7684;&#x4E1A;&#x52A1;&#x4EE3;&#x7801;&#x90FD;&#x5728;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x5185;&#x90E8;&#x64CD;&#x4F5C;&#xFF0C;&#x5176;&#x5185;&#x90E8;&#x4E5F;&#x53EF;&#x65E0;&#x9650;&#x5236;&#x7684;&#x4F7F;&#x7528;&#x5DF2;&#x7ECF;&#x52A0;&#x8F7D;&#x8FDB;&#x6765;&#x7684;&#x4EE5;&#x6765;&#x7684;&#x6A21;&#x5757;&#x3002;  </p>
+<pre><code>&lt;script data-main=&apos;scripts/main&apos; src=&apos;scripts/require.js&apos;&gt;&lt;/script&gt;
+//scripts&#x4E0B;&#x7684;main.js&#x5219;&#x662F;&#x6307;&#x5B9A;&#x7684;&#x4E3B;&#x4EE3;&#x7801;&#x811A;&#x672C;&#x6587;&#x4EF6;&#xFF0C;&#x6240;&#x6709;&#x7684;&#x4F9D;&#x8D56;&#x6A21;&#x5757;&#x4EE3;&#x7801;&#x6587;&#x4EF6;&#x90FD;&#x5C06;&#x4ECE;&#x8BE5;&#x6587;&#x4EF6;&#x5F00;&#x59CB;&#x5F02;&#x6B65;&#x52A0;&#x8F7D;&#x8FDB;&#x5165;&#x6267;&#x884C;&#x3002;
+</code></pre><p>defined&#x7528;&#x4E8E;&#x5B9A;&#x4E49;&#x6A21;&#x5757;&#xFF0C;RequireJS&#x8981;&#x6C42;&#x6BCF;&#x4E2A;&#x6A21;&#x5757;&#x5747;&#x653E;&#x5728;&#x72EC;&#x7ACB;&#x7684;&#x6587;&#x4EF6;&#x4E4B;&#x4E2D;&#x3002;&#x6309;&#x7167;&#x662F;&#x5426;&#x6709;&#x4F9D;&#x8D56;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x7684;&#x60C5;&#x51B5;&#x5206;&#x4E3A;&#x72EC;&#x7ACB;&#x6A21;&#x5757;&#x548C;&#x975E;&#x72EC;&#x7ACB;&#x6A21;&#x5757;&#x3002;<br><strong>1&#x3001;&#x72EC;&#x7ACB;&#x6A21;&#x5757; &#x4E0D;&#x4F9D;&#x8D56;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x3002;&#x76F4;&#x63A5;&#x5B9A;&#x4E49;</strong>  </p>
+<pre><code>define({
+    methodOne: function (){},
+    methodTwo: function (){}
+});
+
+//&#x7B49;&#x4EF7;&#x4E8E;
+
+define(function (){
+    return {
+        methodOne: function (){},
+        methodTwo: function (){}
+    };
+});
+</code></pre><p><strong>2&#x3001;&#x975E;&#x72EC;&#x7ACB;&#x6A21;&#x5757;&#xFF0C;&#x5BF9;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x6709;&#x4F9D;&#x8D56;</strong>  </p>
+<pre><code>define([ &apos;moduleOne&apos;, &apos;moduleTwo&apos; ], function(mOne, mTwo){
+    ...
+});
+
+//&#x6216;&#x8005;
+
+define( function( require ){
+    var mOne = require( &apos;moduleOne&apos; ),
+        mTwo = require( &apos;moduleTwo&apos; );
+    ...
+});
+</code></pre><p>&#x5982;&#x4E0A;&#x4EE3;&#x7801;&#xFF0C; define&#x4E2D;&#x6709;&#x4F9D;&#x8D56;&#x6A21;&#x5757;&#x6570;&#x7EC4;&#x7684; &#x548C; &#x6CA1;&#x6709;&#x4F9D;&#x8D56;&#x6A21;&#x5757;&#x6570;&#x7EC4;&#x7528;require&#x52A0;&#x8F7D; &#x8FD9;&#x4E24;&#x79CD;&#x5B9A;&#x4E49;&#x6A21;&#x5757;&#xFF0C;&#x8C03;&#x7528;&#x6A21;&#x5757;&#x7684;&#x65B9;&#x6CD5;&#x5408;&#x79F0;&#x4E3A;AMD&#x6A21;&#x5F0F;&#xFF0C;&#x5B9A;&#x4E49;&#x6A21;&#x5757;&#x6E05;&#x6670;&#xFF0C;&#x4E0D;&#x4F1A;&#x6C61;&#x67D3;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#xFF0C;&#x6E05;&#x695A;&#x7684;&#x663E;&#x793A;&#x4F9D;&#x8D56;&#x5173;&#x7CFB;&#x3002;AMD&#x6A21;&#x5F0F;&#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x6D4F;&#x89C8;&#x5668;&#x73AF;&#x5883;&#x5E76;&#x4E14;&#x5141;&#x8BB8;&#x975E;&#x540C;&#x6B65;&#x52A0;&#x8F7D;&#x6A21;&#x5757;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x6309;&#x9700;&#x52A8;&#x6001;&#x52A0;&#x8F7D;&#x6A21;&#x5757;&#x3002;</p>
+<h2 id="cmd"><a name="cmd" class="anchor-navigation-ex-anchor" href="#cmd"><i class="fa fa-link" aria-hidden="true"></i></a>CMD</h2>
+<p>CMD&#xFF08;Common Module Definition&#xFF09;&#xFF0C;&#x5728;CMD&#x4E2D;&#xFF0C;&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x3002;  </p>
+<p>&#x5168;&#x5C40;&#x51FD;&#x6570;define&#xFF0C;&#x7528;&#x6765;&#x5B9A;&#x4E49;&#x6A21;&#x5757;&#x3002;<br>&#x53C2;&#x6570; factory  &#x53EF;&#x4EE5;&#x662F;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x4E3A;&#x5BF9;&#x8C61;&#x6216;&#x8005;&#x5B57;&#x7B26;&#x4E32;&#x3002;<br>&#x5F53; factory &#x4E3A;&#x5BF9;&#x8C61;&#x3001;&#x5B57;&#x7B26;&#x4E32;&#x65F6;&#xFF0C;&#x8868;&#x793A;&#x6A21;&#x5757;&#x7684;&#x63A5;&#x53E3;&#x5C31;&#x662F;&#x8BE5;&#x5BF9;&#x8C61;&#x3001;&#x5B57;&#x7B26;&#x4E32;&#x3002;  </p>
+<p><em>&#x5B9A;&#x4E49;JSON&#x6570;&#x636E;&#x6A21;&#x5757;&#xFF1A;</em>  </p>
+<pre><code>define({ &quot;foo&quot;: &quot;bar&quot; });
+</code></pre><p><em>factory &#x4E3A;&#x51FD;&#x6570;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x8868;&#x793A;&#x6A21;&#x5757;&#x7684;&#x6784;&#x9020;&#x65B9;&#x6CD5;&#xFF0C;&#x6267;&#x884C;&#x6784;&#x9020;&#x65B9;&#x6CD5;&#x4FBF;&#x53EF;&#x4EE5;&#x5F97;&#x5230;&#x6A21;&#x5757;&#x5411;&#x5916;&#x63D0;&#x4F9B;&#x7684;&#x63A5;&#x53E3;&#x3002;</em>  </p>
+<pre><code>define( function(require, exports, module) { 
+    // &#x6A21;&#x5757;&#x4EE3;&#x7801;
+});
+</code></pre><h3 id="seajs"><a name="seajs" class="anchor-navigation-ex-anchor" href="#seajs"><i class="fa fa-link" aria-hidden="true"></i></a><code>SeaJS</code></h3>
+<p><strong>sea.js &#x6838;&#x5FC3;&#x7279;&#x5F81;&#xFF1A;</strong></p>
+<ol>
+<li>&#x9075;&#x5FAA;CMD&#x89C4;&#x8303;&#xFF0C;&#x4E0E;NodeJS&#x822C;&#x7684;&#x4E66;&#x5199;&#x6A21;&#x5757;&#x4EE3;&#x7801;&#x3002;</li>
+<li>&#x4F9D;&#x8D56;&#x81EA;&#x52A8;&#x52A0;&#x8F7D;&#xFF0C;&#x914D;&#x7F6E;&#x6E05;&#x6670;&#x7B80;&#x6D01;&#x3002;</li>
+</ol>
+<p><code>seajs.use</code> &#x7528;&#x6765;&#x5728;&#x9875;&#x9762;&#x4E2D;&#x52A0;&#x8F7D;&#x4E00;&#x4E2A;&#x6216;&#x8005;&#x591A;&#x4E2A;&#x6A21;&#x5757;</p>
+<pre><code> // &#x52A0;&#x8F7D;&#x4E00;&#x4E2A;&#x6A21;&#x5757; 
+seajs.use(&apos;./a&apos;);
+
+// &#x52A0;&#x8F7D;&#x6A21;&#x5757;&#xFF0C;&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x65F6;&#x6267;&#x884C;&#x56DE;&#x8C03;
+seajs.use(&apos;./a&apos;&#xFF0C;function(a){
+    a.doSomething();
+});
+
+// &#x52A0;&#x8F7D;&#x591A;&#x4E2A;&#x6A21;&#x5757;&#x6267;&#x884C;&#x56DE;&#x8C03;
+seajs.use([&apos;./a&apos;,&apos;./b&apos;]&#xFF0C;function(a , b){
+    a.doSomething();
+    b.doSomething();
+});
+</code></pre><blockquote>
+<p><code>AMD&#x548C;CMD&#x6700;&#x5927;&#x7684;&#x533A;&#x522B;&#x662F;&#x5BF9;&#x4F9D;&#x8D56;&#x6A21;&#x5757;&#x7684;&#x6267;&#x884C;&#x65F6;&#x673A;&#x5904;&#x7406;&#x4E0D;&#x540C;&#xFF0C;&#x6CE8;&#x610F;&#x4E0D;&#x662F;&#x52A0;&#x8F7D;&#x7684;&#x65F6;&#x673A;&#x6216;&#x8005;&#x65B9;&#x5F0F;&#x4E0D;&#x540C;&#x3002;</code><br>&#x5F88;&#x591A;&#x4EBA;&#x8BF4;requireJS&#x662F;&#x5F02;&#x6B65;&#x52A0;&#x8F7D;&#x6A21;&#x5757;&#xFF0C;SeaJS&#x662F;&#x540C;&#x6B65;&#x52A0;&#x8F7D;&#x6A21;&#x5757;&#xFF0C;&#x8FD9;&#x4E48;&#x7406;&#x89E3;&#x5B9E;&#x9645;&#x4E0A;&#x662F;&#x4E0D;&#x51C6;&#x786E;&#x7684;&#xFF0C;&#x5176;&#x5B9E;&#x52A0;&#x8F7D;&#x6A21;&#x5757;&#x90FD;&#x662F;&#x5F02;&#x6B65;&#x7684;&#xFF0C;&#x53EA;&#x4E0D;&#x8FC7;AMD&#x4F9D;&#x8D56;&#x524D;&#x7F6E;&#xFF0C;js&#x53EF;&#x4EE5;&#x65B9;&#x4FBF;&#x77E5;&#x9053;&#x4F9D;&#x8D56;&#x6A21;&#x5757;&#x662F;&#x8C01;&#xFF0C;&#x7ACB;&#x5373;&#x52A0;&#x8F7D;&#xFF0C;&#x800C;CMD&#x5C31;&#x8FD1;&#x4F9D;&#x8D56;&#xFF0C;&#x9700;&#x8981;&#x4F7F;&#x7528;&#x628A;&#x6A21;&#x5757;&#x53D8;&#x4E3A;&#x5B57;&#x7B26;&#x4E32;&#x89E3;&#x6790;&#x4E00;&#x904D;&#x624D;&#x77E5;&#x9053;&#x4F9D;&#x8D56;&#x4E86;&#x90A3;&#x4E9B;&#x6A21;&#x5757;&#xFF0C;&#x8FD9;&#x4E5F;&#x662F;&#x5F88;&#x591A;&#x4EBA;&#x8BDF;&#x75C5;CMD&#x7684;&#x4E00;&#x70B9;&#xFF0C;&#x727A;&#x7272;&#x6027;&#x80FD;&#x6765;&#x5E26;&#x6765;&#x5F00;&#x53D1;&#x7684;&#x4FBF;&#x5229;&#x6027;&#xFF0C;&#x5B9E;&#x9645;&#x4E0A;&#x89E3;&#x6790;&#x6A21;&#x5757;&#x7528;&#x7684;&#x65F6;&#x95F4;&#x77ED;&#x5230;&#x53EF;&#x4EE5;&#x5FFD;&#x7565;&#x3002;  </p>
+<p><code>&#x4E3A;&#x4EC0;&#x4E48;&#x8BF4;&#x662F;&#x6267;&#x884C;&#x65F6;&#x673A;&#x5904;&#x7406;&#x4E0D;&#x540C;&#xFF1F;</code><br>&#x540C;&#x6837;&#x90FD;&#x662F;&#x5F02;&#x6B65;&#x52A0;&#x8F7D;&#x6A21;&#x5757;&#xFF0C;AMD&#x5728;&#x52A0;&#x8F7D;&#x6A21;&#x5757;&#x5B8C;&#x6210;&#x540E;&#x5C31;&#x4F1A;&#x6267;&#x884C;&#x8BE5;&#x6A21;&#x5757;&#xFF0C;&#x6240;&#x6709;&#x6A21;&#x5757;&#x90FD;&#x52A0;&#x8F7D;&#x6267;&#x884C;&#x5B8C;&#x540E;&#x4F1A;&#x8FDB;&#x5165;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF0C;&#x6267;&#x884C;&#x4E3B;&#x903B;&#x8F91;&#xFF0C;&#x8FD9;&#x6837;&#x7684;&#x6548;&#x679C;&#x5C31;&#x662F;&#x4F9D;&#x8D56;&#x6A21;&#x5757;&#x7684;&#x6267;&#x884C;&#x987A;&#x5E8F;&#x548C;&#x4E66;&#x5199;&#x987A;&#x5E8F;&#x4E0D;&#x4E00;&#x5B9A;&#x4E00;&#x81F4;&#xFF0C;&#x770B;&#x7F51;&#x7EDC;&#x901F;&#x5EA6;&#xFF0C;&#x54EA;&#x4E2A;&#x5148;&#x4E0B;&#x8F7D;&#x4E0B;&#x6765;&#xFF0C;&#x54EA;&#x4E2A;&#x5148;&#x6267;&#x884C;&#xFF0C;&#x4F46;&#x662F;&#x4E3B;&#x903B;&#x8F91;&#x4E00;&#x5B9A;&#x5728;&#x6240;&#x6709;&#x4F9D;&#x8D56;&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x540E;&#x624D;&#x6267;&#x884C;&#x3002;<br>CMD&#x52A0;&#x8F7D;&#x5B8C;&#x67D0;&#x4E2A;&#x4F9D;&#x8D56;&#x6A21;&#x5757;&#x540E;&#x5E76;&#x4E0D;&#x6267;&#x884C;&#xFF0C;&#x53EA;&#x662F;&#x4E0B;&#x8F7D;&#x800C;&#x5DF2;&#xFF0C;&#x5728;&#x6240;&#x6709;&#x4F9D;&#x8D56;&#x6A21;&#x5757;&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x540E;&#x8FDB;&#x5165;&#x4E3B;&#x903B;&#x8F91;&#xFF0C;&#x9047;&#x5230;require&#x8BED;&#x53E5;&#x7684;&#x65F6;&#x5019;&#x624D;&#x6267;&#x884C;&#x5BF9;&#x5E94;&#x7684;&#x6A21;&#x5757;&#xFF0C;&#x8FD9;&#x6837;&#x6A21;&#x5757;&#x7684;&#x6267;&#x884C;&#x987A;&#x5E8F;&#x548C;&#x4E66;&#x5199;&#x987A;&#x5E8F;&#x662F;&#x5B8C;&#x5168;&#x4E00;&#x81F4;&#x7684;&#x3002;</p>
+</blockquote>
+<h2 id="umd"><a name="umd" class="anchor-navigation-ex-anchor" href="#umd"><i class="fa fa-link" aria-hidden="true"></i></a>UMD</h2>
+<p>&#x7EDF;&#x4E00;&#x6A21;&#x5757;&#x5B9A;&#x4E49;&#xFF08;UMD&#xFF1A;Universal Module Definition &#xFF09;&#x5C31;&#x662F;&#x5C06; AMD &#x548C; CommonJS &#x5408;&#x5728;&#x4E00;&#x8D77;&#x7684;&#x4E00;&#x79CD;&#x5C1D;&#x8BD5;&#xFF0C;&#x5E38;&#x89C1;&#x7684;&#x505A;&#x6CD5;&#x662F;&#x5C06;CommonJS &#x8BED;&#x6CD5;&#x5305;&#x88F9;&#x5728;&#x517C;&#x5BB9; AMD &#x7684;&#x4EE3;&#x7801;&#x4E2D;&#x3002;  </p>
+<pre><code>(function(define) {
+    define(function () {
+        return {
+            sayHello: function () {
+                console.log(&apos;hello&apos;);
+            }
+        };
+    });
+}(
+    typeof module === &apos;object&apos; &amp;&amp; module.exports &amp;&amp; typeof define !== &apos;function&apos; ?
+    function (factory) { module.exports = factory(); } :
+    define
+));
+</code></pre><p>&#x8BE5;&#x6A21;&#x5F0F;&#x7684;&#x6838;&#x5FC3;&#x601D;&#x60F3;&#x5728;&#x4E8E;&#x6240;&#x8C13;&#x7684; IIFE&#xFF08;Immediately Invoked Function Expression&#xFF09;&#xFF0C;&#x8BE5;&#x51FD;&#x6570;&#x4F1A;&#x6839;&#x636E;&#x73AF;&#x5883;&#x6765;&#x5224;&#x65AD;&#x9700;&#x8981;&#x7684;&#x53C2;&#x6570;&#x7C7B;&#x522B;</p>
+<h2 id="es6&#x6A21;&#x5757;module"><a name="es6&#x6A21;&#x5757;module" class="anchor-navigation-ex-anchor" href="#es6&#x6A21;&#x5757;module"><i class="fa fa-link" aria-hidden="true"></i></a>ES6&#x6A21;&#x5757;(module)</h2>
+<h3 id="&#x4E25;&#x683C;&#x6A21;&#x5F0F;"><a name="&#x4E25;&#x683C;&#x6A21;&#x5F0F;" class="anchor-navigation-ex-anchor" href="#&#x4E25;&#x683C;&#x6A21;&#x5F0F;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x4E25;&#x683C;&#x6A21;&#x5F0F;</h3>
+<p>ES6 &#x7684;&#x6A21;&#x5757;&#x81EA;&#x52A8;&#x91C7;&#x7528;&#x4E25;&#x683C;&#x6A21;&#x5F0F;&#xFF0C;&#x4E0D;&#x7BA1;&#x6709;&#x6CA1;&#x6709;&#x5728;&#x6A21;&#x5757;&#x5934;&#x90E8;&#x52A0;&#x4E0A;&quot;use strict&quot;;&#x3002;<br>&#x4E25;&#x683C;&#x6A21;&#x5F0F;&#x4E3B;&#x8981;&#x6709;&#x4EE5;&#x4E0B;&#x9650;&#x5236;&#x3002;  </p>
+<ul>
+<li>&#x53D8;&#x91CF;&#x5FC5;&#x987B;&#x58F0;&#x660E;&#x540E;&#x518D;&#x4F7F;&#x7528;</li>
+<li>&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x4E0D;&#x80FD;&#x6709;&#x540C;&#x540D;&#x5C5E;&#x6027;&#xFF0C;&#x5426;&#x5219;&#x62A5;&#x9519;</li>
+<li>&#x4E0D;&#x80FD;&#x4F7F;&#x7528;with&#x8BED;&#x53E5;</li>
+<li>&#x4E0D;&#x80FD;&#x5BF9;&#x53EA;&#x8BFB;&#x5C5E;&#x6027;&#x8D4B;&#x503C;&#xFF0C;&#x5426;&#x5219;&#x62A5;&#x9519;</li>
+<li>&#x4E0D;&#x80FD;&#x4F7F;&#x7528;&#x524D;&#x7F00;0&#x8868;&#x793A;&#x516B;&#x8FDB;&#x5236;&#x6570;&#xFF0C;&#x5426;&#x5219;&#x62A5;&#x9519;</li>
+<li>&#x4E0D;&#x80FD;&#x5220;&#x9664;&#x4E0D;&#x53EF;&#x5220;&#x9664;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x5426;&#x5219;&#x62A5;&#x9519;</li>
+<li>&#x4E0D;&#x80FD;&#x5220;&#x9664;&#x53D8;&#x91CF;delete prop&#xFF0C;&#x4F1A;&#x62A5;&#x9519;&#xFF0C;&#x53EA;&#x80FD;&#x5220;&#x9664;&#x5C5E;&#x6027;delete global[prop]</li>
+<li>eval&#x4E0D;&#x4F1A;&#x5728;&#x5B83;&#x7684;&#x5916;&#x5C42;&#x4F5C;&#x7528;&#x57DF;&#x5F15;&#x5165;&#x53D8;&#x91CF;</li>
+<li>eval&#x548C;arguments&#x4E0D;&#x80FD;&#x88AB;&#x91CD;&#x65B0;&#x8D4B;&#x503C;</li>
+<li>arguments&#x4E0D;&#x4F1A;&#x81EA;&#x52A8;&#x53CD;&#x6620;&#x51FD;&#x6570;&#x53C2;&#x6570;&#x7684;&#x53D8;&#x5316;</li>
+<li>&#x4E0D;&#x80FD;&#x4F7F;&#x7528;arguments.callee</li>
+<li>&#x4E0D;&#x80FD;&#x4F7F;&#x7528;arguments.caller</li>
+<li>&#x7981;&#x6B62;this&#x6307;&#x5411;&#x5168;&#x5C40;&#x5BF9;&#x8C61;</li>
+<li>&#x4E0D;&#x80FD;&#x4F7F;&#x7528;fn.caller&#x548C;fn.arguments&#x83B7;&#x53D6;&#x51FD;&#x6570;&#x8C03;&#x7528;&#x7684;&#x5806;&#x6808;</li>
+<li>&#x589E;&#x52A0;&#x4E86;&#x4FDD;&#x7559;&#x5B57;&#xFF08;&#x6BD4;&#x5982;protected&#x3001;static&#x548C;interface&#xFF09;</li>
+</ul>
+<h3 id="&#x6A21;&#x5757;module"><a name="&#x6A21;&#x5757;module" class="anchor-navigation-ex-anchor" href="#&#x6A21;&#x5757;module"><i class="fa fa-link" aria-hidden="true"></i></a>&#x6A21;&#x5757;Module</h3>
+<p>&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#xFF0C;&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x5BF9;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x66B4;&#x9732;&#x81EA;&#x5DF1;&#x7684;&#x5C5E;&#x6027;&#x6216;&#x8005;&#x65B9;&#x6CD5;&#x7684;&#x6587;&#x4EF6;&#x3002;  </p>
+<h3 id="&#x5BFC;&#x51FA;export"><a name="&#x5BFC;&#x51FA;export" class="anchor-navigation-ex-anchor" href="#&#x5BFC;&#x51FA;export"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5BFC;&#x51FA;Export</h3>
+<p>&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#xFF0C;&#x5B83;&#x53EF;&#x4EE5;&#x9009;&#x62E9;&#x6027;&#x5730;&#x7ED9;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x66B4;&#x9732;&#xFF08;&#x63D0;&#x4F9B;&#xFF09;&#x81EA;&#x5DF1;&#x7684;&#x5C5E;&#x6027;&#x548C;&#x65B9;&#x6CD5;&#xFF0C;&#x4F9B;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x4F7F;&#x7528;&#x3002;</p>
+<pre><code>// profile.js
+export var firstName = &apos;qiqi&apos;;
+export var lastName = &apos;haobenben&apos;;
+export var year = 1992;
+
+//&#x7B49;&#x4EF7;&#x4E8E;
+
+var firstName = &apos;qiqi&apos;;
+var lastName = &apos;haobenben&apos;;
+var year = 1992;
+export {firstName, lastName, year}
+</code></pre><p><code>1&#x3001; &#x901A;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;export&#x8F93;&#x51FA;&#x7684;&#x53D8;&#x91CF;&#x5C31;&#x662F;&#x672C;&#x6765;&#x7684;&#x540D;&#x5B57;&#xFF0C;&#x4F46;&#x662F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;as&#x5173;&#x952E;&#x5B57;&#x91CD;&#x547D;&#x540D;&#x3002;</code></p>
+<pre><code>function v1() { ... }
+function v2() { ... }
+
+export {
+  v1 as streamV1,
+  v2 as streamV2,
+  v2 as streamLatestVersion
+};
+
+//&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x4F7F;&#x7528;as&#x5173;&#x952E;&#x5B57;&#xFF0C;&#x91CD;&#x547D;&#x540D;&#x4E86;&#x51FD;&#x6570;v1&#x548C;v2&#x7684;&#x5BF9;&#x5916;&#x63A5;&#x53E3;&#x3002;&#x91CD;&#x547D;&#x540D;&#x540E;&#xFF0C;v2&#x53EF;&#x4EE5;&#x7528;&#x4E0D;&#x540C;&#x7684;&#x540D;&#x5B57;&#x8F93;&#x51FA;&#x4E24;&#x6B21;&#x3002;
+</code></pre><p><code>2&#x3001; &#x9700;&#x8981;&#x7279;&#x522B;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;export&#x547D;&#x4EE4;&#x89C4;&#x5B9A;&#x7684;&#x662F;&#x5BF9;&#x5916;&#x7684;&#x63A5;&#x53E3;&#xFF0C;&#x5FC5;&#x987B;&#x4E0E;&#x6A21;&#x5757;&#x5185;&#x90E8;&#x7684;&#x53D8;&#x91CF;&#x5EFA;&#x7ACB;&#x4E00;&#x4E00;&#x5BF9;&#x5E94;&#x5173;&#x7CFB;&#x3002;</code></p>
+<pre><code>// &#x62A5;&#x9519;
+export 1;
+
+// &#x62A5;&#x9519;
+var m = 1;
+export m;
+
+//&#x4E0A;&#x9762;&#x4E24;&#x79CD;&#x5199;&#x6CD5;&#x90FD;&#x4F1A;&#x62A5;&#x9519;&#xFF0C;&#x56E0;&#x4E3A;&#x6CA1;&#x6709;&#x63D0;&#x4F9B;&#x5BF9;&#x5916;&#x7684;&#x63A5;&#x53E3;&#x3002;&#x7B2C;&#x4E00;&#x79CD;&#x5199;&#x6CD5;&#x76F4;&#x63A5;&#x8F93;&#x51FA;1&#xFF0C;&#x7B2C;&#x4E8C;&#x79CD;&#x5199;&#x6CD5;&#x901A;&#x8FC7;&#x53D8;&#x91CF;m&#xFF0C;&#x8FD8;&#x662F;&#x76F4;&#x63A5;&#x8F93;&#x51FA;1&#x3002;1&#x53EA;&#x662F;&#x4E00;&#x4E2A;&#x503C;&#xFF0C;&#x4E0D;&#x662F;&#x63A5;&#x53E3;&#x3002;
+
+/ &#x5199;&#x6CD5;&#x4E00;
+export var m = 1;
+
+// &#x5199;&#x6CD5;&#x4E8C;
+var m = 1;
+export {m};
+
+// &#x5199;&#x6CD5;&#x4E09;
+var n = 1;
+export {n as m};
+
+//&#x4E0A;&#x9762;&#x4E09;&#x79CD;&#x5199;&#x6CD5;&#x90FD;&#x662F;&#x6B63;&#x786E;&#x7684;&#xFF0C;&#x89C4;&#x5B9A;&#x4E86;&#x5BF9;&#x5916;&#x7684;&#x63A5;&#x53E3;m&#x3002;&#x5176;&#x4ED6;&#x811A;&#x672C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x8FD9;&#x4E2A;&#x63A5;&#x53E3;&#xFF0C;&#x53D6;&#x5230;&#x503C;1&#x3002;&#x5B83;&#x4EEC;&#x7684;&#x5B9E;&#x8D28;&#x662F;&#xFF0C;&#x5728;&#x63A5;&#x53E3;&#x540D;&#x4E0E;&#x6A21;&#x5757;&#x5185;&#x90E8;&#x53D8;&#x91CF;&#x4E4B;&#x95F4;&#xFF0C;&#x5EFA;&#x7ACB;&#x4E86;&#x4E00;&#x4E00;&#x5BF9;&#x5E94;&#x7684;&#x5173;&#x7CFB;&#x3002;
+</code></pre><p><code>3&#x3001;&#x6700;&#x540E;&#xFF0C;export&#x547D;&#x4EE4;&#x53EF;&#x4EE5;&#x51FA;&#x73B0;&#x5728;&#x6A21;&#x5757;&#x7684;&#x4EFB;&#x4F55;&#x4F4D;&#x7F6E;&#xFF0C;&#x53EA;&#x8981;&#x5904;&#x4E8E;&#x6A21;&#x5757;&#x9876;&#x5C42;&#x5C31;&#x53EF;&#x4EE5;&#x3002;&#x5982;&#x679C;&#x5904;&#x4E8E;&#x5757;&#x7EA7;&#x4F5C;&#x7528;&#x57DF;&#x5185;&#xFF0C;&#x5C31;&#x4F1A;&#x62A5;&#x9519;&#xFF0C;&#x63A5;&#x4E0B;&#x6765;&#x8BF4;&#x7684;import&#x547D;&#x4EE4;&#x4E5F;&#x662F;&#x5982;&#x6B64;&#x3002;</code></p>
+<pre><code>function foo() {
+  export default &apos;bar&apos; // SyntaxError
+}
+foo()
+</code></pre><h3 id="&#x5BFC;&#x5165;import"><a name="&#x5BFC;&#x5165;import" class="anchor-navigation-ex-anchor" href="#&#x5BFC;&#x5165;import"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5BFC;&#x5165;import</h3>
+<p>&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#xFF0C;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x9700;&#x8981;&#xFF0C;&#x5F15;&#x5165;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x7684;&#x63D0;&#x4F9B;&#x7684;&#x5C5E;&#x6027;&#x6216;&#x8005;&#x65B9;&#x6CD5;&#xFF0C;&#x4F9B;&#x81EA;&#x5DF1;&#x6A21;&#x5757;&#x4F7F;&#x7528;&#x3002;  </p>
+<p><code>1&#x3001; import&#x547D;&#x4EE4;&#x63A5;&#x53D7;&#x4E00;&#x5BF9;&#x5927;&#x62EC;&#x53F7;&#xFF0C;&#x91CC;&#x9762;&#x6307;&#x5B9A;&#x8981;&#x4ECE;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x5BFC;&#x5165;&#x7684;&#x53D8;&#x91CF;&#x540D;&#x3002;&#x5927;&#x62EC;&#x53F7;&#x91CC;&#x9762;&#x7684;&#x53D8;&#x91CF;&#x540D;&#xFF0C;&#x5FC5;&#x987B;&#x4E0E;&#x88AB;&#x5BFC;&#x5165;&#x6A21;&#x5757;&#xFF08;profile.js&#xFF09;&#x5BF9;&#x5916;&#x63A5;&#x53E3;&#x7684;&#x540D;&#x79F0;&#x76F8;&#x540C;&#x3002;&#x5982;&#x679C;&#x60F3;&#x4E3A;&#x8F93;&#x5165;&#x7684;&#x53D8;&#x91CF;&#x91CD;&#x65B0;&#x53D6;&#x4E00;&#x4E2A;&#x540D;&#x5B57;&#xFF0C;import&#x547D;&#x4EE4;&#x8981;&#x4F7F;&#x7528;as&#x5173;&#x952E;&#x5B57;&#xFF0C;&#x5C06;&#x8F93;&#x5165;&#x7684;&#x53D8;&#x91CF;&#x91CD;&#x547D;&#x540D;&#x3002;</code>  </p>
+<pre><code>import { lastName as surename } from &apos;./profile&apos;;
+</code></pre><p><code>2&#x3001;import&#x540E;&#x9762;&#x7684;from&#x6307;&#x5B9A;&#x6A21;&#x5757;&#x6587;&#x4EF6;&#x7684;&#x4F4D;&#x7F6E;&#xFF0C;&#x53EF;&#x4EE5;&#x662F;&#x76F8;&#x5BF9;&#x8DEF;&#x5F84;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x662F;&#x7EDD;&#x5BF9;&#x8DEF;&#x5F84;&#xFF0C;.js&#x8DEF;&#x5F84;&#x53EF;&#x4EE5;&#x7701;&#x7565;&#x3002;&#x5982;&#x679C;&#x53EA;&#x662F;&#x6A21;&#x5757;&#x540D;&#xFF0C;&#x4E0D;&#x5E26;&#x6709;&#x8DEF;&#x5F84;&#xFF0C;&#x90A3;&#x4E48;&#x5FC5;&#x987B;&#x6709;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF0C;&#x544A;&#x8BC9; JavaScript &#x5F15;&#x64CE;&#x8BE5;&#x6A21;&#x5757;&#x7684;&#x4F4D;&#x7F6E;&#x3002;</code>  </p>
+<p><code>3&#x3001;&#x6CE8;&#x610F;&#xFF0C;import&#x547D;&#x4EE4;&#x5177;&#x6709;&#x63D0;&#x5347;&#x6548;&#x679C;&#xFF0C;&#x4F1A;&#x63D0;&#x5347;&#x5230;&#x6574;&#x4E2A;&#x6A21;&#x5757;&#x7684;&#x5934;&#x90E8;&#xFF0C;&#x9996;&#x5148;&#x6267;&#x884C;&#x3002;</code>  </p>
+<pre><code>foo();
+
+import { foo } from &apos;my_module&apos;;
+
+//&#x4E0A;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x4E0D;&#x4F1A;&#x62A5;&#x9519;&#xFF0C;&#x56E0;&#x4E3A;import&#x7684;&#x6267;&#x884C;&#x65E9;&#x4E8E;foo&#x7684;&#x8C03;&#x7528;&#x3002;&#x8FD9;&#x79CD;&#x884C;&#x4E3A;&#x7684;&#x672C;&#x8D28;&#x662F;&#xFF0C;import&#x547D;&#x4EE4;&#x662F;&#x7F16;&#x8BD1;&#x9636;&#x6BB5;&#x6267;&#x884C;&#x7684;&#xFF0C;&#x5728;&#x4EE3;&#x7801;&#x8FD0;&#x884C;&#x4E4B;&#x524D;&#x3002;
+</code></pre><p><code>4&#x3001;&#x7531;&#x4E8E;import&#x662F;&#x9759;&#x6001;&#x6267;&#x884C;&#xFF0C;&#x6240;&#x4EE5;&#x4E0D;&#x80FD;&#x4F7F;&#x7528;&#x8868;&#x8FBE;&#x5F0F;&#x548C;&#x53D8;&#x91CF;&#xFF0C;&#x8FD9;&#x4E9B;&#x53EA;&#x6709;&#x5728;&#x8FD0;&#x884C;&#x65F6;&#x624D;&#x80FD;&#x5F97;&#x5230;&#x7ED3;&#x679C;&#x7684;&#x8BED;&#x6CD5;&#x7ED3;&#x6784;&#x3002;</code>  </p>
+<pre><code>/ &#x62A5;&#x9519;
+import { &apos;f&apos; + &apos;oo&apos; } from &apos;my_module&apos;;
+
+// &#x62A5;&#x9519;
+let module = &apos;my_module&apos;;
+import { foo } from module;
+
+// &#x62A5;&#x9519;
+if (x === 1) {
+  import { foo } from &apos;module1&apos;;
+} else {
+  import { foo } from &apos;module2&apos;;
+}
+</code></pre><p><code>5&#x3001;&#x6700;&#x540E;&#xFF0C;import&#x8BED;&#x53E5;&#x4F1A;&#x6267;&#x884C;&#x6240;&#x52A0;&#x8F7D;&#x7684;&#x6A21;&#x5757;&#xFF0C;&#x56E0;&#x6B64;&#x53EF;&#x4EE5;&#x6709;&#x4E0B;&#x9762;&#x7684;&#x5199;&#x6CD5;&#x3002;</code>  </p>
+<pre><code>import &apos;lodash&apos;;
+//&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x4EC5;&#x4EC5;&#x6267;&#x884C;lodash&#x6A21;&#x5757;&#xFF0C;&#x4F46;&#x662F;&#x4E0D;&#x8F93;&#x5165;&#x4EFB;&#x4F55;&#x503C;&#x3002;
+</code></pre><h2 id="&#x9ED8;&#x8BA4;&#x5BFC;&#x51FA;export-default"><a name="&#x9ED8;&#x8BA4;&#x5BFC;&#x51FA;export-default" class="anchor-navigation-ex-anchor" href="#&#x9ED8;&#x8BA4;&#x5BFC;&#x51FA;export-default"><i class="fa fa-link" aria-hidden="true"></i></a>&#x9ED8;&#x8BA4;&#x5BFC;&#x51FA;(export default)</h2>
+<p>&#x6BCF;&#x4E2A;&#x6A21;&#x5757;&#x652F;&#x6301;&#x6211;&#x4EEC;&#x5BFC;&#x51FA;<code>&#x4E00;&#x4E2A;</code>&#x6CA1;&#x6709;&#x540D;&#x5B57;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x4F7F;&#x7528;&#x5173;&#x952E;&#x8BED;&#x53E5;export default&#x6765;&#x5B9E;&#x73B0;.  </p>
+<pre><code>export default function(){
+            console.log(&quot;I am default Fn&quot;);
+        }
+//&#x4F7F;&#x7528;export default&#x5173;&#x952E;&#x5B57;&#x5BF9;&#x5916;&#x5BFC;&#x51FA;&#x4E00;&#x4E2A;&#x533F;&#x540D;&#x51FD;&#x6570;&#xFF0C;&#x5BFC;&#x5165;&#x8FD9;&#x4E2A;&#x6A21;&#x5757;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x53EF;&#x4EE5;&#x4E3A;&#x8FD9;&#x4E2A;&#x533F;&#x540D;&#x51FD;&#x6570;&#x53D6;&#x4EFB;&#x610F;&#x7684;&#x540D;&#x5B57;
+
+//&#x53D6;&#x4EFB;&#x610F;&#x540D;&#x5B57;&#x5747;&#x53EF;
+import sayDefault from &quot;./module-B.js&quot;;
+sayDefault();
+//&#x7ED3;&#x679C;&#xFF1A;I am default Fn
+</code></pre><p><code>1&#x3001;&#x9ED8;&#x8BA4;&#x8F93;&#x51FA;&#x548C;&#x6B63;&#x5E38;&#x8F93;&#x51FA;&#x7684;&#x6BD4;&#x8F83;</code> </p>
+<pre><code>// &#x7B2C;&#x4E00;&#x7EC4;
+export default function diff() { // &#x8F93;&#x51FA;
+  // ...
+}
+
+import diff from &apos;diff&apos;; // &#x8F93;&#x5165;
+
+// &#x7B2C;&#x4E8C;&#x7EC4;
+export function diff() { // &#x8F93;&#x51FA;
+  // ...
+};
+
+import {diff} from &apos;diff&apos;; // &#x8F93;&#x5165;
+
+//&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x7684;&#x4E24;&#x7EC4;&#x5199;&#x6CD5;&#xFF0C;&#x7B2C;&#x4E00;&#x7EC4;&#x662F;&#x4F7F;&#x7528;export default&#x65F6;&#xFF0C;&#x5BF9;&#x5E94;&#x7684;import&#x8BED;&#x53E5;&#x4E0D;&#x9700;&#x8981;&#x4F7F;&#x7528;&#x5927;&#x62EC;&#x53F7;&#xFF1B;&#x7B2C;&#x4E8C;&#x7EC4;&#x662F;&#x4E0D;&#x4F7F;&#x7528;export default&#x65F6;&#xFF0C;&#x5BF9;&#x5E94;&#x7684;import&#x8BED;&#x53E5;&#x9700;&#x8981;&#x4F7F;&#x7528;&#x5927;&#x62EC;&#x53F7;&#x3002;
+</code></pre><blockquote>
+<p>export default&#x547D;&#x4EE4;&#x7528;&#x4E8E;&#x6307;&#x5B9A;&#x6A21;&#x5757;&#x7684;&#x9ED8;&#x8BA4;&#x8F93;&#x51FA;&#x3002;&#x663E;&#x7136;&#xFF0C;&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#x53EA;&#x80FD;&#x6709;&#x4E00;&#x4E2A;&#x9ED8;&#x8BA4;&#x8F93;&#x51FA;&#xFF0C;&#x56E0;&#x6B64;export default&#x547D;&#x4EE4;&#x53EA;&#x80FD;&#x4F7F;&#x7528;&#x4E00;&#x6B21;&#x3002;&#x6240;&#x4EE5;&#xFF0C;import&#x547D;&#x4EE4;&#x540E;&#x9762;&#x624D;&#x4E0D;&#x7528;&#x52A0;&#x5927;&#x62EC;&#x53F7;&#xFF0C;&#x56E0;&#x4E3A;&#x53EA;&#x53EF;&#x80FD;&#x5BF9;&#x5E94;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#x3002;</p>
+</blockquote>
+<p><br></p>
+<p><code>2&#x3001;&#x56E0;&#x4E3A;export default&#x672C;&#x8D28;&#x662F;&#x5C06;&#x8BE5;&#x547D;&#x4EE4;&#x540E;&#x9762;&#x7684;&#x503C;&#xFF0C;&#x8D4B;&#x7ED9;default&#x53D8;&#x91CF;&#x4EE5;&#x540E;&#x518D;&#x9ED8;&#x8BA4;&#xFF0C;&#x6240;&#x4EE5;&#x76F4;&#x63A5;&#x5C06;&#x4E00;&#x4E2A;&#x503C;&#x5199;&#x5728;export default&#x4E4B;&#x540E;&#x3002;</code>  </p>
+<pre><code>/ &#x6B63;&#x786E;
+export default 42;
+
+// &#x62A5;&#x9519;
+export 42;
+
+//&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x4E2D;&#xFF0C;&#x540E;&#x4E00;&#x53E5;&#x62A5;&#x9519;&#x662F;&#x56E0;&#x4E3A;&#x6CA1;&#x6709;&#x6307;&#x5B9A;&#x5BF9;&#x5916;&#x7684;&#x63A5;&#x53E3;&#xFF0C;&#x800C;&#x524D;&#x4E00;&#x53E5;&#x6307;&#x5B9A;&#x5916;&#x5BF9;&#x63A5;&#x53E3;&#x4E3A;default&#x3002;
+</code></pre><p><code>3&#x3001;&#x5982;&#x679C;&#x60F3;&#x5728;&#x4E00;&#x6761;import&#x8BED;&#x53E5;&#x4E2D;&#xFF0C;&#x540C;&#x65F6;&#x8F93;&#x5165;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;&#x548C;&#x5176;&#x4ED6;&#x53D8;&#x91CF;&#xFF0C;&#x53EF;&#x4EE5;&#x5199;&#x6210;&#x4E0B;&#x9762;&#x8FD9;&#x6837;&#x3002;</code>  </p>
+<pre><code>import _, { each } from &apos;lodash&apos;;
+
+//&#x5BF9;&#x5E94;&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x7684;export&#x8BED;&#x53E5;&#x5982;&#x4E0B;
+export default function (){
+    //...
+}
+export function each (obj, iterator, context){
+    //...
+}
+</code></pre><h2 id="export-&#x4E0E;-import-&#x7684;&#x590D;&#x5408;&#x5199;&#x6CD5;"><a name="export-&#x4E0E;-import-&#x7684;&#x590D;&#x5408;&#x5199;&#x6CD5;" class="anchor-navigation-ex-anchor" href="#export-&#x4E0E;-import-&#x7684;&#x590D;&#x5408;&#x5199;&#x6CD5;"><i class="fa fa-link" aria-hidden="true"></i></a>export &#x4E0E; import &#x7684;&#x590D;&#x5408;&#x5199;&#x6CD5;</h2>
+<p>&#x5982;&#x679C;&#x5728;&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#x4E4B;&#x4E2D;&#xFF0C;&#x5148;&#x8F93;&#x5165;&#x540E;&#x8F93;&#x51FA;&#x540C;&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#xFF0C;import&#x8BED;&#x53E5;&#x53EF;&#x4EE5;&#x4E0E;export&#x8BED;&#x53E5;&#x5199;&#x5728;&#x4E00;&#x8D77;&#x3002;  </p>
+<pre><code>export { foo, bar } from &apos;my_module&apos;;
+
+// &#x7B49;&#x540C;&#x4E8E;
+import { foo, bar } from &apos;my_module&apos;;
+export { foo, bar };
+
+/ &#x63A5;&#x53E3;&#x6539;&#x540D;
+export { foo as myFoo } from &apos;my_module&apos;;
+
+// &#x6574;&#x4F53;&#x8F93;&#x51FA;
+export * from &apos;my_module&apos;;
+</code></pre><blockquote>
+<p>&#x6CE8;&#x610F;&#x4E8B;&#x9879;<br>1&#x3001;&#x58F0;&#x660E;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x5BF9;&#x5916;&#x90FD;&#x662F;&#x53EA;&#x8BFB;&#x7684;&#x3002;&#x4F46;&#x662F;&#x5BFC;&#x51FA;&#x7684;&#x662F;&#x5BF9;&#x8C61;&#x7C7B;&#x578B;&#x7684;&#x503C;&#xFF0C;&#x5C31;&#x53EF;&#x4FEE;&#x6539;&#x3002;<br>2&#x3001;&#x5BFC;&#x5165;&#x4E0D;&#x5B58;&#x5728;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x503C;&#x4E3A;undefined&#x3002;</p>
+</blockquote>
+<h3 id="es6-&#x4E2D;&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;"><a name="es6-&#x4E2D;&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;" class="anchor-navigation-ex-anchor" href="#es6-&#x4E2D;&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;"><i class="fa fa-link" aria-hidden="true"></i></a>ES6 &#x4E2D;&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;</h3>
+<p>ES6 &#x4E2D;&#xFF0C;imports &#x662F; exports &#x7684;&#x53EA;&#x8BFB;&#x89C6;&#x56FE;&#xFF0C;&#x76F4;&#x767D;&#x4E00;&#x70B9;&#x5C31;&#x662F;&#xFF0C;imports &#x90FD;&#x6307;&#x5411; exports &#x539F;&#x672C;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
+<pre><code>//------ lib.js ------
+export let counter = 3;
+export function incCounter() {
+    counter++;
+}
+
+//------ main.js ------
+import { counter, incCounter } from &apos;./lib&apos;;
+
+// The imported value `counter` is live
+console.log(counter); // 3
+incCounter();
+console.log(counter); // 4
+
+// The imported value can&#x2019;t be changed
+counter++; // TypeError
+</code></pre><p>&#x56E0;&#x6B64;&#x5728; ES6 &#x4E2D;&#x5904;&#x7406;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x7279;&#x522B;&#x7B80;&#x5355;&#xFF0C;&#x770B;&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#xFF1A;</p>
+<pre><code>//------ a.js ------
+import {bar} from &apos;b&apos;; // (1)
+export function foo() {
+  bar(); // (2)
+}
+
+//------ b.js ------
+import {foo} from &apos;a&apos;; // (3)
+export function bar() {
+  if (Math.random()) {
+    foo(); // (4)
+  }
+}
+</code></pre><p>&#x5047;&#x8BBE;&#x5148;&#x52A0;&#x8F7D;&#x6A21;&#x5757; a&#xFF0C;&#x5728;&#x6A21;&#x5757; a &#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x4E4B;&#x540E;&#xFF0C;bar &#x95F4;&#x63A5;&#x6027;&#x5730;&#x6307;&#x5411;&#x7684;&#x662F;&#x6A21;&#x5757; b &#x4E2D;&#x7684; bar&#x3002;&#x65E0;&#x8BBA;&#x662F;&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x7684; imports &#x8FD8;&#x662F;&#x672A;&#x5B8C;&#x6210;&#x7684; imports&#xFF0C;imports &#x548C; exports &#x4E4B;&#x95F4;&#x90FD;&#x6709;&#x4E00;&#x4E2A;&#x95F4;&#x63A5;&#x7684;&#x8054;&#x7CFB;&#xFF0C;&#x6240;&#x4EE5;&#x603B;&#x662F;&#x53EF;&#x4EE5;&#x6B63;&#x5E38;&#x5DE5;&#x4F5C;&#x3002;</p>
+<h3 id="&#x5B9E;&#x4F8B;"><a name="&#x5B9E;&#x4F8B;" class="anchor-navigation-ex-anchor" href="#&#x5B9E;&#x4F8B;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5B9E;&#x4F8B;</h3>
+<pre><code>//---module-B.js&#x6587;&#x4EF6;---
+//&#x5BFC;&#x51FA;&#x53D8;&#x91CF;&#xFF1A;name
+export var name = &quot;cfangxu&quot;;
+
+moduleA&#x6A21;&#x5757;&#x4EE3;&#x7801;&#xFF1A;
+//&#x5BFC;&#x5165; &#x6A21;&#x5757;B&#x7684;&#x5C5E;&#x6027; name    
+import { name } from &quot;./module-B.js&quot;;   
+console.log(name)
+//&#x6253;&#x5370;&#x7ED3;&#x679C;&#xFF1A;cfangxu
+</code></pre><p><em>&#x6279;&#x91CF;&#x5BFC;&#x51FA;</em>  </p>
+<pre><code>//&#x5C5E;&#x6027;name
+var name = &quot;cfangxu&quot;;
+//&#x5C5E;&#x6027;age
+var age  = 26;
+//&#x65B9;&#x6CD5; say
+var say = function(){
+            console.log(&quot;say hello&quot;);
+         }
+//&#x6279;&#x91CF;&#x5BFC;&#x51FA;
+export {name,age,say}
+</code></pre><p><em>&#x6279;&#x91CF;&#x5BFC;&#x5165;</em>  </p>
+<pre><code>//&#x5BFC;&#x5165; &#x6A21;&#x5757;B&#x7684;&#x5C5E;&#x6027;
+import { name,age,say } from &quot;./module-B.js&quot;;
+console.log(name)
+//&#x6253;&#x5370;&#x7ED3;&#x679C;&#xFF1A;cfangxu
+console.log(age)
+//&#x6253;&#x5370;&#x7ED3;&#x679C;&#xFF1A;26
+say()
+//&#x6253;&#x5370;&#x7ED3;&#x679C;&#xFF1A;say hello
+</code></pre><p><em>&#x91CD;&#x547D;&#x540D;&#x5BFC;&#x5165;&#x53D8;&#x91CF;</em>  </p>
+<pre><code>import {name as myName} from &apos;./module-B.js&apos;;
+console.log(myName) //cfangxu
+</code></pre><p><em>&#x6574;&#x4F53;&#x5BFC;&#x5165;</em>  </p>
+<pre><code>/&#x4F7F;&#x7528;*&#x5B9E;&#x73B0;&#x6574;&#x4F53;&#x5BFC;&#x5165;
+import * as obj from &quot;./module-B.js&quot;;
+
+console.log(obj.name)
+//&#x7ED3;&#x679C;&#xFF1A;&quot;cfangxu&quot;
+console.log(obj.age)
+//&#x7ED3;&#x679C;&#xFF1A;26
+obj.say();
+//&#x7ED3;&#x679C;&#xFF1A;say hello
+</code></pre><h2 id="&#x63A8;&#x8350;&#x8D44;&#x6599;"><a name="&#x63A8;&#x8350;&#x8D44;&#x6599;" class="anchor-navigation-ex-anchor" href="#&#x63A8;&#x8350;&#x8D44;&#x6599;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x63A8;&#x8350;&#x8D44;&#x6599;</h2>
+<ul>
+<li><p><a href="http://blog.chinaunix.net/uid-26672038-id-4112229.html" target="_blank"> JavaSript&#x6A21;&#x5757;&#x89C4;&#x8303; - AMD&#x89C4;&#x8303;&#x4E0E;CMD&#x89C4;&#x8303;&#x4ECB;&#x7ECD; </a></p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&amp;mid=2651226355&amp;idx=1&amp;sn=aedf47d5a3be53f6c7d5562977624861&amp;chksm=bd4959778a3ed06198cbb746067393cd0f189612f4fc577417e0741df3a2b620373ea025978b&amp;scene=21#wechat_redirect" target="_blank">JavaScript &#x6A21;&#x5757;&#x6F14;&#x5316;&#x7B80;&#x53F2;</a></p>
+</li>
+<li><p><a href="http://www.ruanyifeng.com/blog/2015/05/require.html" target="_blank">require() &#x6E90;&#x7801;&#x89E3;&#x8BFB;</a></p>
+</li>
+<li><p><a href="https://segmentfault.com/a/1190000009060866#articleHeader0" target="_blank">&#x5728; Node.js &#x4E2D;&#x5F15;&#x5165;&#x6A21;&#x5757;&#xFF1A;&#x4F60;&#x6240;&#x9700;&#x8981;&#x77E5;&#x9053;&#x7684;&#x4E00;&#x5207;&#x90FD;&#x5728;&#x8FD9;&#x91CC;</a></p>
+</li>
+<li><p><a href="http://www.infoq.com/cn/articles/nodejs-module-mechanism#" target="_blank">&#x6DF1;&#x5165;&#x6D45;&#x51FA;Node.js&#xFF08;&#x4E09;&#xFF09;&#xFF1A;&#x6DF1;&#x5165;Node.js&#x7684;&#x6A21;&#x5757;&#x673A;&#x5236;</a></p>
+</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="cache.html" class="navigation navigation-prev " aria-label="Previous page: 三种本地存储方式和一些扩展">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="oo.html" class="navigation navigation-next " aria-label="Next page: JavaScript的面向对象">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"JavaScript的模块","level":"1.4.3.2","depth":3,"next":{"title":"JavaScript的面向对象","level":"1.4.3.3","depth":3,"path":"JavaScript/utility/oo.md","ref":"JavaScript/utility/oo.md","articles":[]},"previous":{"title":"三种本地存储方式和一些扩展","level":"1.4.3.1","depth":3,"path":"JavaScript/utility/cache.md","ref":"JavaScript/utility/cache.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-lunr","-search","-sharing","github","edit-link","search-pro","sharing-plus","github-buttons","anchor-navigation-ex","expandable-chapters"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"github":{"url":"https://github.com/qiqihaobenben/Front-End-Basics"},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"","level2Icon":"","level3Icon":"","showLevelIcon":false},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"","level2Icon":"","level3Icon":"","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":false},"github-buttons":{"buttons":[{"user":"qiqihaobenben","repo":"Front-End-Basics","type":"star","size":"small"}]},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"edit-link":{"label":"Edit This Page","base":"https://github.com/qiqihaobenben/Front-End-Basics/edit/master"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"expandable-chapters":{}},"theme":"default","author":"chenfangxu","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Front-End-Basics","language":"zh-hans","gitbook":"3.2.2","description":"前端基础体系养成和一些有趣的文章"},"file":{"path":"JavaScript/utility/module.md","mtime":"2018-09-04T04:12:45.384Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-09-04T10:55:56.604Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing-plus/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github-buttons/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

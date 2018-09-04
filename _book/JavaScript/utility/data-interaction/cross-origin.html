@@ -1,0 +1,1231 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>前端请求跨域 · Front-End-Basics</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="author" content="chenfangxu">
+        
+        
+    
+    <link rel="stylesheet" href="../../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-search-pro/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-anchor-navigation-ex/style/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="ajax.html" />
+    
+
+    <style>
+    @media only screen and (max-width: 640px) {
+        .book-header .hidden-mobile {
+            display: none;
+        }
+    }
+    </style>
+    <script>
+        window["gitbook-plugin-github-buttons"] = {"buttons":[{"user":"qiqihaobenben","repo":"Front-End-Basics","type":"star","size":"small"}]};
+    </script>
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../../">
+            
+                <a href="../../../">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    HTML
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../../../HTML/global-attr.html">
+            
+                <a href="../../../HTML/global-attr.html">
+            
+                    
+                    HTML5全局属性汇总
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    CSS
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" >
+            
+                <span>
+            
+                    
+                    布局篇
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="../../../CSS/layouts/flexbox.html">
+            
+                <a href="../../../CSS/layouts/flexbox.html">
+            
+                    
+                    flexbox 布局
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.2" data-path="../../../CSS/layouts/middle.html">
+            
+                <a href="../../../CSS/layouts/middle.html">
+            
+                    
+                    居中布局
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    JavaScript
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" >
+            
+                <span>
+            
+                    
+                    数据交互
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1.1" data-path="ajax.html">
+            
+                <a href="ajax.html">
+            
+                    
+                    Ajax通俗讲解
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4.1.2" data-path="cross-origin.html">
+            
+                <a href="cross-origin.html">
+            
+                    
+                    前端请求跨域
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" >
+            
+                <span>
+            
+                    
+                    数据结构和算法
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.2.1" data-path="../fe-algorithm/array.html">
+            
+                <a href="../fe-algorithm/array.html">
+            
+                    
+                    数组的十八般武艺
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" >
+            
+                <span>
+            
+                    
+                    深入篇
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.3.1" data-path="../cache.html">
+            
+                <a href="../cache.html">
+            
+                    
+                    三种本地存储方式和一些扩展
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3.2" data-path="../module.html">
+            
+                <a href="../module.html">
+            
+                    
+                    JavaScript的模块
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3.3" data-path="../oo.html">
+            
+                <a href="../oo.html">
+            
+                    
+                    JavaScript的面向对象
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" >
+            
+                <span>
+            
+                    
+                    ES6走走看看
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.4.1" data-path="../../ES6/block.html">
+            
+                <a href="../../ES6/block.html">
+            
+                    
+                    由块级作用域引出的一场变革
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4.2" data-path="../../ES6/string.html">
+            
+                <a href="../../ES6/string.html">
+            
+                    
+                    字符到底发生了什么变化
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" >
+            
+                <span>
+            
+                    
+                    TypeScript
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.5.1" data-path="../../typescript/intro.html">
+            
+                <a href="../../typescript/intro.html">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5.2" data-path="../../typescript/synax.html">
+            
+                <a href="../../typescript/synax.html">
+            
+                    
+                    基本语法
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" >
+            
+                <span>
+            
+                    
+                    移动端
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" >
+            
+                <span>
+            
+                    
+                    HTML5
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.1" data-path="../../../mobile/fit.html">
+            
+                <a href="../../../mobile/fit.html">
+            
+                    
+                    移动端适配
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" >
+            
+                <span>
+            
+                    
+                    Node.js
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" >
+            
+                <span>
+            
+                    
+                    文档
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.1" data-path="../../../node/">
+            
+                <a href="../../../node/">
+            
+                    
+                    基础介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" >
+            
+                <span>
+            
+                    
+                    网络基础
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" >
+            
+                <span>
+            
+                    
+                    HTTP
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1.1" data-path="../../../network-basics/HTTP/">
+            
+                <a href="../../../network-basics/HTTP/">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.2" data-path="../../../network-basics/request/">
+            
+                <a href="../../../network-basics/request/">
+            
+                    
+                    网络请求
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    工具类
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" >
+            
+                <span>
+            
+                    
+                    Git
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1.1" data-path="../../../assistive-tools/git/intro.html">
+            
+                <a href="../../../assistive-tools/git/intro.html">
+            
+                    
+                    版本控制系统简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.2" data-path="../../../assistive-tools/git/workflow.html">
+            
+                <a href="../../../assistive-tools/git/workflow.html">
+            
+                    
+                    安装和入门
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.3" data-path="../../../assistive-tools/git/theory.html">
+            
+                <a href="../../../assistive-tools/git/theory.html">
+            
+                    
+                    基础和原理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.4" data-path="../../../assistive-tools/git/directory.html">
+            
+                <a href="../../../assistive-tools/git/directory.html">
+            
+                    
+                    目录讲解
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.5" data-path="../../../assistive-tools/git/setconfig.html">
+            
+                <a href="../../../assistive-tools/git/setconfig.html">
+            
+                    
+                    基础操作配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.6" data-path="../../../assistive-tools/git/command.html">
+            
+                <a href="../../../assistive-tools/git/command.html">
+            
+                    
+                    命令汇总
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" >
+            
+                <span>
+            
+                    
+                    实践沉淀
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../../../project/el-scrollbar.html">
+            
+                <a href="../../../project/el-scrollbar.html">
+            
+                    
+                    el-scrollbar讲解
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" >
+            
+                <span>
+            
+                    
+                    捡贝壳
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" >
+            
+                <span>
+            
+                    
+                    有趣的文章
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1.1" data-path="../../../article/book.html">
+            
+                <a href="../../../article/book.html">
+            
+                    
+                    买了书也不读，还要不要买？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.2" data-path="../../../article/critical-knowledge.html">
+            
+                <a href="../../../article/critical-knowledge.html">
+            
+                    
+                    临界知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.3" data-path="../../../article/seven-thing.html">
+            
+                <a href="../../../article/seven-thing.html">
+            
+                    
+                    七件事
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.4" data-path="../../../article/zhihu48.html">
+            
+                <a href="../../../article/zhihu48.html">
+            
+                    
+                    知乎上的神回复
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" >
+            
+                <span>
+            
+                    
+                    老技术文章备份
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.2.1" data-path="../../../article/oldTechnologyArticle/ThinkPHP_template.html">
+            
+                <a href="../../../article/oldTechnologyArticle/ThinkPHP_template.html">
+            
+                    
+                    ThinkPHP 模板中的语法知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2.2" data-path="../../../article/oldTechnologyArticle/zifubianma.html">
+            
+                <a href="../../../article/oldTechnologyArticle/zifubianma.html">
+            
+                    
+                    字符编码趣闻
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../.." >前端请求跨域</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon "></span><a href="#&#x524D;&#x7AEF;&#x8BF7;&#x6C42;&#x8DE8;&#x57DF;"><b></b>&#x524D;&#x7AEF;&#x8BF7;&#x6C42;&#x8DE8;&#x57DF;</a></li><ul><li><span class="title-icon "></span><a href="#&#x4E00;&#x4E9B;&#x5B9A;&#x4E49;"><b></b>&#x4E00;&#x4E9B;&#x5B9A;&#x4E49;</a></li><li><span class="title-icon "></span><a href="#ajax&#x8DE8;&#x57DF;&#x89E3;&#x51B3;"><b></b>Ajax&#x8DE8;&#x57DF;&#x89E3;&#x51B3;</a></li><ul><li><span class="title-icon "></span><a href="#jsonp"><b></b>JSONP</a></li><li><span class="title-icon "></span><a href="#cors"><b></b>CORS</a></li></ul></ul></ul></div><a href="#&#x524D;&#x7AEF;&#x8BF7;&#x6C42;&#x8DE8;&#x57DF;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="&#x524D;&#x7AEF;&#x8BF7;&#x6C42;&#x8DE8;&#x57DF;"><a name="&#x524D;&#x7AEF;&#x8BF7;&#x6C42;&#x8DE8;&#x57DF;" class="anchor-navigation-ex-anchor" href="#&#x524D;&#x7AEF;&#x8BF7;&#x6C42;&#x8DE8;&#x57DF;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x524D;&#x7AEF;&#x8BF7;&#x6C42;&#x8DE8;&#x57DF;</h1>
+<h2 id="&#x4E00;&#x4E9B;&#x5B9A;&#x4E49;"><a name="&#x4E00;&#x4E9B;&#x5B9A;&#x4E49;" class="anchor-navigation-ex-anchor" href="#&#x4E00;&#x4E9B;&#x5B9A;&#x4E49;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x4E00;&#x4E9B;&#x5B9A;&#x4E49;</h2>
+<ul>
+<li><p><strong>&#x540C;&#x6E90;&#xFF1A;</strong> &#x76F8;&#x540C;&#x6765;&#x6E90;    &#x540C;&#x57DF;&#x540D;&#x3001;&#x540C;&#x7AEF;&#x53E3;&#x3001;&#x540C;&#x534F;&#x8BAE;   </p>
+</li>
+<li><p><strong>&#x540C;&#x6E90;&#x7B56;&#x7565;&#xFF1A;</strong> &#x662F;&#x4E00;&#x79CD;&#x7EA6;&#x5B9A;&#xFF0C;&#x6700;&#x6838;&#x5FC3;&#x4E5F;&#x6700;&#x57FA;&#x672C;&#x7684;&#x5B89;&#x5168;&#x529F;&#x80FD;&#xFF0C;Web&#x662F;&#x6784;&#x5EFA;&#x5728;&#x540C;&#x6E90;&#x7B56;&#x7565;&#x57FA;&#x7840;&#x4E4B;&#x4E0A;&#x7684;&#x3002;</p>
+</li>
+<li><p><strong>&#x8DE8;&#x57DF;&#xFF1A;</strong> &#x8BBF;&#x95EE;/&#x8BF7;&#x6C42;&#x67D0;&#x4E2A;&#x63A5;&#x53E3;/&#x67D0;&#x4E2A;&#x5730;&#x5740;&#xFF1A;&#x5FC5;&#x987B;&#x9075;&#x5FAA;&#x540C;&#x57DF;&#x540D;&#x3001;&#x540C;&#x7AEF;&#x53E3;&#x3001;&#x540C;&#x534F;&#x8BAE;&#x624D;&#x80FD;&#x6B63;&#x5E38;&#x4F7F;&#x7528;&#x3002;&#x53EA;&#x8981;&#x6709;&#x4E00;&#x4E2A;&#x4E0D;&#x7EDF;&#x4E00;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x4E3A;&#x8DE8;&#x57DF;&#x3002;&#x5982;&#x679C;&#x4E0D;&#x540C;&#x6E90;&#xFF0C;&#x5C31;&#x4F1A;&#x4EA7;&#x751F;&#x8DE8;&#x57DF;&#x95EE;&#x9898;&#x3002;</p>
+</li>
+<li><p>&#x5982;&#x679C;&#x975E;&#x540C;&#x6E90;&#xFF0C;&#x5171;&#x6709;&#x4E09;&#x79CD;&#x884C;&#x4E3A;&#x53D7;&#x5230;&#x9650;&#x5236;&#x3002;</p>
+<ul>
+<li>Cookie&#x3001;LocalStorage &#x548C; indexedDB &#x65E0;&#x6CD5;&#x8BFB;&#x53D6;&#x3002;</li>
+<li>DOM &#x65E0;&#x6CD5;&#x83B7;&#x5F97;&#x3002;</li>
+<li>AJAX &#x8BF7;&#x6C42;&#x4E0D;&#x80FD;&#x53D1;&#x9001;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<p><br></p>
+<h2 id="ajax&#x8DE8;&#x57DF;&#x89E3;&#x51B3;"><a name="ajax&#x8DE8;&#x57DF;&#x89E3;&#x51B3;" class="anchor-navigation-ex-anchor" href="#ajax&#x8DE8;&#x57DF;&#x89E3;&#x51B3;"><i class="fa fa-link" aria-hidden="true"></i></a>Ajax&#x8DE8;&#x57DF;&#x89E3;&#x51B3;</h2>
+<h3 id="jsonp"><a name="jsonp" class="anchor-navigation-ex-anchor" href="#jsonp"><i class="fa fa-link" aria-hidden="true"></i></a>JSONP</h3>
+<p>JSONP&#x662F;&#x4E4B;&#x524D;&#x670D;&#x52A1;&#x5668;&#x4E0E;&#x5BA2;&#x6237;&#x7AEF;&#x8DE8;&#x6E90;&#x901A;&#x4FE1;&#x7684;&#x5E38;&#x7528;&#x65B9;&#x6CD5;&#x3002;&#x6700;&#x5927;&#x7279;&#x70B9;&#x5C31;&#x662F;&#x7B80;&#x5355;&#x9002;&#x7528;&#xFF0C;&#x8001;&#x5F0F;&#x6D4F;&#x89C8;&#x5668;&#x5168;&#x90E8;&#x652F;&#x6301;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x6539;&#x9020;&#x975E;&#x5E38;&#x5C0F;&#x3002;  </p>
+<h4 id="&#x57FA;&#x672C;&#x601D;&#x60F3;"><a name="&#x57FA;&#x672C;&#x601D;&#x60F3;" class="anchor-navigation-ex-anchor" href="#&#x57FA;&#x672C;&#x601D;&#x60F3;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x57FA;&#x672C;&#x601D;&#x60F3;</h4>
+<p>&#x7F51;&#x9875;&#x901A;&#x8FC7;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;<code>&lt;script&gt;</code>&#x5143;&#x7D20;&#xFF0C;&#x5411;&#x670D;&#x52A1;&#x5668;&#x8BF7;&#x6C42;JSON&#x6570;&#x636E;&#xFF0C;&#x8FD9;&#x79CD;&#x505A;&#x6CD5;&#x4E0D;&#x53D7;&#x540C;&#x6E90;&#x653F;&#x7B56;&#x9650;&#x5236;(&#x56E0;&#x4E3A;<code>script</code>&#x3001;<code>img</code>&#x8FD9;&#x4E9B;&#x5E26;src&#x8BF7;&#x6C42;&#x8D44;&#x6E90;&#x7684;&#x90FD;&#x80FD;&#x8BF7;&#x6C42;&#x7F51;&#x7EDC;&#x7684;&#x4EFB;&#x610F;&#x4F4D;&#x7F6E;&#x8D44;&#x6E90;)&#xFF1B;&#x670D;&#x52A1;&#x5668;&#x6536;&#x5230;&#x8BF7;&#x6C42;&#x540E;&#xFF0C;&#x5C06;&#x6570;&#x636E;&#x653E;&#x5728;&#x4E00;&#x4E2A;&#x6307;&#x5B9A;&#x540D;&#x5B57;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x91CC;&#x4F20;&#x56DE;&#x6765;&#x3002;</p>
+<h4 id="&#x5177;&#x4F53;&#x65B9;&#x6CD5;"><a name="&#x5177;&#x4F53;&#x65B9;&#x6CD5;" class="anchor-navigation-ex-anchor" href="#&#x5177;&#x4F53;&#x65B9;&#x6CD5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5177;&#x4F53;&#x65B9;&#x6CD5;</h4>
+<p>1&#x3001;&#x9996;&#x5148;&#xFF0C;&#x7F51;&#x9875;&#x52A8;&#x6001;&#x63D2;&#x5165;<code>&lt;script&gt;</code>&#x5143;&#x7D20;&#xFF0C;&#x7531;&#x5B83;&#x5411;&#x8DE8;&#x6E90;&#x7F51;&#x5740;&#x53D1;&#x51FA;&#x8BF7;&#x6C42;&#x3002;</p>
+<pre><code>function addScriptTag(src) {
+  var script = document.createElement(&apos;script&apos;);
+  script.setAttribute(&quot;type&quot;,&quot;text/javascript&quot;);
+  script.src = src;
+  document.body.appendChild(script);
+}
+
+window.onload = function () {
+  addScriptTag(&apos;http://example.com/ip?callback=foo&apos;);
+}
+
+function foo(data) {
+  console.log(&apos;Your public IP address is: &apos; + data.ip);
+};
+</code></pre><p>&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x901A;&#x8FC7;&#x52A8;&#x6001;&#x6DFB;&#x52A0;<code>&lt;script&gt;</code>&#x5143;&#x7D20;&#xFF0C;&#x5411;&#x670D;&#x52A1;&#x5668;<code>example.com</code>&#x53D1;&#x51FA;&#x8BF7;&#x6C42;&#x3002;&#x6CE8;&#x610F;&#xFF0C;&#x8BE5;&#x8BF7;&#x6C42;&#x7684;&#x67E5;&#x8BE2;&#x5B57;&#x7B26;&#x4E32;&#x6709;&#x4E00;&#x4E2A;<strong>callback&#x53C2;&#x6570;</strong>&#xFF0C;&#x7528;&#x6765;&#x6307;&#x5B9A;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x7684;&#x540D;&#x5B57;&#xFF0C;&#x8FD9;&#x5BF9;&#x4E8E;JSONP&#x662F;<strong>&#x5FC5;&#x9700;</strong>&#x7684;&#x3002;  </p>
+<p>2&#x3001;&#x670D;&#x52A1;&#x5668;&#x6536;&#x5230;&#x8FD9;&#x4E2A;&#x8BF7;&#x6C42;&#x4EE5;&#x540E;&#xFF0C;&#x4F1A;&#x5C06;&#x6570;&#x636E;&#x653E;&#x5728;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x4F4D;&#x7F6E;&#x8FD4;&#x56DE;&#x3002;</p>
+<pre><code>foo({
+  &quot;ip&quot;: &quot;8.8.8.8&quot;
+});
+</code></pre><p>&#x7531;&#x4E8E;<code>&lt;script&gt;</code>&#x5143;&#x7D20;&#x8BF7;&#x6C42;&#x7684;&#x811A;&#x672C;&#xFF0C;&#x76F4;&#x63A5;&#x4F5C;&#x4E3A;&#x4EE3;&#x7801;&#x8FD0;&#x884C;&#x3002;&#x8FD9;&#x65F6;&#xFF0C;&#x53EA;&#x8981;&#x6D4F;&#x89C8;&#x5668;&#x5B9A;&#x4E49;&#x4E86;<code>foo&#x51FD;&#x6570;</code>&#xFF0C;&#x8BE5;&#x51FD;&#x6570;&#x5C31;&#x4F1A;&#x7ACB;&#x5373;&#x8C03;&#x7528;&#x3002;&#x4F5C;&#x4E3A;&#x53C2;&#x6570;&#x7684;JSON&#x6570;&#x636E;&#x88AB;&#x89C6;&#x4E3A;JavaScript&#x5BF9;&#x8C61;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x56E0;&#x6B64;&#x907F;&#x514D;&#x4E86;&#x4F7F;&#x7528;<code>JSON.parse</code>&#x7684;&#x6B65;&#x9AA4;&#x3002;</p>
+<p>&#x56FE;&#x89E3;&#x6D41;&#x7A0B;&#xFF1A;  </p>
+<p><img src="images/1.png" alt="JSONP&#x56FE;&#x89E3;&#x6D41;&#x7A0B;"></p>
+<p>&#x57FA;&#x4E8E;JSONP&#x7684;&#x5B9E;&#x73B0;&#x539F;&#x7406;,&#x6240;&#x4EE5;<strong>JSONP&#x53EA;&#x80FD;&#x662F;&#x201C;GET&#x201D;&#x8BF7;&#x6C42;</strong>,&#x4E0D;&#x80FD;&#x8FDB;&#x884C;&#x8F83;&#x4E3A;&#x590D;&#x6742;&#x7684;POST&#x548C;&#x5176;&#x5B83;&#x8BF7;&#x6C42;,&#x6240;&#x4EE5;&#x9047;&#x5230;&#x90A3;&#x79CD;&#x60C5;&#x51B5;,&#x5C31;&#x5F97;&#x53C2;&#x8003;&#x4E0B;&#x9762;&#x7684;CORS&#x89E3;&#x51B3;&#x8DE8;&#x57DF;&#x4E86;&#x3002;</p>
+<h3 id="cors"><a name="cors" class="anchor-navigation-ex-anchor" href="#cors"><i class="fa fa-link" aria-hidden="true"></i></a>CORS</h3>
+<p>CORS&#x662F;&#x4E00;&#x4E2A;W3C&#x6807;&#x51C6;&#xFF0C;&#x5168;&#x79F0;&#x662F;&quot;&#x8DE8;&#x57DF;&#x8D44;&#x6E90;&#x5171;&#x4EAB;&quot;&#xFF08;Cross-origin resource sharing&#xFF09;&#x3002;<br>&#x5B83;&#x5141;&#x8BB8;&#x6D4F;&#x89C8;&#x5668;&#x5411;&#x8DE8;&#x6E90;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x53D1;&#x51FA;XMLHttpRequest&#x8BF7;&#x6C42;&#xFF0C;&#x4ECE;&#x800C;&#x514B;&#x670D;&#x4E86;AJAX&#x53EA;&#x80FD;&#x540C;&#x6E90;&#x4F7F;&#x7528;&#x7684;&#x9650;&#x5236;&#x3002;</p>
+<h4 id="&#x7B80;&#x4ECB;"><a name="&#x7B80;&#x4ECB;" class="anchor-navigation-ex-anchor" href="#&#x7B80;&#x4ECB;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x7B80;&#x4ECB;</h4>
+<p><strong>CORS&#x9700;&#x8981;&#x6D4F;&#x89C8;&#x5668;&#x548C;&#x670D;&#x52A1;&#x5668;&#x540C;&#x65F6;&#x652F;&#x6301;&#x3002;</strong> &#x76EE;&#x524D;&#xFF0C;&#x6240;&#x6709;&#x6D4F;&#x89C8;&#x5668;&#x90FD;&#x652F;&#x6301;&#x8BE5;&#x529F;&#x80FD;&#xFF0C;IE&#x6D4F;&#x89C8;&#x5668;<strong>&#x4E0D;&#x80FD;&#x4F4E;&#x4E8E;IE10</strong>&#x3002;</p>
+<p>&#x6574;&#x4E2A;CORS&#x901A;&#x4FE1;&#x8FC7;&#x7A0B;&#xFF0C;&#x90FD;&#x662F;<strong>&#x6D4F;&#x89C8;&#x5668;&#x81EA;&#x52A8;&#x5B8C;&#x6210;</strong>&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x7528;&#x6237;&#x53C2;&#x4E0E;&#x3002;&#x5BF9;&#x4E8E;&#x5F00;&#x53D1;&#x8005;&#x6765;&#x8BF4;&#xFF0C;CORS&#x901A;&#x4FE1;&#x4E0E;&#x540C;&#x6E90;&#x7684;AJAX&#x901A;&#x4FE1;&#x6CA1;&#x6709;&#x5DEE;&#x522B;&#xFF0C;&#x4EE3;&#x7801;&#x5B8C;&#x5168;&#x4E00;&#x6837;&#x3002;&#x6D4F;&#x89C8;&#x5668;&#x4E00;&#x65E6;&#x53D1;&#x73B0;AJAX&#x8BF7;&#x6C42;&#x8DE8;&#x6E90;&#xFF0C;&#x5C31;&#x4F1A;&#x81EA;&#x52A8;&#x6DFB;&#x52A0;&#x4E00;&#x4E9B;&#x9644;&#x52A0;&#x7684;&#x5934;&#x4FE1;&#x606F;&#xFF0C;&#x6709;&#x65F6;&#x8FD8;&#x4F1A;&#x591A;&#x51FA;&#x4E00;&#x6B21;&#x9644;&#x52A0;&#x7684;&#x8BF7;&#x6C42;&#xFF0C;&#x4F46;&#x7528;&#x6237;&#x4E0D;&#x4F1A;&#x6709;&#x611F;&#x89C9;&#x3002;</p>
+<p>&#x56E0;&#x6B64;&#xFF0C;&#x5B9E;&#x73B0;CORS&#x901A;&#x4FE1;&#x7684;&#x5173;&#x952E;&#x662F;&#x670D;&#x52A1;&#x5668;&#x3002;<strong>&#x53EA;&#x8981;&#x670D;&#x52A1;&#x5668;&#x5B9E;&#x73B0;&#x4E86;CORS&#x63A5;&#x53E3;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x8DE8;&#x6E90;&#x901A;&#x4FE1;&#x3002;</strong></p>
+<h4 id="&#x4E24;&#x79CD;&#x8BF7;&#x6C42;"><a name="&#x4E24;&#x79CD;&#x8BF7;&#x6C42;" class="anchor-navigation-ex-anchor" href="#&#x4E24;&#x79CD;&#x8BF7;&#x6C42;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x4E24;&#x79CD;&#x8BF7;&#x6C42;</h4>
+<p>&#x6D4F;&#x89C8;&#x5668;&#x5C06;CORS&#x8BF7;&#x6C42;&#x5206;&#x6210;&#x4E24;&#x7C7B;&#xFF1A;<strong>&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#xFF08;simple request&#xFF09;</strong> &#x548C; <strong>&#x975E;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#xFF08;not-so-simple request&#xFF09;</strong>&#x3002;</p>
+<blockquote>
+<p>&#x7B80;&#x5355;&#x8BF7;&#x6C42;</p>
+</blockquote>
+<p>&#x53EA;&#x8981;&#x540C;&#x65F6;&#x6EE1;&#x8DB3;&#x4EE5;&#x4E0B;&#x4E24;&#x5927;&#x6761;&#x4EF6;&#xFF0C;&#x5C31;&#x5C5E;&#x4E8E;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x3002;  </p>
+<pre><code>(1) &#x8BF7;&#x6C42;&#x65B9;&#x6CD5;&#x662F;&#x4EE5;&#x4E0B;&#x4E09;&#x79CD;&#x65B9;&#x6CD5;&#x4E4B;&#x4E00;&#xFF1A;
+HEAD
+GET
+POST
+
+(2)HTTP&#x7684;&#x5934;&#x4FE1;&#x606F;&#x4E0D;&#x8D85;&#x51FA;&#x4EE5;&#x4E0B;&#x51E0;&#x79CD;&#x5B57;&#x6BB5;&#xFF1A;
+Accept
+Accept-Language
+Content-Language
+Last-Event-ID
+Content-Type&#xFF1A;&#x53EA;&#x9650;&#x4E8E;&#x4E09;&#x4E2A;&#x503C;application/x-www-form-urlencoded&#x3001;multipart/form-data&#x3001;text/plain
+</code></pre><h4 id="&#x5904;&#x7406;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x57FA;&#x672C;&#x6D41;&#x7A0B;"><a name="&#x5904;&#x7406;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x57FA;&#x672C;&#x6D41;&#x7A0B;" class="anchor-navigation-ex-anchor" href="#&#x5904;&#x7406;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x57FA;&#x672C;&#x6D41;&#x7A0B;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5904;&#x7406;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x57FA;&#x672C;&#x6D41;&#x7A0B;</h4>
+<p>&#x5BF9;&#x4E8E;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#xFF0C;&#x6D4F;&#x89C8;&#x5668;&#x76F4;&#x63A5;&#x53D1;&#x51FA;CORS&#x8BF7;&#x6C42;&#x3002;&#x5177;&#x4F53;&#x6765;&#x8BF4;&#xFF0C;&#x6D4F;&#x89C8;&#x5668;&#x5982;&#x679C;&#x53D1;&#x73B0;&#x8FD9;&#x6B21;&#x8DE8;&#x6E90;AJAX&#x8BF7;&#x6C42;&#x662F;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#xFF0C;&#x5C31;&#x81EA;&#x52A8;&#x5728;&#x5934;&#x4FE1;&#x606F;&#x4E4B;&#x4E2D;&#xFF0C;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;Origin&#x5B57;&#x6BB5;&#x3002;</p>
+<pre><code>GET /cors HTTP/1.1
+Origin: http://api.bob.com
+Host: api.alice.com
+Accept-Language: en-US
+Connection: keep-alive
+User-Agent: Mozilla/5.0...
+
+Origin&#x5B57;&#x6BB5;&#x7528;&#x6765;&#x8BF4;&#x660E;&#xFF0C;&#x672C;&#x6B21;&#x8BF7;&#x6C42;&#x6765;&#x81EA;&#x54EA;&#x4E2A;&#x6E90;&#xFF08;&#x534F;&#x8BAE; + &#x57DF;&#x540D; + &#x7AEF;&#x53E3;&#xFF09;&#x3002;&#x670D;&#x52A1;&#x5668;&#x6839;&#x636E;&#x8FD9;&#x4E2A;&#x503C;&#xFF0C;&#x51B3;&#x5B9A;&#x662F;&#x5426;&#x540C;&#x610F;&#x8FD9;&#x6B21;&#x8BF7;&#x6C42;&#x3002;
+</code></pre><p>&#x5982;&#x679C;Origin&#x6307;&#x5B9A;&#x7684;&#x57DF;&#x540D;&#x5728;&#x8BB8;&#x53EF;&#x8303;&#x56F4;&#x5185;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x8FD4;&#x56DE;&#x7684;&#x54CD;&#x5E94;&#xFF0C;&#x4F1A;&#x591A;&#x51FA;&#x51E0;&#x4E2A;&#x5934;&#x4FE1;&#x606F;&#x5B57;&#x6BB5;&#x3002;</p>
+<pre><code>Access-Control-Allow-Origin: http://api.bob.com
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: FooBar
+Content-Type: text/html; charset=utf-8
+
+(1)Access-Control-Allow-Origin
+&#x8BE5;&#x5B57;&#x6BB5;&#x662F;&#x5FC5;&#x987B;&#x7684;&#x3002;&#x5B83;&#x7684;&#x503C;&#x8981;&#x4E48;&#x662F;&#x8BF7;&#x6C42;&#x65F6;Origin&#x5B57;&#x6BB5;&#x7684;&#x503C;&#xFF0C;&#x8981;&#x4E48;&#x662F;&#x4E00;&#x4E2A;*&#xFF0C;&#x8868;&#x793A;&#x63A5;&#x53D7;&#x4EFB;&#x610F;&#x57DF;&#x540D;&#x7684;&#x8BF7;&#x6C42;&#x3002;
+
+(2)Access-Control-Allow-Credentials
+&#x8BE5;&#x5B57;&#x6BB5;&#x53EF;&#x9009;&#x3002;&#x5B83;&#x7684;&#x503C;&#x662F;&#x4E00;&#x4E2A;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x662F;&#x5426;&#x5141;&#x8BB8;&#x53D1;&#x9001;Cookie&#x3002;&#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;Cookie&#x4E0D;&#x5305;&#x62EC;&#x5728;CORS&#x8BF7;&#x6C42;&#x4E4B;&#x4E2D;&#x3002;&#x8BBE;&#x4E3A;true&#xFF0C;&#x5373;&#x8868;&#x793A;&#x670D;&#x52A1;&#x5668;&#x660E;&#x786E;&#x8BB8;&#x53EF;&#xFF0C;Cookie&#x53EF;&#x4EE5;&#x5305;&#x542B;&#x5728;&#x8BF7;&#x6C42;&#x4E2D;&#xFF0C;&#x4E00;&#x8D77;&#x53D1;&#x7ED9;&#x670D;&#x52A1;&#x5668;&#x3002;&#x8FD9;&#x4E2A;&#x503C;&#x4E5F;&#x53EA;&#x80FD;&#x8BBE;&#x4E3A;true&#xFF0C;&#x5982;&#x679C;&#x670D;&#x52A1;&#x5668;&#x4E0D;&#x8981;&#x6D4F;&#x89C8;&#x5668;&#x53D1;&#x9001;Cookie&#xFF0C;&#x5220;&#x9664;&#x8BE5;&#x5B57;&#x6BB5;&#x5373;&#x53EF;&#x3002;
+
+(3)Access-Control-Expose-Headers
+&#x8BE5;&#x5B57;&#x6BB5;&#x53EF;&#x9009;&#x3002;CORS&#x8BF7;&#x6C42;&#x65F6;&#xFF0C;XMLHttpRequest&#x5BF9;&#x8C61;&#x7684;getResponseHeader()&#x65B9;&#x6CD5;&#x53EA;&#x80FD;&#x62FF;&#x5230;6&#x4E2A;&#x57FA;&#x672C;&#x5B57;&#x6BB5;&#xFF1A;Cache-Control&#x3001;Content-Language&#x3001;Content-Type&#x3001;Expires&#x3001;Last-Modified&#x3001;Pragma&#x3002;&#x5982;&#x679C;&#x60F3;&#x62FF;&#x5230;&#x5176;&#x4ED6;&#x5B57;&#x6BB5;&#xFF0C;&#x5C31;&#x5FC5;&#x987B;&#x5728;Access-Control-Expose-Headers&#x91CC;&#x9762;&#x6307;&#x5B9A;&#x3002;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x6307;&#x5B9A;&#xFF0C;getResponseHeader(&apos;FooBar&apos;)&#x53EF;&#x4EE5;&#x8FD4;&#x56DE;FooBar&#x5B57;&#x6BB5;&#x7684;&#x503C;&#x3002;
+</code></pre><h4 id="&#x6269;&#x5C55;&#x2014;&#x2014;withcredentials"><a name="&#x6269;&#x5C55;&#x2014;&#x2014;withcredentials" class="anchor-navigation-ex-anchor" href="#&#x6269;&#x5C55;&#x2014;&#x2014;withcredentials"><i class="fa fa-link" aria-hidden="true"></i></a>&#x6269;&#x5C55;&#x2014;&#x2014;withCredentials</h4>
+<p>CORS&#x8BF7;&#x6C42;&#x9ED8;&#x8BA4;&#x4E0D;&#x53D1;&#x9001;Cookie&#x548C;HTTP&#x8BA4;&#x8BC1;&#x4FE1;&#x606F;&#x3002;&#x5982;&#x679C;&#x8981;&#x628A;Cookie&#x53D1;&#x5230;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x4E00;&#x65B9;&#x9762;&#x8981;&#x670D;&#x52A1;&#x5668;&#x540C;&#x610F;&#xFF0C;&#x6307;&#x5B9A;<code>Access-Control-Allow-Credentials</code>&#x5B57;&#x6BB5;&#x3002;&#x53E6;&#x4E00;&#x65B9;&#x9762;&#xFF0C;&#x5F00;&#x53D1;&#x8005;&#x5FC5;&#x987B;&#x5728;AJAX&#x8BF7;&#x6C42;&#x4E2D;&#x6253;&#x5F00;<code>withCredentials</code>&#x5C5E;&#x6027;&#x3002;&#x5426;&#x5219;&#xFF0C;&#x5373;&#x4F7F;&#x670D;&#x52A1;&#x5668;&#x540C;&#x610F;&#x53D1;&#x9001;Cookie&#xFF0C;&#x6D4F;&#x89C8;&#x5668;&#x4E5F;&#x4E0D;&#x4F1A;&#x53D1;&#x9001;&#x3002;&#x6216;&#x8005;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x8981;&#x6C42;&#x8BBE;&#x7F6E;Cookie&#xFF0C;&#x6D4F;&#x89C8;&#x5668;&#x4E5F;&#x4E0D;&#x4F1A;&#x5904;&#x7406;&#x3002;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>//&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x8BBE;&#x7F6E;
+Access-Control-Allow-Credentials: true
+
+//&#x5BA2;&#x6237;&#x7AEF;&#x8BBE;&#x7F6E;
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+</code></pre><p><em>&#x6CE8;&#x610F;&#xFF1A;</em><br>1&#x3001;&#x5982;&#x679C;&#x7701;&#x7565;withCredentials&#x8BBE;&#x7F6E;&#xFF0C;&#x6709;&#x7684;&#x6D4F;&#x89C8;&#x5668;&#x8FD8;&#x662F;&#x4F1A;&#x4E00;&#x8D77;&#x53D1;&#x9001;Cookie&#x3002;&#x8FD9;&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x663E;&#x5F0F;&#x5173;&#x95ED;withCredentials&#x3002;</p>
+<pre><code>xhr.withCredentials = false;
+</code></pre><p>2&#x3001;&#x5982;&#x679C;&#x8981;&#x53D1;&#x9001;Cookie&#xFF0C;<code>Access-Control-Allow-Origin</code>&#x5C31;&#x4E0D;&#x80FD;&#x8BBE;&#x4E3A;&#x661F;&#x53F7;&#xFF0C;&#x5FC5;&#x987B;&#x6307;&#x5B9A;&#x660E;&#x786E;&#x7684;&#x3001;&#x4E0E;&#x8BF7;&#x6C42;&#x7F51;&#x9875;&#x4E00;&#x81F4;&#x7684;&#x57DF;&#x540D;&#x3002;&#x540C;&#x65F6;&#xFF0C;Cookie&#x4F9D;&#x7136;&#x9075;&#x5FAA;&#x540C;&#x6E90;&#x653F;&#x7B56;&#xFF0C;&#x53EA;&#x6709;&#x7528;&#x670D;&#x52A1;&#x5668;&#x57DF;&#x540D;&#x8BBE;&#x7F6E;&#x7684;Cookie&#x624D;&#x4F1A;&#x4E0A;&#x4F20;&#xFF0C;&#x5176;&#x4ED6;&#x57DF;&#x540D;&#x7684;Cookie&#x5E76;&#x4E0D;&#x4F1A;&#x4E0A;&#x4F20;&#xFF0C;&#x4E14;&#xFF08;&#x8DE8;&#x6E90;&#xFF09;&#x539F;&#x7F51;&#x9875;&#x4EE3;&#x7801;&#x4E2D;&#x7684;document.cookie&#x4E5F;&#x65E0;&#x6CD5;&#x8BFB;&#x53D6;&#x670D;&#x52A1;&#x5668;&#x57DF;&#x540D;&#x4E0B;&#x7684;Cookie&#x3002;  </p>
+<blockquote>
+<p>&#x975E;&#x7B80;&#x5355;&#x8BF7;&#x6C42;</p>
+</blockquote>
+<p>&#x975E;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x662F;&#x90A3;&#x79CD;&#x5BF9;&#x670D;&#x52A1;&#x5668;&#x6709;&#x7279;&#x6B8A;&#x8981;&#x6C42;&#x7684;&#x8BF7;&#x6C42;&#xFF0C;&#x6BD4;&#x5982;&#x8BF7;&#x6C42;&#x65B9;&#x6CD5;&#x662F;PUT&#x6216;DELETE&#xFF0C;&#x6216;&#x8005;Content-Type&#x5B57;&#x6BB5;&#x7684;&#x7C7B;&#x578B;&#x662F;application/json&#x3002;&#x5373;&#x4E0D;&#x540C;&#x65F6;&#x6EE1;&#x8DB3;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x4E24;&#x4E2A;&#x6761;&#x4EF6;&#x7684;&#x5C31;&#x662F;&#x975E;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x3002;</p>
+<h4 id="&#x9884;&#x68C0;&#x8BF7;&#x6C42;"><a name="&#x9884;&#x68C0;&#x8BF7;&#x6C42;" class="anchor-navigation-ex-anchor" href="#&#x9884;&#x68C0;&#x8BF7;&#x6C42;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x9884;&#x68C0;&#x8BF7;&#x6C42;</h4>
+<p>&#x975E;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x7684;CORS&#x8BF7;&#x6C42;&#xFF0C;&#x4F1A;&#x5728;&#x6B63;&#x5F0F;&#x901A;&#x4FE1;&#x4E4B;&#x524D;&#xFF0C;&#x589E;&#x52A0;&#x4E00;&#x6B21;HTTP&#x67E5;&#x8BE2;&#x8BF7;&#x6C42;&#xFF0C;&#x79F0;&#x4E3A;&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#xFF08;preflight&#xFF09;&#x3002;  </p>
+<p>&#x6D4F;&#x89C8;&#x5668;&#x5148;&#x8BE2;&#x95EE;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x5F53;&#x524D;&#x7F51;&#x9875;&#x6240;&#x5728;&#x7684;&#x57DF;&#x540D;&#x662F;&#x5426;&#x5728;&#x670D;&#x52A1;&#x5668;&#x7684;&#x8BB8;&#x53EF;&#x540D;&#x5355;&#x4E4B;&#x4E2D;&#xFF0C;&#x4EE5;&#x53CA;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x54EA;&#x4E9B;HTTP&#x52A8;&#x8BCD;&#x548C;&#x5934;&#x4FE1;&#x606F;&#x5B57;&#x6BB5;&#x3002;&#x53EA;&#x6709;&#x5F97;&#x5230;&#x80AF;&#x5B9A;&#x7B54;&#x590D;&#xFF0C;&#x6D4F;&#x89C8;&#x5668;&#x624D;&#x4F1A;&#x53D1;&#x51FA;&#x6B63;&#x5F0F;&#x7684;XMLHttpRequest&#x8BF7;&#x6C42;&#xFF0C;&#x5426;&#x5219;&#x5C31;&#x62A5;&#x9519;&#x3002;&#x5982;&#x4E0B;&#xFF1A;  </p>
+<pre><code>var url = &apos;http://api.alice.com/cors&apos;;
+var xhr = new XMLHttpRequest();
+xhr.open(&apos;PUT&apos;, url, true);
+xhr.setRequestHeader(&apos;X-Custom-Header&apos;, &apos;value&apos;);
+xhr.send();
+
+&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x4E2D;&#xFF0C;HTTP&#x8BF7;&#x6C42;&#x7684;&#x65B9;&#x6CD5;&#x662F;PUT&#xFF0C;&#x5E76;&#x4E14;&#x53D1;&#x9001;&#x4E00;&#x4E2A;&#x81EA;&#x5B9A;&#x4E49;&#x5934;&#x4FE1;&#x606F;X-Custom-Header&#x3002;
+</code></pre><p>&#x6D4F;&#x89C8;&#x5668;&#x53D1;&#x73B0;&#xFF0C;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x975E;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#xFF0C;&#x5C31;&#x81EA;&#x52A8;&#x53D1;&#x51FA;&#x4E00;&#x4E2A;&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#xFF0C;&#x8981;&#x6C42;&#x670D;&#x52A1;&#x5668;&#x786E;&#x8BA4;&#x53EF;&#x4EE5;&#x8FD9;&#x6837;&#x8BF7;&#x6C42;&#x3002;&#x4E0B;&#x9762;&#x662F;&#x8FD9;&#x4E2A;&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#x7684;HTTP&#x5934;&#x4FE1;&#x606F;&#x3002;  </p>
+<pre><code>OPTIONS /cors HTTP/1.1
+Origin: http://api.bob.com
+Access-Control-Request-Method: PUT
+Access-Control-Request-Headers: X-Custom-Header
+Host: api.alice.com
+Accept-Language: en-US
+Connection: keep-alive
+User-Agent: Mozilla/5.0...
+
+&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#x7528;&#x7684;&#x8BF7;&#x6C42;&#x65B9;&#x6CD5;&#x662F;OPTIONS&#xFF0C;&#x8868;&#x793A;&#x8FD9;&#x4E2A;&#x8BF7;&#x6C42;&#x662F;&#x7528;&#x6765;&#x8BE2;&#x95EE;&#x7684;&#x3002;&#x5934;&#x4FE1;&#x606F;&#x91CC;&#x9762;&#xFF0C;&#x5173;&#x952E;&#x5B57;&#x6BB5;&#x662F;Origin&#xFF0C;&#x8868;&#x793A;&#x8BF7;&#x6C42;&#x6765;&#x81EA;&#x54EA;&#x4E2A;&#x6E90;&#x3002;
+&#x9664;&#x4E86;Origin&#x5B57;&#x6BB5;&#xFF0C;&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#x7684;&#x5934;&#x4FE1;&#x606F;&#x5305;&#x62EC;&#x4E24;&#x4E2A;&#x7279;&#x6B8A;&#x5B57;&#x6BB5;&#x3002;
+
+(1)Access-Control-Request-Method
+&#x8BE5;&#x5B57;&#x6BB5;&#x662F;&#x5FC5;&#x987B;&#x7684;&#xFF0C;&#x7528;&#x6765;&#x5217;&#x51FA;&#x6D4F;&#x89C8;&#x5668;&#x7684;CORS&#x8BF7;&#x6C42;&#x4F1A;&#x7528;&#x5230;&#x54EA;&#x4E9B;HTTP&#x65B9;&#x6CD5;&#xFF0C;&#x4E0A;&#x4F8B;&#x662F;PUT&#x3002;
+
+(2)Access-Control-Request-Headers
+&#x8BE5;&#x5B57;&#x6BB5;&#x662F;&#x4E00;&#x4E2A;&#x9017;&#x53F7;&#x5206;&#x9694;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x6307;&#x5B9A;&#x6D4F;&#x89C8;&#x5668;CORS&#x8BF7;&#x6C42;&#x4F1A;&#x989D;&#x5916;&#x53D1;&#x9001;&#x7684;&#x5934;&#x4FE1;&#x606F;&#x5B57;&#x6BB5;&#xFF0C;&#x4E0A;&#x4F8B;&#x662F;X-Custom-Header&#x3002;
+</code></pre><h4 id="&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x56DE;&#x5E94;"><a name="&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x56DE;&#x5E94;" class="anchor-navigation-ex-anchor" href="#&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x56DE;&#x5E94;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x56DE;&#x5E94;</h4>
+<p>&#x670D;&#x52A1;&#x5668;&#x6536;&#x5230;&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#x4EE5;&#x540E;&#xFF0C;&#x68C0;&#x67E5;&#x4E86;<code>Origin</code>&#x3001;<code>Access-Control-Request-Method</code>&#x548C;<code>Access-Control-Request-Headers</code>&#x5B57;&#x6BB5;&#x4EE5;&#x540E;&#xFF0C;&#x786E;&#x8BA4;&#x5141;&#x8BB8;&#x8DE8;&#x6E90;&#x8BF7;&#x6C42;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x505A;&#x51FA;&#x56DE;&#x5E94;&#x3002;</p>
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 01 Dec 2008 01:15:39 GMT
+Server: Apache/2.0.61 (Unix)
+Access-Control-Allow-Origin: http://api.bob.com
+Access-Control-Allow-Methods: GET, POST, PUT
+Access-Control-Allow-Headers: X-Custom-Header
+Content-Type: text/html; charset=utf-8
+Content-Encoding: gzip
+Content-Length: 0
+Keep-Alive: timeout=2, max=100
+Connection: Keep-Alive
+Content-Type: text/plain
+</code></pre><h4 id="&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x5931;&#x8D25;"><a name="&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x5931;&#x8D25;" class="anchor-navigation-ex-anchor" href="#&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x5931;&#x8D25;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x5931;&#x8D25;</h4>
+<p>&#x6D4F;&#x89C8;&#x5668;&#x5426;&#x5B9A;&#x4E86;&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#xFF0C;&#x4F1A;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x6B63;&#x5E38;&#x7684;HTTP&#x56DE;&#x5E94;&#xFF0C;&#x4F46;&#x662F;&#x6CA1;&#x6709;&#x4EFB;&#x4F55;CORS&#x76F8;&#x5173;&#x7684;&#x5934;&#x4FE1;&#x606F;&#x5B57;&#x6BB5;&#x3002;&#x8FD9;&#x65F6;&#xFF0C;&#x6D4F;&#x89C8;&#x5668;&#x5C31;&#x4F1A;&#x8BA4;&#x5B9A;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x4E0D;&#x540C;&#x610F;&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#xFF0C;&#x56E0;&#x6B64;&#x89E6;&#x53D1;&#x4E00;&#x4E2A;&#x9519;&#x8BEF;&#xFF0C;&#x88AB;XMLHttpRequest&#x5BF9;&#x8C61;&#x7684;onerror&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x6355;&#x83B7;&#x3002;&#x63A7;&#x5236;&#x53F0;&#x4F1A;&#x6253;&#x5370;&#x51FA;&#x5982;&#x4E0B;&#x7684;&#x62A5;&#x9519;&#x4FE1;&#x606F;&#x3002;</p>
+<pre><code>XMLHttpRequest cannot load http://api.alice.com.
+Origin http://api.bob.com is not allowed by Access-Control-Allow-Origin.
+</code></pre><p>&#x670D;&#x52A1;&#x5668;&#x56DE;&#x5E94;&#x7684;&#x5176;&#x4ED6;CORS&#x76F8;&#x5173;&#x5B57;&#x6BB5;&#x5982;&#x4E0B;:  </p>
+<pre><code>Access-Control-Allow-Methods: GET, POST, PUT
+Access-Control-Allow-Headers: X-Custom-Header
+Access-Control-Allow-Credentials: true
+Access-Control-Max-Age: 1728000
+
+(1)Access-Control-Allow-Methods
+&#x8BE5;&#x5B57;&#x6BB5;&#x5FC5;&#x9700;&#xFF0C;&#x5B83;&#x7684;&#x503C;&#x662F;&#x9017;&#x53F7;&#x5206;&#x9694;&#x7684;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x8868;&#x660E;&#x670D;&#x52A1;&#x5668;&#x652F;&#x6301;&#x7684;&#x6240;&#x6709;&#x8DE8;&#x57DF;&#x8BF7;&#x6C42;&#x7684;&#x65B9;&#x6CD5;&#x3002;&#x6CE8;&#x610F;&#xFF0C;&#x8FD4;&#x56DE;&#x7684;&#x662F;&#x6240;&#x6709;&#x652F;&#x6301;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x800C;&#x4E0D;&#x5355;&#x662F;&#x6D4F;&#x89C8;&#x5668;&#x8BF7;&#x6C42;&#x7684;&#x90A3;&#x4E2A;&#x65B9;&#x6CD5;&#x3002;&#x8FD9;&#x662F;&#x4E3A;&#x4E86;&#x907F;&#x514D;&#x591A;&#x6B21;&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#x3002;
+
+(2)Access-Control-Allow-Headers
+&#x5982;&#x679C;&#x6D4F;&#x89C8;&#x5668;&#x8BF7;&#x6C42;&#x5305;&#x62EC;Access-Control-Request-Headers&#x5B57;&#x6BB5;&#xFF0C;&#x5219;Access-Control-Allow-Headers&#x5B57;&#x6BB5;&#x662F;&#x5FC5;&#x9700;&#x7684;&#x3002;&#x5B83;&#x4E5F;&#x662F;&#x4E00;&#x4E2A;&#x9017;&#x53F7;&#x5206;&#x9694;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x8868;&#x660E;&#x670D;&#x52A1;&#x5668;&#x652F;&#x6301;&#x7684;&#x6240;&#x6709;&#x5934;&#x4FE1;&#x606F;&#x5B57;&#x6BB5;&#xFF0C;&#x4E0D;&#x9650;&#x4E8E;&#x6D4F;&#x89C8;&#x5668;&#x5728;&quot;&#x9884;&#x68C0;&quot;&#x4E2D;&#x8BF7;&#x6C42;&#x7684;&#x5B57;&#x6BB5;&#x3002;
+
+(3)Access-Control-Allow-Credentials
+&#x8BE5;&#x5B57;&#x6BB5;&#x4E0E;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x65F6;&#x7684;&#x542B;&#x4E49;&#x76F8;&#x540C;&#x3002;
+
+(4)Access-Control-Max-Age
+&#x8BE5;&#x5B57;&#x6BB5;&#x53EF;&#x9009;&#xFF0C;&#x7528;&#x6765;&#x6307;&#x5B9A;&#x672C;&#x6B21;&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x7684;&#x6709;&#x6548;&#x671F;&#xFF0C;&#x5355;&#x4F4D;&#x4E3A;&#x79D2;&#x3002;&#x4E0A;&#x9762;&#x7ED3;&#x679C;&#x4E2D;&#xFF0C;&#x6709;&#x6548;&#x671F;&#x662F;20&#x5929;&#xFF08;1728000&#x79D2;&#xFF09;&#xFF0C;&#x5373;&#x5141;&#x8BB8;&#x7F13;&#x5B58;&#x8BE5;&#x6761;&#x56DE;&#x5E94;1728000&#x79D2;&#xFF08;&#x5373;20&#x5929;&#xFF09;&#xFF0C;&#x5728;&#x6B64;&#x671F;&#x95F4;&#xFF0C;&#x4E0D;&#x7528;&#x53D1;&#x51FA;&#x53E6;&#x4E00;&#x6761;&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x3002;
+</code></pre><h4 id="&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x6210;&#x529F;"><a name="&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x6210;&#x529F;" class="anchor-navigation-ex-anchor" href="#&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x6210;&#x529F;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x9884;&#x68C0;&#x8BF7;&#x6C42;&#x6210;&#x529F;</h4>
+<p>&#x4E00;&#x65E6;&#x670D;&#x52A1;&#x5668;&#x901A;&#x8FC7;&#x4E86;&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#xFF0C;&#x4EE5;&#x540E;&#x6BCF;&#x6B21;&#x6D4F;&#x89C8;&#x5668;&#x6B63;&#x5E38;&#x7684;CORS&#x8BF7;&#x6C42;&#xFF0C;&#x5C31;&#x90FD;&#x8DDF;&#x7B80;&#x5355;&#x8BF7;&#x6C42;&#x4E00;&#x6837;&#xFF0C;&#x4F1A;&#x6709;&#x4E00;&#x4E2A;Origin&#x5934;&#x4FE1;&#x606F;&#x5B57;&#x6BB5;&#x3002;&#x670D;&#x52A1;&#x5668;&#x7684;&#x56DE;&#x5E94;&#xFF0C;&#x4E5F;&#x90FD;&#x4F1A;&#x6709;&#x4E00;&#x4E2A;Access-Control-Allow-Origin&#x5934;&#x4FE1;&#x606F;&#x5B57;&#x6BB5;&#x3002;  </p>
+<p>&#x4E0B;&#x9762;&#x662F;&quot;&#x9884;&#x68C0;&quot;&#x8BF7;&#x6C42;&#x4E4B;&#x540E;&#xFF0C;<strong>&#x6D4F;&#x89C8;&#x5668;</strong>&#x7684;&#x6B63;&#x5E38;CORS&#x8BF7;&#x6C42;&#xFF1A;</p>
+<pre><code>PUT /cors HTTP/1.1
+Origin: http://api.bob.com
+Host: api.alice.com
+X-Custom-Header: value
+Accept-Language: en-US
+Connection: keep-alive
+User-Agent: Mozilla/5.0...
+
+&#x4E0A;&#x9762;&#x5934;&#x4FE1;&#x606F;&#x7684;Origin&#x5B57;&#x6BB5;&#x662F;&#x6D4F;&#x89C8;&#x5668;&#x81EA;&#x52A8;&#x6DFB;&#x52A0;&#x7684;&#x3002;
+</code></pre><p>&#x4E0B;&#x9762;&#x662F;<strong>&#x670D;&#x52A1;&#x5668;</strong>&#x6B63;&#x5E38;&#x7684;&#x56DE;&#x5E94;:</p>
+<pre><code>Access-Control-Allow-Origin: http://api.bob.com
+Content-Type: text/html; charset=utf-8
+</code></pre><h4 id="&#x4E0E;jsonp&#x6BD4;&#x8F83;"><a name="&#x4E0E;jsonp&#x6BD4;&#x8F83;" class="anchor-navigation-ex-anchor" href="#&#x4E0E;jsonp&#x6BD4;&#x8F83;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x4E0E;JSONP&#x6BD4;&#x8F83;</h4>
+<p>CORS&#x4E0E;JSONP&#x7684;&#x4F7F;&#x7528;&#x76EE;&#x7684;&#x76F8;&#x540C;&#xFF0C;&#x4F46;&#x662F;&#x6BD4;JSONP&#x66F4;&#x5F3A;&#x5927;&#x3002;</p>
+<p>JSONP&#x53EA;&#x652F;&#x6301;GET&#x8BF7;&#x6C42;&#xFF0C;CORS&#x652F;&#x6301;&#x6240;&#x6709;&#x7C7B;&#x578B;&#x7684;HTTP&#x8BF7;&#x6C42;&#x3002;JSONP&#x7684;&#x4F18;&#x52BF;&#x5728;&#x4E8E;&#x652F;&#x6301;&#x8001;&#x5F0F;&#x6D4F;&#x89C8;&#x5668;&#xFF0C;&#x4EE5;&#x53CA;&#x53EF;&#x4EE5;&#x5411;&#x4E0D;&#x652F;&#x6301;CORS&#x7684;&#x7F51;&#x7AD9;&#x8BF7;&#x6C42;&#x6570;&#x636E;&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ajax.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Ajax通俗讲解">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"前端请求跨域","level":"1.4.1.2","depth":3,"next":{"title":"数据结构和算法","level":"1.4.2","depth":2,"ref":"","articles":[{"title":"数组的十八般武艺","level":"1.4.2.1","depth":3,"path":"JavaScript/utility/fe-algorithm/array.md","ref":"JavaScript/utility/fe-algorithm/array.md","articles":[]}]},"previous":{"title":"Ajax通俗讲解","level":"1.4.1.1","depth":3,"path":"JavaScript/utility/data-interaction/ajax.md","ref":"JavaScript/utility/data-interaction/ajax.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-lunr","-search","-sharing","github","edit-link","search-pro","sharing-plus","github-buttons","anchor-navigation-ex","expandable-chapters"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"github":{"url":"https://github.com/qiqihaobenben/Front-End-Basics"},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"","level2Icon":"","level3Icon":"","showLevelIcon":false},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"","level2Icon":"","level3Icon":"","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":false},"github-buttons":{"buttons":[{"user":"qiqihaobenben","repo":"Front-End-Basics","type":"star","size":"small"}]},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"edit-link":{"label":"Edit This Page","base":"https://github.com/qiqihaobenben/Front-End-Basics/edit/master"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"expandable-chapters":{}},"theme":"default","author":"chenfangxu","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Front-End-Basics","language":"zh-hans","gitbook":"3.2.2","description":"前端基础体系养成和一些有趣的文章"},"file":{"path":"JavaScript/utility/data-interaction/cross-origin.md","mtime":"2018-09-04T04:11:48.206Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2018-09-04T10:55:56.604Z"},"basePath":"../../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../../gitbook/gitbook.js"></script>
+    <script src="../../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-search-pro/search.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-sharing-plus/buttons.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-github-buttons/plugin.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
