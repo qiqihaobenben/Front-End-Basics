@@ -1,4 +1,4 @@
-## ThinkPHP 模板中的语法知识 
+# ThinkPHP 模板中的语法知识 
 
 #### [原文链接](https://blog.csdn.net/leyangjun/article/details/42079905)
 

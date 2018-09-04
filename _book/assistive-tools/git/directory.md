@@ -1,3 +1,5 @@
+# 目录讲解
+
 ## .git目录
 
 在初始化项目仓库时（git clone 或git init），Git会在根目录下创建一个.git目录，.git目录一般包括下面的内容：
@@ -33,7 +35,7 @@ config是仓库的配置文件，一个典型的配置文件如下，我们创�
 
 ### objects
 
-通过SHA-1校验和存取的数据都位于objects目录  
+通过SHA-1校验和存取的数据都位于objects目录  
 objects目录下有3种类型的数据：
 * Blob： 文件都被存储为blob类型的文件
 * Tree： 文件夹被存储为tree类型的文件
@@ -58,4 +60,4 @@ ORIG_HEAD记录的是在进行极端（drastic）操作（如合并merge，回�
 如使用`git reset --hard ORIG_HEAD`指令可以回退到危险操作之前的状态，但是对于正常的提交操作，该指针是不会变化的。  
 在1.8.5版本以后，Git使用了链表记录HEAD的所有移动轨迹，可以使用`git reflog`查看，使用`git reset HEAD@`方式可以回退到指定版本，这也是之后介绍Git数据恢复将要介绍的一个指令，推荐使用这种方式替代ORIG_HEAD方式。
 
-### [更为详细的介绍-英文版](http://gitready.com/advanced/2009/03/23/whats-inside-your-git-directory.html)
+#### [更为详细的介绍-英文版](http://gitready.com/advanced/2009/03/23/whats-inside-your-git-directory.html)

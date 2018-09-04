@@ -1,4 +1,4 @@
-### 语法
+# 语法
 
 ```
 // 原始值
@@ -37,7 +37,7 @@ let someValue: any = "this is a string";
 let strLength: number = (someValue as string).length;
 ```
 
-#### TypeScript 中的 Interface 可以看做是一个集合，这个集合是对对象、类等内部结构的约定
+### TypeScript 中的 Interface 可以看做是一个集合，这个集合是对对象、类等内部结构的约定
 
 ```
 // 定义接口 Coords
@@ -77,7 +77,7 @@ interface Coords {
 };
 ```
 
-#### 接口还常用于约束函数的行为
+### 接口还常用于约束函数的行为
 
 ```
 // CheckType 包含一个调用签名
@@ -92,7 +92,7 @@ getType('abc');
 // => '[object String]'
 ```
 
-#### Interface 也可以用于约束类的行为
+### Interface 也可以用于约束类的行为
 
 ```
 interface ClockConstructor {
@@ -120,7 +120,7 @@ let digital = createClock(DigitalClock, 12, 17);
 let analog = createClock(AnalogClock, 7, 32);
 ```
 
-#### 除了 ES6 增加的 Class 用法，TypeScript 还增加了 C++、Java 中常见的 public / protected / private 限定符，限定变量或函数的使用范围。
+### 除了 ES6 增加的 Class 用法，TypeScript 还增加了 C++、Java 中常见的 public / protected / private 限定符，限定变量或函数的使用范围。
 
 TypeScript 使用的是结构性类型系统，只要两种类型的成员类型相同，则认为这两种类型是兼容和一致的，但比较包含 private 和 protected 成员的类型时，只有他们是来自同一处的统一类型成员时才会被认为是兼容的  
 
@@ -146,5 +146,5 @@ animal = rhino;
 animal = employee;
 ```
 
-#### function
+### function
 

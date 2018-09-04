@@ -7,11 +7,57 @@
   "plugins": [
     "-lunr",
     "-search",
+    "-sharing",
+    "github",
+    "edit-link",
     "search-pro",
+    "sharing-plus",
+    "github-buttons",
     "anchor-navigation-ex",
     "expandable-chapters"
   ],
   "pluginsConfig": {
-    "expandable-chapters": {}
+    "expandable-chapters": {},
+    "anchor-navigation-ex": {
+      "showLevel": false
+    },
+    "github": {
+      "url": "https://github.com/qiqihaobenben/Front-End-Basics"
+    },
+    "edit-link": {
+      "base": "https://github.com/qiqihaobenben/Front-End-Basics/edit/master",
+      "label": "Edit This Page"
+    },
+    "github-buttons": {
+      "buttons": [{
+        "user": "qiqihaobenben",
+        "repo": "Front-End-Basics",
+        "type": "star",
+        "size": "small"
+      }]
+    },
+    "sharing": {
+      "douban": false,
+      "facebook": false,
+      "google": false,
+      "hatenaBookmark": false,
+      "instapaper": false,
+      "line": false,
+      "linkedin": false,
+      "messenger": false,
+      "pocket": false,
+      "qq": false,
+      "qzone": false,
+      "stumbleupon": false,
+      "twitter": false,
+      "viber": false,
+      "vk": false,
+      "weibo": false,
+      "whatsapp": false,
+      "all": [
+        "google", "facebook", "weibo", "twitter",
+        "qq", "qzone", "linkedin", "pocket"
+      ]
+    }
   }
 }

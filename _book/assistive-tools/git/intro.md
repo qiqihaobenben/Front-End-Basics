@@ -1,20 +1,30 @@
-## 简介
+# 版本控制系统简介
 
 >版本控制系统是能够随着时间的推进记录一系列文件的变化以便于你以后想要的退回到某个版本的系统。
 
-### 版本控制系统分为三大类：
+## 版本控制系统分为三大类：
 
-#### 本地版本控制（Local Version Control Systems）
+### 本地版本控制（Local Version Control Systems）
 
 是将文件的各个版本以一定的数据格式存储在本地的磁盘（有的VCS 是保存文件的变化补丁，即在文件内容变化时计算出差量保存起来，通过应用所有的补丁，可以重新计算出各个版本的文件内容），这种方式在一定程度上解决了手动复制粘贴的问题，但无法解决多人协作的问题。
 
-#### 集中式版本控制（Centralized Version Control Systems）
+### 集中式版本控制（Centralized Version Control Systems）
 
 相比本地版本控制没有什么本质的变化，只是多了个一个中央服务器，各个版本的数据库存储在中央服务器，管理员可以控制开发人员的权限，而开发人员也可以从中央服务器拉取数据。  
 集中式版本控制虽然解决了团队协作问题，但缺点也很明显：所有数据存储在中央服务器，服务器一旦宕机或者磁盘损坏，会造成不可估量的损失。
 
-#### 分布式版本控制（ Distributed Version Control System）
+### 分布式版本控制（ Distributed Version Control System）
 
 与前两者均不同。
 首先，在分布式版本控制系统中，像 Git，Mercurial，Bazaar 以及 Darcs 等，系统保存的的不是文件变化的差量，而是文件的快照，即把文件的整体复制下来保存，而不关心具体的变化内容。  
 其次，最重要的是分布式版本控制系统是分布式的，当你从中央服务器拷贝下来代码时，你拷贝的是一个完整的版本库，包括历史纪录，提交记录等，这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的克隆操作，实际上都是一次对代码仓库的完整备份。
+
+### 推荐资料
+
+* [Git的核心概念](https://lufficc.com/blog/the-core-conception-of-git)  
+
+* [GitHub超详细图文攻略 - Git客户端下载安装 GitHub提交修改源码工作流程](http://blog.csdn.net/vipzjyno1/article/details/22098621)  
+
+* [Pro Git（中文版）](http://git.oschina.net/progit/)  
+
+* [一本关于github的书-GotGitHub](http://www.worldhello.net/gotgithub/index.html)

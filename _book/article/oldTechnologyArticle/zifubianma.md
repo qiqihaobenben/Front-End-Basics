@@ -1,4 +1,4 @@
-## ASCII、Unicode、GBK和UTF-8字符编码的区别联系
+# ASCII、Unicode、GBK和UTF-8字符编码的区别联系
 
 #### [知乎链接](https://www.zhihu.com/question/19677619)
 #### [原文链接](http://dengo.org/archives/901)

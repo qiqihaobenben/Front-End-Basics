@@ -1,4 +1,4 @@
-## 买了书也不读，还要不要买？
+# 买了书也不读，还要不要买？
 
 #### [原文链接](https://mp.weixin.qq.com/s?__biz=MjM5ODQ2MDIyMA==&mid=2650713060&idx=1&sn=f6cfb8bac38591a6df87b3ebe290166c&chksm=bec065b789b7eca1290b229ad77e1ceca7b3f6de389e8dee5a10ef8b47c2b0a8edf495f9c57a&mpshare=1&scene=1&srcid=0301cCLRYnLwWQBj5dqpl8ej#rd)
 

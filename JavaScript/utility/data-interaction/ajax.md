@@ -1,4 +1,4 @@
-## Ajax
+# Ajax
 
 **Asynchronous JavaScript and XML : 异步的js和XML，前后端数据交互的一种技术。**  
 
