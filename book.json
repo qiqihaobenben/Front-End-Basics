@@ -8,9 +8,10 @@
     "-lunr",
     "-search",
     "search-pro",
-    "anchor-navigation-ex"
+    "anchor-navigation-ex",
+    "expandable-chapters"
   ],
   "pluginsConfig": {
-
+    "expandable-chapters": {}
   }
 }
