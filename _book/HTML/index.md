@@ -1,1 +1,0 @@
-### [HTML5全局属性汇总](./global-attr)
