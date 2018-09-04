@@ -1,6 +1,6 @@
-## CSS弹性盒子布局
+# CSS弹性盒子布局
 
-### 简介
+## 简介
 
 CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒子模型。  
 
@@ -12,7 +12,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 
 ![图示](./images/1.jpg)
 
-### flex容器  
+## flex容器  
 
 实现flex布局首先指定一个容器。
 ```
@@ -26,7 +26,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 
 **注意：** 容器设置flex布局后，子元素的 `float` 、`clear` 、`vertical-align` 属性将会失效。
 
-### 设置在容器上的属性
+## 设置在容器上的属性
 
 1. flex-direction
 2. flex-wrap
@@ -35,7 +35,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 5. align-items
 6. align-content
 
-#### 1、flex-direction: 决定主轴的方向（即项目的排列方向）
+### 1、flex-direction: 决定主轴的方向（即项目的排列方向）
 
 ```
 .container {
@@ -50,7 +50,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 | column | 指定主轴垂直，子项目从上至下排列⬇︎ |  
 | column-reverse | 指定主轴垂直，子项目从下往上排列⬆︎ |  
 
-#### 2、flex-wrap：决定容器内子元素是否可换行
+### 2、flex-wrap：决定容器内子元素是否可换行
 
 ```
 .container {
@@ -64,7 +64,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 | wrap | 正常换行 |  
 | wrap-reverse | 换行，第一行在下方 |  
 
-#### 3、flex-flow: flex-direction 和 flex-wrap 的简写形式
+### 3、flex-flow: flex-direction 和 flex-wrap 的简写形式
 
 ```
 .container {
@@ -73,7 +73,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 默认值为: row nowrap
 ```
 
-#### 4、justify-content: 定义了子元素在主轴上的对齐方式
+### 4、justify-content: 定义了子元素在主轴上的对齐方式
 
 ```
 .container {
@@ -89,7 +89,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 | space-between | 两端对齐，项目之间的间隔相等，即剩余空间等分成间隙 |  
 | space-around | 每个项目两侧的间隔相等，所以项目之间的间隔比项目与边缘的间隔大一倍 |  
 
-#### 5、align-items: 定义了子元素在交叉轴上的对齐方式
+### 5、align-items: 定义了子元素在交叉轴上的对齐方式
 
 ```
 .container {
@@ -105,7 +105,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 | baseline | 第一行文字的基线对齐 |  
 | stretch(默认) | 高度未定(或auto)时, 将占满容器的高度 |  
 
-#### 6、align-content: 定义了多根轴线的对齐方式，如果项目只有一根轴线，那么该属性将不起作用
+### 6、align-content: 定义了多根轴线的对齐方式，如果项目只有一根轴线，那么该属性将不起作用
 
 ```
 .container {
@@ -125,7 +125,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 | space-around | 每个轴线两侧的间隔相等，所以轴线之间的间隔比轴线与边缘的间隔大一倍。 |  
 | stretch | 多根主轴上的子项目充满交叉轴 |  
 
-### 设置在flex item上的属性
+## 设置在flex item上的属性
 
 1. order
 2. flex-basis
@@ -134,7 +134,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 5. flex
 6. align-self
 
-#### 1、order: 定义项目在容器中的排列顺序，数值越小，排列越靠前，默认值为 0
+### 1、order: 定义项目在容器中的排列顺序，数值越小，排列越靠前，默认值为 0
 
 ```
 .item {
@@ -142,7 +142,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 }
 ```
 
-#### 2、flex-basis: 定义了在分配多余空间之前，项目占据的主轴空间，浏览器根据这个属性，计算主轴是否有多余空间
+### 2、flex-basis: 定义了在分配多余空间之前，项目占据的主轴空间，浏览器根据这个属性，计算主轴是否有多余空间
 
 ```
 .item {
@@ -153,7 +153,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 当 `flex-basis` 值为 0 % 时，是把该项目视为零尺寸的，故即使声明该尺寸为 140px，也并没有什么用。
 当 `flex-basis` 值为 auto 时，则根据尺寸的设定值(假如为 100px)，则这 100px 就为项目的大小。
 
-#### 3、flex-grow: 定义项目的放大比例
+### 3、flex-grow: 定义项目的放大比例
 
 ```
 .item {
@@ -171,7 +171,7 @@ CSS弹性盒子布局定义了一种针对用户界面设计而优化的CSS盒�
 
 grow 在 flex 容器下的子元素的宽度和比容器和小的时候起作用。 grow 定义了子元素的尺寸增长因子，容器中除去子元素之和剩下的尺寸会按照各个子元素的 grow 值进行平分加大各个子元素上。
 
-#### 4、flex-shrink: 定义了项目的缩小比例
+### 4、flex-shrink: 定义了项目的缩小比例
 
 ```
 .item {
@@ -184,7 +184,7 @@ grow 在 flex 容器下的子元素的宽度和比容器和小的时候起作用
 
 如果一个项目的 flex-shrink 属性为 0，其他项目都为 1，则空间不足时，前者不缩小。
 
-#### 5、flex: flex-grow,flex-shrink和flex-basis的简写
+### 5、flex: flex-grow,flex-shrink和flex-basis的简写
 
 ```
 .item{
@@ -254,7 +254,7 @@ flex 的默认值是以上三个属性值的组合。假设以上三个属性同
 ```
 > flex-shrink 和 flex-grow 只有一个能起作用，这其中的道理细想起来也很浅显：空间足够时，flex-grow 就有发挥的余地，而空间不足时，flex-shrink 就能起作用。当然，flex-wrap 的值为 wrap / wrap-reverse 时，表明可以换行，既然可以换行，一般情况下空间就总是足够的，flex-shrink 当然就不会起作用
 
-#### 6、align-self:允许单个项目有与其他项目不一样的对齐方式
+### 6、align-self:允许单个项目有与其他项目不一样的对齐方式
 
 单个项目覆盖 align-items 定义的属性
 
@@ -266,7 +266,7 @@ flex 的默认值是以上三个属性值的组合。假设以上三个属性同
 ```
 这个跟 align-items 属性时一样的，只不过 align-self 是对单个项目生效的，而 align-items 则是对容器下的所有项目生效的。
 
-### 推荐链接
+## 推荐链接
 * [30 分钟学会 Flex 布局](https://zhuanlan.zhihu.com/p/25303493)
 * [Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 * [Flex 布局示例](http://static.vgee.cn/static/index.html)

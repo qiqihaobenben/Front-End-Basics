@@ -1,4 +1,4 @@
-## 越优秀的人，越早想明白的七件事
+# 越优秀的人，越早想明白的七件事
 
 #### [原文链接](https://mp.weixin.qq.com/s?__biz=MjM5OTA3MjUwMA%3D%3D&mid=2651125959&idx=1&sn=e8e1fcef37fa7346b30f0c57569bcd10#wechat_redirect)
 

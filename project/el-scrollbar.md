@@ -1,6 +1,6 @@
-## Vue的自定义滚动，我用el-scrollbar
+# Vue的自定义滚动，我用el-scrollbar
 
-### 为什么要用el-scrollbar？
+## 为什么要用el-scrollbar？
 
 最近在写一个内部平台系统，相信大家都知道，其中会有很多自定义的滚动区域，就比如说现在有一个列表需要滚动，第一个念头就是用 `overflow: scroll;` 啊！嗯嗯，又不是不能用！如果我不曾见过太阳，我本可以忍受黑暗。
 <br>
@@ -13,14 +13,14 @@
 
 看Element的官网是不可能发现Scrollbar这个组件的，没有使用文档，但是可以直接使用。
 
-### 为什么要写这一篇文章？
+## 为什么要写这一篇文章？
 
 * 第一，有段时间没写东西了，先热热手；
 * 第二，真的有同学不知道怎么用，可能主要是没有文档吧~
 
 ![el-github](./images/el-github.jpg)
 
-### 先来看看它的样子。
+## 先来看看它的样子。
 
 ![](./images/el-scrollbar.gif)
 
@@ -50,7 +50,7 @@
 
 ![](./images/3.png)
 
-### 尝试用一下
+## 尝试用一下
 
 展示的链接：[el-scrollbar试用](https://jsfiddle.net/chenfangxu/jfn5gzcw/)
 

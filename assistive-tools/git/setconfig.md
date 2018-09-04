@@ -1,4 +1,6 @@
-### Git 配置  
+# Git 配置和.gitignore
+
+## Git 配置  
 
 ```
 git config -e [--global] # 编辑Git配置文件
@@ -50,7 +52,7 @@ git help config #获取帮助信息
 ```
 
 
-### .gitignore文件
+## .gitignore文件
 
 * 屏蔽文件 : .gitignore文件是告诉Git哪些目录或者文件需要忽略, 这些文件将不被提交; 
 
@@ -78,20 +80,20 @@ git help config #获取帮助信息
 
 **eg : 一个目录下有很多目录和文件, 当我们只需要保留其中的一个文件的时候, 先用开放模式不保留这些文件, 然后用保守模式将这个文件留下来, 保守模式的优先级要高于开放模式;**  
 
-#### 具体操作  
+### 具体操作  
 
 1. 在项目根目录创建.gitignore文件  
 2. 在文件中列出不需要提交的文件名，文件夹名，每个一行  
 3. .gitignore文件需要提交，就像普通文件一样  
 
-#### 通常会被ignore的文件有：  
+### 通常会被ignore的文件有：  
 1. log文件  
 2. task runner builds  
 3. node_modules等文件夹  
 4. IDEs生成的文件  
 5. 个人笔记  
 
-#### 例如  
+### 例如  
 
 ```
 *.log

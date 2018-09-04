@@ -1,4 +1,4 @@
-## 数组
+# 数组
 
 > 数组是值的有序集合，每个值叫做一个元素，而每个元素在数组中有一个位置，以数字表示，称为索引。
 
@@ -394,7 +394,7 @@ arr1[0].name = 'xiaogang'; // arr是[{name: 'xiaogang'}]，arr1是[{name: 'xiaog
 // 对于字符串、数字及布尔值来说（不是 String、Number 或者 Boolean 对象），slice 会拷贝这些值到新的数组里。在别的数组里修改这些字符串或数字或是布尔值，将不会影响另一个数组。
 let arr = [1,2,3];
 let arr1 = arr.slice(); // arr是[1,2,3]，arr1是[1,2,3]
-arr1[1] = "two"; // arr是[1,2,3]，arr1是[1,"tow",3]
+arr1[1] = "two"; // arr是[1,2,3]，arr1是[1,"two",3]
 
 // 当然，如果向两个数组任一中添加了新元素（简单或者引用类型），则另一个不会受到影响。
 ```
@@ -588,7 +588,7 @@ var a = [1];
 a.__proto__.constructor = '1';
 console.log(a.constructor === Array) // false
 
-// step tow : 使用instanceof
+// step two : 使用instanceof
 var a = [1];
 console.log(a instanceof Array) // true
 //但是instanceof不能检测iframes的数组

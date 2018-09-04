@@ -1,5 +1,4 @@
-
-## 临界知识
+# 临界知识
 
 #### [原文链接](http://liujinkai.com/2017/05/03/3-critical-knowledges/#more)
 

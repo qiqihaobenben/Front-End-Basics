@@ -1,17 +1,17 @@
-## JavaScript的模块
+# JavaScript的模块
 
-### 介绍
+## 介绍
 
 模块通常是指编程语言所提供的代码组织机制，利用此机制可将程序拆解为独立且通用的代码单元。所谓模块化主要是解决代码分割、作用域隔离、模块之间的依赖管理以及发布到生产环境时的自动化打包与处理等多个方面。
 
-#### 模块的优点
+### 模块的优点
 
 1. **可维护性。**  因为模块是独立的，一个设计良好的模块会让外面的代码对自己的依赖越少越好，这样自己就可以独立去更新和改进。
 2. **命名空间。** 在 JavaScript 里面，如果一个变量在最顶级的函数之外声明，它就直接变成全局可用。因此，常常不小心出现命名冲突的情况。使用模块化开发来封装变量，可以避免污染全局环境。
 3. **重用代码。** 我们有时候会喜欢从之前写过的项目中拷贝代码到新的项目，这没有问题，但是更好的方法是，通过模块引用的方式，来避免重复的代码库。我们可以在更新了模块之后，让引用了该模块的所有项目都同步更新，还能指定版本号，避免 API 变更带来的麻烦。
 
 
-### CommonJS
+## CommonJS
 
 CommonJS 最开始是 Mozilla 的工程师于 2009 年开始的一个项目，它的目的是让浏览器之外的 JavaScript （比如服务器端或者桌面端）能够通过模块化的方式来开发和协作。  
 
@@ -41,7 +41,7 @@ sayer.hello(); //hello
 ```
 作为一个服务器端的解决方案，CommonJS 需要一个兼容的脚本加载器作为前提条件。该脚本加载器必须支持名为 require 和 module.exports 的函数，它们将模块相互导入导出。
 
-#### `Node.js`
+### `Node.js`
 
 Node 从 CommonJS 的一些创意中，创造出自己的模块化实现。由于Node 在服务端的流行，Node 的模块形式被（不正确地）称为 CommonJS。
 
@@ -198,7 +198,7 @@ console.log('Module1 is partially loaded here', Module1);
 Node 使这个问题简单化，在一个模块加载期间开始创建 exports 对象。如果它需要引入其他模块，并且有循环依赖，那么只能部分引入，也就是只能引入发生循环依赖之前所定义的这部分。
 
 
-### AMD
+## AMD
 
 AMD 是 Asynchronous Module Definition 的简称，即“异步模块定义”，是从 CommonJS 讨论中诞生的。AMD 优先照顾浏览器的模块加载场景，使用了异步加载和回调的方式。  
 
@@ -220,7 +220,7 @@ define(['./lib/sayModule'], function (say){
 ```
 main.js 作为整个应用的入口模块，我们使用 define 关键字声明了该模块以及外部依赖(没有生命模块名称)；当我们执行该模块代码时，也就是执行 define 函数的第二个参数中定义的函数功能，其会在框架将所有的其他依赖模块加载完毕后被执行。这种延迟代码执行的技术也就保证了依赖的并发加载。  
 
-#### `RequireJS`
+### `RequireJS`
 
 RequireJS 是一个前端的模块化管理的工具库，遵循AMD规范,通过一个函数来将所有所需要的或者说所依赖的模块实现装载进来，然后返回一个新的函数（模块），我们所有的关于新模块的业务代码都在这个函数内部操作，其内部也可无限制的使用已经加载进来的以来的模块。  
 ```
@@ -262,7 +262,7 @@ define( function( require ){
 ```
 如上代码， define中有依赖模块数组的 和 没有依赖模块数组用require加载 这两种定义模块，调用模块的方法合称为AMD模式，定义模块清晰，不会污染全局变量，清楚的显示依赖关系。AMD模式可以用于浏览器环境并且允许非同步加载模块，也可以按需动态加载模块。
 
-### CMD
+## CMD
 
 CMD（Common Module Definition），在CMD中，一个模块就是一个文件。  
 
@@ -282,7 +282,7 @@ define( function(require, exports, module) {
 });
 ```
 
-#### `SeaJS`
+### `SeaJS`
 
 **sea.js 核心特征：**
 1. 遵循CMD规范，与NodeJS般的书写模块代码。
@@ -314,7 +314,7 @@ CMD加载完某个依赖模块后并不执行，只是下载而已，在所有�
 
 
 
-### UMD
+## UMD
 
 统一模块定义（UMD：Universal Module Definition ）就是将 AMD 和 CommonJS 合在一起的一种尝试，常见的做法是将CommonJS 语法包裹在兼容 AMD 的代码中。  
 ```
@@ -334,9 +334,9 @@ CMD加载完某个依赖模块后并不执行，只是下载而已，在所有�
 ```
 该模式的核心思想在于所谓的 IIFE（Immediately Invoked Function Expression），该函数会根据环境来判断需要的参数类别
 
-### ES6模块(module)
+## ES6模块(module)
 
-#### 严格模式 
+### 严格模式 
 
 ES6 的模块自动采用严格模式，不管有没有在模块头部加上"use strict";。  
 严格模式主要有以下限制。  
@@ -356,11 +356,11 @@ ES6 的模块自动采用严格模式，不管有没有在模块头部加上"use
 * 不能使用fn.caller和fn.arguments获取函数调用的堆栈
 * 增加了保留字（比如protected、static和interface）
 
-#### 模块Module
+### 模块Module
 
 一个模块，就是一个对其他模块暴露自己的属性或者方法的文件。  
 
-#### 导出Export
+### 导出Export
 
 作为一个模块，它可以选择性地给其他模块暴露（提供）自己的属性和方法，供其他模块使用。
 
@@ -426,7 +426,7 @@ function foo() {
 foo()
 ```
 
-#### 导入import
+### 导入import
 
 作为一个模块，可以根据需要，引入其他模块的提供的属性或者方法，供自己模块使用。  
 
@@ -469,7 +469,7 @@ import 'lodash';
 //上面代码仅仅执行lodash模块，但是不输入任何值。
 ```
 
-### 默认导出(export default)  
+## 默认导出(export default)  
 
 每个模块支持我们导出`一个`没有名字的变量，使用关键语句export default来实现.  
 ```
@@ -531,7 +531,7 @@ export function each (obj, iterator, context){
 }
 ```
 
-### export 与 import 的复合写法
+## export 与 import 的复合写法
 
 如果在一个模块之中，先输入后输出同一个模块，import语句可以与export语句写在一起。  
 ```
@@ -552,7 +552,7 @@ export * from 'my_module';
 1、声明的变量，对外都是只读的。但是导出的是对象类型的值，就可修改。  
 2、导入不存在的变量，值为undefined。
 
-#### ES6 中的循环引用
+### ES6 中的循环引用
 
 ES6 中，imports 是 exports 的只读视图，直白一点就是，imports 都指向 exports 原本的数据，比如：
 ```
@@ -593,7 +593,7 @@ export function bar() {
 
 
 
-#### 实例
+### 实例
 
 ```
 //---module-B.js文件---
@@ -652,7 +652,7 @@ obj.say();
 //结果：say hello
 ```
 
-### 推荐资料
+## 推荐资料
 * [ JavaSript模块规范 - AMD规范与CMD规范介绍 ](http://blog.chinaunix.net/uid-26672038-id-4112229.html)
 
 * [JavaScript 模块演化简史](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&mid=2651226355&idx=1&sn=aedf47d5a3be53f6c7d5562977624861&chksm=bd4959778a3ed06198cbb746067393cd0f189612f4fc577417e0741df3a2b620373ea025978b&scene=21#wechat_redirect)

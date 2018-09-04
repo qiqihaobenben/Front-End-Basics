@@ -1,4 +1,4 @@
-## ThinkPHP 模板中的语法知识 
+# ThinkPHP 模板中的语法知识 
 
 #### [原文链接](https://blog.csdn.net/leyangjun/article/details/42079905)
 
@@ -146,6 +146,7 @@ nheq 不恒等于
 2. 范围标签(类似if else逻辑和书写方式)
 
 `in ` 标签
+
 ```
 <in name='number' value='9,10,11,12'>
   在这些数字里面
@@ -153,7 +154,9 @@ nheq 不恒等于
   不在这些数字的范围内
 </in>
 ```
+
 `notin` 标签
+
 ```
 <notin name='number' value='9,10,11,12'>
   在这些数字里面
@@ -161,6 +164,7 @@ nheq 不恒等于
   不在这些数字的范围内
 </notin>
 ```
+
 `between` 标签
 
 ```
@@ -171,19 +175,24 @@ nheq 不恒等于
 {$number}不在1到10之间
 </between>
 ```
+
 `notbetween` 标签 来判断变量不在某个范围内 
+
 ```
 <notbetween name="id"value="1,10">输出内容1</notbetween>
 ```
 
 
 3. `present` 标签
+
 标签来判断模板变量是否已经赋值
+
 ```
 <present name='m'>m有赋值<else/>m没有赋值</present>
 ```
 
 4. `Empty` 标签
+
 empty标签判断模板变量是否为空
 ```
 <empty name='number'>number为空赋值<else/>number有值</empty>
