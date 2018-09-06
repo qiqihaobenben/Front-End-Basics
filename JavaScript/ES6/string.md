@@ -159,7 +159,7 @@ console.log('\ud83d\ude02' === '😂') // true
 
 ### 1.3 ECMAScript 6 解决字符编码的问题
 
-<b style="color: #4F86C6;"> (1) 为解决`charCodeAt()`方法获取字符乱码问题，新增`codePointAt()`方法</b>
+<b style="color: #4F86C6;"> (1) 为解决`charCodeAt()`方法获取字符码位错误的问题，新增`codePointAt()`方法</b>
 
 `codePointAt()`方法完全支持UTF-16,参数接收的是编码单元的位置而非字符位置，返回与字符串中给定位置对应的码位，即一个整数。
 
@@ -306,6 +306,35 @@ tag(['Hello ', ' world ', ''], 15, 50);
 ```
 
 “标签模板”的一个重要应用，就是过滤 HTML 字符串，防止用户输入恶意内容。标签模板的另一个应用，就是多语言转换（国际化处理）。
+
+
+### 参考链接
+
+[字符编码笔记：ASCII，Unicode 和 UTF-8](http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html)
+
+[谈谈Unicode编码——其中有“大尾”和“小尾”的来源描述小人国呦](http://www.pconline.com.cn/pcedu/empolder/gj/other/0505/616631.html)
+
+[字符编码趣闻](https://qiqihaobenben.gitbooks.io/front-end-basics/content/article/oldTechnologyArticle/zifubianma.html)
+
+[Javascript有个Unicode的天坑](http://www.alloyteam.com/2016/12/javascript-has-a-unicode-sinkhole/)
+
+[Unicode与JavaScript详解](http://www.ruanyifeng.com/blog/2014/12/unicode.html)
+
+[UTF-8, a transformation format of ISO 10646](http://www.ietf.org/rfc/rfc3629.txt)
+
+[ASCII](https://zh.wikipedia.org/wiki/ASCII)
+
+[UTF-8](https://zh.wikipedia.org/wiki/UTF-8)
+
+[UTF-8 遍地开花](http://utf8everywhere.org/zh-cn)
+
+[UTF-16](https://zh.wikipedia.org/wiki/UTF-16)
+
+[通用字符集](https://zh.wikipedia.org/wiki/%E9%80%9A%E7%94%A8%E5%AD%97%E7%AC%A6%E9%9B%86)
+
+[Unicode官网](http://www.unicode.org/)
+
+[Javascript诞生记](http://www.ruanyifeng.com/blog/2011/06/birth_of_javascript.html)
 
 
 
