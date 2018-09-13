@@ -2,7 +2,15 @@
 
 ## 介绍
 
-模块通常是指编程语言所提供的代码组织机制，利用此机制可将程序拆解为独立且通用的代码单元。所谓模块化主要是解决代码分割、作用域隔离、模块之间的依赖管理以及发布到生产环境时的自动化打包与处理等多个方面。
+模块通常是指编程语言所提供的代码组织机制，利用此机制可将程序拆解为独立且通用的代码单元。
+
+模块化这个词最早出现在一本研究工程设计的探路性质的书《Design Rules》中。
+
+软件模块化是随着软件的复杂性诞生的。模块化的意义在于降低软件的复杂性，不至于随着软件或系统变大而不可控，使其可控，可维护，可扩展。
+
+无论那种语言，封装是写模块的首要特质。即模块不会暴露自身的实现细节，不会调用其它模块的实现代码，不会共享全局变量。一切只靠接口通信。模块化和封装是密不可分的
+
+所谓模块化主要是解决代码分割、作用域隔离、模块之间的依赖管理以及发布到生产环境时的自动化打包与处理等多个方面。
 
 ### 模块的优点
 
@@ -366,15 +374,15 @@ ES6 的模块自动采用严格模式，不管有没有在模块头部加上"use
 
 ```
 // profile.js
-export var firstName = 'qiqi';
-export var lastName = 'haobenben';
-export var year = 1992;
+export var firstName = 'chen';
+export var lastName = 'fangxu';
+export var year = 1991;
 
 //等价于
 
-var firstName = 'qiqi';
-var lastName = 'haobenben';
-var year = 1992;
+var firstName = 'chen';
+var lastName = 'fangxu';
+var year = 1991;
 export {firstName, lastName, year}
 
 ```
@@ -404,7 +412,7 @@ export m;
 
 //上面两种写法都会报错，因为没有提供对外的接口。第一种写法直接输出1，第二种写法通过变量m，还是直接输出1。1只是一个值，不是接口。
 
-/ 写法一
+// 写法一
 export var m = 1;
 
 // 写法二
@@ -448,7 +456,7 @@ import { foo } from 'my_module';
 
 `4、由于import是静态执行，所以不能使用表达式和变量，这些只有在运行时才能得到结果的语法结构。`  
 ```
-/ 报错
+// 报错
 import { 'f' + 'oo' } from 'my_module';
 
 // 报错
@@ -466,7 +474,7 @@ if (x === 1) {
 `5、最后，import语句会执行所加载的模块，因此可以有下面的写法。`  
 ```
 import 'lodash';
-//上面代码仅仅执行lodash模块，但是不输入任何值。
+//上面代码仅仅执行lodash模块，但是不输出任何值。
 ```
 
 ## 默认导出(export default)  
