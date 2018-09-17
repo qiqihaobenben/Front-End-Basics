@@ -49,6 +49,7 @@
     * [临界知识](article/critical-knowledge.md)
     * [七件事](article/seven-thing.md)
     * [知乎上的神回复](article/zhihu48.md)
+    * [软能力](article/soft-skills.md)
   - 老技术文章备份
     * [ThinkPHP 模板中的语法知识](article/oldTechnologyArticle/ThinkPHP_template.md)
     * [字符编码趣闻](article/oldTechnologyArticle/zifubianma.md)
