@@ -46,6 +46,7 @@
 * 捡贝壳
   - 有趣的文章
     * [买了书也不读，还要不要买？](article/book.md)
+    * [为什么我要求你读书用功](article/read-book.md)
     * [临界知识](article/critical-knowledge.md)
     * [七件事](article/seven-thing.md)
     * [知乎上的神回复](article/zhihu48.md)
