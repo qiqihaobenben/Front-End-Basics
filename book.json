@@ -5,9 +5,12 @@
   "language": "zh-hans",
   "gitbook": "3.2.2",
   "plugins": [
+    "-highlight",
     "-lunr",
     "-search",
     "-sharing",
+    "prism",
+    "prism-themes",
     "github",
     "edit-link",
     "search-pro",
@@ -22,7 +25,7 @@
       "showLevel": false
     },
     "github": {
-      "url": "https://github.com/qiqihaobenben/Front-End-Basics"
+      "url": "prismjs/themes/prism-solarizedlight.css"
     },
     "edit-link": {
       "base": "https://github.com/qiqihaobenben/Front-End-Basics/edit/master",
@@ -58,6 +61,11 @@
       "all": [
         "google", "facebook", "weibo", "twitter",
         "qq", "qzone", "linkedin", "pocket"
+      ]
+    },
+    "prism": {
+      "css": [
+        "prismjs/themes/prism-tomorrow.css"
       ]
     }
   }
