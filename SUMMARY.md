@@ -54,3 +54,4 @@
   - 老技术文章备份
     * [ThinkPHP 模板中的语法知识](article/oldTechnologyArticle/ThinkPHP_template.md)
     * [字符编码趣闻](article/oldTechnologyArticle/zifubianma.md)
+    * [Outlook邮件模板踩坑](article/oldTechnologyArticle/email.md)
