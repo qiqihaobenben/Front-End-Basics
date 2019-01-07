@@ -230,6 +230,10 @@ git remote rename origin1 origin2 # 重命名
 git remote rm origin # 删除
 
 git remote show origin # 查看指定源的全部信息
+
+# 远程分支删除后，清除还存在的本地分支
+git remote prune origin --dry-run # prune 是修剪的意思，–dry-run 表示模拟列出将要修剪的 local stale branch ，但不真的执行。
+git remote prune origin # 移除掉远程分支已经被刪除的 local branch
 ```
 
 * 操作远程仓库  
