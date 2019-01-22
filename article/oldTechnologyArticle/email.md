@@ -31,3 +31,10 @@
 1. 跟以上的不同点是，不支持内部和外联样式表，所以只能用内嵌，内嵌的覆盖样式在预览状态下不支持，会被客户端的一些标签给替换掉，比如说英文换行，双击新页面打开可以正常展示
 
 2. 图片展示需要开始受信任人才可以展示
+
+
+### 推荐链接
+
+* [HTML Email 编写指南](http://www.ruanyifeng.com/blog/2013/06/html_email.html)
+
+* [令人抓狂的 HTML Email](https://macsalvation.net/2018/01/17/fuck-html-email/)
