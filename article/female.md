@@ -2,9 +2,11 @@
 
 ### 上野千鹤子教授在2019东京大学学部入学式上的致辞
 
-#### 译者：王瀚浩
+##### 译者：王瀚浩
 
-#### 原文地址：https://www.u-tokyo.ac.jp/ja/about/president/b_message31_03.html
+##### 原文地址：https://www.u-tokyo.ac.jp/ja/about/president/b_message31_03.html
+
+### 正文开始
 
 ---
 

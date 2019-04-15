@@ -4,6 +4,8 @@
 
 访问地址是：[https://qiqihaobenben.gitbooks.io/front-end-basics/content/](https://qiqihaobenben.gitbooks.io/front-end-basics/content/)
 
+新的访问地址：[https://cfangxu-2.gitbook.io/front-end-basics/](https://cfangxu-2.gitbook.io/front-end-basics/)
+
 
 <br>
 <br>
