@@ -23,6 +23,7 @@
   - TypeScript
     * [介绍](JavaScript/typescript/intro.md)
     * [基本语法](JavaScript/typescript/synax.md)
+    * [【翻译】使用TypeScript两年后-值得吗？](JavaScript/typescript/use-typescript-two-years.md)
 * 移动端
   - HTML5
     * [移动端适配](mobile/fit.md)
@@ -51,6 +52,7 @@
     * [七件事](article/seven-thing.md)
     * [知乎上的神回复](article/zhihu48.md)
     * [软能力](article/soft-skills.md)
+    * [年轻人，等着你的，是一个无论如何努力也得不到回报的社会](article/female.md)
   - 老技术文章备份
     * [ThinkPHP 模板中的语法知识](article/oldTechnologyArticle/ThinkPHP_template.md)
     * [字符编码趣闻](article/oldTechnologyArticle/zifubianma.md)
