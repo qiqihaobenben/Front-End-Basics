@@ -21,7 +21,7 @@ f(x) = y
 
 函数是一段可以通过其名称被调用的代码。它可以传递参数，并返回值。
 
-与面向对象编程（Object-oriented programming）和过程式编程（Procedural programming）一样，函数式编程（Funcitonal programming）也是一种编程范式。我们能够以此创建仅依赖输入就可以完成自身逻辑的函数。这保证了当函数被多次调用时仍然返回相同的结果（引用透明性）。函数不会改变任何外部环境的变量，这将产生可缓存的，可测试的代码库。
+与面向对象编程（Object-oriented programming）和过程式编程（Procedural programming）一样，函数式编程（Functional programming）也是一种编程范式。我们能够以此创建仅依赖输入就可以完成自身逻辑的函数。这保证了当函数被多次调用时仍然返回相同的结果（引用透明性）。函数不会改变任何外部环境的变量，这将产生可缓存的，可测试的代码库。
 
 
 ### 函数式编程具有以下特征
@@ -79,7 +79,7 @@ array.forEach((element) => console.log(element)) // 打印 1,2,3
 
 ##### 函数式编程主张以抽象的方式创建函数，例如上文的forEach，这些函数能够在代码的其他部分被重用。
 
-#### 1、纯函数
+#### 3、纯函数
 
 大多数函数式编程的好处来自于编写纯函数，纯函数是对给定的输入返回相同的输出的函数，并且纯函数不应依赖任何外部变量，也不应改变任何任何外部变量。
 
@@ -91,5 +91,51 @@ array.forEach((element) => console.log(element)) // 打印 1,2,3
 纯函数总是允许我们并发的执行代码。因为纯函数不会改变它的环境，这意味着我们根本不需要担心同步问题。
 4、纯函数的输出结果可缓存
 既然纯函数总是为给定的输入返回相同的输出，那么我们就能够缓存函数的输出。
+
+
+
+
+
+## 补充
+
+### 1、纯函数是数学函数
+
+```
+function generateGetNumber() {
+  let numberKeeper = {}
+  return function (number) {
+    return numberKeeper.hasOwnProperty(number) ? 
+    number : 
+    numberKeeper[number] = number + number
+  }
+}
+let getNumber = generateGetNumber()
+getNumber(1)
+getNumber(2)
+……
+getNumber(9)
+getNumber(10)
+
+// 此时numberKeeper为：
+{
+  1: 2
+  2: 4
+  3: 6
+  4: 8
+  5: 10
+  6: 12
+  7: 14
+  8: 16
+  9: 18
+  10: 20
+}
+```
+现在我们分析一下getNumber,该函数接受一个输入并为给定的范围（此处范围是10）映射输出。输入具有强制的、相应的输出，并且也不存在映射两个输出的输入。
+
+下面我来再看一下数学函数的定义（维基百科）
+>在数学中，函数是一种输入集合和可允许的输出集合之间的关系，具有如下属性：每个输入都精确地关联一个输出。函数的输入称为参数，输出称为值。对于一个给定的函数，所有被允许的输入集合称为该函数的定义域，而被允许的输出集合称为值域。
+
+我们上面的getNumber函数的定义域是1-10，值域是2,4,6,……18,20
+
 
 
