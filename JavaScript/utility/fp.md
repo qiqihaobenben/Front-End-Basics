@@ -112,7 +112,7 @@ array.forEach((element) => console.log(element)) // 打印 1,2,3
 接受另一个函数作为其参数的函数称为高阶函数(Higher-Order-Function)，或者说高阶函数是接受函数作为参数并且/或者返回函数作为输出的函数。
 
 
-### 高阶函数和抽象
+### 抽象和高阶函数
 
 一般而言，高阶函数通常用于抽象通用的问题，换句话说，高阶函数就是定义抽象。
 
@@ -120,6 +120,226 @@ array.forEach((element) => console.log(element)) // 打印 1,2,3
 
 > 例如：你在编写一个涉及数值操作的代码，你不会对底层硬件的数字表现方式到底是16位还是32位整数有很深的了解，包括这些细节在哪里屏蔽。因为它们被抽象出来了，只留下了简单的数字给我们使用。
 
+```
+// 用forEach抽象出遍历数组的操作
+const forEach = (array,fn) => {
+  let i;
+  for(i=0;i<array.length;i++) {
+    fn(array[i])
+  }
+}
+
+// 用户不需要理解forEach是如何实现遍历的，如此问题就被抽象出来了。
+//例如，想要打印出数组的每一项
+let array = [1,2,3]
+forEach(array,(data) => console.log(data)) 
+```
+
+### 闭包和高阶函数
+
+什么是闭包？简言之，闭包就是一个内部函数。什么是内部函数？就是在另一个函数内部的函数。
+
+闭包的强大之处在于它对作用域链（或作用域层级）的访问。从技术上讲，闭包有3个可访问的作用域。
+(1) 在它自身声明之内声明的变量
+(2) 对全局变量的访问
+(3) 对外部函数变量的访问（关键点）
+
+
+**实例一**：假设你再遍历一个来自服务器的数组，并发现数据错了。你想调试一下，看看数组里面究竟包含了什么。不要用命令式的方法，要用函数式的方法来实现。这里就需要一个 tap 函数。
+
+```
+const tap = (value) => {
+  return (fn) => {
+    typeof fn === 'function' && fn(value)
+    console.log(value)
+  }
+} 
+
+// 没有调试之前
+forEach(array, data => {
+  console.log(data + data)
+})
+
+// 在 forEach 中使用 tap 调试
+forEach(array, data => {
+  tap(data)(() => {
+    console.log(data + data)
+  })
+})
+```
+
+完成一个简单的reduce函数
+```
+const reduce = (array,fn,initialValue) => {
+  let accumulator;
+  if(initialValue != undefined)
+    accumulator = initialValue
+  else
+    accumulator = array[0]
+
+  if(initialValue === undefined)
+    for(let i = 1; i < array.length; i++)
+      accumulator = fn(accumulator, array[i])
+  else
+    for(let value of array)
+      accumulator = fn(accumulator,value)
+  return accumulator
+}
+
+console.log(reduce([1,2,3], (accumulator,value) => accumulator + value))
+// 打印出6
+```
+
+## 柯里化与偏应用
+
+### 一些概念
+
+#### 一元函数
+
+只接受一个参数的函数称为一元(unary)函数。
+
+#### 二元函数
+
+只接受两个参数的函数称为二元(binary)函数。
+
+#### 变参函数
+
+变参函数是接受可变数量的函数。
+
+### 柯里化
+
+柯里化是把一个多参数函数转换为一个嵌套的一元函数的过程。
+
+例如
+```
+// 一个多参数函数
+const add = (x,y) => x + y;
+add(2,3)
+
+// 一个嵌套的一元函数
+const addCurried = x => y => x + y;
+addCurried(2)(3)
+
+// 然后我们写一个高阶函数，把 add 转换成 addCurried 的形式。
+const curry = (binaryFn) => {
+  return function (firstArg) {
+    return function (secondArg) {
+      return binaryFn(firstArg,secondArg)
+    }
+  }
+}
+let autoCurriedAdd = carry(add)
+autoCurriedAdd(2)(3)
+```
+
+上面只是简单实现了一个二元函数的柯里化，下面我们要实现一个更多参数的函数的柯里化。
+
+```
+const curry = (fn) => {
+  if (typeof fn !== 'function') {
+    throw Error('No function provided')
+  }
+  return function curriedFn (...args) {
+    // 判断当前接受的参数是不是小于进行柯里化的函数的参数个数
+    if(args.length < fn.length) {
+      // 如果小于的话就返回一个函数再去接收剩下的参数
+      return function (...argsOther) {
+        return curriedFn.apply(null, args.concat(argsOther))
+      }
+    }else {
+      return fn.apply(null,args)
+    }
+  }
+}
+
+ const multiply = (x,y,z) => x * y * z;
+ console.log(curry(multiply)(2)(3)(4))
+```
+
+柯里化的应用实例：从数组中找出含有数字的元素
+```
+let match = curry(function (expr,str) {
+  return str.match(expr)
+})
+let hasNumber = match(/[0-9]+/)
+
+let initFilter = curry(function (fn,array) {
+  return array.filter(fn)
+})
+
+let findNumberInArray = initFilter(hasNumber)
+console.log(findNumberInArray(['aaa', 'bb2', '33c', 'ddd', ]))
+// 打印 [ 'bb2', '33c' ]
+```
+
+### 偏应用
+
+我们上面设计的柯里化函数总是在最后接受一个数组，这使得它能接受的参数列表只能是从最左到最右。
+
+但是有时候，我们不能按照从左到右的这样严格传入参数，或者只是想部分地应用函数参数。这里我们就需要用到偏应用这个概念，它允许开发者部分地应用函数参数。
+
+```
+const partial = function (fn, ...partialArgs) {
+  return function (...fullArguments) {
+    let args = Array.from(partialArgs)
+    let arg = 0;
+    for(let i = 0; i < args.length && arg < fullArguments.length; i++) {
+      if(args[i] === undefined) {
+        args[i] = fullArguments[arg++]
+      }
+    }
+    return fn.apply(null,args)
+  }
+}
+```
+
+偏应用的示例：
+```
+// 打印某个格式化的JSON
+let prettyPrintJson = partial(JSON.stringify,undefined,null,2)
+console.log(prettyPrintJson({name:'fangxu',gender:'male'}))
+
+// 打印出
+{
+  "name": "fangxu",
+  "gender": "male"
+}
+```
+
+## 组合与管道
+
+### Unix的理念
+
+1、每个程序只做好一件事情，为了完成一项新的任务，重新构建要好于在复杂的旧程序中添加新“属性”。
+2、每个程序的输出应该是另一个尚未可知的程序的输入。
+3、每一个基础函数都需要接受一个参数并返回数据。
+
+### 组合(compose)
+
+```
+const compose = (...fns) => {
+  return (value) => reduce(fns.reverse(),(acc,fn) => fn(acc), value)
+}
+```
+compose 组合的函数，是按照传入的顺序从右到左调用的。所以传入的 fns 要先 reverse 一下，然后我们用到了reduce ，reduce 的累加器初始值是 value ，然后会调用 `(acc,fn) => fn(acc)`, 依次从 fns 数组中取出 fn ，将累加器的当前值传入 fn ，即把上一个函数的返回值传递到下一个函数的参数中。
+
+组合的实例：
+```
+let splitIntoSpace = (str) => str.split(' ')
+let count = (array) => array.length
+const countWords = composeN(count, splitIntoSpace)
+console.log(countWords('make smaller or less in amount'))
+// 打印 6
+```
+
+### 管道/序列
+
+compose 函数的数据流是从右往左的，最右侧的先执行。当然，我们还可以让最左侧的函数先执行，最右侧的函数最后执行。这种从左至右处理数据流的过程称为管道（pipeline）或序列(sequence)。
+
+```
+// 跟compose的区别，只是没有调用fns.reverse()
+const pipe = (...fns) => (value) => reduce(fns,(acc,fn) => fn(acc),value)
+```
 
 
 
@@ -158,7 +378,7 @@ function generateGetNumber() {
     numberKeeper[number] = number + number
   }
 }
-let getNumber = generateGetNumber()
+const getNumber = generateGetNumber()
 getNumber(1)
 getNumber(2)
 ……
