@@ -341,6 +341,60 @@ compose 函数的数据流是从右往左的，最右侧的先执行。当然，
 const pipe = (...fns) => (value) => reduce(fns,(acc,fn) => fn(acc),value)
 ```
 
+## 函子
+
+### 什么是函子(Functor)？
+
+**定义**：函子是一个普通对象（在其它语言中，可能是一个类），它实现了map函数，在遍历每个对象值的时候生成一个新对象。
+
+#### 实现一个函子
+
+1、简言之，函子是一个持有值的容器。而且函子是一个普通对象。我们就可以创建一个容器（也就是对象），让它能够持有任何传给它的值。
+
+```
+const Container = function (value) {
+  this.value = value
+}
+
+let testValue = new Container(1)
+// => Container {value:1}
+```
+
+我们给 Container 增加一个静态方法，它可以为我们在创建新的 Containers 时省略 new 关键字。
+
+```
+Container.of = function (value) {
+  return new Container(value)
+}
+
+// 现在我们就可以这样来创建
+Container.of(1)
+// => Container {value:1}
+```
+
+2、函子需要实现 map 方法，具体的实现是，map 函数从 Container 中取出值，传入的函数把取出的值作为参数调用，并将结果放回 Container。
+
+> 为什么需要 map 函数，我们上面实现的 Container 仅仅是持有了传给它的值。但是持有值的行为几乎没有任何引用场景，而 map 函数发挥的作用就是，允许我们使用当前 Container 持有的值调用任何函数。
+
+```
+Container.prototype.map = function (fn) {
+  return Container.of(fn(this.value))
+}
+
+// 然后我们实现一个数字的 double 操作
+let double = (x) => x + x;
+Container.of(3).map(double)
+// => Container {value: 6}
+```
+
+3、map返回了一传入函数的执行结果为值的 Container 实例，所以我们可以链式操作。
+
+```
+Container.of(3).map(double).map(double).map(double)
+// => Container {value: 24}
+```
+
+**通过以上的实现，我们可以发现，函子就是一个实现了map契约的对象。函子是一个寻求契约的概念，该契约很简单，就是实现 map 。根据实现 map 函数的方式不同，会产生不同类型的函子，如 MayBe 、 Either**
 
 
 
