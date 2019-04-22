@@ -281,7 +281,7 @@ console.log(findNumberInArray(['aaa', 'bb2', '33c', 'ddd', ]))
 ```
 const partial = function (fn, ...partialArgs) {
   return function (...fullArguments) {
-    let args = Array.from(partialArgs)
+    let args = partialArgs
     let arg = 0;
     for(let i = 0; i < args.length && arg < fullArguments.length; i++) {
       if(args[i] === undefined) {
@@ -374,7 +374,7 @@ Container.of(1)
 
 2、函子需要实现 map 方法，具体的实现是，map 函数从 Container 中取出值，传入的函数把取出的值作为参数调用，并将结果放回 Container。
 
-> 为什么需要 map 函数，我们上面实现的 Container 仅仅是持有了传给它的值。但是持有值的行为几乎没有任何引用场景，而 map 函数发挥的作用就是，允许我们使用当前 Container 持有的值调用任何函数。
+> 为什么需要 map 函数，我们上面实现的 Container 仅仅是持有了传给它的值。但是持有值的行为几乎没有任何应用场景，而 map 函数发挥的作用就是，允许我们使用当前 Container 持有的值调用任何函数。
 
 ```
 Container.prototype.map = function (fn) {
@@ -395,6 +395,53 @@ Container.of(3).map(double).map(double).map(double)
 ```
 
 **通过以上的实现，我们可以发现，函子就是一个实现了map契约的对象。函子是一个寻求契约的概念，该契约很简单，就是实现 map 。根据实现 map 函数的方式不同，会产生不同类型的函子，如 MayBe 、 Either**
+
+函子可以用来做什么？之前我们用tap函数来函数式的解决代码报错的调试问题，如何更加函数式的处理代码中的问题，那就需要用到下面我们说的MayBe函子
+
+### MayBe函子
+
+让我们先写一个upperCase函数来假设一种场景
+
+```
+let value = 'string';
+function upperCase(value) {
+  // 为了避免报错，我们得写这么一个判断
+  if(value != null || value != undefined)
+    return value.toUpperCase()
+}
+upperCase(value)
+// => STRING
+```
+
+如上面所示，我们代码中经常需要判断一些`null`和`undefined`的情况。下面我们来看一下MayBe函子的实现。
+
+```
+// MayBe 跟上面的 Container 很相似
+export const MayBe = function (value) {
+  this.value = value
+}
+MayBe.of = function (value) {
+  return new MayBe(value)
+}
+// 多了一个isNothing
+MayBe.prototype.isNoting = function () {
+  return this.value === null || this.value === undefined;
+}
+// 函子必定有 map,但是 map 的实现方式可能不同
+MayBe.prototype.map = function(fn) {
+  return this.isNoting()?MayBe.of(null):MayBe.of(fn(this.value))
+}
+
+// MayBe应用
+let value = 'string';
+console.log(MayBe.of(value).map(upperCase))
+// => MayBe { value: 'STRING' }
+let nullValue = null
+console.log(MayBe.of(nullValue).map(upperCase))
+// 不会报错 MayBe { value: null }
+```
+
+
 
 
 
