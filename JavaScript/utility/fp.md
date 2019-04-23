@@ -398,7 +398,7 @@ Container.of(3).map(double).map(double).map(double)
 
 函子可以用来做什么？之前我们用tap函数来函数式的解决代码报错的调试问题，如何更加函数式的处理代码中的问题，那就需要用到下面我们说的MayBe函子
 
-### MayBe函子
+### MayBe 函子
 
 让我们先写一个upperCase函数来假设一种场景
 
@@ -434,17 +434,106 @@ MayBe.prototype.map = function(fn) {
 
 // MayBe应用
 let value = 'string';
-console.log(MayBe.of(value).map(upperCase))
+MayBe.of(value).map(upperCase)
 // => MayBe { value: 'STRING' }
 let nullValue = null
-console.log(MayBe.of(nullValue).map(upperCase))
+MayBe.of(nullValue).map(upperCase)
 // 不会报错 MayBe { value: null }
 ```
 
+### Either 函子
+
+```
+MayBe.of("tony")
+  .map(() => undefined)
+  .map((x)f => "Mr. " + x)
+```
+
+上面的代码结果是 `MyaBe {value: null}`,这只是一个简单的例子，我们可以想一下，如果代码比较复杂，我们是不知道到底是哪一个分支在检查 undefined 和 null 值时执行失败了。这时候我们就需要 Either 函子了，它能解决分支拓展问题。
+
+```
+const Nothing = function (value) {
+  this.value = value;
+}
+Nothing.of = function (value) {
+  return new Nothing(value)
+}
+Nothing.prototype.map = function (fn) {
+  return this;
+}
+const Some = function (value) {
+  this.value = value;
+}
+Some.of = function (value) {
+  return new Some(value)
+}
+Some.prototype.map = function (fn) {
+  return Some.of(fn(this.value));
+}
+
+const Either = {
+  Some,
+  Nothing
+}
+
+```
+
+### Pointed 函子
+
+函子只是一个实现了 map 契约的接口。Pointed 函子也是一个函子的子集，它具有实现了 of 契约的接口。 我们在 MayBe 和 Either 中也实现了 of 方法，用来在创建 Container 时不使用 new 关键字。所以 MayBe 和 Either 都可称为 Pointed 函子。
+
+> ES6 增加了 Array.of， 这使得数组成为了一个 Pointed 函子。
+
+### Monad 函子
+
+MayBe 函子很可能会出现嵌套，如果出现嵌套后，我们想要继续操作真正的value是有困难的。必须深入到 MayBe 内部进行操作。
+```
+let joinExample = MayBe.of(MayBe.of(5));
+// => MayBe { value: MayBe { value: 5 } }
+
+// 这个时候我们想让5加上4，需要深入 MayBe 函子内部
+joinExample.map((insideMayBe) => {
+  return insideMayBe.map((value) => value + 4)
+})
+// => MayBe { value: MayBe { value: 9 } }
+```
+
+我们这时就可以实现一个 join 方法来解决这个问题。
+
+```
+// 如果通过 isNothing 的检查，就返回自身的 value
+MayBe.prototype.join = function () {
+  return this.isNoting()? MayBe.of(null) : this.value
+}
+```
+```
+let joinExample2 = MayBe.of(MayBe.of(5));
+// => MayBe { value: MayBe { value: 5 } }
+
+// 这个时候我们想让5加上4就很简单了。
+joinExample2.join().map((value) => value + 4)
+// => MayBe { value: 9 }
+```
+
+再延伸一下，我们扩展一个 chain 方法。
+```
+MayBe.prototype.chain = function (fn) {
+  return this.map(fn).join()
+}
+```
+调用 chain 后就能把嵌套的 MayBe 展开了。
+```
+let joinExample3 = MayBe.of(MayBe.of(5));
+// => MayBe { value: MayBe { value: 5 } }
 
 
+joinExample3.chain((insideMayBe) => {
+  return insideMayBe.map((value) => value + 4)
+})
+// => MayBe { value: 9 }
+```
 
-
+**Monad** 其实就是一个含有 chain 方法的函子。只有of 和 map 的 MayBe 是一个函子，含有 chain 的函子是一个 Monad。
 
 
 
