@@ -536,16 +536,6 @@ joinExample3.chain((insideMayBe) => {
 **Monad** 其实就是一个含有 chain 方法的函子。只有of 和 map 的 MayBe 是一个函子，含有 chain 的函子是一个 Monad。
 
 
-
-
-
-
-
-
-
-
-
-
 ## 总结
 
 ### JavaScript是函数式编程语言吗？
