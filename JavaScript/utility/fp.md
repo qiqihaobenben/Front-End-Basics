@@ -587,4 +587,20 @@ getNumber(10)
 根据我们对于 getNumber 的分析，对照数学函数的定义，会发现完全一致。我们上面的getNumber函数的定义域是1-10，值域是2,4,6,……18,20
 
 
+### 2、实例
+
+文中所有的概念对应的实例可以在 [https://github.com/qiqihaobenben/learning-functional](https://github.com/qiqihaobenben/learning-functional) 获取，可以打开对应的注释来实际执行一下。
+
+
+### 3、推荐文章（非引用文章）
+
+1. [漫谈 JS 函数式编程（一）](https://www.h5jun.com/post/js-functional-1.html)
+2. [从一道坑人的面试题说函数式编程](https://www.h5jun.com/post/parseInt-to-functional.html)
+1. [函数式编程入门教程](http://www.ruanyifeng.com/blog/2017/02/fp-tutorial.html)
+1. [函数式编程的一点实战](https://yanhaijing.com/javascript/2018/03/01/functional-programming-practice/)
+
+
+
+
+
 
