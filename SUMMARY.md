@@ -13,6 +13,8 @@
     * [前端请求跨域](JavaScript/utility/data-interaction/cross-origin.md)
   - 数据结构和算法
     * [数组的十八般武艺](JavaScript/utility/fe-algorithm/array.md)
+  - 理论篇
+    * [JavaScript函数式编程入门经典](JavaScript/utility/fp.md)
   - 深入篇
     * [三种本地存储方式和一些扩展](JavaScript/utility/cache.md)
     * [JavaScript的模块](JavaScript/utility/module.md)
