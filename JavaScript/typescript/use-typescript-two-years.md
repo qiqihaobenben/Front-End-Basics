@@ -12,7 +12,7 @@
 
 然后我接触到了Flowtype和TypeScript。经过短暂的评估后，我决定选择TypeScript，并且一直用到现在。在两年后的今天，我可以告诉你 - 决定使用TypeScript对项目和我的职业生涯来说是个不错的选择。但是，如果你认为TypeScript开发人员的生活总是称心如意的，那么你最好继续阅读。
 
-在本文中，我不想详细说明TypeScripts的功能或深入项目设置。互联网上有很多很好的资源（例如官方TS文档：https://www.typescriptlang.org/docs/home.html）。当然，这篇文章也不是初学者的入门引导。
+在本文中，我不想详细说明TypeScripts的功能或深入项目设置。互联网上有很多很好的资源（ 例如官方TS文档：https://www.typescriptlang.org/docs/home.html ）。当然，这篇文章也不是初学者的入门引导。
 
 这是一个关于在使用TypeScript日常工作中感受到的优缺点的总结。我想描述一下我使用TypeScript的最糟糕体验，另一方面，我也要说一下我认为最有用的功能。所以本文都是关于利弊好坏的权衡，让我们开始吧。
 

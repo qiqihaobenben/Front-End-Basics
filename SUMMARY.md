@@ -37,6 +37,8 @@
     * [介绍](network-basics/HTTP/index.md)
     * [网络请求](network-basics/request/index.md)
 * 工具类
+  - 效率
+    * [番茄工作法笔记](assistive-tools/efficiency/tomato.md)
   - Git
     * [版本控制系统简介](assistive-tools/git/intro.md)
     * [安装和入门](assistive-tools/git/workflow.md)
