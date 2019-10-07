@@ -71,7 +71,7 @@ SQL 的优点：
 
 例如下面的指令：
 ```
-
+mysql -u root -h localhost -P 3306 -p
 ```
 
 ### 数据库的登录和成员管理
@@ -122,7 +122,11 @@ SELECT user FROM user;
 3 rows in set (0.00 sec)
 ```
 
-> 2、GRANT 语句也可以创建用户账号。
+> 2、GRANT 语句也可以创建用户账号。（MySQL 8.0以上的新版本已经将创建账户和赋予权限分开了，所以不能再用这种方法创建用户了）
+```
+# mysql8.0以下
+GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
+```
 
 > 3、使用 INSERT 直接插入行到 user 表来增加用户（不建议）
 
@@ -130,7 +134,7 @@ SELECT user FROM user;
 
 在创建用户账号后，必须接着分配访问权限。新创建的用户账号没有访问权限。他们能登录 MySQL ，但不能看到数据，不能执行任何数据库操作。
 
-> SHOW GRANTS FOR 查看赋予用户账号的权限
+> **查看赋予用户账号的权限** `SHOW GRANTS FOR`
 
 ```
 # 输入
@@ -149,5 +153,96 @@ SHOW GRANTS FOR chenfangxu;
 
 `chenfangxu@%` 因为用户定义为 `user@host`, MySQL的权限用用户名和主机名结合定义，如果不指定主机名，则使用默认的主机名`%`（即授予用户访问权限而不管主机名）。
 
+> **添加（更新）用户权限** `GRANT privileges ON databasename.tablename TO 'username'@'host';`
+```
+# 输入
+GRANT SELECT ON performance_schema.* TO chenfangxu@'%';
+SHOW GRANTS FOR chenfangxu;
+
+# 输出
++------------------------------------------------------------+
+| Grants for chenfangxu@%                                    |
++------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `chenfangxu`@`%`                     |
+| GRANT SELECT ON `performance_schema`.* TO `chenfangxu`@`%` |
++------------------------------------------------------------+
+```
+
+> **撤销用户的权限** `REVOKE privileges ON databasename.tablename FROM 'username'@'host';`
+```
+# 输入
+REVOKE SELECT ON performance_schema.* FROM chenfangxu@'%';
+SHOW GRANTS FOR chenfangxu;
+
+#输出
++----------------------------------------+
+| Grants for chenfangxu@%                |
++----------------------------------------+
+| GRANT USAGE ON *.* TO `chenfangxu`@`%` |
++----------------------------------------+
+```
+
+#### 重命名
+`RENAME USER 'username' TO 'newusername';`
+```
+# 输入
+RENAME USER test TO test1;
+SELECT user FROM user;
+
+# 输出
++------------------+
+| user             |
++------------------+
+| test1            |
+| root             |
++------------------+
+2 rows in set (0.00 sec)
+```
+
+##### 更改用户密码(mysql 8.0.11后)
+`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
+```
+SET PASSWORD FOR chenfangxu@'%' = '654321';
+
+# 更改root密码
+ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpasswd';
+```
+
+#### 删除用户
+`DROP USER 'username'@'host';`
+
+```
+# 输入
+DROP USER chenfangxu@'%';
+SELECT user FROM user;
+
+#输出
++------------------+
+| user             |
++------------------+
+| test             |
+| root             |
++------------------+
+2 rows in set (0.00 sec)
+```
+
+MySQL 5 以前， DROP USER 只能用来删除用户账号，不能删除相关的权限。因此，如果使用旧版的 MySQL 需要先用 REVOKE 删除与账号相关的权限，然后再用 DROP USER 删除账号。
 
 
+### 操作数据库
+
+#### 显示数据库列表 `SHOW DATABASES;`
+```
+# 输入
+SHOW DATABASES;
+
+# 输出
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+3 rows in set (0.01 sec)
+```
