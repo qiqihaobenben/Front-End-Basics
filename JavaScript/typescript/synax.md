@@ -1,4 +1,30 @@
-# 语法
+## 名词解释
+
+### 类型注解
+作用：相当于强类型语言中的类型声明
+
+语法：(变量/函数): type
+
+```typescript
+let str: string = "abc"
+```
+
+### 联合类型
+联合类型（Union Types）表示取值可以为多种类型中的一种。
+
+```typescript
+let count: number | string = 10
+```
+
+### 枚举
+
+一组有名字的常量集合，可以类比手机里的通讯录。、
+
+### 泛型
+
+不预先确定的数据类型，具体的类型在使用的时候才能确定。泛型变量可以类比函数参数，是代表类型的参数。
+
+## 语法
 
 ```
 // 原始值
@@ -122,7 +148,7 @@ let analog = createClock(AnalogClock, 7, 32);
 
 ### 除了 ES6 增加的 Class 用法，TypeScript 还增加了 C++、Java 中常见的 public / protected / private 限定符，限定变量或函数的使用范围。
 
-TypeScript 使用的是结构性类型系统，只要两种类型的成员类型相同，则认为这两种类型是兼容和一致的，但比较包含 private 和 protected 成员的类型时，只有他们是来自同一处的统一类型成员时才会被认为是兼容的  
+TypeScript 使用的是结构性类型系统，只要两种类型的成员类型相同，则认为这两种类型是兼容和一致的，但比较包含 private 和 protected 成员的类型时，只有他们是来自同一处的统一类型成员时才会被认为是兼容的
 
 ```
 class Animal {
@@ -147,4 +173,6 @@ animal = employee;
 ```
 
 ### function
+
+
 
