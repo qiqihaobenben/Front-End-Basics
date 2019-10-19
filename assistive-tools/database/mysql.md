@@ -53,6 +53,8 @@ SQL 的优点：
 推荐几个 MySQL 安装和连接的经验文章
 
 * [在Mac下安装MySQL](http://www.scienjus.com/install-mysql-on-mac/)
+* [mac版mysql安装后显示mysql: command not found咋整？](https://www.jianshu.com/p/289d8ad3defa)
+
 
 ## MySQL 应用
 
@@ -85,7 +87,7 @@ MySQL 服务器的安全基础是：用户应该对他们需要的数据具有�
 
 ##### 查询已有用户
 MySQL 用户账号和信息存储在名为 mysql 的 MySQL数据库中。一般只有在需要获得所有用户账号列表时才会直接访问。
-```
+```sql
 # 输入
 USE mysql;
 SELECT user FROM user;
@@ -97,20 +99,16 @@ SELECT user FROM user;
 | test             |
 | root             |
 +------------------+
-2 rows in set (0.01 sec)
 ```
 
 ##### 创建用户账号
 
 > 1、使用 CREATE USER 语句（推荐）
-```
+```sql
 # 输入
 CREATE USER chenfangxu IDENTIFIED BY '123456';
-# 输出
-Query OK, 0 rows affected (0.19 sec)
-
-# 输入
 SELECT user FROM user;
+
 #输出
 +------------------+
 | user             |
@@ -119,11 +117,10 @@ SELECT user FROM user;
 | test             |
 | root             |
 +------------------+
-3 rows in set (0.00 sec)
 ```
 
 > 2、GRANT 语句也可以创建用户账号。（MySQL 8.0以上的新版本已经将创建账户和赋予权限分开了，所以不能再用这种方法创建用户了）
-```
+```sql
 # mysql8.0以下
 GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
 ```
@@ -134,9 +131,11 @@ GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
 
 在创建用户账号后，必须接着分配访问权限。新创建的用户账号没有访问权限。他们能登录 MySQL ，但不能看到数据，不能执行任何数据库操作。
 
+<br>
+
 > **查看赋予用户账号的权限** `SHOW GRANTS FOR`
 
-```
+```sql
 # 输入
 SHOW GRANTS FOR chenfangxu;
 
@@ -146,15 +145,16 @@ SHOW GRANTS FOR chenfangxu;
 +----------------------------------------+
 | GRANT USAGE ON *.* TO `chenfangxu`@`%` |
 +----------------------------------------+
-1 row in set (0.00 sec)
 ```
 
 权限 `USAGE ON *.*` ,USAGE表示根本没有权限，这句话就是说在任意数据库和任意表上对任何东西没有权限。
 
 `chenfangxu@%` 因为用户定义为 `user@host`, MySQL的权限用用户名和主机名结合定义，如果不指定主机名，则使用默认的主机名`%`（即授予用户访问权限而不管主机名）。
 
+<br>
+
 > **添加（更新）用户权限** `GRANT privileges ON databasename.tablename TO 'username'@'host';`
-```
+```sql
 # 输入
 GRANT SELECT ON performance_schema.* TO chenfangxu@'%';
 SHOW GRANTS FOR chenfangxu;
@@ -167,9 +167,10 @@ SHOW GRANTS FOR chenfangxu;
 | GRANT SELECT ON `performance_schema`.* TO `chenfangxu`@`%` |
 +------------------------------------------------------------+
 ```
+<br>
 
 > **撤销用户的权限** `REVOKE privileges ON databasename.tablename FROM 'username'@'host';`
-```
+```sql
 # 输入
 REVOKE SELECT ON performance_schema.* FROM chenfangxu@'%';
 SHOW GRANTS FOR chenfangxu;
@@ -182,9 +183,12 @@ SHOW GRANTS FOR chenfangxu;
 +----------------------------------------+
 ```
 
+<br>
+
 #### 重命名
-`RENAME USER 'username' TO 'newusername';`
-```
+
+> 重命名：`RENAME USER 'username' TO 'newusername';`
+```sql
 # 输入
 RENAME USER test TO test1;
 SELECT user FROM user;
@@ -196,22 +200,24 @@ SELECT user FROM user;
 | test1            |
 | root             |
 +------------------+
-2 rows in set (0.00 sec)
 ```
+<br>
 
-##### 更改用户密码(mysql 8.0.11后)
-`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
-```
+#### 更改用户密码(mysql 8.0.11后)
+> 更改用户密码：`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
+```sql
 SET PASSWORD FOR chenfangxu@'%' = '654321';
 
 # 更改root密码
 ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpasswd';
 ```
 
-#### 删除用户
-`DROP USER 'username'@'host';`
+<br>
 
-```
+#### 删除用户
+> 删除用户：`DROP USER 'username'@'host';`
+
+```sql
 # 输入
 DROP USER chenfangxu@'%';
 SELECT user FROM user;
@@ -223,26 +229,106 @@ SELECT user FROM user;
 | test             |
 | root             |
 +------------------+
-2 rows in set (0.00 sec)
 ```
 
 MySQL 5 以前， DROP USER 只能用来删除用户账号，不能删除相关的权限。因此，如果使用旧版的 MySQL 需要先用 REVOKE 删除与账号相关的权限，然后再用 DROP USER 删除账号。
 
+---
+<br>
 
 ### 操作数据库
 
-#### 显示数据库列表 `SHOW DATABASES;`
-```
-# 输入
+```sql
+# 创建数据库，如创建 learnsql 数据库
+CREATE DATABASE learnsql;
+
+# 选择数据库，如选择 learnsql 数据库
+USE learnsql;
+
+# 显示数据库列表
 SHOW DATABASES;
 
-# 输出
-+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| mysql              |
-| performance_schema |
-+--------------------+
-3 rows in set (0.01 sec)
+# 显示数据库内的表的列表
+SHOW TABLES;
+
+# 显示表中每一列的详细信息
+SHOW COLUMNS FROM customers;
+```
+
+#### DESCRIBE 语句
+
+MySQL 中 DESCRIBE 可以作为 SHOW COLUMNS FROM 的快捷方式。
+```sql
+# 以下两种命令结果相同
+SHOW COLUMNS FROM customers;
+DESCRIBE customers;
+```
+
+
+
+## 其他指令
+
+### 查看当前 MySQL 版本或者当前在哪个数据库中。
+
+```sql
+# 登录之前，查看版本
+mysql -V
+
+# 登录之后使用MySQL的函数（大小写均可）查看版本
+mysql> SELECT VERSION();
+
+# 登录之后，使用 status 或者 \s 查看版本和当前使用的数据库
+mysql> status
+mysql> \s
+```
+
+### 查看当前 MySQL 的密码策略
+
+```sql
+mysql> SHOW VARIABLES LIKE 'validate_password%';
++--------------------------------------+--------+
+| Variable_name                        | Value  |
++--------------------------------------+--------+
+| validate_password.check_user_name    | ON     |
+| validate_password.dictionary_file    |        |
+| validate_password.length             | 8      |
+| validate_password.mixed_case_count   | 1      |
+| validate_password.number_count       | 1      |
+| validate_password.policy             | MEDIUM |
+| validate_password.special_char_count | 1      |
++--------------------------------------+--------+
+```
+要注意 `validate_password_policy：密码强度检查等级`
+
+|级别|描述|
+|--|--|
+|0/LOW|只检查长度。|
+|1/MEDIUM|检查长度、数字、大小写、特殊字符。|
+|2/STRONG|检查长度、数字、大小写、特殊字符字典文件|
+
+
+* [详见mysql密码策略设置](https://raydoom.github.io/work/mysql/2018/09/13/mysql-validate-password/)
+
+* [MySQL8.0 SHOW VARIABLES 为 empty set 可看此文](http://blog.itpub.net/20893244/viewspace-2565368/)
+
+### 其他的 SHOW 命令列表
+
+```sql
+# 用于显示广泛的服务器状态信息
+SHOW STATUS;
+
+# 显示创建特定数据库的MySQL语句，例如展示 learnsql 数据库的创建语句
+SHOW CREATE DATABASE learnsql;
+
+# 显示创建特定表的MySQL语句，例如展示 customers 表的创建语句
+SHOW CREATE TABLE customers;
+
+# 显示服务器的错误信息
+SHOW ERRORS;
+
+# 显示服务器的警告信息
+SHOW WARNINGS;
+
+# 显示所有允许的 SHOW 语句
+HELP SHOW;
 ```
