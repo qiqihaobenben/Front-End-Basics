@@ -25,6 +25,7 @@
   - TypeScript
     * [介绍](JavaScript/typescript/intro.md)
     * [基本语法](JavaScript/typescript/synax.md)
+    * [基础精粹](JavaScript/typescript/basic-essence.md)
     * [【翻译】使用TypeScript两年后-值得吗？](JavaScript/typescript/use-typescript-two-years.md)
 * 移动端
   - HTML5
