@@ -264,9 +264,51 @@ SHOW COLUMNS FROM customers;
 DESCRIBE customers;
 ```
 
+----
+<br>
 
+### 检索数据
 
-## 其他指令
+```sql
+# 检索单个列，例如从 products 表中检索一个名为 prod_name 的列。
+SELECT prod_name FROM products;
+
+# 检索多个列。注意，列名之间要用逗号分隔，最后一个列名后不要加逗号，会报错。
+SELECT prod_id, prod_name, prod_price FROM products;
+
+# 检索所有列。
+SELECT * FROM products;
+
+# 只检索出不同的行， DESTINCT 关键字可以让指令只返回不同的值。如果指令，products 表中可能一共有14行，现在只返回不同（唯一）的 vend_id 行，可能就只返回4行了。
+SELECT DISTINCT vend_id FROM products;
+
+# 限制结果， LIMIT 5 表示只返回不多于5行。
+SELECT prod_name FROM products LIMIT 5;
+
+# LIMIT 5, 5 表示返回从行5开始的5行。
+SELECT prod_name FROM products LIMIT 5, 5;
+# 或者使用 LIMIT 5 OFFSET 5， 跟上面结果相同。
+SELECT prod_name FROM products LIMIT 5 OFFSET 5;
+
+# 注意，返回行数是从 0 开始的。所以，LIMIT 1, 1 将检索出第二行，而不是第一行。
+SELECT prod_name FROM products LIMIT 1,1;
+```
+
+---
+
+<br>
+
+## 补充
+
+### 一些注意点
+
+#### 1、多条 SQL 语句必须以分号（;）分隔。
+
+#### 2、SQL 语句不区分大小写，因此，例如 SELECT 和 select 是相同的，即使写成 SelEct 都是没有问题的。大家约定俗成的把 SQL 关键词大写，其他的列和表名用小写，这样做使代码更易于阅读和调试。
+
+#### 3、在处理 SQL 语句时，其中所有空格都会被忽略。
+
+### 其他指令
 
 ### 查看当前 MySQL 版本或者当前在哪个数据库中。
 
@@ -332,3 +374,4 @@ SHOW WARNINGS;
 # 显示所有允许的 SHOW 语句
 HELP SHOW;
 ```
+
