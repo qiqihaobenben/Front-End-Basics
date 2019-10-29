@@ -44,6 +44,10 @@
 
 SQL 语句由子句构成，有些子句是必需的，而有的是可选的。一个子句通常由一个关键字和所提供的数据组成。例如 SELECT 语句的 FROM 子句。
 
+### 操作符（operator）
+
+用来联结或改变 WHERE 子句中的子句的关键字。也称为 **逻辑操作符（logical operator）**
+
 ### SQL（Structured Query Language）
 **SQL 是结构化查询语言（Structured Query Language）的缩写，是一种专门用来与数据库通信的语言。**
 
@@ -343,11 +347,62 @@ SELECT prod_price FROM products ORDER BY prod_price DESC LIMIT 1;
 数据库包含大量的数据，但是我们很少需要检索表中所有的行。只检索所需数据需要指定过滤条件，在 SELECT 语句中，数据根据 WHERE 子句中指定的搜索条件进行过滤。
 
 ```sql
+# 检索 pro_price 为 2.50 的行
+SELECT prod_name FROM products WHERE prod_price = 2.50;
 
+# 执行筛选匹配时默认不区分大小写，所以 fuses 可以检索出 Fuses
+SELECT prod_name, prod_price FROM products WHERE prod_name = 'fuses';
+# 输出
++-----------+------------+
+| prod_name | prod_price |
++-----------+------------+
+| Fuses     |       3.42 |
++-----------+------------+
+
+# 检索出 vend_id 不等于 1003 的行
+SELECT vend_id, prod_name FROM products WHERE vend_id <> 1003;
+
+# 检索 prod_price 在 5 到 10 之间的所有行
+SELECT prod_name, prod_price FROM products WHERE prod_price BETWEEN 5 AND 10;
+
+# 检查具有 NULL 值的列，用 IS NULL 子句
+SELECT cust_id FROM customers WHERE cust_email IS NULL;
 ```
 
+### WHERE 子句操作符
 
+| 操作符 | 说明 |
+|:---:|:---:|
+| = | 等于 |
+| <> | 不等于 |
+| != | 不等于 |
+| < | 小于 |
+| <= | 小于等于 |
+| > | 大于 |
+| >= | 大于等于 |
+| BETWEEN | 在指定的两个值之间 |
 
+### 注意：
+* WHERE 语句的位置：在同时使用 ORDER BY 和 WHERE 子句时，应该让 ORDER BY 位于 WHERE 之后，否则将会产生错误。
+* WHERE 子句中使用的条件，如果将值与串类型（例如字符串），需要加引号，用来与数值列进行比较的值不用引号。
+* NULL 无值(no value)，它与字段 0 、空字符串或仅仅包含空格不同。
+
+---
+<br>
+
+## 数据过滤
+
+MySQL 允许组合多个 WHERE 子句。这些子句分为两种方式使用：以 AND 子句的方式或 OR 子句的方式使用。
+
+```sql
+# AND 操作符
+# 检索出 vend_id 等于 1003 并且 prod_price 小于等于 10 的行
+SELECT prod_price, prod_name FROM products WHERE vend_id = 1003 AND prod_price <= 10;
+
+# OR 操作符
+# 检索出 vend_id 等于 1002 或 vend_id 等于 1003 的所有行
+SELECT prod_name, prod_price FROM products WHERE vend_id = 1002 OR vend_id = 1003;
+```
 
 ---
 <br>
