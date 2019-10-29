@@ -40,6 +40,10 @@
 * 不重用主键列的值；
 * 不在主键列中使用可能会更改的值。（例如，如果使用一个名字作为主键以标识某个供应商，当该供应商合并和更改其名字时，就得必须更改这个主键。）
 
+### 子句（clause）
+
+SQL 语句由子句构成，有些子句是必需的，而有的是可选的。一个子句通常由一个关键字和所提供的数据组成。例如 SELECT 语句的 FROM 子句。
+
 ### SQL（Structured Query Language）
 **SQL 是结构化查询语言（Structured Query Language）的缩写，是一种专门用来与数据库通信的语言。**
 
@@ -294,8 +298,58 @@ SELECT prod_name FROM products LIMIT 5 OFFSET 5;
 SELECT prod_name FROM products LIMIT 1,1;
 ```
 
----
+----
+<br>
 
+## 排序检索数据
+
+不使用排序时，其实检索出的数据并不是以纯粹的随机顺序显示的，数据一般将以它在底层表中出现的顺序显示。这可以是数据最初添加到表中的顺序，但是，如果数据后来进行过更新或者删除，则此顺序将会受到 MySQL 重用回收存储空间的影响。因此，如果不明确控制的话，不能（也不应该）依赖该排序顺序。
+
+**关系数据库设计理论认为：如果不明确规定排序顺序，则不应该假定检索出的数据的顺序有意义。**
+
+ORDER BY 子句，可以给 SELECT 语句检索出来的数据进行排序。 ORDER BY 子句取一个或多个列的名字。据此对输出进行排序。
+
+```sql
+# 没有排序
+SELECT prod_name FROM products;
+
+# 对 prod_name 列以字母顺序排序数据
+SELECT prod_name FROM products ORDER BY prod_name;
+
+# 按多个列排序：如下会先按照 prod_price 排序，
+# 只有出现相同的 prod_price 时，才会再按照 prod_name 排序。
+SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price, prod_name;
+
+# 指定排序方向，默认是升序，例如按照 prod_price 降序排序（最贵的排在最前面）
+SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price DESC;
+# 多个列排序，例如按照 prod_price 降序，最贵的在最前面，然后在对产品名排序
+SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price DESC, prod_name;
+
+# ORDER BY 和 LIMIT 搭配，可以找出一个列中最高或最低的值。
+SELECT prod_price FROM products ORDER BY prod_price DESC LIMIT 1;
+```
+
+### 注意：
+* ORDER BY 子句中使用的列不一定非得是检索的列，用非检索的列排序也是完全合法的。
+* 如果想在多个列上进行降序排序，必须对每个列指定 DESC 关键字。
+* ASC 是升序排序，升序是默认的，不指定 DESC ，那就是按照 ASC 升序排序。
+* ORDER BY 子句必须位于 FROM 子句之后，如果使用 LIMIT ，它必须位于 ORDER BY 之后。
+
+---
+<br>
+
+## 过滤数据
+
+数据库包含大量的数据，但是我们很少需要检索表中所有的行。只检索所需数据需要指定过滤条件，在 SELECT 语句中，数据根据 WHERE 子句中指定的搜索条件进行过滤。
+
+```sql
+
+```
+
+
+
+
+---
 <br>
 
 ## 补充
