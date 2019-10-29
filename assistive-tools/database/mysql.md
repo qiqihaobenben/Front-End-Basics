@@ -40,6 +40,10 @@
 * 不重用主键列的值；
 * 不在主键列中使用可能会更改的值。（例如，如果使用一个名字作为主键以标识某个供应商，当该供应商合并和更改其名字时，就得必须更改这个主键。）
 
+### 子句（clause）
+
+SQL 语句由子句构成，有些子句是必需的，而有的是可选的。一个子句通常由一个关键字和所提供的数据组成。例如 SELECT 语句的 FROM 子句。
+
 ### SQL（Structured Query Language）
 **SQL 是结构化查询语言（Structured Query Language）的缩写，是一种专门用来与数据库通信的语言。**
 
@@ -53,6 +57,8 @@ SQL 的优点：
 推荐几个 MySQL 安装和连接的经验文章
 
 * [在Mac下安装MySQL](http://www.scienjus.com/install-mysql-on-mac/)
+* [mac版mysql安装后显示mysql: command not found咋整？](https://www.jianshu.com/p/289d8ad3defa)
+
 
 ## MySQL 应用
 
@@ -85,7 +91,7 @@ MySQL 服务器的安全基础是：用户应该对他们需要的数据具有�
 
 ##### 查询已有用户
 MySQL 用户账号和信息存储在名为 mysql 的 MySQL数据库中。一般只有在需要获得所有用户账号列表时才会直接访问。
-```
+```sql
 # 输入
 USE mysql;
 SELECT user FROM user;
@@ -97,20 +103,16 @@ SELECT user FROM user;
 | test             |
 | root             |
 +------------------+
-2 rows in set (0.01 sec)
 ```
 
 ##### 创建用户账号
 
 > 1、使用 CREATE USER 语句（推荐）
-```
+```sql
 # 输入
 CREATE USER chenfangxu IDENTIFIED BY '123456';
-# 输出
-Query OK, 0 rows affected (0.19 sec)
-
-# 输入
 SELECT user FROM user;
+
 #输出
 +------------------+
 | user             |
@@ -119,11 +121,10 @@ SELECT user FROM user;
 | test             |
 | root             |
 +------------------+
-3 rows in set (0.00 sec)
 ```
 
 > 2、GRANT 语句也可以创建用户账号。（MySQL 8.0以上的新版本已经将创建账户和赋予权限分开了，所以不能再用这种方法创建用户了）
-```
+```sql
 # mysql8.0以下
 GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
 ```
@@ -134,9 +135,11 @@ GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
 
 在创建用户账号后，必须接着分配访问权限。新创建的用户账号没有访问权限。他们能登录 MySQL ，但不能看到数据，不能执行任何数据库操作。
 
+<br>
+
 > **查看赋予用户账号的权限** `SHOW GRANTS FOR`
 
-```
+```sql
 # 输入
 SHOW GRANTS FOR chenfangxu;
 
@@ -146,15 +149,16 @@ SHOW GRANTS FOR chenfangxu;
 +----------------------------------------+
 | GRANT USAGE ON *.* TO `chenfangxu`@`%` |
 +----------------------------------------+
-1 row in set (0.00 sec)
 ```
 
 权限 `USAGE ON *.*` ,USAGE表示根本没有权限，这句话就是说在任意数据库和任意表上对任何东西没有权限。
 
 `chenfangxu@%` 因为用户定义为 `user@host`, MySQL的权限用用户名和主机名结合定义，如果不指定主机名，则使用默认的主机名`%`（即授予用户访问权限而不管主机名）。
 
+<br>
+
 > **添加（更新）用户权限** `GRANT privileges ON databasename.tablename TO 'username'@'host';`
-```
+```sql
 # 输入
 GRANT SELECT ON performance_schema.* TO chenfangxu@'%';
 SHOW GRANTS FOR chenfangxu;
@@ -167,9 +171,10 @@ SHOW GRANTS FOR chenfangxu;
 | GRANT SELECT ON `performance_schema`.* TO `chenfangxu`@`%` |
 +------------------------------------------------------------+
 ```
+<br>
 
 > **撤销用户的权限** `REVOKE privileges ON databasename.tablename FROM 'username'@'host';`
-```
+```sql
 # 输入
 REVOKE SELECT ON performance_schema.* FROM chenfangxu@'%';
 SHOW GRANTS FOR chenfangxu;
@@ -182,9 +187,12 @@ SHOW GRANTS FOR chenfangxu;
 +----------------------------------------+
 ```
 
+<br>
+
 #### 重命名
-`RENAME USER 'username' TO 'newusername';`
-```
+
+> 重命名：`RENAME USER 'username' TO 'newusername';`
+```sql
 # 输入
 RENAME USER test TO test1;
 SELECT user FROM user;
@@ -196,22 +204,24 @@ SELECT user FROM user;
 | test1            |
 | root             |
 +------------------+
-2 rows in set (0.00 sec)
 ```
+<br>
 
-##### 更改用户密码(mysql 8.0.11后)
-`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
-```
+#### 更改用户密码(mysql 8.0.11后)
+> 更改用户密码：`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
+```sql
 SET PASSWORD FOR chenfangxu@'%' = '654321';
 
 # 更改root密码
 ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpasswd';
 ```
 
-#### 删除用户
-`DROP USER 'username'@'host';`
+<br>
 
-```
+#### 删除用户
+> 删除用户：`DROP USER 'username'@'host';`
+
+```sql
 # 输入
 DROP USER chenfangxu@'%';
 SELECT user FROM user;
@@ -223,26 +233,199 @@ SELECT user FROM user;
 | test             |
 | root             |
 +------------------+
-2 rows in set (0.00 sec)
 ```
 
 MySQL 5 以前， DROP USER 只能用来删除用户账号，不能删除相关的权限。因此，如果使用旧版的 MySQL 需要先用 REVOKE 删除与账号相关的权限，然后再用 DROP USER 删除账号。
 
+---
+<br>
 
 ### 操作数据库
 
-#### 显示数据库列表 `SHOW DATABASES;`
-```
-# 输入
+```sql
+# 创建数据库，如创建 learnsql 数据库
+CREATE DATABASE learnsql;
+
+# 选择数据库，如选择 learnsql 数据库
+USE learnsql;
+
+# 显示数据库列表
 SHOW DATABASES;
 
-# 输出
-+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| mysql              |
-| performance_schema |
-+--------------------+
-3 rows in set (0.01 sec)
+# 显示数据库内的表的列表
+SHOW TABLES;
+
+# 显示表中每一列的详细信息
+SHOW COLUMNS FROM customers;
 ```
+
+#### DESCRIBE 语句
+
+MySQL 中 DESCRIBE 可以作为 SHOW COLUMNS FROM 的快捷方式。
+```sql
+# 以下两种命令结果相同
+SHOW COLUMNS FROM customers;
+DESCRIBE customers;
+```
+
+----
+<br>
+
+### 检索数据
+
+```sql
+# 检索单个列，例如从 products 表中检索一个名为 prod_name 的列。
+SELECT prod_name FROM products;
+
+# 检索多个列。注意，列名之间要用逗号分隔，最后一个列名后不要加逗号，会报错。
+SELECT prod_id, prod_name, prod_price FROM products;
+
+# 检索所有列。
+SELECT * FROM products;
+
+# 只检索出不同的行， DESTINCT 关键字可以让指令只返回不同的值。如果指令，products 表中可能一共有14行，现在只返回不同（唯一）的 vend_id 行，可能就只返回4行了。
+SELECT DISTINCT vend_id FROM products;
+
+# 限制结果， LIMIT 5 表示只返回不多于5行。
+SELECT prod_name FROM products LIMIT 5;
+
+# LIMIT 5, 5 表示返回从行5开始的5行。
+SELECT prod_name FROM products LIMIT 5, 5;
+# 或者使用 LIMIT 5 OFFSET 5， 跟上面结果相同。
+SELECT prod_name FROM products LIMIT 5 OFFSET 5;
+
+# 注意，返回行数是从 0 开始的。所以，LIMIT 1, 1 将检索出第二行，而不是第一行。
+SELECT prod_name FROM products LIMIT 1,1;
+```
+
+----
+<br>
+
+## 排序检索数据
+
+不使用排序时，其实检索出的数据并不是以纯粹的随机顺序显示的，数据一般将以它在底层表中出现的顺序显示。这可以是数据最初添加到表中的顺序，但是，如果数据后来进行过更新或者删除，则此顺序将会受到 MySQL 重用回收存储空间的影响。因此，如果不明确控制的话，不能（也不应该）依赖该排序顺序。
+
+**关系数据库设计理论认为：如果不明确规定排序顺序，则不应该假定检索出的数据的顺序有意义。**
+
+ORDER BY 子句，可以给 SELECT 语句检索出来的数据进行排序。 ORDER BY 子句取一个或多个列的名字。据此对输出进行排序。
+
+```sql
+# 没有排序
+SELECT prod_name FROM products;
+
+# 对 prod_name 列以字母顺序排序数据
+SELECT prod_name FROM products ORDER BY prod_name;
+
+# 按多个列排序：如下会先按照 prod_price 排序，
+# 只有出现相同的 prod_price 时，才会再按照 prod_name 排序。
+SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price, prod_name;
+
+# 指定排序方向，默认是升序，例如按照 prod_price 降序排序（最贵的排在最前面）
+SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price DESC;
+# 多个列排序，例如按照 prod_price 降序，最贵的在最前面，然后在对产品名排序
+SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price DESC, prod_name;
+
+# ORDER BY 和 LIMIT 搭配，可以找出一个列中最高或最低的值。
+SELECT prod_price FROM products ORDER BY prod_price DESC LIMIT 1;
+```
+
+### 注意：
+* ORDER BY 子句中使用的列不一定非得是检索的列，用非检索的列排序也是完全合法的。
+* 如果想在多个列上进行降序排序，必须对每个列指定 DESC 关键字。
+* ASC 是升序排序，升序是默认的，不指定 DESC ，那就是按照 ASC 升序排序。
+* ORDER BY 子句必须位于 FROM 子句之后，如果使用 LIMIT ，它必须位于 ORDER BY 之后。
+
+---
+<br>
+
+## 过滤数据
+
+数据库包含大量的数据，但是我们很少需要检索表中所有的行。只检索所需数据需要指定过滤条件，在 SELECT 语句中，数据根据 WHERE 子句中指定的搜索条件进行过滤。
+
+```sql
+
+```
+
+
+
+
+---
+<br>
+
+## 补充
+
+### 一些注意点
+
+#### 1、多条 SQL 语句必须以分号（;）分隔。
+
+#### 2、SQL 语句不区分大小写，因此，例如 SELECT 和 select 是相同的，即使写成 SelEct 都是没有问题的。大家约定俗成的把 SQL 关键词大写，其他的列和表名用小写，这样做使代码更易于阅读和调试。
+
+#### 3、在处理 SQL 语句时，其中所有空格都会被忽略。
+
+### 其他指令
+
+### 查看当前 MySQL 版本或者当前在哪个数据库中。
+
+```sql
+# 登录之前，查看版本
+mysql -V
+
+# 登录之后使用MySQL的函数（大小写均可）查看版本
+mysql> SELECT VERSION();
+
+# 登录之后，使用 status 或者 \s 查看版本和当前使用的数据库
+mysql> status
+mysql> \s
+```
+
+### 查看当前 MySQL 的密码策略
+
+```sql
+mysql> SHOW VARIABLES LIKE 'validate_password%';
++--------------------------------------+--------+
+| Variable_name                        | Value  |
++--------------------------------------+--------+
+| validate_password.check_user_name    | ON     |
+| validate_password.dictionary_file    |        |
+| validate_password.length             | 8      |
+| validate_password.mixed_case_count   | 1      |
+| validate_password.number_count       | 1      |
+| validate_password.policy             | MEDIUM |
+| validate_password.special_char_count | 1      |
++--------------------------------------+--------+
+```
+要注意 `validate_password_policy：密码强度检查等级`
+
+|级别|描述|
+|--|--|
+|0/LOW|只检查长度。|
+|1/MEDIUM|检查长度、数字、大小写、特殊字符。|
+|2/STRONG|检查长度、数字、大小写、特殊字符字典文件|
+
+
+* [详见mysql密码策略设置](https://raydoom.github.io/work/mysql/2018/09/13/mysql-validate-password/)
+
+* [MySQL8.0 SHOW VARIABLES 为 empty set 可看此文](http://blog.itpub.net/20893244/viewspace-2565368/)
+
+### 其他的 SHOW 命令列表
+
+```sql
+# 用于显示广泛的服务器状态信息
+SHOW STATUS;
+
+# 显示创建特定数据库的MySQL语句，例如展示 learnsql 数据库的创建语句
+SHOW CREATE DATABASE learnsql;
+
+# 显示创建特定表的MySQL语句，例如展示 customers 表的创建语句
+SHOW CREATE TABLE customers;
+
+# 显示服务器的错误信息
+SHOW ERRORS;
+
+# 显示服务器的警告信息
+SHOW WARNINGS;
+
+# 显示所有允许的 SHOW 语句
+HELP SHOW;
+```
+
