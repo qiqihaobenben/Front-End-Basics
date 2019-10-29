@@ -22,11 +22,12 @@
   - ES6走走看看
     * [由块级作用域引出的一场变革](JavaScript/ES6/block.md)
     * [字符到底发生了什么变化](JavaScript/ES6/string.md)
+    * [【译】async 的异步操作模式](JavaScript/ES6/async.md)
   - TypeScript
     * [介绍](JavaScript/typescript/intro.md)
     * [基本语法](JavaScript/typescript/synax.md)
     * [基础精粹](JavaScript/typescript/basic-essence.md)
-    * [【翻译】使用TypeScript两年后-值得吗？](JavaScript/typescript/use-typescript-two-years.md)
+    * [【译】使用TypeScript两年后-值得吗？](JavaScript/typescript/use-typescript-two-years.md)
 * 移动端
   - HTML5
     * [移动端适配](mobile/fit.md)

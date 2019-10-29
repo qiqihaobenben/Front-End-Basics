@@ -1,4 +1,8 @@
-# async 的异步操作模式
+# 【译】async 的异步操作模式
+
+> 原文链接：https://careersjs.com/magazine/async-patterns/
+
+> 原文作者：Joe Zimmerman
 
 我还记得以前执行异步操作需要在越来越深的回调地狱中使用回调的那些“好日子”。虽然回调地狱并没有完全成为过去，但是使用 Promise 来代替回调的嵌套已经显得简单多了。
 
