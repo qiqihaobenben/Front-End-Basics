@@ -305,7 +305,7 @@ SELECT prod_name FROM products LIMIT 1,1;
 ----
 <br>
 
-## 排序检索数据
+## 排序检索数据 ( ORDER BY )
 
 不使用排序时，其实检索出的数据并不是以纯粹的随机顺序显示的，数据一般将以它在底层表中出现的顺序显示。这可以是数据最初添加到表中的顺序，但是，如果数据后来进行过更新或者删除，则此顺序将会受到 MySQL 重用回收存储空间的影响。因此，如果不明确控制的话，不能（也不应该）依赖该排序顺序。
 
@@ -342,7 +342,7 @@ SELECT prod_price FROM products ORDER BY prod_price DESC LIMIT 1;
 ---
 <br>
 
-## 过滤数据
+## 过滤数据 （ WHERE ）
 
 数据库包含大量的数据，但是我们很少需要检索表中所有的行。只检索所需数据需要指定过滤条件，在 SELECT 语句中，数据根据 WHERE 子句中指定的搜索条件进行过滤。
 
@@ -390,19 +390,56 @@ SELECT cust_id FROM customers WHERE cust_email IS NULL;
 ---
 <br>
 
-## 数据过滤
+## 数据过滤（ AND、 OR、 IN ）
 
 MySQL 允许组合多个 WHERE 子句。这些子句分为两种方式使用：以 AND 子句的方式或 OR 子句的方式使用。
 
 ```sql
-# AND 操作符
+### AND 操作符
 # 检索出 vend_id 等于 1003 并且 prod_price 小于等于 10 的行
 SELECT prod_price, prod_name FROM products WHERE vend_id = 1003 AND prod_price <= 10;
 
-# OR 操作符
+
+#### OR 操作符
 # 检索出 vend_id 等于 1002 或 vend_id 等于 1003 的所有行
 SELECT prod_name, prod_price FROM products WHERE vend_id = 1002 OR vend_id = 1003;
+
+
+# AND 和 OR 合用，AND 优先级高。
+# 下面检索出的结果是 vend_id 是 1003 并且 prod_price 大于等于 10 的和所有 vend_id 是 1002 的行。
+SELECT vend_id, prod_name, prod_price FROM products WHERE vend_id = 1002 OR vend_id = 1003 AND prod_price >= 10;
+# 输出结果
++---------+----------------+------------+
+| vend_id | prod_name      | prod_price |
++---------+----------------+------------+
+|    1002 | Fuses          |       3.42 |
+|    1002 | Oil can        |       8.99 |
+|    1003 | Detonator      |      13.00 |
+|    1003 | Bird seed      |      10.00 |
+|    1003 | Safe           |      50.00 |
+|    1003 | TNT (5 sticks) |      10.00 |
++---------+----------------+------------+
+
+# 如果想检索出 vend_id 是 1003 并且 prod_price 大于等于 10 的和 vend_id 是 1002  并且 prod_price 大于等于 10 的行，需要加括号。
+SELECT vend_id, prod_name, prod_price FROM products WHERE (vend_id = 1002 OR vend_id = 1003) AND prod_price >= 10;
+
+
+### IN 操作符，指定条件范围，范围中的每个条件都可以进行匹配。IN 取值是全部括在圆括号中的由逗号分隔的列表。
+SELECT vend_id, prod_name, prod_price FROM products WHERE vend_id IN (1002, 1003);
+
+
+### NOT 操作符，否定它之后的任何条件
+SELECT vend_id, prod_name, prod_price FROM products WHERE vend_id NOT IN (1002, 1003);
 ```
+
+### 注意
+* WHERE 可包含任意数目的 AND 和 OR 操作符，并且允许两者结合以进行复杂和高效的过滤。不过 SQL 语言在处理 OR 操作符前，会优先处理 AND 操作符。
+* 任何时候使用具有 AND 和 OR 操作符的 WHERE 子句， 都推荐使用圆括号明确地分组，不要过分依赖默认计算次序。
+* IN 和 OR 具有相同的功能，但是 IN 操作符有以下优点
+  - 过滤的字段太多的时候，IN 操作符的语法更清楚且更直观
+  - IN 操作符一般比 OR 操作符执行的更快
+  - IN 最大的优点是可以包含其他 SELECT 语句，能更动态地建立 WHERE 子句。
+* MySQL 支持使用 NOT 对 IN、BETWEEN 和 EXISTS 子句取反。
 
 ---
 <br>
