@@ -48,6 +48,14 @@ SQL 语句由子句构成，有些子句是必需的，而有的是可选的。�
 
 用来联结或改变 WHERE 子句中的子句的关键字。也称为 **逻辑操作符（logical operator）**
 
+### 通配符（wildcard）
+
+用来匹配值的一部分的特殊字符。
+
+### 搜索模式（search pattern）
+
+由字面量、通配符或两者组合构成的搜索条件
+
 ### SQL（Structured Query Language）
 **SQL 是结构化查询语言（Structured Query Language）的缩写，是一种专门用来与数据库通信的语言。**
 
@@ -443,6 +451,101 @@ SELECT vend_id, prod_name, prod_price FROM products WHERE vend_id NOT IN (1002, 
 
 ---
 <br>
+
+## 用通配符过滤
+
+### 百分号（%）通配符
+
+`%` 表示任何字符出现任意次数，可以使0次，1次，n次
+
+```sql
+### 找出所有以 jet 开头的产品
+SELECT prod_id, prod_name FROM products WHERE prod_name LIKE 'jet%';
++---------+--------------+
+| prod_id | prod_name    |
++---------+--------------+
+| JP1000  | JetPack 1000 |
+| JP2000  | JetPack 2000 |
++---------+--------------+
+
+### 通配符可在搜索模式中任意位置使用，并且可以使用多个通配符。
+SELECT prod_id, prod_name FROM products WHERE prod_name LIKE '%anvil%';
++---------+--------------+
+| prod_id | prod_name    |
++---------+--------------+
+| ANV01   | .5 ton anvil |
+| ANV02   | 1 ton anvil  |
+| ANV03   | 2 ton anvil  |
++---------+--------------+
+
+```
+
+### 下划线通配符
+
+下划线 _ 只能匹配单个字符，只能匹配一个，不能多也不能少。
+
+```sql
+### 对比一下下面两个通配符结果
+SELECT prod_id, prod_name FROM products WHERE prod_name LIKE '_ ton anvil';
++---------+-------------+
+| prod_id | prod_name   |
++---------+-------------+
+| ANV02   | 1 ton anvil |
+| ANV03   | 2 ton anvil |
++---------+-------------+
+
+
+SELECT prod_id, prod_name FROM products WHERE prod_name LIKE '% ton anvil';
++---------+--------------+
+| prod_id | prod_name    |
++---------+--------------+
+| ANV01   | .5 ton anvil |
+| ANV02   | 1 ton anvil  |
+| ANV03   | 2 ton anvil  |
++---------+--------------+
+
+### 下划线通配符比百分号通配符少了一个 .5 的数据
+```
+
+
+### 注意
+
+* 注意尾部空格，例如'%anvil' 是匹配不到 'anvil ',以为后面有个空格不容易发现，解决方法就是后面再附加一个 % ，或者用函数去掉首尾空格。
+* % 是不能匹配出 NULL的。
+* 通配符搜索的处理一般要比其他搜索花时间更长，所以不要过度使用通配符，如果其他操作符能达到同样的目的，优先使用其他操作符。在确实需要使用通配符时，除非绝对有必要，否则不要把他们用在搜索模式的开始处。
+
+---
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 补充
 
