@@ -518,6 +518,111 @@ SELECT prod_id, prod_name FROM products WHERE prod_name LIKE '% ton anvil';
 <br>
 
 
+## 用正则表达式进行搜索
+
+```sql
+### 基本字符匹配，下面的语句检索列 prod_name 包含文本 1000 的所有行。
+SELECT prod_name FROM products WHERE prod_name REGEXP '1000' ORDER BY prod_name;
+
+### 区分大小写需要用到 BINARY 关键字
+SELECT prod_name FROM products WHERE prod_name REGEXP BINARY 'S';
+
+### 使用 | 进行 OR 匹配，可以有两个以上的 OR 条件，例如： '1000|2000|3000'
+SELECT prod_name FROM products WHERE prod_name REGEXP '1000|2000';
++--------------+
+| prod_name    |
++--------------+
+| JetPack 1000 |
+| JetPack 2000 |
++--------------+
+
+### 匹配几个字符之一
+SELECT prod_name FROM products WHERE prod_name REGEXP '[1,2,3] Ton' ORDER BY prod_name;
++-------------+
+| prod_name   |
++-------------+
+| 1 ton anvil |
+| 2 ton anvil |
++-------------+
+### 注意区别 1|2|3 Ton，这表示匹配出 1，2和3 Ton，其实[123]是[1|2|3]的缩写
+SELECT prod_name FROM products WHERE prod_name REGEXP '1|2|3 Ton' ORDER BY prod_name;
++---------------+
+| prod_name     |
++---------------+
+| 1 ton anvil   |
+| 2 ton anvil   |
+| JetPack 1000  |
+| JetPack 2000  |
+| TNT (1 stick) |
++---------------+
+
+### 匹配特殊字符， \\ 来转义特殊字符
+SELECT vend_name FROM vendors WHERE vend_name REGEXP '\\.' ORDER BY vend_name;
++--------------+
+| vend_name    |
++--------------+
+| Furball Inc. |
++--------------+
+
+
+### 匹配出连在一起的4个数字
+SELECT prod_name FROM products WHERE prod_name REGEXP '[:digit:]{4}' ORDER BY prod_name;
++--------------+
+| prod_name    |
++--------------+
+| JetPack 1000 |
+| JetPack 2000 |
++--------------+
+```
+
+### 列举元字符转义和定位元字符
+|元字符|说明|
+|---|---|
+| \\f | 换页 |
+| \\n | 换行 |
+| \\r | 回车 |
+| \\t | 制表 |
+| \\v | 纵向制表 |
+| \\\ | 反斜杠 |
+| ^ | 文本的开始 |
+| $ | 文本的结束 |
+| [[:<:]](8版本之后改为 \b) | 词的开始 |
+| [[:>:]](8版本之后改为 \b) | 词的结束 |
+多数正则表达式实现使用单个反斜杠转义特殊字符，以便能使用这些字符本身。但 MySQL 要求两个反斜杠（MySQL自己解释一个，正则表达式库解释另一个）。
+
+### 列举字符类
+|类|说明|
+|---|---|
+| [:alnum:] | 任意字符和数字（同 [a-zA-Z0-9]） |
+| [:alpha:] | 任意字符（同 [a-zA-Z]） |
+| [:blank:] | 空格和制表 （同 [\\t]）|
+| [:cntrl:] | ASCII控制字符 （ASCII 0 到 31 和 127）|
+| [:digit:] | 任意数字 （同 [0-9]）|
+| [:xdigit:] | 任意十六进制数字（同 [a-fA-F0-9]）|
+| [:lower:] | 任意小写字母 （同 [a-z]）|
+| [:upper:] | 任意大写字母（同 [A-Z]）|
+| [:print:] | 任意可打印字符 |
+| [:graph:] | 与[:print:]相同，但不包含空格 |
+| [:punct:] | 既不在[:alnum:]又不在[:cntrl:]中的任意字符 |
+| [:space:] | 包括空格在内的任意空白字符(同 [\\f\\n\\r\\t\\v]) |
+
+### 简单的正则表达式测试
+
+在不使用数据库表的情况下用 SELECT 来测试正则表达式。 REGEXP 检查总是返回0（没有匹配）或 1（匹配）。
+
+```sql
+SELECT 'hello' REGEXP 'hello\\b';
++---------------------------+
+| 'hello' REGEXP 'hello\\b' |
++---------------------------+
+|                         1 |
++---------------------------+
+```
+
+
+---
+<br>
+
 
 
 
