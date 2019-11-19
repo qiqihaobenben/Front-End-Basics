@@ -624,7 +624,13 @@ SELECT 'hello' REGEXP 'hello\\b';
 <br>
 
 
+## 创建计算字段
 
+
+
+
+---
+<br>
 
 
 
