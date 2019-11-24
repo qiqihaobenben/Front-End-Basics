@@ -64,6 +64,10 @@ SQL 语句由子句构成，有些子句是必需的，而有的是可选的。�
 
 是一个字段或值的替换名。别名用 AS 关键字赋予。别名有时也称为导出列（derived column），不管称为什么，它们所代表的都是相同的东西。
 
+### 聚集函数（aggregate function）
+
+运行在行组上，计算和返回单个值的函数。
+
 ### SQL（Structured Query Language）
 **SQL 是结构化查询语言（Structured Query Language）的缩写，是一种专门用来与数据库通信的语言。**
 
@@ -706,11 +710,123 @@ SELECT Now();
 
 SOUNDEX 是一个将任何文本串转换为描述其语音表示的字母数字模式的算法。SOUNDEX 考虑了类似的发音字节和音节，使得能对串进行发音比较而不是字母比较。
 
+```sql
+### 例如用 Y. Lie 把 Y Lee 搜出来，因为它们发音类似
+SELECT cust_name, cust_contact FROM customers WHERE Soundex(cust_contact) = Soundex('Y. Lie');
++-------------+--------------+
+| cust_name   | cust_contact |
++-------------+--------------+
+| Coyote Inc. | Y Lee        |
++-------------+--------------+
+```
+
+### 日期和时间处理函数
+
+|函 数|说 明|
+|---|---|
+| AddDate() | 增加一个日期（天、周等） |
+| AddTime() | 增加一个时间（时、分等） |
+| CurDate() | 返回当前日期 |
+| CurTime() | 返回当前时间 |
+| Date() | 返回日期时间的日期部分 |
+| DateDiff() | 计算两个日期之差 |
+| Date_Add() | 高度灵活的日期运算函数 |
+| Date_Format() | 返回一个格式化的日期或时间串 |
+| Year() | 返回一个日期的年份部分 |
+| Month() | 返回一个日期的月份部分 |
+| Day() | 返回一个日期的天数部分 |
+| DayOfWeek() | 对于一个日期，返回对应的星期几 |
+| Hour() | 返回一个时间的小时部分 |
+| Minute() | 返回一个时间的分钟部分 |
+| Second() | 返回一个时间的秒部分 |
+| Now() | 返回当前日期和时间 |
+
+```sql
+### 检索出日期为 2005-09-01 这天的订单记录
+SELECT cust_id, order_num FROM orders WHERE order_date = '2005-09-01';
+
+
+### 上面的检索有个问题，如果 order_date 存储的带有时间，例如 2005-09-01 11:30:05 ，就检索不到了，解决办法是让仅将给出的日期与列中的日期部分进行比较
+SELECT cust_id, order_num FROM orders WHERE Date(order_date) = '2005-09-01';
+
+### 如果想检索出2005年9月的所有订单
+
+### 方法一，得记住每个月有多少天，申请要知道是不是闰年的2月
+SELECT cust_id, order_num FROM orders WHERE Date(order_date) BETWEEN '2005-09-01' AND '2005-09-30';
+
+### 方法二, 使用 Year() 和 Month() 函数
+SELECT cust_id, order_num FROM orders WHERE Year(order_date) = 2005 AND Month(order_date) = 9;
+
+```
+
+#### 注意
+* 使用日期过滤，日期必须为 yyyy-mm-dd ,这样能排除一些歧义，年份也应该使用4位数字，更加可靠。
+
+### 数值处理函数
+
+|函 数|说 明|
+|---|---|
+| Abs() | 返回一个数的绝对值 |
+| Sin() | 返回一个角度的正弦 |
+| Cos() | 返回一个角度的余弦 |
+| Tan() | 返回一个角度的正切 |
+| Exp() | 返回一个数的指数值 |
+| Mod() | 返回除操作的余数 |
+| Pi() | 返回圆周率 |
+| Rand() | 返回一个随机数 |
+| Sqrt() | 返回一个数的平方根 |
+
+
+
 
 ---
 <br>
 
 
+## 汇总数据
+
+|函 数|说 明|
+|---|---|
+| AVG() | 返回某列的平均值 |
+| COUNT() | 返回某列的行数 |
+| MAX() | 返回某列的最大值 |
+| MIN() | 返回某列的最小值 |
+| SUM() | 返回某列值之和 |
+
+```sql
+### 计算出 products 表中所有产品的平均价格
+SELECT AVG(prod_price) AS avg_price FROM products;
++-----------+
+| avg_price |
++-----------+
+| 16.133571 |
++-----------+
+
+### 查看 customers 表中所有客户的总数
+SELECT COUNT(*) AS num_cust FROM customers;
++----------+
+| num_cust |
++----------+
+|        5 |
++----------+
+### 只对具有电子邮件地址的客户计数
+SELECT COUNT(cust_email) AS num_cust FROM customers;
++----------+
+| num_cust |
++----------+
+|        3 |
++----------+
+```
+
+### 注意
+
+* AVG() 只能用来确定 **单个** 特定数值列的平均值，而且列名必须作为函数参数传入，想获取多个列的平均值，必须使用多个 AVG() 函数。
+* AVG() 函数忽略列值为 NULL 的行。
+* COUNT(*) 对表中行的数目进行计数， 不管列中是空值（NULL）还是非空值。
+* 使用 COUNT(column) 对特定列中具有值的行进行计数，会忽略 NULL 值。
+
+---
+<br>
 
 
 
