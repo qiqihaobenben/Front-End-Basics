@@ -816,6 +816,43 @@ SELECT COUNT(cust_email) AS num_cust FROM customers;
 +----------+
 |        3 |
 +----------+
+
+### 计算出订单号为 20005 的物品总数
+SELECT SUM(quantity) AS items_ordered FROM orderitems WHERE order_num = 20005;
++---------------+
+| items_ordered |
++---------------+
+|            19 |
++---------------+
+
+### 多个聚集函数组合
+SELECT COUNT(*) AS num_items, MIN(prod_price) AS price_min, MAX(prod_price) AS price_max, AVG(prod_price) AS price_avg FROM products;
++-----------+-----------+-----------+-----------+
+| num_items | price_min | price_max | price_avg |
++-----------+-----------+-----------+-----------+
+|        14 |      2.50 |     55.00 | 16.133571 |
++-----------+-----------+-----------+-----------+
+```
+
+### 参数 ALL 和 DISTINCT
+使用 DISTINCT 参数时，只会计算包含不同的值的行，如果指定参数为 ALL 或者不指定参数，默认参数为 ALL ，会计算所有的行。
+
+```sql
+### 看一下产品表里有多少家供应商，因为有可能一家供应商提供很多产品。
+### 全部的行
+SELECT COUNT(vend_id) AS vend_count FROM products;
++------------+
+| vend_count |
++------------+
+|         14 |
++------------+
+### 去重后就知道有 4 家供应商
+SELECT COUNT(DISTINCT vend_id) AS vend_count FROM products;
++------------+
+| vend_count |
++------------+
+|          4 |
++------------+
 ```
 
 ### 注意
@@ -824,7 +861,10 @@ SELECT COUNT(cust_email) AS num_cust FROM customers;
 * AVG() 函数忽略列值为 NULL 的行。
 * COUNT(*) 对表中行的数目进行计数， 不管列中是空值（NULL）还是非空值。
 * 使用 COUNT(column) 对特定列中具有值的行进行计数，会忽略 NULL 值。
-
+* MAX() 函数会忽略值为 NULL 的行（MIN()也是）。它一般是用来找出最大的数值数值和日期值，但是也可以对非数值的数据使用，例如返回文本列中的最大值，MAX() 会返回最后一行（MIN
+() 会返回第一行）。
+* SUM() 函数会忽略值为 NULL 的行
+* 在表示某个聚集函数的结果时，不应该使用表中实际的列明，最好是指定别名，这样便于理解和使用。
 ---
 <br>
 
