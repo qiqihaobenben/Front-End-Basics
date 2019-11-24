@@ -865,10 +865,52 @@ SELECT COUNT(DISTINCT vend_id) AS vend_count FROM products;
 () 会返回第一行）。
 * SUM() 函数会忽略值为 NULL 的行
 * 在表示某个聚集函数的结果时，不应该使用表中实际的列明，最好是指定别名，这样便于理解和使用。
+
 ---
 <br>
 
+## 分组数据
 
+### 数据分组
+
+```sql
+SELECT vend_id, prod_price FROM products GROUP BY vend_id, prod_price;
+```
+* GROUP BY 子句后面可以加多个列。
+* SELECT子句中的列名必须为分组列或列函数（聚集计算语句除外），例如 按照 vend_id, prod_price 分组，SELECT 后面检索的列必须是 vend_id, prod_price。
+* 列函数对于GROUP BY子句定义的每个组各返回一个结果，例如取最大值时，就是每个组的最大值。
+* 如果分组列中有 NULL 值，则 NULL 将作为一个分组返回，如果列中有多行 NULL 值，它们将分为一组。
+* GROUP BY 子句必须在 WHERE 子句之后， ORDER BY 子句之前。
+
+### 过滤分组
+
+```sql
+### 列出至少有两个订单的所有顾客
+SELECT cust_id, COUNT(*) AS orders FROM orders GROUP BY cust_id HAVING COUNT(*) >= 2;
+
+### 列出具有2个（含）以上、价格为10（含）以上的产品的供应商
+SELECT vend_id, COUNT(*) AS num_prods FROM products WHERE prod_price >= 10 GROUP BY vend_id HAVING COUNT(*) >= 2;
+
+### 列出总计订单价格大于等于50的订单，并按照总价排序
+SELECT order_num, SUM(quantity*item_price) AS ordertotal FROM orderitems GROUP BY order_num HAVING SUM(quantity*item_price) >= 50 ORDER BY ordertotal;
++-----------+------------+
+| order_num | ordertotal |
++-----------+------------+
+|     20006 |      55.00 |
+|     20008 |     125.00 |
+|     20005 |     149.87 |
+|     20007 |    1000.00 |
++-----------+------------+
+```
+
+* HAVING 跟 WHERE 类似，但是 WHERE 在数据分组前进行过滤，HAVING 在数据分组后进行过滤。
+
+### SELECT 子句顺序
+
+SELECT > FROM > WHERE > GROUP BY > HAVING > ORDER BY > LIMIT
+
+---
+<br>
 
 
 
