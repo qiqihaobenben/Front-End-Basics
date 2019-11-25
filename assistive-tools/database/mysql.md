@@ -68,6 +68,14 @@ SQL 语句由子句构成，有些子句是必需的，而有的是可选的。�
 
 运行在行组上，计算和返回单个值的函数。
 
+### 查询（query）
+
+任何 SQL 语句都是查询。但此术语一般指 SELECT 语句。
+
+### 相关子查询（correlated subquery）
+
+涉及外部查询的子查询。
+
 ### SQL（Structured Query Language）
 **SQL 是结构化查询语言（Structured Query Language）的缩写，是一种专门用来与数据库通信的语言。**
 
@@ -913,9 +921,53 @@ SELECT > FROM > WHERE > GROUP BY > HAVING > ORDER BY > LIMIT
 <br>
 
 
+## 使用子查询
+
+假设要列出订购物品 TNT2 的所有客户。我们可以拆分出下面三步。
+1. 检索包含物品 TNT2 的所有订单的编号。
+2. 检索具有前一步骤列出的订单编号的所有客户的 ID。
+3. 检索前一步骤返回的所有客户 ID 的客户信息。
+
+```sql
+SELECT cust_name, cust_contact FROM customers
+WHERE cust_id IN (SELECT cust_id FROM orders
+WHERE order_num IN (SELECT order_num FROM orderitems WHERE prod_id = 'TNT2'));
++----------------+--------------+
+| cust_name      | cust_contact |
++----------------+--------------+
+| Coyote Inc.    | Y Lee        |
+| Yosemite Place | Y Sam        |
++----------------+--------------+
+```
+
+假设需要显示 customers 表中每个客户的订单总数，我们可以查分出下面两步。
+1. 从 customers 表中检索客户列表。
+2. 对于检索出的每个客户，统计其在 orders 表中的订单数目。
+
+```sql
+SELECT cust_name, cust_contact,
+(SELECT COUNT(*) FROM orders WHERE orders.cust_id = customers.cust_id) AS orders
+FROM customers ORDER BY cust_name;
++----------------+--------------+--------+
+| cust_name      | cust_contact | orders |
++----------------+--------------+--------+
+| Coyote Inc.    | Y Lee        |      2 |
+| E Fudd         | E Fudd       |      1 |
+| Mouse House    | Jerry Mouse  |      0 |
+| Wascals        | Jim Jones    |      1 |
+| Yosemite Place | Y Sam        |      1 |
++----------------+--------------+--------+
+```
 
 
+---
+<br>
 
+## 联结表
+
+
+---
+<br>
 
 
 
