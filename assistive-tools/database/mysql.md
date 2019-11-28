@@ -40,6 +40,10 @@
 * 不重用主键列的值；
 * 不在主键列中使用可能会更改的值。（例如，如果使用一个名字作为主键以标识某个供应商，当该供应商合并和更改其名字时，就得必须更改这个主键。）
 
+### 外键（foreign key）
+
+外键为某个表中的一列，它包含另一个表的主键值，定义了两个表之间的关系。
+
 ### 子句（clause）
 
 SQL 语句由子句构成，有些子句是必需的，而有的是可选的。一个子句通常由一个关键字和所提供的数据组成。例如 SELECT 语句的 FROM 子句。
@@ -75,6 +79,10 @@ SQL 语句由子句构成，有些子句是必需的，而有的是可选的。�
 ### 相关子查询（correlated subquery）
 
 涉及外部查询的子查询。
+
+### 可伸缩性（scale）
+
+能够适应不断增加的工作量而不失败。设计良好的数据库或应用程序称之为可伸缩性好（scale well）
 
 ### SQL（Structured Query Language）
 **SQL 是结构化查询语言（Structured Query Language）的缩写，是一种专门用来与数据库通信的语言。**
@@ -965,14 +973,103 @@ FROM customers ORDER BY cust_name;
 
 ## 联结表
 
+```sql
+### 等值联结（equijoin），它基于两个表之间的相等测试。这种联结也称为 内部联结。
+SELECT vend_name, prod_name, prod_price FROM vendors, products WHERE vendors.vend_id = products.vend_id ORDER BY vend_name, prod_name;
+
+
+### 内部联结的语法
+SELECT vend_name, prod_name, prod_price FROM vendors INNER JOIN products ON vendors.vend_id = products.vend_id ORDER BY vend_name, prod_name;
+
+
+### 上面提到用子查询，返回订购产品 TNT 的客户列表，现在改成联结表的方式，可以跟子查询的方式对比一下。
+SELECT cust_name, cust_contact FROM customers, orders, orderitems WHERE customers.cust_id = orders.cust_id AND orders.order_num = orderitems.order_num AND prod_id = 'TNT2';
+```
+
+### 注意
+* 应该保证所有的联结都有 WHERE 子句，否则 MySQL 将返回比想要的数据多得多的数据。
 
 ---
 <br>
 
 
+## 创建高级联结
 
+### 表别名和自联结
 
+```sql
+### 使用表别名，返回订购产品 TNT 的客户列表
+SELECT cust_name, cust_contact FROM customers AS c, orders AS o, orderitems AS oi WHERE c.cust_id = o.cust_id AND o.order_num = oi.order_num AND prod_id = 'TNT2';
 
+### 使用自联结，查找商品 ID 为 DTNTR 的供应商供应的所有产品
+SELECT p1.prod_id, p1.prod_name FROM products AS p1, products AS p2 WHERE p1.vend_id = p2.vend_id AND p2.prod_id = 'DTNTR';
+```
+
+### 外部联结
+
+联结包含了那些在相关表中没有关联行的行，外部联结的两种基本形式：左外部联结和右外部联结。它们之间唯一差别是所关联的表的顺序不同
+
+```sql
+### 列出每个客户下的订单，包括那些至今未下订单的客户
+SELECT customers.cust_id, orders.order_num FROM customers LEFT OUTER JOIN orders ON customers.cust_id = orders.cust_id;
++---------+-----------+
+| cust_id | order_num |
++---------+-----------+
+|   10001 |     20005 |
+|   10001 |     20009 |
+|   10002 |      NULL |
+|   10003 |     20006 |
+|   10004 |     20007 |
+|   10005 |     20008 |
++---------+-----------+
+
+#### 对每个用户下的订单计数，包括那些至今没下订单的客户
+SELECT c.cust_name, c.cust_id, COUNT(o.order_num) AS order_count FROM customers AS c LEFT OUTER JOIN orders AS o ON c.cust_id = o.cust_id GROUP BY c.cust_id;
++----------------+---------+-------------+
+| cust_name      | cust_id | order_count |
++----------------+---------+-------------+
+| Coyote Inc.    |   10001 |           2 |
+| Mouse House    |   10002 |           0 |
+| Wascals        |   10003 |           1 |
+| Yosemite Place |   10004 |           1 |
+| E Fudd         |   10005 |           1 |
++----------------+---------+-------------+
+```
+
+---
+<br>
+
+### 组合查询
+
+MySQL 允许执行多个查询（多条 SELECT 语句），并将结果作为单个查询结果集返回。这些组合查询称为并（union） 或 复合查询（compound query）。
+
+有两种基本情况，其中需要使用组合查询：
+* 在单个查询中从不同的表返回类似结构的数据；
+* 对单个表执行多个查询，按单个查询返回数据。
+
+```sql
+### 查询价格小于等于5的所有物品并且查出供应商 1001 和 1002 生产的所有物品（不考虑价格）
+
+### 先用 WHERE 多个子句来实现。
+SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 OR vend_id IN (1001,1002);
+
+### 使用组合查询实现，会自动去除重复的行
+SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001, 1002);
+
+### 使用组合查询查所有符合条件的列
+SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION ALL SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001, 1002);
+
+### 组合查询排序
+SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001, 1002) ORDER BY vend_id, prod_id;
+```
+
+### 注意
+* UNION 必须由两条或两条以上的 SELECT 语句组成，语句之间用关键字 UNION 分隔。
+* UNION 中的每个查询必须包含相同的列，表达式或聚集函数（不过各个列不需要以相同的次序列出）。
+* 对组合查询结果排序时，只能使用一条 ORDER BY 子句，它必须出现在最后一条 SELECT 语句之后。
+
+---
+<br>
 
 
 
