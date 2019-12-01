@@ -1072,10 +1072,264 @@ SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SE
 <br>
 
 
+## 全文本搜索
+
+并非所有引擎都支持全文本搜索，例如 MyISAM 支持全文本搜索，InnoDB 不支持。
+
+在创建表时启用全文本搜索， CREATE TABLE 语句接受 FULLTEXT 子句，它可以对后面的一个或多个表建立索引，MySQL自动维护该索引，在增加、更新或删除行时，索引随之自动更新。FULLTEXT 也可以在表创建之后再指定。
+
+```sql
+### 看一下 productnotes 表的创建描述
+CREATE TABLE `productnotes` (
+  `note_id` int(11) NOT NULL AUTO_INCREMENT,
+  `prod_id` char(10) NOT NULL,
+  `note_date` datetime NOT NULL,
+  `note_text` text,
+  PRIMARY KEY (`note_id`),
+  FULLTEXT KEY `note_text` (`note_text`)
+) ENGINE=MyISAM AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+```
+
+创建索引后就可以用 Match() 和 Against() 执行全文本搜索，其中 Match() 指定被搜索的列， Against() 指定要使用的搜索表达式。
+
+```sql
+### 搜索出 node_text 中包含 rabbit 的。
+
+### 先用 LIKE 实现
+SELECT note_text FROM productnotes WHERE note_text LIKE '%rabbit%';
++-----------------------------------------------+
+| Quantity varies, …… for use as rabbit bait. |
+| Customer complaint: rabbit has …… |
++-----------------------------------------------+
+
+### 使用文本搜索实现，可以看到 rabbit 排在第三个词的文本比排在第20个词的文本排序高。
+SELECT note_text FROM productnotes WHERE Match(note_text) Against('rabbit');
++-----------------------------------------------+
+| Customer complaint: rabbit has …… |
+| Quantity varies, …… for use as rabbit bait. |
++-----------------------------------------------+
+
+### 可以使用下面的语句查看排序的等级
+SELECT note_text, Match(note_text) Against('rabbit') AS rank1 FROM productnotes;
+### 除了查出来的两个有数据，其他的等级都是0
+| Customer complaint: rabbit has …… | 的等级是 1.6408053636550903
+| Quantity varies, …… for use as rabbit bait. | 的等级是 1.5905543565750122
 
 
+### 使用查询扩展 WITH QUERY EXPANSION ，找出所有提到 anvils 的注释，还要找出与当前搜索有关的所有其他行，即使它们不包含 anvils
+SELECT note_text FROM productnotes WHERE Match(note_text) Against('anvils' WITH QUERY EXPANSION);
+### 会返回7行，但是只有第一行有 anvils ,第二行虽然与 anvils 无关，但因为它包含了第一行的两个词，所以也被检索出来。
+
+```
+
+### 注意
+
+* 传递给 Match() 的值必须与 FULLTEXT() 定义中的相同。如果指定多个列，必须列出他们，而且次序正确。
+* 经过比较可以发现，文本搜索是默认带有排序的，LIKE 搜索出来的结果是随意的，按照查询的先后输出。
+* 文本搜索的等级根据行中词的数目，唯一词的数目，整个索引中词的总数，以及包含该词的行的书目计算出来。
+* 在索引全文本数据时，短词被忽略且从索引中排除。短词的定义时那些具有3个或3个一下字符的词（如果需要，这个数目可以改）
+* 许多词出现的频率很高，搜索他们没用，MySQL 规定了一条 50% 规则，如果一个词出现50%以上的行中，则将它作为一个非用词忽略。50%规则不用于 IN BOOLEAN MODE。
+* 如果表中的行数少于3行，则全文本搜索不返回结果
+* 忽略词中的单引号。例如，don't 索引为 dont
+* 不具有词分隔符（包括日语和汉语）的语言不能恰当地返回全文本搜索结果
 
 
+### 布尔文本查询
+
+IN BOOLEAN MODE，即使没有 FULLTEXT 索引，也可以使用
+
+```sql
+### 匹配包含 heavy 但不包含任意以 rope 开始的词的行
+SELECT note_text FROM productnotes WHERE Match(note_text) Against('heavy -rope*' IN BOOLEAN MODE);
+
+### 匹配词 safe 和 combination, 降低后者的等级。
+SELECT note_text FROM productnotes WHERE Match(note_text) Against('+safe +(<combination)' IN BOOLEAN MODE);
+```
+
+全文本布尔操作符
+
+| 布尔操作符 | 说 明 |
+|---|---|
+| + | 包含，词必须存在 |
+| - | 排除，词必须不出现 |
+| > | 包含，而且增加等级值 |
+| - | 包含，且减少等级值 |
+| () | 把词组成子表达式（允许这些子表达式作为一个组被包含、排除、 排列等） |
+| ~ | 取消一个词的排序值 |
+| * | 词尾的通配符 |
+| "" | 定义一个短语（与单个词的列表不一样，它匹配整个短语以便包含或排除这个短语） |
+
+---
+<br>
+
+## 插入数据
+
+### 插入完整的行
+
+```sql
+### 如下的语句中，对每个列必须提供一个值，如果某个列没有值，应该使用 NULL 值（假设表允许对该列指定空值）。每个列必须按照顺序给出，自动增量的值也不能忽略，而且如果不想赋值，就需要指定为 NULL 。
+INSERT INTO customers VALUES( NULL, 'Pep E. LaPew', '100 Main Street', 'Los Angeles', 'CA', '90046', 'USA', NULL, NULL);
+```
+
+上面的语法应该避免使用，因为不安全，建议用下面的语句,可以不按照次序填充，只要保证 VALUES中的次序跟前面给出的列名次序一致就行。
+
+```sql
+INSERT INTO customers(cust_name, cust_contact, cust_email, cust_address, cust_city, cust_state, cust_zip, cust_country) VALUES('Pep E. LaPew', NULL, NULL, '100 Main Street', 'Los ANGELES', 'CA', '90046', 'USA');
+```
+
+### 插入多个行
+
+```sql
+### 可以使用多条 INSERT 语句，甚至一次提交它们，每条语句用一个分号结束。
+INSERT INTO customers(cust_name,cust_address,cust_city,cust_state,cust_zip,cust_country) VALUES('Pep E. LaPew','100 Main Street','Los Angeles','CA','90046','USA');INSERT INTO customers(cust_name,cust_address,cust_city,cust_state,cust_zip,cust_country) VALUES('M. Martian','42 Galaxy Way','New York','NY','11213','USA');
+
+### 或者每条 INSERT 语句中的列名（和次序）相同，可以如下组合语句
+INSERT INTO customers(cust_name,cust_address,cust_city,cust_state,cust_zip,cust_country) VALUES('Pep E. LaPew','100 Main Street','Los Angeles','CA','90046','USA'), ('M. Martian','42 Galaxy Way','New York','NY','11213','USA');
+```
+
+### 注意
+
+* 在 INSERT 操作中可以省略某些列，省略的列必须满足：该列定义为允许 NULL 值（无值或者空值），或在表定义中给出默认值，这表示如果不给出值，将使用默认值，否则插入时省略会报错。
+* 可以使用 INSERT LOW PRIORITY INTO 来降低插入语句的优先级。
+
+---
+<br>
+
+## 更新数据
+
+```sql
+### 更新id是10009客户名字的邮箱。
+UPDATE customers SET cust_name = 'The Fudds', cust_email = 'elmer@fudd.com' WHERE cust_id = 10009;
+
+### 为了删除某个列的值，可设置它为 NULL（假定表定义为允许 NULL 值）
+UPDATE customers SET cust_email = NULL WHERE cust_id = 10009;
+```
+
+### 注意
+
+* 使用 UPDATE 时，一定不能省略 WHERE 子句，否则就会更新表中的所有行。
+* UPDATE 操作如果报错，则整个UPDATE操作被取消，错误发生前更新的所有行被恢复到它们原来的值，如果想发生错误的时候也继续进行更新，可以使用 IGNORE 关键字 `UPDATE IGNORE customers`
+
+
+---
+<br>
+
+## 删除数据
+
+```sal
+### 删除10011这一行
+DELETE FROM customers WHERE cust_id = 10011;
+
+```
+
+### 注意
+
+* 使用 DELETE 时，一定不能省略 WHERE 子句，否则就会删除表中的所有行。即使删除所有行， DELETE 也不会删除表本身。
+* 如果想从表中删除所有行，不要使用 DELETE。可以使用 TRUNCATE TABLE 语句，速度更快（TRUNCATE 实际是删除原来的表并重新创建一个表，而不是逐行删除表中的数据）。
+
+---
+<br>
+
+## 创建和操纵表
+
+### 创建表
+
+利用 CREATE TABLE 创建表，必须紧跟着给出新表的名字，然后是表列的名字和定义，用逗号分隔。
+
+#### NULL 值
+
+NULL 值就是没有值或缺值。允许 NULL 值的列也允许在插入行时不给出该列的值。 NOT NULL 即不允许 NULL 值的列不接受该列没有值的行，在插入或更新行时，该列必须有值。NULL 是默认设置，如果不指定 NOT NULL，则认为指定的是 NULL。
+
+#### 主键
+
+主键必须是唯一的，即表中的每个行必须具有唯一的主键值，如果主键使用单个列，则它的值必须唯一。如果使用多个列，则这些列的组合值必须唯一。
+
+使用类似 PRIMARY KEY (id) 的语句来定义。为创建由多个列组成的主键，应该以逗号分隔的列表给出各列名，例如 orderitems 表的创建用到的 PRIMARY KEY (order_num, order_item)
+
+主键可以在创建表时定义，或者在创建表之后定义。
+
+主键为唯一标识表中每个行的列，主键中只能使用不允许 NULL 值的列。
+
+#### AUTO_INCREMENT
+
+每次执行一个 INSERT 操作时， MySQL 自动对该列增量。
+
+每个表只能允许一个 AUTO_INCREMENT 列，而且它必须被索引（比如通过使用它成为主键）
+
+在执行 INSERT 时可以给 AUTO_INCREMENT指定一个值，只要它是至今为止唯一的就行，该值将被用来替代自动生成的值。后续的增量将开始使用该手工插入的值。
+
+last_insert_id() 这个函数能返回最后一个 AUTO_INCREMENT 值
+
+#### 指定默认值
+
+列定义中的 DEFAULT 关键字指定。 MySQL 跟大多数 DBMS 一样， 不允许使用函数作为默认值，它只支持常量。
+
+#### 引擎类型
+
+大多数时候， CREATE TABLE 语句全都以 ENGINE=InnoDB 语句结束。MySQL具有多种引擎，这些打包的多个引擎都隐藏在 MySQL 的服务器内，全都能执行 CREATE TABLE 和 SELECT 等命令。这些引擎具有各自不同的功能和特性，为不同的任务选择正确的引擎能获得良好的功能和灵活性。
+
+**InnoDB** 是一个可靠的事务处理引擎，它不支持全文本搜索。
+
+**MyISAM** 是一个性能极高的引擎，它支持全文本搜索，但不支持事务处理
+
+**MEMORY** 在功能等同于 MyISAM，但由于数据存储在内存（不是磁盘）中，速度很快（特别适合用于临时表）
+
+```
+########################
+# 看一下 customers 表的创建
+########################
+CREATE TABLE customers
+(
+  cust_id      int       NOT NULL AUTO_INCREMENT,
+  cust_name    char(50)  NOT NULL ,
+  cust_address char(50)  NULL ,
+  cust_city    char(50)  NULL ,
+  cust_state   char(5)   NULL ,
+  cust_zip     char(10)  NULL ,
+  cust_country char(50)  NULL ,
+  cust_contact char(50)  NULL ,
+  cust_email   char(255) NULL ,
+  PRIMARY KEY (cust_id)
+) ENGINE=InnoDB;
+```
+
+
+### 更新表
+
+为了更新表定义，可使用 ALTER TABLE 语句。
+
+```sql
+### vendors 表中增加 vend_phone 列
+ALTER TABLE vendors ADD vend_phone CHAR(20);
+
+### 删除刚刚增加的 vend_phone 列
+ALTER TABLE vendors DROP COLUMN vend_phone;
+```
+
+### 删除表
+
+```sql
+DROP TABLE customers2;
+```
+
+### 重命名表
+
+```sql
+### 重命名一个表
+RENAME TABLE customers2 TO customers;
+
+### 重命名多个表
+RENAME TABLE backup_customers TO customers,backup_vendors TO vendors;
+```
+
+
+### 注意
+* 创建新表时，指定的表名必须不存在，否则将出错。如果仅想在一个表不存在时创建它，应该在表名后面给出 IF NOT EXISTS。
+* 使用 ALTER TABLE 要极为小心，应该在进行改动之前做一个完整的备份（模式和数据的备份）
+
+---
+<br>
 
 
 
