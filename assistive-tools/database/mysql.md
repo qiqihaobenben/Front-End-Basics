@@ -1305,6 +1305,9 @@ ALTER TABLE vendors ADD vend_phone CHAR(20);
 
 ### 删除刚刚增加的 vend_phone 列
 ALTER TABLE vendors DROP COLUMN vend_phone;
+
+### ALTER TABLE 常见的用途就是定义外键
+ALTER TABLE products ADD CONSTRAINT fk_products_vendors FOREIGN KEY (vend_id) REFERENCES vendors (vend_id)
 ```
 
 ### 删除表
@@ -1331,6 +1334,67 @@ RENAME TABLE backup_customers TO customers,backup_vendors TO vendors;
 ---
 <br>
 
+## 使用视图
+
+视图仅仅是用来查看存储在别处的数据的一种设施，本身不包含数据，返回的数据都是从其他表中检索出来的，视图能更改数据格式和表示，最常见的应用就是重用 SQL 语句，简化复杂的 SQL 操作。
+
+### 操作视图
+
+CREATE VIEW 创建视图
+
+SHOW CREATE VIEW viewname 查看创建视图的语句
+
+DROP VIEW viewname 删除视图
+
+更新视图时，可以先 DROP 然后再 CREATE 或者使用 CREATE OR REPLACE VIEW
+
+```sql
+### 之前有用联表查询 prod_id 是 TNT2的购买用户信息，但是如果还想看 prod_id 是其他值的时，还得重新查一遍，这样的场景就能用到视图了。
+
+### 创建一个包含 cust_name, cust_contact, prod_id 的视图
+CREATE VIEW productcustomers AS SELECT cust_name, cust_contact, prod_id FROM customers, orders, orderitems WHERE customers.cust_id = orders.cust_id AND orderitems.order_num = orders.order_num;
+
+### 现在就能看到 productcustomers 视图能查询的信息了
+select * from productcustomers;
++----------------+--------------+---------+
+| cust_name      | cust_contact | prod_id |
++----------------+--------------+---------+
+| Coyote Inc.    | Y Lee        | ANV01   |
+| Coyote Inc.    | Y Lee        | ANV02   |
+| Coyote Inc.    | Y Lee        | TNT2    |
+| Coyote Inc.    | Y Lee        | FB      |
+| Coyote Inc.    | Y Lee        | FB      |
+| Coyote Inc.    | Y Lee        | OL1     |
+| Coyote Inc.    | Y Lee        | SLING   |
+| Coyote Inc.    | Y Lee        | ANV03   |
+| Wascals        | Jim Jones    | JP2000  |
+| Yosemite Place | Y Sam        | TNT2    |
+| E Fudd         | E Fudd       | FC      |
++----------------+--------------+---------+
+
+### 如果想再查询出 prod_id 为 TNT2 的客户信息就很简单了
+SELECT cust_name, cust_contact FROM productcustomers WHERE prod_id = 'TNT2';
++----------------+--------------+
+| cust_name      | cust_contact |
++----------------+--------------+
+| Coyote Inc.    | Y Lee        |
+| Yosemite Place | Y Sam        |
++----------------+--------------+
+```
+
+
+
+### 注意
+* 视图必须唯一命名（不能跟别的视图和表重名）
+* 对于可以创建的视图数量没有限制。
+* 视图可以嵌套，即可以利用从其他视图中检索数据的查询来构造一个新的视图。
+* ORDER BY 可以用在视图中，但如果从该视图检索数据的 SELECT 中也含有 ORDER BY ，那么视图中的 ORDER BY 会被覆盖。
+* 视图不能索引，也不能有关联的触发器或默认值。
+* 视图可以和表一起使用。
+* 视图一般用于检索（SELECT）而不用于更新（INSERT, UPDATE, DELETE），因为更新一个视图相当于更新其基表，如果不能正确地确定被更新的基数据，则不允许更新。
+
+---
+<br>
 
 
 
