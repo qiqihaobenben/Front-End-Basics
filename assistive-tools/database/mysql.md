@@ -84,6 +84,10 @@ SQL 语句由子句构成，有些子句是必需的，而有的是可选的。�
 
 能够适应不断增加的工作量而不失败。设计良好的数据库或应用程序称之为可伸缩性好（scale well）
 
+### 变量（variable）
+
+内存中一个特定的位置，用来临时存储数据。所有 MySQL 变量都必须以 `@` 开始。
+
 ### SQL（Structured Query Language）
 **SQL 是结构化查询语言（Structured Query Language）的缩写，是一种专门用来与数据库通信的语言。**
 
@@ -1275,7 +1279,7 @@ last_insert_id() 这个函数能返回最后一个 AUTO_INCREMENT 值
 
 **MEMORY** 在功能等同于 MyISAM，但由于数据存储在内存（不是磁盘）中，速度很快（特别适合用于临时表）
 
-```
+```sql
 ########################
 # 看一下 customers 表的创建
 ########################
@@ -1395,6 +1399,154 @@ SELECT cust_name, cust_contact FROM productcustomers WHERE prod_id = 'TNT2';
 
 ---
 <br>
+
+
+## 使用存储过程
+
+使用存储过程主要有三个好处，简单，安全，高性能。
+
+MySQL 称存储过程的执行为调用，因此 MySQL 执行存储过程的语句为 CALL。CALL 接受存储过程的名字以及需要传递给它的任意参数。
+
+### 简单例子
+
+```sql
+### 创建名为 productpricing 的存储过程 如果存储过程接受参数，它们将在 productpricing () 这个括号中列举出来。
+DELIMITER //
+
+CREATE PROCEDURE productpricing()
+BEGIN
+SELECT Avg(prod_price) AS priceaverage FROM products;
+END//
+
+
+### 调用存储过程，仿佛在调用函数
+CALL productpricing;
++--------------+
+| priceaverage |
++--------------+
+|    16.133571 |
++--------------+
+
+
+### 删除存储过程
+DROP PROCEDURE productpricing;
+
+### 检查存储过程
+SHOW CREATE PROCEDURE productpricing;
+```
+
+
+### 有参数的例子
+
+```sql
+### 创建存储过程
+DELIMITER //
+CREATE PROCEDURE productpricing (
+  OUT pl DECIMAL(8,2),
+  OUT ph DECIMAL(8,2),
+  OUT pa DECIMAL(8,2)
+)
+BEGIN
+  SELECT Min(prod_price) INTO pl FROM products;
+  SELECT Max(prod_price) INTO ph FROM products;
+  SELECT Avg(prod_price) INTO pa FROM products;
+END //
+
+
+### 调用存储过程
+CALL productpricing(@pricelow,@pricehigh,@priceaverage);
+
+### 查看3个变量
+SELECT @pricelow,@pricehigh,@priceaverage;
++-----------+------------+---------------+
+| @pricelow | @pricehigh | @priceaverage |
++-----------+------------+---------------+
+|      2.50 |      55.00 |         16.13 |
++-----------+------------+---------------+
+```
+
+### 建立智能存储过程
+
+需要获取订单合计，并且对某些顾客的合计增加营业税。
+
+```sql
+### 存储过程全过程
+DELIMITER //
+
+-- Name: ordertotal
+-- Parameters: onumber = order number
+--             taxable = 0 if not taxable, 1 if taxable
+--             ototal = order total variable
+
+CREATE PROCEDURE ordertotal (
+  IN onumber INT,
+  IN taxable BOOLEAN,
+  OUT ototal DECIMAL(8,2)
+ ) COMMENT 'Obtain order total, optionally adding tax'
+ BEGIN
+
+  -- Declare variable for total
+  DECLARE total DECIMAL(8,2);
+  -- Declare tax percentage
+  DECLARE taxrate INT DEFAULT 6;
+
+  -- Get the order total
+  SELECT Sum(item_price*quantity) FROM orderitems WHERE order_num = onumber INTO total;
+
+  -- Is this taxable
+  IF taxable THEN
+  -- Yes, so add taxrate to the total
+    SELECT total+(total/100*taxrate) INTO total;
+  END IF;
+
+  -- And finally, save to out variable
+  SELECT total INTO ototal;
+
+ END //
+
+
+ ### 调用，看一下 order number 是 20005 订单关于加不加营业税的区别
+ ### 不加营业税
+ CALL ordertotal(20005, 0, @total);
+ SELECT @total;
++--------+
+| @total |
++--------+
+| 149.87 |
++--------+
+
+### 加营业税
+CALL ordertotal(20005, 1, @total);
+SELECT @total;
++--------+
+| @total |
++--------+
+| 158.86 |
++--------+
+```
+
+上面代码中做些必要的解释
+* 添加了两个 IN 类型参数，其中 taxable 为布尔值。
+* `--` 添加注释，在存储过程复杂是，注释很有必要。
+* `DECLARE` 定义局部变量，需要指定变量名和数据类型，支持可选的默认值
+* `COMMENT` 关键字，不是必需的，如果添加了，在 SHOW PROCEDURE STATUS 的结果中显示。
+
+
+
+
+
+### 注意
+
+* 如果在 mysql 命令行中创建存储过程的话，需要临时更改命令行实用程序的语句分隔符，因为创建存储过程会使用 ; 作为语句分隔符，这会导致语法报错。除了 \ 符号外，任何字符都可以用作语句分隔符。 可以使用 DELIMITER // 作为新的语句结束分隔符，但是创建完存储过程后，要记得用 DELIMITER ; 恢复为原来的语句分隔符。
+* 存储过程在创建之后，被保存在服务器上以供使用，直至被删除。
+* 如果删除不存在的存储过程时，会报错，可以使用 DROP PROCEDURE IF EXISTS ,只有当过程存在时才删除。
+* MySQL 支持 IN（传递给存储过程）、OUT（从存储过程传出）、INOUT（对存储过程传入和传出）三种类型的参数。SELECT 检索出来的值通过 INTO 保存到相应的变量。特别注意，参数的数据类型不能是一个集合，所以例子中才用了三个参数输出3个数。
+* 如果存储过程要求3个参数，就必须正好传递3个参数。
+* SHOW PROCEDURE STATUS 可以列出所有存储过程，也可以使用 LIKE 指定一个过滤模式： `SHOW PROCEDURE STATUS LIKE 'ordertotal';`
+
+---
+<br>
+
 
 
 
