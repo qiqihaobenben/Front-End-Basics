@@ -1542,11 +1542,118 @@ SELECT @total;
 * 如果删除不存在的存储过程时，会报错，可以使用 DROP PROCEDURE IF EXISTS ,只有当过程存在时才删除。
 * MySQL 支持 IN（传递给存储过程）、OUT（从存储过程传出）、INOUT（对存储过程传入和传出）三种类型的参数。SELECT 检索出来的值通过 INTO 保存到相应的变量。特别注意，参数的数据类型不能是一个集合，所以例子中才用了三个参数输出3个数。
 * 如果存储过程要求3个参数，就必须正好传递3个参数。
-* SHOW PROCEDURE STATUS 可以列出所有存储过程，也可以使用 LIKE 指定一个过滤模式： `SHOW PROCEDURE STATUS LIKE 'ordertotal';`
+* `SHOW PROCEDURE STATUS` 可以列出所有存储过程，也可以使用 LIKE 指定一个过滤模式： `SHOW PROCEDURE STATUS LIKE 'ordertotal';`
 
 ---
 <br>
 
+## 使用游标
+
+游标（cursor）是一个存储在 MySQL 服务器上的数据库查询，它不是一条 SELECT 语句，而是被该语句检索出来的结果集。
+
+```sql
+
+DELIMITER //
+
+CREATE PROCEDURE processorders()
+  BEGIN
+    DECLARE done BOOLEAN DEFAULT 0;
+    DECLARE o INT;
+    DECLARE t DECIMAL(8,2);
+    DECLARE ordernumbers CURSOR
+    FOR
+    SELECT order_num FROM orders;
+    DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+    CREATE TABLE IF NOT EXISTS ordertotals(order_num INT, total DECIMAL(8,2));
+    OPEN ordernumbers;
+    REPEAT
+    FETCH ordernumbers INTO o;
+    CALL ordertotal(o,1,t);
+    INSERT INTO ordertotals(order_num,total) VALUES(o,t);
+    UNTIL done END REPEAT;
+    CLOSE ordernumbers;
+  END//
+
+DELIMITER ;
+
+SELECT * FROM ordertotals;
++-----------+---------+
+| order_num | total   |
++-----------+---------+
+|     20005 |  158.86 |
+|     20009 |   40.78 |
+|     20006 |   58.30 |
+|     20007 | 1060.00 |
+|     20008 |  132.50 |
+|     20008 |  132.50 |
++-----------+---------+
+```
+
+`DECLARE` 命名游标，并定义相应的 SELECT 语句，根据需要带 WHERE 和其他子句。
+
+`OPEN ordernumbers;` 打开 ordernumbers 游标，在处理 OPEN 语句时执行查询，存储检索出的数据以供浏览和滚动。
+
+`CLOSE ordernumbers;` 关闭 ordernumbers 游标，CLOSE 释放游标使用的所有内部内存和资源，因此在每个游标不再需要时都应该关闭，如果没有明确关闭游标，MySQL 将会在到达 END 语句时自动关闭它。在一个游标关闭后，如果没有重新打开，就不能使用它。但是，使用声明过的游标不需要再次声明，用 OPEN 语句打开就行。
+
+`FETCH` 指定检索什么数据，检索出来的数据存储在什么地方。它还向前移动游标中的内部行指针，使下一条 FETCH 语句检索下一行。
+
+`CONTINUE HANDLER` 是在条件出现时被执行的代码。上面 `SQLSTATE '02000'` 出现时 `SET done = 1`。`SQLSTATE '02000'`是一个未找到条件，上面指的是 REPEAT 由于没有更多的行供循环而不能继续时，出现这个条件。
+
+
+### 注意：
+* 跟其他的 DBMS 不同的是，MySQL 游标只能用于存储过程（和函数）
+* 在使用游标前，必须声明（定义）游标。声明的过程实际上没有检索数据，它只是定义要使用的 SELECT 语句。
+* 声明之后，如果要使用游标，必须打开游标。这个过程是用前面定义的 SELECT 语句把数据实际检索出来。
+* 在结束游标使用时，必须关闭游标。
+
+
+
+---
+<br>
+
+
+## 使用触发器
+
+触发器是 MySQL 响应以下任意语句而自动执行的一条 MySQL 语句，（或位于 BEGIN 和 END 语句之间的一组语句）:
+* DELETE;
+* INSERT;
+* UPDATE;
+
+### 创建触发器遵循以下几点
+
+* 唯一的触发器名；
+* 触发器关联的表；
+* 触发器应该响应的活动（DELETE、INSERT 和 UPDATE）；
+* 触发器何时执行（处理之前或之后）
+
+`CREATE TRIGGER` 新建触发器
+
+`DROP TRIGGER` 删除触发器
+
+### INSERT 触发器
+
+* 在 INSERT 触发器代码内，可以引用一个名为 NEW 的虚拟表，访问被插入的行；
+* 在 BEFORE INSERT 触发器中，NEW 中的值可以被更新（允许更改被插入的值）
+* 对于 AUTO_INCREMENT 列， NEW 在 INSERT 执行之前包含0，在 INSERT 执行之后包含新的自动生成值。
+
+```sql
+### 创建一个名为 neworder 的触发器，在插入一个新订单到 orders 表时，返回新的订单号。
+
+
+```
+
+
+
+### 注意
+
+* 只有表才支持触发器，视图不支持（临时表也不支持）。
+* 触发器按每个表每个事件每次地定义，每个表每个事件每次只允许一个触发器。因此，每个表最多支持6个触发器（每条 INSERT、UPDATE 和 DELETE 的之前和之后）
+* 单一触发器不能与多个事件或多个表关联，所以，如果需要一个对 INSERT 和 UPDATE 操作执行的触发器，就应该定义两个触发器。
+* 如果 BEFORE 触发器失败，MySQL 将不执行请求的操作。如果 BEFORE 触发器或语句本身失败， MySQL将不执行 AFTER 触发器（如果有的话）。
+
+
+---
+<br>
 
 
 
