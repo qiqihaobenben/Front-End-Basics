@@ -1637,11 +1637,43 @@ SELECT * FROM ordertotals;
 * 对于 AUTO_INCREMENT 列， NEW 在 INSERT 执行之前包含0，在 INSERT 执行之后包含新的自动生成值。
 
 ```sql
-### 创建一个名为 neworder 的触发器，在插入一个新订单到 orders 表时，返回新的订单号。
+### 创建一个名为 neworder 的触发器，在插入一个新订单到 orders 表时，返回新的订单号放到变量@number中。
+CREATE TRIGGER neworder AFTER INSERT ON orders FOR EACH ROW SELECT NEW.order_num;
 
+INSERT INTO orders(order_date, cust_id) VALUES(Now(), 10001);
+SELECT @number;
++---------+
+| @number |
++---------+
+|   20010 |
++---------+
 
 ```
 
+### DELETE 触发器
+
+* 在 DELETE 触发器代码内，可以引用一个名为 OLD 的虚拟表，访问被删除的行；
+* OLD 中的值是只读的，不能更新。
+
+### UPDATE 触发器
+
+* 在 UPDATE 触发器代码内，可以引用一个名为 OLD 的虚拟表，访问以前（UPDATE语句前）的值，引用一个名为 NEW 的虚拟表访问新更新的值；
+* 在 BEFORE UPDATE 触发器中，NEW 中的值可以被更新（允许更改将要用于 UPDATE 语句中的值）
+* OLD 中的值是只读的，不能更新。
+
+```sql
+### 创建一个名为 neworder 的触发器，在插入一个新订单到 orders 表时，返回新的订单号放到变量@number中。
+CREATE TRIGGER neworder AFTER INSERT ON orders FOR EACH ROW SELECT NEW.order_num;
+
+INSERT INTO orders(order_date, cust_id) VALUES(Now(), 10001);
+SELECT @number;
++---------+
+| @number |
++---------+
+|   20010 |
++---------+
+
+```
 
 
 ### 注意
@@ -1650,7 +1682,9 @@ SELECT * FROM ordertotals;
 * 触发器按每个表每个事件每次地定义，每个表每个事件每次只允许一个触发器。因此，每个表最多支持6个触发器（每条 INSERT、UPDATE 和 DELETE 的之前和之后）
 * 单一触发器不能与多个事件或多个表关联，所以，如果需要一个对 INSERT 和 UPDATE 操作执行的触发器，就应该定义两个触发器。
 * 如果 BEFORE 触发器失败，MySQL 将不执行请求的操作。如果 BEFORE 触发器或语句本身失败， MySQL将不执行 AFTER 触发器（如果有的话）。
-
+* MySQL 的 TRIGGER 和 FUNCTION 中不能出现 SELECT * FROM table 形式的查询，因为其会返回一个结果集，而这在 MySQL 的 TRIGGER 和 FUNCTION 中是不可接受的，但是在存储过程中可以。在 TRIGGER 和 FUNCTION 中可以使用 SELECT ... INTO ... 形式的查询。
+* 使用 TRIGGER 的时候没有 INTO 的时候会报这样一种错误 `not allowed to return a result set from a trigger`
+* MySQL 触发器中不支持 CALL 语句，这表示不能从触发器内调用存储过程。所需的存储过程代码需要复制到触发器内。
 
 ---
 <br>
