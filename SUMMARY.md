@@ -48,6 +48,8 @@
     * [目录讲解](assistive-tools/git/directory.md)
     * [基础操作配置](assistive-tools/git/setconfig.md)
     * [命令汇总](assistive-tools/git/command.md)
+  - MySQL
+    * [Mysql必知必会](assistive-tools/database/mysql.md)
 * 实践沉淀
   - [el-scrollbar讲解](project/el-scrollbar.md)
 * 捡贝壳

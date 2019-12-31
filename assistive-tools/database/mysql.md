@@ -1736,6 +1736,56 @@ SELECT @number;
 <br>
 
 
+## 数据库维护
+
+### 备份数据
+
+#### mysqldump
+mysqldump 是一个逻辑备份工具，复制原始的数据库对象定义和表数据产生一组可执行的 SQL 语句。在日常工作中，我们会使用 mysqldump 命令创建 SQL 格式的转存储文件来备份数据库，或者把数据导出后做数据迁移，主备搭建等操作。
+
+```sql
+# --user、-u 指定连接的用户名，--password、-p 连接数据库密码，--port、-P 连接数据库端口号
+
+
+# --all-databases 会导出包括系统数据库在内的所有数据库
+mysqldump -uroot -proot --all-databases > /tmp/all.sql
+mysqldump -uroot -p --all-databases > /tmp/all.sql # 需要回车后输入密码
+
+# --add-drop-database 在导出的备份文件中，在 CREATE DATABASE 语句前加上 DROP DATABASE 语句
+
+# --add-drop-table 在导出的备份文件中，在 CREATE TABLE 语句前加上 DROP TABLE 语句
+
+# --databases 导出database1、database2两个数据库的所有数据
+mysqldump --user root --password=root --databases database1 database2 > /tmp/user.sql
+
+# --tables 导出database1中的table1、table2表
+mysqldump -uroot -proot --databases database1 --tables table1 table2  > /tmp/database1.sql
+
+# --routines、-R 导出目标数据库里的触发器和函数
+mysqldump  -uroot -proot --host=localhost --all-databases --routines
+
+# --where、-w 只导出符合WHERE条件的记录。如果条件包含命令解释符专用空格或字符，一定要将条件引用起来，单引号和双引号都可以
+mysqldump -uroot -proot --databases database1 --tables table1 --where='id=1'  > /tmp/table1.sql
+
+# --no-data、-d 不导出任何数据，只导出数据库表结构
+mysqldump -uroot -proot --no-data --databases database1 >/tmp/database1.sql
+
+# --no-create-info、-t 只导出数据，导出的sql中不包含drop table,create table
+mysqldump -uroot -proot --no-create-info --databases database1 --tables table1 --where="id='a'"  >/tmp/table1.sql
+
+# --host、-h 需要导出的主机信息，跨服务器导出导入数据
+mysqldump --host=h1 -uroot -proot --databases database1 |mysql --host=h2 -uroot -proot database2
+
+```
+
+#### 注意
+* 导出指定表只能针对一个数据库进行导出，且导出的内容中和导出数据库也不一样，导出指定表的导出文本中没有创建数据库的判断语句，只有删除表-创建表-导入数据
+
+
+
+---
+<br>
+
 
 ## 补充
 
