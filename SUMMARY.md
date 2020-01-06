@@ -61,6 +61,8 @@
     * [知乎上的神回复](article/zhihu48.md)
     * [软能力](article/soft-skills.md)
     * [年轻人，等着你的，是一个无论如何努力也得不到回报的社会](article/female.md)
+  - 有趣的人
+    * [有趣的人的2019](article/year-summary/2019/index.md)
   - 老技术文章备份
     * [ThinkPHP 模板中的语法知识](article/oldTechnologyArticle/ThinkPHP_template.md)
     * [字符编码趣闻](article/oldTechnologyArticle/zifubianma.md)
