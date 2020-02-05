@@ -2,3 +2,4 @@
 
 
 ### [Vue的自定义滚动，我用el-scrollbar](./el-scrollbar)
+### [项目中总结的小tips](./tips)
