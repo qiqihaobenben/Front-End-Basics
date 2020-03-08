@@ -56,7 +56,7 @@
 
 TypeScript中有几种基本类型和一点点跟它们相关的高级类型和技术。
 
-下面你可以看到一些基础的但非常强大的东西，对于更高级的类型，请访问文档：https://www.typescriptlang.org/docs/handbook/advanced-types.html。
+下面你可以看到一些基础的但非常强大的东西，对于更高级的类型，请访问文档：<https://www.typescriptlang.org/docs/handbook/advanced-types.html>。
 
 ![](https://ecom.software/wp-content/uploads/2018/11/new-project7.png)
 
