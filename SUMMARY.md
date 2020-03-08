@@ -62,8 +62,14 @@
     * [软能力](article/soft-skills.md)
     * [年轻人，等着你的，是一个无论如何努力也得不到回报的社会](article/female.md)
   - 有趣的人
-    * [有趣的人的2019](article/year-summary/2019/index.md)
+    * 有趣的人的2019
+      - [奶爸码农的2019](article/year-summary/2019/naibamanong2019.md)
   - 老技术文章备份
     * [ThinkPHP 模板中的语法知识](article/oldTechnologyArticle/ThinkPHP_template.md)
     * [字符编码趣闻](article/oldTechnologyArticle/zifubianma.md)
     * [Outlook邮件模板踩坑](article/oldTechnologyArticle/email.md)
+  - 日常读书笔记
+    * 理财类
+      - [《小狗钱钱》读书笔记和总结](article/book/xiaogouqianqian.md)
+
+
