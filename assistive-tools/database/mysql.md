@@ -152,6 +152,8 @@ SELECT user FROM user;
 ##### 创建用户账号
 
 > 1、使用 CREATE USER 语句（推荐）
+
+
 ```sql
 # 输入
 CREATE USER chenfangxu IDENTIFIED BY '123456';
@@ -168,6 +170,8 @@ SELECT user FROM user;
 ```
 
 > 2、GRANT 语句也可以创建用户账号。（MySQL 8.0以上的新版本已经将创建账户和赋予权限分开了，所以不能再用这种方法创建用户了）
+
+
 ```sql
 # mysql8.0以下
 GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
@@ -202,6 +206,8 @@ SHOW GRANTS FOR chenfangxu;
 <br>
 
 > **添加（更新）用户权限** `GRANT privileges ON databasename.tablename TO 'username'@'host';`
+
+
 ```sql
 # 输入
 GRANT SELECT ON performance_schema.* TO chenfangxu@'%';
@@ -218,6 +224,8 @@ SHOW GRANTS FOR chenfangxu;
 <br>
 
 > **撤销用户的权限** `REVOKE privileges ON databasename.tablename FROM 'username'@'host';`
+
+
 ```sql
 # 输入
 REVOKE SELECT ON performance_schema.* FROM chenfangxu@'%';
@@ -236,6 +244,8 @@ SHOW GRANTS FOR chenfangxu;
 #### 重命名
 
 > 重命名：`RENAME USER 'username' TO 'newusername';`
+
+
 ```sql
 # 输入
 RENAME USER test TO test1;
@@ -253,6 +263,8 @@ SELECT user FROM user;
 
 #### 更改用户密码(mysql 8.0.11后)
 > 更改用户密码：`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
+
+
 ```sql
 SET PASSWORD FOR chenfangxu@'%' = '654321';
 
@@ -306,6 +318,7 @@ SHOW COLUMNS FROM customers;
 #### DESCRIBE 语句
 
 MySQL 中 DESCRIBE 可以作为 SHOW COLUMNS FROM 的快捷方式。
+
 ```sql
 # 以下两种命令结果相同
 SHOW COLUMNS FROM customers;
@@ -315,7 +328,12 @@ DESCRIBE customers;
 ----
 <br>
 
-### 检索数据
+## 下面用到的数据库文件可在 [mysql_scripts](https://github.com/qiqihaobenben/Front-End-Basics/tree/master/assistive-tools/database/mysql_scripts) 找到。
+
+----
+<br>
+
+## 检索数据
 
 ```sql
 # 检索单个列，例如从 products 表中检索一个名为 prod_name 的列。
