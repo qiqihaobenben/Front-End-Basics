@@ -442,7 +442,7 @@ SELECT cust_id FROM customers WHERE cust_email IS NULL;
 
 ### 注意：
 * WHERE 语句的位置：在同时使用 ORDER BY 和 WHERE 子句时，应该让 ORDER BY 位于 WHERE 之后，否则将会产生错误。
-* WHERE 子句中使用的条件，如果将值与串类型（例如字符串），需要加引号，用来与数值列进行比较的值不用引号。
+* WHERE 子句中使用的条件，如果将值与串类型（例如字符串）比较，需要加引号，用来与数值列进行比较的值不用引号。
 * NULL 无值(no value)，它与字段 0 、空字符串或仅仅包含空格不同。
 
 ---
@@ -560,7 +560,7 @@ SELECT prod_id, prod_name FROM products WHERE prod_name LIKE '% ton anvil';
 
 ### 注意
 
-* 注意尾部空格，例如'%anvil' 是匹配不到 'anvil ',以为后面有个空格不容易发现，解决方法就是后面再附加一个 % ，或者用函数去掉首尾空格。
+* 注意尾部空格，例如'%anvil' 是匹配不到 'anvil ',因为后面有个空格不容易发现，解决方法就是后面再附加一个 % ，或者用函数去掉首尾空格。
 * % 是不能匹配出 NULL的。
 * 通配符搜索的处理一般要比其他搜索花时间更长，所以不要过度使用通配符，如果其他操作符能达到同样的目的，优先使用其他操作符。在确实需要使用通配符时，除非绝对有必要，否则不要把他们用在搜索模式的开始处。
 
@@ -789,7 +789,7 @@ SELECT cust_id, order_num FROM orders WHERE Date(order_date) = '2005-09-01';
 
 ### 如果想检索出2005年9月的所有订单
 
-### 方法一，得记住每个月有多少天，申请要知道是不是闰年的2月
+### 方法一，得记住每个月有多少天，甚至要知道是不是闰年的2月
 SELECT cust_id, order_num FROM orders WHERE Date(order_date) BETWEEN '2005-09-01' AND '2005-09-30';
 
 ### 方法二, 使用 Year() 和 Month() 函数
@@ -899,7 +899,7 @@ SELECT COUNT(DISTINCT vend_id) AS vend_count FROM products;
 * AVG() 函数忽略列值为 NULL 的行。
 * COUNT(*) 对表中行的数目进行计数， 不管列中是空值（NULL）还是非空值。
 * 使用 COUNT(column) 对特定列中具有值的行进行计数，会忽略 NULL 值。
-* MAX() 函数会忽略值为 NULL 的行（MIN()也是）。它一般是用来找出最大的数值数值和日期值，但是也可以对非数值的数据使用，例如返回文本列中的最大值，MAX() 会返回最后一行（MIN
+* MAX() 函数会忽略值为 NULL 的行（MIN()也是）。它一般是用来找出最大的数值和日期值，但是也可以对非数值的数据使用，例如返回文本列中的最大值，MAX() 会返回最后一行（MIN
 () 会返回第一行）。
 * SUM() 函数会忽略值为 NULL 的行
 * 在表示某个聚集函数的结果时，不应该使用表中实际的列明，最好是指定别名，这样便于理解和使用。
