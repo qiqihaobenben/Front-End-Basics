@@ -996,7 +996,7 @@ FROM customers ORDER BY cust_name;
 ## 联结表
 
 ```sql
-### 等值联结（equijoin），它基于两个表之间的相等测试。这种联结也称为 内部联结。
+### 等值联结（equi join），它基于两个表之间的相等测试。这种联结也称为 内部联结。
 SELECT vend_name, prod_name, prod_price FROM vendors, products WHERE vendors.vend_id = products.vend_id ORDER BY vend_name, prod_name;
 
 
@@ -1029,11 +1029,11 @@ SELECT p1.prod_id, p1.prod_name FROM products AS p1, products AS p2 WHERE p1.ven
 
 ### 外部联结
 
-联结包含了那些在相关表中没有关联行的行，外部联结的两种基本形式：左外部联结和右外部联结。它们之间唯一差别是所关联的表的顺序不同
+联结包含了那些在相关表中没有关联行的行，外部联结的两种基本形式：左外部联结(LEFT OUTER JOIN 即 LEFT JOIN)和右外部联结。它们之间唯一差别是所关联的表的顺序不同。更具体可以看一下 [JOIN详解](https://segmentfault.com/a/1190000015572505)。
 
 ```sql
 ### 列出每个客户下的订单，包括那些至今未下订单的客户
-SELECT customers.cust_id, orders.order_num FROM customers LEFT OUTER JOIN orders ON customers.cust_id = orders.cust_id;
+SELECT customers.cust_id, orders.order_num FROM customers LEFT JOIN orders ON customers.cust_id = orders.cust_id;
 +---------+-----------+
 | cust_id | order_num |
 +---------+-----------+
@@ -1046,7 +1046,7 @@ SELECT customers.cust_id, orders.order_num FROM customers LEFT OUTER JOIN orders
 +---------+-----------+
 
 #### 对每个用户下的订单计数，包括那些至今没下订单的客户
-SELECT c.cust_name, c.cust_id, COUNT(o.order_num) AS order_count FROM customers AS c LEFT OUTER JOIN orders AS o ON c.cust_id = o.cust_id GROUP BY c.cust_id;
+SELECT c.cust_name, c.cust_id, COUNT(o.order_num) AS order_count FROM customers AS c LEFT JOIN orders AS o ON c.cust_id = o.cust_id GROUP BY c.cust_id;
 +----------------+---------+-------------+
 | cust_name      | cust_id | order_count |
 +----------------+---------+-------------+
@@ -1176,7 +1176,7 @@ SELECT note_text FROM productnotes WHERE Match(note_text) Against('+safe +(<comb
 | + | 包含，词必须存在 |
 | - | 排除，词必须不出现 |
 | > | 包含，而且增加等级值 |
-| - | 包含，且减少等级值 |
+| < | 包含，且减少等级值 |
 | () | 把词组成子表达式（允许这些子表达式作为一个组被包含、排除、 排列等） |
 | ~ | 取消一个词的排序值 |
 | * | 词尾的通配符 |
