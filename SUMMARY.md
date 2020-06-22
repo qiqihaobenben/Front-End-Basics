@@ -52,6 +52,7 @@
     * [Mysql必知必会](assistive-tools/database/mysql.md)
 * 实践沉淀
   - [el-scrollbar讲解](project/el-scrollbar.md)
+  - [【译】到底需不需要使用注释？](project/need-or-not-comment.md)
 * 捡贝壳
   - 有趣的文章
     * [买了书也不读，还要不要买？](article/book.md)
