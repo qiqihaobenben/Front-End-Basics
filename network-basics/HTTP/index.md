@@ -2,7 +2,7 @@
 
 ### 概念
 
-http是一种无状态的协议，只有请求才会响应，然后断开，也没有记忆。  
+http是一种无状态的协议，只有请求才会响应，然后断开，也没有记忆。
 互联网中的设备要完成通信必须基于双方都能识别的规则，如通信的语音，格式，硬件和操作系统等等，这些规则的集合统称为TCP/IP 协议族。
 
 * URL（Uniform Resource Locator，统一资源定位符）是URI（统一资源标识符）的子集，URI可以标识网络中的任意资源，有了URI才能在海量的网络资源中找到我们需要的那部分。
@@ -14,34 +14,34 @@ http是一种无状态的协议，只有请求才会响应，然后断开，也�
 
 ### HTTP报文详解
 
-用于HTTP协议交互的信息被称为HTTP报文。  
+用于HTTP协议交互的信息被称为HTTP报文。
 
 
-#### Cache-Control： 操作缓存的指令。主要有以下几种用法  
+#### Cache-Control： 操作缓存的指令。主要有以下几种用法
 
-`Cache-Control: no-cache`  
-表示客户端不接受缓存的响应，必须请求最新的资源。  
-`Cache-Control: no-store`  
-表示客户端不能缓存请求或者响应的任意一部分。  
-`Cache-Control: max-age=604800（单位 ：秒）`  
+`Cache-Control: no-cache`
+表示客户端不接受缓存的响应，必须请求最新的资源。
+`Cache-Control: no-store`
+表示客户端不能缓存请求或者响应的任意一部分。
+`Cache-Control: max-age=604800（单位 ：秒）`
 max-age 数值代表资源保存为缓存的最长时间。当指定 max-age 值为0或者缓存超过最大时间，那么缓存服务器通常需要将请求转发给 源服务器。
 
 ---
 
-#### Connection： 由于HTTP1.1后，客户端和服务端建立连接后可以多次通信，连接的是否中断可以依靠以下指令控制。  
+#### Connection： 由于HTTP1.1后，客户端和服务端建立连接后可以多次通信，连接的是否中断可以依靠以下指令控制。
 
-`Connection: close`  
-表示想断开当前连接。  
-`Connection: Keep-Alive`  
+`Connection: close`
+表示想断开当前连接。
+`Connection: Keep-Alive`
 表示想保持当前连接。
 
 ---
 
-#### Date： 表明创建HTTP报文的日期和时间  
+#### Date： 表明创建HTTP报文的日期和时间
 
 ---
 
-#### Upgrade： 用于检测 HTTP 协议及其他协议是否可使用更高 的版本进行通信，其参数值可以用来指定一个完全不同的通信协议。  
+#### Upgrade： 用于检测 HTTP 协议及其他协议是否可使用更高 的版本进行通信，其参数值可以用来指定一个完全不同的通信协议。
 
 比如`Upgrade: websocket`
 
@@ -55,37 +55,37 @@ max-age 数值代表资源保存为缓存的最长时间。当指定 max-age 值
 
 ---
 
-#### Accept: 用户代理能够处理的媒体类型和优先级。  
+#### Accept: 用户代理能够处理的媒体类型和优先级。
 
-`Accept: text/html,image/jpeg`  
+`Accept: text/html,image/jpeg`
 客户端可以处理的媒体类型，包括文本和jpeg格式的图片
 
 ---
 
-#### Accept-Charset: 用户代理支持的字符集 及字符集的相对优先顺序。  
+#### Accept-Charset: 用户代理支持的字符集 及字符集的相对优先顺序。
 
-`Accept-Charset: iso-8859-5, unicode-1-1;q=0.8`  
+`Accept-Charset: iso-8859-5, unicode-1-1;q=0.8`
 权重 q 值来表示相对优先级。
 
 ---
 
-#### Accept-Encoding: 用户代理支持的内容编码及内容编码的优先级顺序。 
+#### Accept-Encoding: 用户代理支持的内容编码及内容编码的优先级顺序。
 
 `Accept-Encoding: gzip, deflate,compress`
 
 ---
 
-#### Accept-Language: 用户代理能够处理的自然语言集（指中文或英文等）及优先级。  
+#### Accept-Language: 用户代理能够处理的自然语言集（指中文或英文等）及优先级。
 
 `Accept-Language: zh-cn`
 
 ---
 
-#### Authorization: 用户代理的认证信息。  
+#### Authorization: 用户代理的认证信息。
 
 ---
 
-#### Host: 请求的资源所处的互联网主机名和端口号。  
+#### Host: 请求的资源所处的互联网主机名和端口号。
 
 ---
 
@@ -93,13 +93,13 @@ max-age 数值代表资源保存为缓存的最长时间。当指定 max-age 值
 
 ---
 
-#### Referer: 请求的URI是哪个页面发起的。  
+#### Referer: 请求的URI是哪个页面发起的。
 
-`Referer: http://www.xxx.com/index.html`  
+`Referer: http://www.xxx.com/index.html`
 
 ---
 
-#### User-Agent: 创建请求的浏览器或用户代理名称等信息  
+#### User-Agent: 创建请求的浏览器或用户代理名称等信息
 
 ---
 
@@ -107,7 +107,7 @@ max-age 数值代表资源保存为缓存的最长时间。当指定 max-age 值
 
 ---
 
-#### Expires: 资源失效的日期。  
+#### Expires: 资源失效的日期。
 
 ---
 
@@ -119,13 +119,13 @@ max-age 数值代表资源保存为缓存的最长时间。当指定 max-age 值
 
 ---
 
-#### Content-Type: 实体主体内对象的媒体类型。  
+#### Content-Type: 实体主体内对象的媒体类型。
 
 `Content-Type: text/html; charset=UTF-8`
 
 ---
 
-#### Content-Encoding: 服务器对实体的主体部分选用的内容编码方式。  
+#### Content-Encoding: 服务器对实体的主体部分选用的内容编码方式。
 
 `Content-Encoding: gzip`
 
@@ -135,27 +135,27 @@ max-age 数值代表资源保存为缓存的最长时间。当指定 max-age 值
 
 ---
 
-#### Content-Length: 表明了实体主体部分的大小（单位是字节） 
+#### Content-Length: 表明了实体主体部分的大小（单位是字节）
 
-`Content-Length: 15000`  
+`Content-Length: 15000`
 当我们获取下载进度信息时，常常使用使用这个信息。
 
 ---
 
-#### Set-Cookie  
+#### Set-Cookie
 
-和cookie相关的信息。  
+和cookie相关的信息。
 
   ![cookie相关的信息](./images/1.png)
 
-安全相关的2个属性  
+安全相关的2个属性
 ![安全相关的2个属性](./images/2.png)
 
 ---
 
-#### Cookie: 如果想HTTP状态管理时，请求的首部加入  
+#### Cookie: 如果想HTTP状态管理时，请求的首部加入
 
-`Cookie: status=enable`  
+`Cookie: status=enable`
 HTTP是无状态的，其状态管理要依赖于Cookie。
 
 ---
@@ -163,6 +163,26 @@ HTTP是无状态的，其状态管理要依赖于Cookie。
 #### 状态码
 
   ![状态码](./images/3.png)
+
+
+
+### 基础概念，是什么，为什么会流行，什么是请求方法，状态码都有哪些含义 优缺点
+
+### 报文详解，状态码详解，实体数据怎么处理，大文件是怎么处理，是怎么连接的，重定向和跳转，cookie，缓存控制，代理和缓存代理
+
+### 安全相关
+
+### HTTP2和HTTP3
+
+### nginx和openresty
+
+### WAF
+
+### CDN
+
+### websocket
+
+### HTTP性能优化
 
 
 
