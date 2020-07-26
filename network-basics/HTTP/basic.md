@@ -10,9 +10,9 @@
 
 ## 什么是 HTTP
 
-HTTP( HyperText Transfer Protocol) 超文本传输协议
+HTTP( HyperText Transfer Protocol) 超文本传输协议，也表示 **与 HTTP 协议相关的所有应用层技术的综合**。
 
-### 详细描述一下 HTTP
+### HTTP 详细描述
 
 #### 协议
 
@@ -99,3 +99,22 @@ HTTP/2.0 考虑了现在互联网带宽、移动、不安全的现状，改善�
 
 ### HTTP 不是什么。
 
+上面我们清楚了 HTTP 是什么，也可以从反面看 HTTP 不是什么。
+
+1. HTTP 不是互联网，互联网（Internet）是由全球很多个网络互相连接形成的国际网络，上面存在着各种各样的资源，也对应着各种各样的协议，除了超文本资源使用的 HTTP ，普通文件使用 FTP，电子邮件使用 SMTP 和 POP3等。
+2. HTTP 不是编程语言，编程语言是人与计算机沟通交流使用的语言，而 HTTP 是计算机与计算机沟通交流的语言。
+3. HTTP 不是一个鼓励的协议，HTTP 通常跑在 TCP/IP 协议栈上，依靠 IP协议实现寻址和路由、TCP洗衣实现可靠数据传输、DNS 协议实现域名查找、SSL/TLS协议实现安全通信。此外，还有一些协议依赖于 HTTP ，例如 WebSocket、HTTPDNS等。
+
+### Web Server 和 Web Service
+
+Web Server 是服务器，承载应用。
+
+Web Service 是一种 W3C 定义的应用服务开发规范：使用 client-server 主从架构，通常使用 WSDL 定义服务接口，使用 HTTP 协议传输 XML 或 SOAP 消息。它**是一个基于 Web（HTTP） 的服务架构技术**，本质上，就是通过网络调用其他网站的资源。Web Service 架构的基本思想就是，尽量把非核心功能交给其他人开发，自己专注开发核心功能。
+
+### 小趣闻
+
+第一个网页浏览器是蒂姆·伯纳斯·李ß发明的，名字叫 WorldWideWeb 。第一个 Web 服务器也是由蒂姆·伯纳斯·李设计并参与开发的，名字叫 CERN httpd。
+
+## 参考资料
+
+1. [Web service是什么？](http://www.ruanyifeng.com/blog/2009/08/what_is_web_service.html)

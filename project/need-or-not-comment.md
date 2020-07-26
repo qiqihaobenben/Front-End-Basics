@@ -49,3 +49,7 @@
 
 ![不应该使用此类注释](./images/comment9.png)
 
+### 推荐相关文章
+
+[如何写好代码注释](https://zh.javascript.info/comments)
+
