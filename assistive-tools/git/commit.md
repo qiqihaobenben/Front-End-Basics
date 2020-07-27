@@ -1,12 +1,16 @@
-# 让你的 commmit 更有价值
+# 让你的 commit 更有价值
 
 ## 提交规范
 
-AngularJS 在开发者文档中有关于 git commit 的指导说明。提到严格的 git commit 信息格式规范可以在浏览项目历史的过程中看到更易读的信息，并且能用 git commit 的信息直接生成 AngularJS 的 change log 。
+AngularJS 在[开发者文档](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)中关于 git commit 的指导说明，提到严格的 git commit 格式规范可以在浏览项目历史的过程中看到更易读的信息，并且能用 git commit 的信息直接生成 AngularJS 的 change log 。
 
-### 提交信息格式
+### commit messages 格式规范
 
-提交信息由 `header` 、`body` 、`footer` 组成，`header` 又包含 `type` 、`scope` 、`subject` 。`header` 是必需的，不过其中的 `scope` 是可选的。 `body` 和 `footer` 可以省略。
+commit messages 由 `header` 、`body` 、`footer` 组成。
+
+`header` 又包含 `type` 、`scope` 、`subject` 。`header` 是必需的，不过其中的 `scope` 是可选的。
+
+`body` 和 `footer` 可以省略。
 
 ```
 <type>(<scope>): <subject>
@@ -18,7 +22,7 @@ AngularJS 在开发者文档中有关于 git commit 的指导说明。提到严�
 <footer>
 ```
 
-> 注：为了能在 github 以及各种 git 工具中看得更清晰，提交信息的每一行都不能超过 100 个字符。
+> 注：为了能在 github 以及各种 git 工具中看得更清晰，commit messages 的每一行都不要超过 100 个字符。
 
 ### Header
 
@@ -26,12 +30,12 @@ AngularJS 在开发者文档中有关于 git commit 的指导说明。提到严�
 
 类型必须是以下几种之一：
 
-- **feat:** 一个新功能
-- **fix:** 一个 bug 修复
+- **feat:** 新功能
+- **fix:** bug 修复
 - **docs:** 仅修改文档
-- **style:** 修改格式（空格，格式胡，省略分号等），对代码运行没有影响
+- **style:** 修改格式（空格，格式化，省略分号等），对代码运行没有影响
 - **refactor:** 重构（既不是修 bug ，也不是加功能）
-- **refactor:** 重构（既不是修 bug ，也不是加功能）
+- **build:** 构建流程、外部依赖变更，比如升级 npm 包、修改 webpack 配置等
 - **perf:** 性能优化
 - **test:** 测试相关
 - **chore:** 对构建过程或辅助工具和库（如文档生成）的更改
@@ -49,11 +53,11 @@ This reverts commit ca16a365467e17915f0273392f4a13331b17617d.
 
 #### Scope
 
-scope 可以指定提交更改位置的影响范围，这个视项目而定，当修改影响超过单个的 scope 时，可以指定为 `*` 。
+scope 可以指定提交更改的影响范围，这个视项目而定，当修改影响超过单个的 scope 时，可以指定为 `*` 。
 
 #### Sbuject
 
-subject 是指更改的简洁描述，长度约定在 50 个字符以内，通常遵循以下几个规范：
+`subject` 是指更改的简洁描述，长度约定在 50 个字符以内，通常遵循以下几个规范：
 
 - 用动词开头，第一人称现在时表述，例如：`change` 代替 `changed` 或 `changes`
 - 第一个字母小写
@@ -61,16 +65,15 @@ subject 是指更改的简洁描述，长度约定在 50 个字符以内，通�
 
 ### Body
 
-`body` 部分是对本地 commit 的详细描述，可以分成多行。跟 `subject` 类似，用动词开头，第一人称现在时表述，例如：`change` 代替 `changed` 或 `changes`。 `body` 应该说明修改的原因和更改前后的行为对比。
+`body` 部分是对本地 commit 的详细描述，可以分成多行。
 
-```
-// 例如
+跟 `subject` 类似，用动词开头，第一人称现在时表述，例如：`change` 代替 `changed` 或 `changes`。
 
-```
+`body` 应该说明修改的原因和更改前后的行为对比。
 
 ### Footer
 
-footer 基本用在这两种情况：
+`footer` 基本用在这两种情况：
 
 - 不兼容的改动（ Breaking Changes ）,通常用 `BREAKING CHANGE:` 开头，后面跟一个空格或两个换行符。剩余的部分就是用来说明这个变动的信息和迁移方法等。
 - 关闭 Issue, [github 关闭 Issue 的例子](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue)
@@ -150,7 +153,7 @@ style($location): add couple of missing semi colons
 
 - 首行就是简洁实用的关键信息，方便在 git history 中快速浏览
 - 具有详实的 body 和 footer ，可以清晰的看出某次提交的目的和影响
-- 可以通过 type 过滤出想要查找的信息，也可以通过关键字快速查找
+- 可以通过 type 过滤出想要查找的信息，也可以通过关键字快速查找相关提交
 - 可以直接从 commit 生成 change log
 
 ```
@@ -174,9 +177,9 @@ git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(
 
 ## 用工具实现规范提交
 
-上面介绍了规范提交的格式，如果让各位同学在 git commit 的时候严格按照上面的规范来写，首先心智是有负担的，得记住不同的类型到底是用来定义什么的，subject 怎么写，body 怎么写，footer 要不要写。其次，对人的规范大部分都是反人性的，所以很可能在过不了多久，就会有同学渐渐的不按照规范来写。靠意志力来控制自己严格按照规范来写是需要而外耗费一些精力的，把精力耗费在这种事情上面实在有些浪费。
+上面介绍了规范提交的格式，如果让各位同学在 `git commit` 的时候严格按照上面的规范来写，首先心智是有负担的，得记住不同的类型到底是用来定义什么的，`subject` 怎么写，`body` 怎么写，`footer` 要不要写。其次，对人的规范大部分都是反人性的，所以很可能在过不了多久，就会有同学渐渐的不按照规范来写。靠意志力来控制自己严格按照规范来写是需要额外耗费一些精力的，把精力耗费在这种事情上面实在有些浪费。
 
-用工具实现规范提交，一种是在提交的时候就提示必填字段，另一种是在提交的时候校验是否符合规范。这两种在实际中都是很有必要的。
+用工具实现规范提交的方案，一种是在提交的时候就提示必填字段，另一种是在提交后校验字段是否符合规范。这两种在实际项目中都是很有必要的。
 
 ### Commitizen
 
@@ -204,7 +207,7 @@ npm install -g git-cz
 
 ### Commitizen 友好
 
-全局安装 commitizen 后，用 cz-conventional-changelog 适配器来初始化你的项目
+全局安装 Commitizen 后，用 cz-conventional-changelog 适配器来初始化你的项目
 
 ```
 // 初始化 cz-conventional-changelog 适配器
@@ -214,8 +217,8 @@ commitizen init cz-conventional-changelog --save-dev --save-exact
 上面的初始化做了三件事：
 
 - 安装 cz-conventional-changelog 依赖
-- 把依赖保存到 package.json 的 dependencies 或 devDependencies 中
-- 在根目录的 package.json 中 添加如下所示的 config.commitizen
+- 把依赖保存到 package.json 的 `dependencies` 或 `devDependencies` 中
+- 在根目录的 package.json 中 添加如下所示的 `config.commitizen`
 
 ```
 "config": {
@@ -249,7 +252,7 @@ npm install cz-customizable --save-dev
 commitizen init cz-customizable --save-dev --save-exact --force
 ```
 
-现在 package.json 中 config.commitizen 字段为：
+现在 package.json 中 `config.commitizen` 字段为：
 
 ```
 "config": {
@@ -259,15 +262,15 @@ commitizen init cz-customizable --save-dev --save-exact --force
   }
 ```
 
-cz-customizable 文档中说明了查找配置文件的方式有三种，我们按照第一种，在项目根目录创建一个 `.cz-config.js` 的文件。按照给出的示例 [cz-config-EXAMPLE.js](https://github.com/leoforfree/cz-customizable/blob/master/cz-config-EXAMPLE.js) 编写我们的 config。 commit-type 可以参考 [conventional-commit-types](https://github.com/commitizen/conventional-commit-types/blob/master/index.json)。
+cz-customizable 文档中说明了查找配置文件的方式有三种，我们按照第一种，在项目根目录创建一个 `.cz-config.js` 的文件。按照给出的示例 [cz-config-EXAMPLE.js](https://github.com/leoforfree/cz-customizable/blob/master/cz-config-EXAMPLE.js) 编写我们的 config。 commit-type 可以参考 [conventional-commit-types](https://github.com/commitizen/conventional-commit-types/blob/master/index.json) 。
 
-可以点击查看我配置好的文件[qiqihaobenben/commitizen-git/.cz-config.js](https://github.com/qiqihaobenben/commitizen-git/blob/master/.cz-config.js) ，里面中详细的注释。
+可以点击查看我配置好的文件 [qiqihaobenben/commitizen-git/.cz-config.js](https://github.com/qiqihaobenben/commitizen-git/blob/master/.cz-config.js) ，里面中详细的注释。
 
 ### commitlint 校验提交
 
-commitizen 文档中开始就介绍到，commitizen 可以在触发 git commit 钩子之前就能给出提示，但是也明确表示 commit 的校验也是很有用的。毕竟即使用了 commitzen，也是能绕过去，所以提交最后的校验也很重要。
+Commitizen 文档中开始就介绍到，Commitizen 可以在触发 `git commit` 钩子之前就能给出提示，但是也明确表示提交时对 commit messages 的校验也是很有用的。毕竟即使用了 Commitzen，也是能绕过去，所以提交最后的校验很重要。
 
-[commitlint](https://github.com/conventional-changelog/commitlint) 可以检查 commit messages 是否符合常规提交格式，需要一份校验配置，推荐 [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)
+[commitlint](https://github.com/conventional-changelog/commitlint) 可以检查 commit messages 是否符合常规提交格式，需要一份校验配置，推荐 [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional) 。
 
 ```
 npm i --save-dev @commitlint/config-conventional @commitlint/cli
@@ -283,7 +286,7 @@ module.exports = {
 };
 ```
 
-在项目中安装 husky ，并且在项目根目录新建 husky.config.js 文件，加入以下设置：
+在项目中安装 husky ，并在项目根目录新建 husky.config.js 文件，加入以下设置：
 
 ```js
 // 安装 husky
@@ -298,7 +301,7 @@ module.exports = {
 }
 ```
 
-> 注意：我们在用 `cz-customizable` 自定义中文配置时，因为 [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional) 校验规则是遵循 Angular 的规范， 所以 `.cz-config.js` 的文件是按照给出的符合 Angular 规范的示例 [cz-config-EXAMPLE.js](https://github.com/leoforfree/cz-customizable/blob/master/cz-config-EXAMPLE.js) 编写我们的 config 的。但是如果你自定义的 commitizen 配置不符合 Angular 规范，可以使用 [commitlint-config-cz](https://github.com/whizark/commitlint-config-cz)
+> 注意：因为 [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional) 校验规则遵循 Angular 的规范， 所以我们在用 cz-customizable 自定义中文配置时， 是按照给出的符合 Angular 规范的示例 [cz-config-EXAMPLE.js](https://github.com/leoforfree/cz-customizable/blob/master/cz-config-EXAMPLE.js) 编写`.cz-config.js` 的。但是如果你自定义的 Commitizen 配置不符合 Angular 规范，可以使用 [commitlint-config-cz](https://github.com/whizark/commitlint-config-cz) 设置校验规则。（推荐还是按照 Angular 规范进行 cz-customizable 自定义配置）
 
 ```js
 // 安装 commitlint-config-cz
@@ -315,8 +318,8 @@ module.exports = {
 
 ### git commit 触发 git cz
 
-在提交的时候，我们都习惯了 git commit，虽然换成 git cz 不难，但是如果让开发者在 git commit 的时无感知的触发 git cz 肯定是更好的，
-而且能避免不熟悉项目的人直接 git commit 提交一些不符合规范的信息。
+在提交的时候，我们都习惯了 `git commit` ，虽然换成 `git cz` 不难，但是如果让开发者在 `git commit` 时无感知的触发 `git cz` 肯定是更好的，
+而且也能避免不熟悉项目的人直接 `git commit` 提交一些不符合规范的信息。
 
 我们可以在 husky.config.js 中设置：
 
@@ -328,10 +331,10 @@ module.exports = {
 
 > 注意： 在 window 系统，可能需要在 git base 中才能生效。
 
-### 生成开发日志
+### 生成 CHANGELOG
 
 [standard-version](https://github.com/conventional-changelog/standard-version)
-一个使用 [semver](https://semver.org/lang/zh-CN/) 和 [conventional-commits](https://github.com/conventional-commits) 支持生成 CHANGELOG 进行版本控制的实用程序。
+是一个使用 [semver](https://semver.org/lang/zh-CN/) 和 [conventional-commits](https://github.com/conventional-commits) 支持生成 CHANGELOG 进行版本控制的实用程序。
 standard-version 不只是能生成 CHANGELOG , 还能根据 commit 的 type 来进行版本控制。
 
 ```
@@ -348,29 +351,32 @@ npm i --save-dev standard-version
 
 ## 示例项目
 
-可以查看 [commitizen-git](https://github.com/qiqihaobenben/commitizen-git) ，里面归纳了快速配置 commitizen 友好仓库的步骤。
+可以查看 [commitizen-git](https://github.com/qiqihaobenben/commitizen-git) ，里面归纳了快速配置 Commitizen 友好仓库的步骤。
 差不多三五分钟就能搞定。
+
+可以看一下配置完后，执行 git commit 的效果。
+
+![](./images/commitizen.gif)
 
 ## 扩展
 
 ### 更复杂的自定义提示
 
-[cz-customizable](https://github.com/leoforfree/cz-customizable) 中自定义配置项通常情况是够的，
-commitlint 中校验的规则基本上也是够的，但是会有比较硬核的开发者会觉得还是不够，还要更多。比如一些 prompt 更加自定义，
-提交时询问的 question 添加更多的逻辑，比如可以把一些重要的字段校验提前到此处，或者添加更多自定义的校验。
+[cz-customizable](https://github.com/leoforfree/cz-customizable) 中自定义配置项通常情况是够用的，
+commitlint 中校验的规则基本上也是够用的，但是会有比较硬核的开发者会觉得还是不够，还要更多。比如一些 prompt 更加自定义，
+提交时询问的 question 添加更多的逻辑，比如可以把一些重要的字段校验提前到 Commitizen 中，或者添加更多自定义的校验。
 
 如果真想这么干，那就去 fork 一份 [cz-conventional-changelog](https://github.com/commitizen/cz-conventional-changelog) 或者 [cz-customizable](https://github.com/leoforfree/cz-customizable) 来改，
 或者直接自己写一个 adapter。
 
-### commitizen 友好徽章
+### Commitizen 友好徽章
 
-如果把仓库配置成了对 commitizen 友好的话，可以在 readme.md 中加上这个小徽章：
+如果把仓库配置成了对 Commitizen 友好的话，可以在 `README.md` 中加上这个小徽章：
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ## 参考文档
 
 - [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit)
-- [it-commit-guidelines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)
 - [conventional commit format](https://www.conventionalcommits.org/en/v1.0.0/)
 - [Commit message 和 Change log 编写指南](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
 - [Writing Git commit messages](https://365git.tumblr.com/post/3308646748/writing-git-commit-messages)
