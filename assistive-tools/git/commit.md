@@ -55,7 +55,7 @@ This reverts commit ca16a365467e17915f0273392f4a13331b17617d.
 
 scope 可以指定提交更改的影响范围，这个视项目而定，当修改影响超过单个的 scope 时，可以指定为 `*` 。
 
-#### Sbuject
+#### Subject
 
 `subject` 是指更改的简洁描述，长度约定在 50 个字符以内，通常遵循以下几个规范：
 
@@ -373,6 +373,10 @@ commitlint 中校验的规则基本上也是够用的，但是会有比较硬核
 
 如果把仓库配置成了对 Commitizen 友好的话，可以在 `README.md` 中加上这个小徽章：
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
+```
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+```
 
 ## 参考文档
 
