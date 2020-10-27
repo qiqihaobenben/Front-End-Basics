@@ -1,7 +1,7 @@
 <!--
  * @Author: 陈方旭
  * @Date: 2020-10-04 15:54:50
- * @LastEditTime: 2020-10-14 08:02:32
+ * @LastEditTime: 2020-10-27 08:17:37
  * @LastEditors: chenfangxu
  * @Description: Shell基础入门的文档
  * @FilePath: /front/assistive-tools/shell/basics.md
@@ -36,7 +36,7 @@ Shell 是一种脚本语言，必须由解释器来执行这些脚本。Unix/Lin
 
 安装完 zsh 后，永久修改当前的默认 Shell 为 zsh ：`chsh -s /bin/zsh`
 
-查看当前系统安装的 Shell 程序： `cat /etc/shells`
+查看当前系统安装的 Shell 程序： `cat /etc/shells`（以下所有代码中，\$ 开头的命令，其他的是输出）
 
 ```
 $ cat /etc/shells
@@ -52,7 +52,14 @@ $ cat /etc/shells
 /bin/zsh
 ```
 
-查看当前的 Shell 程序： `echo $SHELL` 或 `echo $0`
+查看 Shell 程序的安装全路径
+
+```
+$ type -a bash
+bash is /bin/bash
+```
+
+查看当前的 Shell 程序： `echo $SHELL` 或 `echo $0` 或 `ps $$`
 
 ```
 $ echo $SHELL
@@ -75,3 +82,7 @@ $ echo $SHELL
 
 /bin/zsh
 ```
+
+## 参考文档
+
+[Shell 中傻傻分不清楚的 TOP3](https://mp.weixin.qq.com/s/UofKYTb9hp2FXYIKM5Q3Qw)
