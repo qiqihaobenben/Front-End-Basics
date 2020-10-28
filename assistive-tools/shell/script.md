@@ -1,7 +1,7 @@
 <!--
  * @Author: chenfangxu
  * @Date: 2020-10-05 20:22:20
- * @LastEditTime: 2020-10-27 09:39:44
+ * @LastEditTime: 2020-10-28 13:05:53
  * @LastEditors: chenfangxu
  * @Description: Shell 脚本
  * @FilePath: /front/assistive-tools/shell/script.md
@@ -110,7 +110,7 @@ fruit=apple
 count=5
 ```
 
-**注意：`varName=value`的等号两边没有空格**
+**注意：`varName=value`的等号两边没有空格，变量值如果有空格，需要用引号包住。**
 
 2、访问变量
 
@@ -171,7 +171,9 @@ echo $fruit
 | \$@        | 传递给脚本或函数的所有参数，被双引号（""）包含时，与\$\*稍有不同            |
 | \$FUNCNAME | 函数名称（仅在函数内值）                                                    |
 | \$?        | 上个命令的退出状态，或函数的返值                                            |
+| \$-        | 显示 shell 使用的当前选项(flag)，后面扩展中检测是否为交互模式时会用到       |
 | \$\$       | 当前 Shell 进程 ID。对于 Shell 脚本，就是这些脚本所在的进程 ID              |
+| \$!        | 最后一个后台运行的进程 ID 号                                                |
 
 > 命令行参数：运行脚本时传递给脚本的参数成为命令行参数，命令行参数用\$n 表示。
 
@@ -1110,6 +1112,114 @@ shell 提供了用于 debug 脚本的工具。如果想采用 debug 模式运行
 
 ### 环境变量
 
+所有的程序，包括 Shell 启动的程序运行时都可以访问的变量就是环境变量。在 shell 脚本中使用 `export` 可以定义环境变量，但是只在当前运行的 shell 进程中有效，结束进程就没了。如果想持久化，需要将环境变量定义在一些列配置文件中。
+
+配置文件的加载顺序和 shell 进程是否运行在 Interactive 和 Login 模式有关。
+
+#### 交互和非交互模式（Interactive & Non-Interactive）
+
+- Interactive 模式：通常是指读写数据都是从用户的命令行终端（terminal），用户输入命令，并在回车后立即执行的 shell。
+- Non-Interactive 模式：通常是指执行一个 shell 脚本，或 bash -c 执行命令
+
+检测当前 shell 运行的环境是不是 Interactive 模式
+
+```
+[[ $- == *i* ]] && echo "Interactive" || echo "Non-interactive"
+```
+
+#### 登录和非登录模式（Login & Non-Login）
+
+- Login 模式：应用在终端登陆时，ssh 连接时，su --login <username> 切换用户时，指的是用户成功登录后开启的 Shell 进程，此时会读取 `/etc/passwd` 下用户所属的 shell 执行。
+- Non-Login 模式：应用在直接运行 bash 时，su <username> 切换用户时（前面没有加 --login）。指的是非登录用户状态下开启的 shell 进程。
+
+检测当前 shell 运行的环境是不是 Login 模式
+
+```
+shopt -q login_shell && echo "Login shell" || echo "Not login shell"
+
+#如果是zsh，没有shopt命令
+[[ -o login ]] && echo "Login shell" || echo "Not login shell"
+```
+
+进入 bash 交互模式时也可以用 --login 参数来决定是否是登录模式：
+
+```
+$> bash
+$> shopt -q login_shell && echo "Login shell" || echo "Not login shell"
+Not login shell
+$> exit
+$> bash --login
+$> shopt -q login_shell && echo "Login shell" || echo "Not login shell"
+Login shell
+$> exit
+```
+
+Login 模式模式下可以用 logout 和 exit 退出，Non-Login 模式下只能用 exit 退出。
+
+#### 配置文件加载顺序
+
+bash 支持的配置文件有 /etc/profile、~/.bash.rc 等。
+
+![配置文件加载顺序](https://mmbiz.qpic.cn/mmbiz_png/f93EtXu3ZkicRhAdmf1rDibY0fynw3NnY9zcUFmkrYZj4iavlA1K9nyKOZ8Bca6ar5nP5oqjyVrEtLeeWL9UzdIyA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+如上图加载顺序所示
+
+- Interactive&Login 模式：/etc/profile —>( ~/.bash_profile, ~/.bash_login, ~/.profile)其中之一 —>~/.bash_loginout(退出 shell 时调用)
+- Interactive&Non-Login 模式：/etc/bash.bashrc —>~/.bashrc
+- Non-Interactive 模式：通常就是执行脚本的时候，此时配置项是从环境变量中读取和执行的，也就是 `env` 或者 `printenv` 命令输出的配置项。
+
+现在的系统一般都没有 ~/.bash_profile 文件了，只保留 ~/.bashrc 文件,所有的系统里，~/.bash_profile 都会有这样的逻辑，避免登陆时 ~/.bashrc 被跳过的情况：
+
+```
+# login shell will execute this
+if [ -n "$BASH_VERSION" ]; then
+	# include .bashrc if it exists
+	if [ -f "$HOME/.bashrc" ]; then
+		. "$HOME/.bashrc"
+	fi
+fi
+```
+
+在发行版的 Linux 系统中，Interactive&Login 模式下的 ~/.bash_profile, ~/.bash_login， ~/.profile 并不一定是三选一，看一下这三个脚本的内容会发现他们会继续调用下一个它想调用的配置文件，这样就可以避免配置项可能需要在不同的配置文件多次配置。如 centos7.2 中 ~/.bash_profile 文件中实际调用了 ~/.bashrc 文件。
+
+```
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+export PATH
+```
+
+![](https://mmbiz.qpic.cn/mmbiz_png/f93EtXu3ZkicRhAdmf1rDibY0fynw3NnY9YffnBde6h3ibJhFKFxsBll15K03AeJUWz8HjlNaR8x7ib19mExjIwSTA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+如上图所示，开启一个 Shell 进程时，有一些参数的值也会影响到配置文件的加载。如--rcfile，--norc 等。
+
+常用的 shell 环境变量：
+
+| 变量名  | 描述                                     |
+| :------ | :--------------------------------------- |
+| PATH    | 命令搜索路径，以冒号为分隔符             |
+| HOME    | 用户主目录的路径名，是 cd 命令的默认参数 |
+| SHELL   | 当前运行的 Shell 的全路径名              |
+| TERM    | 终端类型                                 |
+| LOGNAME | 当前的登录名                             |
+| PWD     | 当前工作目录                             |
+
+```
+#输出个别的环境变量值的两种方式
+
+printenv HOME
+
+echo $HOME
+```
+
 ### $* 和 $@ 的区别
 
 `$*` 和 `$@` 都表示传递给函数或脚本的所有参数，不被双引号（""）包含时，都是以`"$1" "$2" ... "\$n"`形式把所有参数一个一个单独输出。
@@ -1117,26 +1227,33 @@ shell 提供了用于 debug 脚本的工具。如果想采用 debug 模式运行
 但是当他们被双引号包含是，`"$*"` 会将所有的参数作为一个整体，以`"$1 $2 ... $n"`的形式输出所有参数。`"$@"` 还是跟之前一样，把所有参数分开，一个一个的输出。
 
 ```
+
 #/bin/bash
 
 echo "打印出没有引号的 $*"
-for var in $*
+for var in $_
 do
-  echo "$var"
+echo "$var"
 done
-#输出：打印出没有引号的 $*
-#     a
-#     b
-#     c
-#     d
+#输出：打印出没有引号的 $_
+
+# a
+
+# b
+
+# c
+
+# d
 
 echo "打印出有引号的 \"$*\""
-for var in $*
+for var in $_
 do
-  echo "$var"
+echo "$var"
 done
-#输出：打印出有引号的 "$*"
-#     a b c d
+#输出：打印出有引号的 "$_"
+
+# a b c d
+
 ```
 
 ### Shell 中的替换
@@ -1156,14 +1273,16 @@ done
 | \v       | 垂直制表符                         |
 
 ```
+
 #/bin/bash
 
 a=1
 b=2
 
-echo -e "${a}\n${b}"
-#输出：1
-#     2
+echo -e "${a}\n${b}" #输出：1
+
+# 2
+
 ```
 
 #### 命令替换
@@ -1173,11 +1292,12 @@ echo -e "${a}\n${b}"
 命令替换的语法是：反引号 ``。
 
 ```
+
 #!/bin/bash
 
 DATE=`date`
-echo "日期是：$DATE"
-#输出：日期是：Sun Oct 18 16:27:42 CST 2020
+echo "日期是：\$DATE" #输出：日期是：Sun Oct 18 16:27:42 CST 2020
+
 ```
 
 ### () 和 (())
@@ -1189,9 +1309,11 @@ echo "日期是：$DATE"
 [Here Document](https://tldp.org/LDP/abs/html/here-docs.html) 可以理解为“嵌入文档”。Here Document 是 Shell 中的一种特殊的重定向方式，它的基本形式如下：
 
 ```
+
 command <<delimiter
- document
+document
 delimiter
+
 ```
 
 作用是将两个 delimiter 之间的内容(document)作为输入传递给 command。
@@ -1202,15 +1324,19 @@ delimiter
 - 开始的 delimiter 前后的空格会被忽略掉。
 
 ```
+
 #!/bin/bash
 
-
 wc -l << EOF
-   line 1
-   line 2
-   line 3
-EOF
-#输出：3
+line 1
+line 2
+line 3
+EOF #输出：3
+
 ```
 
 ## 参考文档
+
+- [Shell 中傻傻分不清楚的 TOP3](https://mp.weixin.qq.com/s/UofKYTb9hp2FXYIKM5Q3Qw)
+- [千万别混淆 Bash/Zsh 的四种运行模式](https://zhuanlan.zhihu.com/p/47819029)
+- [一篇文章让你彻底掌握 shell 语言](https://juejin.im/post/6844903784158593038)
