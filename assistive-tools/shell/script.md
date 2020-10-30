@@ -1,7 +1,7 @@
 <!--
  * @Author: chenfangxu
  * @Date: 2020-10-05 20:22:20
- * @LastEditTime: 2020-10-28 13:05:53
+ * @LastEditTime: 2020-10-30 13:26:11
  * @LastEditors: chenfangxu
  * @Description: Shell 脚本
  * @FilePath: /front/assistive-tools/shell/script.md
@@ -313,6 +313,110 @@ echo "var is ${var}"
 可以用来检测变量 var 是否可以被正常赋值。若此替换出现在 shell 脚本中，那么脚本将停止运行。
 
 #### \${var:+word}：如果变量 var 被定义，那么返回 word，但不改变 var 的值。
+
+### 数组
+
+数组是可以存储多个值的变量，这些值可以单独引用，也可以作为整个数组来引用。数组的下标从 0 开始，下标可以是整数或算数表达式，其值应该大于等于 0。
+
+#### 创建数组
+
+```
+numbers=(one two three four five)
+
+#创建数组时指明下标
+colors=([1]=red [0]=yello [2]=blue)
+```
+
+#### 访问数组
+
+访问单个元素
+
+```
+echo ${numbers[2]}
+#输出：three
+```
+
+访问数组的所有元素
+
+```
+echo ${colors[*]}
+#输出：yello red blue
+
+echo ${colors[@]}
+#输出：yello red blue
+```
+
+`${colors[*]}`和`${colors[@]}`有些细微的差别，在将数组中的每个元素单独一行输出的时候，有没有被引号包住会有不同的差别，在引号内，`${colors[@]}`将数组中的每个元素扩展为一个单独的参数；数组元素中的空格得以保留。
+
+访问数组部分元素
+
+```
+# :0:2 去除数组中从0开始，长度为2的数组元素
+echo ${colors[@]:0:2}
+#输出：yello red
+```
+
+#### 数组的长度
+
+```
+echo ${#colors[@]}
+#输出：3
+```
+
+#### 数组中添加元素
+
+```
+colors=(white "${colors[@]}" green black)
+
+echo ${colors[@]}
+#输出：white yello red blue green black
+echo ${#colors[@]}
+#输出：6
+```
+
+#### 数组中删除元素
+
+```
+unset numbers[2]
+
+echo ${colors[@]}
+#输出：white yello blue green black
+echo ${#colors[@]}
+#输出：5
+```
+
+#### 完整的代码示例：
+
+```
+#!/bin/bash
+
+
+numbers=(one two three four five)
+
+colors=([1]=red [0]=yello [2]=blue)
+
+echo ${numbers[2]}
+
+echo ${colors[*]}
+
+echo ${colors[@]}
+
+echo ${colors[@]:0:2}
+
+echo ${#colors[@]}
+
+colors=(white "${colors[@]}" green black)
+
+echo ${colors[@]}
+
+echo ${#colors[@]}
+
+unset colors[2]
+
+echo ${colors[@]}
+
+echo ${#colors[@]}
+```
 
 ### 运算符
 
@@ -1075,24 +1179,83 @@ echo $a
 
 #### 全局 Debug
 
-shell 提供了用于 debug 脚本的工具。如果想采用 debug 模式运行某脚本，可以在其 shebang 中使用一个特殊的选项。
+shell 提供了用于 debug 脚本的工具。如果想采用 debug 模式运行某脚本，可以在其 shebang 中使用一个特殊的选项。（有些 shell 不支持）
 
 ```
 #!/bin/bash [options]
 ```
 
-| 选项 | 名称        | 描述                                                       |
-| :--- | :---------- | :--------------------------------------------------------- |
-| -f   | noglob      | 禁止文件名展开（globbing）                                 |
-| -i   | interactive | 让脚本以交互模式运行                                       |
-| -n   | noexec      | 读取命令，但不执行（语法检查）                             |
-| -t   | --          | 执行完第一条命令后退出                                     |
-| -v   | verbose     | 在执行每条命令前，向 stderr 输出该命令                     |
-| -x   | xtrace      | 在执行每条命令前，向 stderr 输出该命令以及该命令的扩展参数 |
+或者在执行 Bash 脚本的时候，从命令行传入这些参数
+
+```
+bash -euxo pipefail test.sh
+```
 
 #### 局部 Debug
 
 有时我们只需要 debug 脚本的一部分。这种情况下，使用 set 命令会很方便。这个命令可以启用或禁用选项。 使用 `-` 启用选项，使用 `+` 禁用选项。
+
+1、用来在运行结果之前，先输出执行的那一行命令
+
+```
+set -x
+#或者
+set -o xtrace
+```
+
+2、执行脚本时，如果遇到不存在的变量会报错，并停止执行。（默认是忽略报错的）
+
+```
+set  -u
+#或者
+set  -o nounset
+```
+
+**顺便说一下，如果命令行下不带任何参数，直接运行`set`，会显示所有的环境变量和 Shell 函数。**
+
+3、执行脚本时，发生错误就终止执行。（默认是继续执行的）
+
+```
+set  -e
+#或者
+set -o errexit
+
+#可以用下面是方法
+command || exit 1
+#或者
+command1 && command2
+```
+
+`set -e` 根据返回值来判断，一个命令是否运行失败。但是，某些命令的非零返回值可能不表示失败，或者开发者希望在命令失败的情况下，脚本继续执行下去。这时可以暂时关闭 set -e，该命令执行结束后，再重新打开 set -e。
+
+```
+set +e
+command1
+command2
+set -e
+
+#也可以用下面的方法
+command || true
+```
+
+4、管道命令执行失败，脚本终止执行
+
+管道命令就是多个子命令通过管道运算符（`|`）组合成为一个大的命令。Bash 会把最后一个子命令的返回值，作为整个命令的返回值。最后一个子命令不失败，管道命令就总是会执行成功的，因此 `set -e` 会失效，后面的命令会继续执行。
+
+set -o pipefail 用来解决这个情况，只要一个子命令失败，整个管道命令就会失败，脚本就会终止执行。
+
+```
+set -eo pipefail
+```
+
+上面的命令可以放在一起使用：
+
+```
+set -euxo pipefail
+#或者
+set -eux
+set -o pipefail
+```
 
 ## 扩展
 
@@ -1156,7 +1319,7 @@ $> exit
 
 Login 模式模式下可以用 logout 和 exit 退出，Non-Login 模式下只能用 exit 退出。
 
-#### 配置文件加载顺序
+#### 配置文件（启动文件）加载顺序
 
 bash 支持的配置文件有 /etc/profile、~/.bash.rc 等。
 
@@ -1166,7 +1329,7 @@ bash 支持的配置文件有 /etc/profile、~/.bash.rc 等。
 
 - Interactive&Login 模式：/etc/profile —>( ~/.bash_profile, ~/.bash_login, ~/.profile)其中之一 —>~/.bash_loginout(退出 shell 时调用)
 - Interactive&Non-Login 模式：/etc/bash.bashrc —>~/.bashrc
-- Non-Interactive 模式：通常就是执行脚本的时候，此时配置项是从环境变量中读取和执行的，也就是 `env` 或者 `printenv` 命令输出的配置项。
+- Non-Interactive 模式：通常就是执行脚本（script）的时候，此时配置项是从环境变量中读取和执行的，也就是 `env` 或者 `printenv` 命令输出的配置项。
 
 现在的系统一般都没有 ~/.bash_profile 文件了，只保留 ~/.bashrc 文件,所有的系统里，~/.bash_profile 都会有这样的逻辑，避免登陆时 ~/.bashrc 被跳过的情况：
 
@@ -1226,34 +1389,53 @@ echo $HOME
 
 但是当他们被双引号包含是，`"$*"` 会将所有的参数作为一个整体，以`"$1 $2 ... $n"`的形式输出所有参数。`"$@"` 还是跟之前一样，把所有参数分开，一个一个的输出。
 
+例如：`./test.sh a b c d`
+
 ```
 
 #/bin/bash
 
 echo "打印出没有引号的 $*"
-for var in $_
+for var in $*
 do
 echo "$var"
 done
-#输出：打印出没有引号的 $_
-
+#输出：打印出没有引号的 $*
 # a
-
 # b
-
 # c
-
 # d
 
 echo "打印出有引号的 \"$*\""
-for var in $_
+for var in "$*"
 do
 echo "$var"
 done
-#输出：打印出有引号的 "$_"
-
+#输出：打印出有引号的 "$*"
 # a b c d
 
+
+echo "打印出没有引号的 $@"
+for var in $@
+do
+echo "$var"
+done
+#输出：打印出没有引号的 $@
+# a
+# b
+# c
+# d
+
+echo "打印出有引号的 \"$@\""
+for var in "$@"
+do
+echo "$var"
+done
+#输出：打印出有引号的 "$@"
+# a
+# b
+# c
+# d
 ```
 
 ### Shell 中的替换
@@ -1302,7 +1484,108 @@ echo "日期是：\$DATE" #输出：日期是：Sun Oct 18 16:27:42 CST 2020
 
 ### () 和 (())
 
-### [] 和 [[]]
+#### 先说一下 ()
+
+在 bash 中，\$()与 ``（反引号）都是用来作命令替换的。先完成引号里的命令行，然后将其结果替换出来，再重组成新的命令行。
+
+相同点：\$() 与 `` 在操作上，这两者都是达到相应的效果
+
+不同点：`` 很容易与''搞混乱，尤其对初学者来说，而\$( )比较直观；不过 \$() 有兼容性问题，有些类 Unix 系统不支持。
+
+```
+echo $(expr 1 + 2)
+```
+
+#### 再说 (())
+
+1、(()) 可直接用于整数计算
+
+```
+echo $((1 + 2))
+```
+
+2、(()) 可重新定义变量值，用于判断条件或计算等
+
+```
+#!/bin/bash
+
+a=10
+b=50
+
+((a++))
+echo $a
+#输出：10
+
+((a > b)) && echo "a > b"
+
+((a < b)) && echo "a < b"
+
+# 输出：a < b
+```
+
+3、(()) 可用于进制转换
+
+\$(())可以将其他进制转成十进制数显示出来。语法：`$((N#xx))`，其中，N 为进制，xx 为该进制下某个数值，命令执行后可以得到该进制数转成十进制后的值。
+
+```
+echo $((2#110))
+#输出：6
+echo $((8#11))
+#输出：9
+echo $((16#1a))
+#输出：26
+```
+
+### test 、[] 和 [[]]
+
+type 命令检查
+
+```
+type "test" "[" "[["
+#输出：
+#test is a shell builtin
+#[ is a shell builtin
+#[[ is a reserved word
+```
+
+从上面可以看出，`test`和`[`属于 Shell 的内置命令，`[[`属于 Shell 的保留关键字。
+
+在使用上，`test`和`[`是等价的，因为是命令，所以需要跟它的参数使用空格隔开。
+
+```
+test -f /etc/hosts && echo True
+#输出：True
+
+[ -f /etc/hosts ] && echo True
+#输出：True
+```
+
+因为 `]` 作为最后一个参数表示条件结束，而像`<`、`>`符号会被理解为重定向，导致错误
+
+```
+[ 1 < 2 ]
+#输出：line 13: 2: No such file or directory
+```
+
+`[[`是关键字，能够按照常规的语义理解其中的内容，双中括号中的表达式看作一个单独的语句，并返回其状态码。
+
+```
+[[ 1 < 2 ]] && echo True || echo False
+#输出：True
+```
+
+推荐使用`[[` 来进行各种判断，可以避免很多错误。
+
+如下展示单中括号会引发的错误
+
+```
+[ $a == 1 && $b == 1 ] && echo True || echo False
+#输出：[: missing `]'
+
+#例如$a为空，就会报语法错误，因为 [ 命令拿到的实际上只有 ==、1、] 三个参数
+[ $a == 1 ]
+#输出：[: ==: unary operator expected
+``
 
 ### Here Document
 
@@ -1340,3 +1623,5 @@ EOF #输出：3
 - [Shell 中傻傻分不清楚的 TOP3](https://mp.weixin.qq.com/s/UofKYTb9hp2FXYIKM5Q3Qw)
 - [千万别混淆 Bash/Zsh 的四种运行模式](https://zhuanlan.zhihu.com/p/47819029)
 - [一篇文章让你彻底掌握 shell 语言](https://juejin.im/post/6844903784158593038)
+- [Bash 脚本 set 命令教程](http://www.ruanyifeng.com/blog/2017/11/bash-set.html)
+```
