@@ -1,7 +1,7 @@
 <!--
  * @Author: 陈方旭
  * @Date: 2020-10-04 15:54:50
- * @LastEditTime: 2020-10-27 08:17:37
+ * @LastEditTime: 2020-11-01 16:10:39
  * @LastEditors: chenfangxu
  * @Description: Shell基础入门的文档
  * @FilePath: /front/assistive-tools/shell/basics.md
@@ -24,7 +24,8 @@ Shell 是一种脚本语言，必须由解释器来执行这些脚本。Unix/Lin
 - ksh：是 Korn Shell 的缩写，共有 42 条内部命令。
 - zsh: 设计用于交互的强大 shell 与脚本语言
 - fish: 智能且友好的命令行 shell
-- **注意：bash 基于 sh，并吸收了 csh 和 ksh 的一些特性。bash 完全兼容 sh，也就是说，用 sh 写的脚本可以直接在 bash 中执行，不需要任何修改。**
+
+**注意：bash 基于 sh，并吸收了 csh 和 ksh 的一些特性。bash 完全兼容 sh，也就是说，用 sh 写的脚本可以直接在 bash 中执行，不需要任何修改。**
 
 ### Shell 脚本解释器的发展史
 

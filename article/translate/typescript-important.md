@@ -3,7 +3,7 @@
  * @Date: 2020-08-21 09:45:13
  * @Description: TypeScript 为何如此重要？（待翻译）
  * @LastEditors: chenfangxu
- * @LastEditTime: 2020-10-16 07:55:26
+ * @LastEditTime: 2020-11-05 09:02:58
  * @FilePath: /front/article/translate/typescript-important.md
 -->
 
@@ -34,3 +34,20 @@
 ## TypeScript 是什么？
 
 JavaScript 是一个解释型或者说动态编译语言，开发人员在运行程序之前不需要编译代码。因为，我们称 TypeScript 为**JavaScript 的类型超集**，意思是说它给开发人员提供了一组新的语法，可以给 JavaScript 这种弱类型语言加入类型。
+
+举个例子，当我们在 JavaScript 中声明一个变量时，是不需要指定类型的。但在 TypeScript 中声明变量就必须指定一个类型，当然你也可以不设置类型直接赋值。
+
+```
+let isDone: boolean
+let decimal: number
+let big: bigint
+let color: string
+let name = "John"
+```
+
+跟 JavaScript(.js)不同，TypeScript 文件后缀使用 .ts 扩展名。浏览器是不识别 .ts 文件，所以使用时必须提前把 TS 代码转换成 JavaScript 代码。这个转换过程被称为转译，编译和转译的微小差别在于：
+
+- 编译是把源码转变成另一种语言
+- 转译是把源码转变另一个相同抽象层级的语言
+
+实话实说，我必须澄清这个概念，因为我已经有很多次碰到这两个容易被混淆的概念了。不过，为了便于阅读，就连 TypeScript 的官方文档也一直把预处理过程叫做编译。

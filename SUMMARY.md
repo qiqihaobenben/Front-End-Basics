@@ -51,6 +51,9 @@
     - [规范 commit messages](assistive-tools/git/commit.md)
   - MySQL
     - [Mysql 必知必会](assistive-tools/database/mysql.md)
+  - Shell
+    - [Shell 概述](assistive-tools/shell/basics)
+    - [shell 脚本编程详解](assistive-tools/shell/script)
 - 实践沉淀
   - [el-scrollbar 讲解](project/el-scrollbar.md)
   - [【译】到底需不需要使用注释？](project/need-or-not-comment.md)
