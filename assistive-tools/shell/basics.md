@@ -1,13 +1,13 @@
 <!--
  * @Author: 陈方旭
  * @Date: 2020-10-04 15:54:50
- * @LastEditTime: 2020-11-01 16:10:39
+ * @LastEditTime: 2020-11-09 17:24:38
  * @LastEditors: chenfangxu
  * @Description: Shell基础入门的文档
  * @FilePath: /front/assistive-tools/shell/basics.md
 -->
 
-# Shell 基础入门
+# Shell 概览
 
 Shell 本身是一个用 C 语言编写的程序，它是用户使用 Unix/Linux 的桥梁。
 
@@ -29,7 +29,7 @@ Shell 是一种脚本语言，必须由解释器来执行这些脚本。Unix/Lin
 
 ### Shell 脚本解释器的发展史
 
-![Shell 脚本解释器的发展史](https://mmbiz.qpic.cn/mmbiz_png/f93EtXu3ZkicRhAdmf1rDibY0fynw3NnY98Z6paJyH0cnV5MNqk9DXYia3x9s94L01LOrNhhbObnm4LJiauPcLpxTw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![Shell 脚本解释器的发展史](./images/shell1.png)
 
 ### 查看 Shell 程序信息
 

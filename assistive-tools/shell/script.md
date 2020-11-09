@@ -1,13 +1,13 @@
 <!--
  * @Author: chenfangxu
  * @Date: 2020-10-05 20:22:20
- * @LastEditTime: 2020-11-09 15:55:46
+ * @LastEditTime: 2020-11-09 17:34:18
  * @LastEditors: chenfangxu
- * @Description: Shell 脚本
+ * @Description: Shell 脚本编程详解
  * @FilePath: /front/assistive-tools/shell/script.md
 -->
 
-# Shell 脚本
+# Shell 脚本编程详解
 
 Shell 脚本（shell script），是一种为 Shell 编写的脚本程序，一般文件后缀为 `.sh`。
 
@@ -555,7 +555,7 @@ fi
 | :----- | :-------------------------------------------------- | :--- |
 | ! | 非运算 | [ ! false ] 返回 true |
 | -o | 或运算 |[ ${a} -eq 10 -o ${b} -eq 100 ] 返回 true |
-| \|\| | 跟 -o 类似，逻辑的 OR，不过需要使用 `[[]]` 表达式 |[[ ${a} -eq 10 \|\| ${b} -eq 100 ]] 返回 true |
+| `||` | 跟 -o 类似，逻辑的 OR，不过需要使用 `[[]]` 表达式 |[[ ${a} -eq 10 `||` ${b} -eq 100 ]] 返回 true |
 | -a | 与运算 | [ ${a} -eq 10 -a ${b} -eq 50 ] 返回 true|
 | && | 跟-a 类似，逻辑的 AND，不过需要使用 `[[]]` 表达式 | [[ ${a} -eq 10 && ${b} -eq 50 ]] 返回 true|
 | = | 检测两个数字或字符串是否相等，相等返回 true |[ ${a} = ${b} ] 返回 false |
@@ -637,19 +637,19 @@ fi
 文件目录判断运算符列表
 | 运算符 | 说明 |
 | :----- | :-------------------------------------------------- |
-|-f filename|判断文件是否存在，当 filename 存在且是正规文件时（既不是目录，也不是设备文件）返回 true|
-|-d pathname|判断目录是否存在，当 pathname 存在且是目录时返回 true|
-|-e pathname|判断【某个东西】是否存在，当 pathname 指定的文件或目录存在时返回 true|
-|-a pathname|同上，已经过时，而且使用的时候还有另外一个与的逻辑，容易混淆|
-|-s filename|判断是否是一个非空文件，当 filename 存在并且文件大小大于 0 时返回 true|
-|-r pathname|判断是否可读，当 pathname 指定的文件或目录存在并且可读时返回 true|
-|-x pathname|判断是否可执行，当 pathname 指定的文件或目录存在并且可执行时返回 true|
-|-w pathname|判断是否可写，当 pathname 指定的文件或目录存在并且可写时返回 true|
-|-b filename|判断是否是一个块文件，当 filename 存在且是块文件时返回 true|
-|-c filename|判断是否是一个字符文件，当 filename 存在且是字符文件时返回 true|
-|-L filename|判断是否是一个符号链接，当 filename 存在且是符号链接时返回 true|
-|-u filename|判断文件是否设置 SUID 位，SUID 是 Set User ID|
-|-g filename|判断文件是否设置 SGID 位，SGID 是 Set Group ID|
+| -f filename|判断文件是否存在，当 filename 存在且是正规文件时（既不是目录，也不是设备文件）返回 true|
+| -d pathname|判断目录是否存在，当 pathname 存在且是目录时返回 true|
+| -e pathname|判断【某个东西】是否存在，当 pathname 指定的文件或目录存在时返回 true|
+| -a pathname|同上，已经过时，而且使用的时候还有另外一个与的逻辑，容易混淆|
+| -s filename|判断是否是一个非空文件，当 filename 存在并且文件大小大于 0 时返回 true|
+| -r pathname|判断是否可读，当 pathname 指定的文件或目录存在并且可读时返回 true|
+| -x pathname|判断是否可执行，当 pathname 指定的文件或目录存在并且可执行时返回 true|
+| -w pathname|判断是否可写，当 pathname 指定的文件或目录存在并且可写时返回 true|
+| -b filename|判断是否是一个块文件，当 filename 存在且是块文件时返回 true|
+| -c filename|判断是否是一个字符文件，当 filename 存在且是字符文件时返回 true|
+| -L filename|判断是否是一个符号链接，当 filename 存在且是符号链接时返回 true|
+| -u filename|判断文件是否设置 SUID 位，SUID 是 Set User ID|
+| -g filename|判断文件是否设置 SGID 位，SGID 是 Set Group ID|
 
 示例代码如下：
 
@@ -1343,7 +1343,7 @@ Login 模式模式下可以用 logout 和 exit 退出，Non-Login 模式下只�
 
 bash 支持的配置文件有 /etc/profile、~/.bash.rc 等。
 
-![配置文件加载顺序](https://mmbiz.qpic.cn/mmbiz_png/f93EtXu3ZkicRhAdmf1rDibY0fynw3NnY9zcUFmkrYZj4iavlA1K9nyKOZ8Bca6ar5nP5oqjyVrEtLeeWL9UzdIyA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![配置文件加载顺序](./images/shell2.png)
 
 如上图加载顺序所示
 
@@ -1380,7 +1380,7 @@ PATH=$PATH:$HOME/.local/bin:$HOME/bin
 export PATH
 ```
 
-![](https://mmbiz.qpic.cn/mmbiz_png/f93EtXu3ZkicRhAdmf1rDibY0fynw3NnY9YffnBde6h3ibJhFKFxsBll15K03AeJUWz8HjlNaR8x7ib19mExjIwSTA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](./images/shell3.png)
 
 如上图所示，开启一个 Shell 进程时，有一些参数的值也会影响到配置文件的加载。如--rcfile，--norc 等。
 
@@ -1650,4 +1650,5 @@ EOF #输出：3
 - [Bash 脚本 set 命令教程](http://www.ruanyifeng.com/blog/2017/11/bash-set.html)
 - [linux shell数据重定向（输入重定向与输出重定向）详细分析](https://www.cnblogs.com/chengmo/archive/2010/10/20/1855805.html)
 - [linux shell 管道命令(pipe)使用及与shell重定向区别](https://www.cnblogs.com/chengmo/archive/2010/10/21/1856577.html)
+- [Linux系统环境变量位置， 环境变量持久化](https://www.linuxidc.com/Linux/2018-09/154325.htm)
 
