@@ -1,7 +1,7 @@
 <!--
  * @Author: chenfangxu
  * @Date: 2020-10-05 20:22:20
- * @LastEditTime: 2020-11-09 17:34:18
+ * @LastEditTime: 2020-11-09 17:45:56
  * @LastEditors: chenfangxu
  * @Description: Shell 脚本编程详解
  * @FilePath: /front/assistive-tools/shell/script.md
@@ -551,11 +551,11 @@ fi
 #### 条件运算符（布尔运算符、逻辑运算符、字符串运算符）
 
 条件运算符列表，变量 a 是 10， 变量 b 是 50，变量 x 是 "abc"，变量 y 是 "efg"
-| 运算符 | 说明 | 举例 |
+<!-- | 运算符 | 说明 | 举例 |
 | :----- | :-------------------------------------------------- | :--- |
 | ! | 非运算 | [ ! false ] 返回 true |
 | -o | 或运算 |[ ${a} -eq 10 -o ${b} -eq 100 ] 返回 true |
-| `||` | 跟 -o 类似，逻辑的 OR，不过需要使用 `[[]]` 表达式 |[[ ${a} -eq 10 `||` ${b} -eq 100 ]] 返回 true |
+| \|\| | 跟 -o 类似，逻辑的 OR，不过需要使用 `[[]]` 表达式 |[[ ${a} -eq 10 \|\| ${b} -eq 100 ]] 返回 true |
 | -a | 与运算 | [ ${a} -eq 10 -a ${b} -eq 50 ] 返回 true|
 | && | 跟-a 类似，逻辑的 AND，不过需要使用 `[[]]` 表达式 | [[ ${a} -eq 10 && ${b} -eq 50 ]] 返回 true|
 | = | 检测两个数字或字符串是否相等，相等返回 true |[ ${a} = ${b} ] 返回 false |
@@ -563,7 +563,9 @@ fi
 | == | 相等。比较两个数字或字符串，如果相等返回 true（不推荐使用，有兼容性问题） | [ ${a} == ${b} ] 返回 false |
 | -z | 检测字符串长度是否为 0，为 0 返回 true | [ -z ${x} ] 返回 false |
 | -n | 检测字符串长度是否为 0，不为 0 返回 true | [ -n ${x} ] 返回 true |
-| var | 检测变量是否存在或不为空，存在或不为空返回 true | [ $s ] 返回 false |
+| var | 检测变量是否存在或不为空，存在或不为空返回 true | [ $s ] 返回 false | -->
+
+![](./images/shell4.png)
 
 代码示例如下：
 
@@ -635,7 +637,7 @@ fi
 #### 文件目录判断运算符
 
 文件目录判断运算符列表
-| 运算符 | 说明 |
+<!-- | 运算符 | 说明 |
 | :----- | :-------------------------------------------------- |
 | -f filename|判断文件是否存在，当 filename 存在且是正规文件时（既不是目录，也不是设备文件）返回 true|
 | -d pathname|判断目录是否存在，当 pathname 存在且是目录时返回 true|
@@ -649,7 +651,9 @@ fi
 | -c filename|判断是否是一个字符文件，当 filename 存在且是字符文件时返回 true|
 | -L filename|判断是否是一个符号链接，当 filename 存在且是符号链接时返回 true|
 | -u filename|判断文件是否设置 SUID 位，SUID 是 Set User ID|
-| -g filename|判断文件是否设置 SGID 位，SGID 是 Set Group ID|
+| -g filename|判断文件是否设置 SGID 位，SGID 是 Set Group ID| -->
+
+![](./images/shell5.png)
 
 示例代码如下：
 
