@@ -3,7 +3,7 @@
  * @Date: 2020-08-21 09:45:13
  * @Description: TypeScript 为何如此重要？（待翻译）
  * @LastEditors: chenfangxu
- * @LastEditTime: 2020-11-24 12:47:21
+ * @LastEditTime: 2020-11-24 13:01:30
  * @FilePath: /front/article/translate/typescript-important.md
 -->
 
@@ -35,12 +35,12 @@ JavaScript 是一个解释型或者说动态编译语言，开发人员在运行
 
 举个例子，当我们在 JavaScript 中声明一个变量时，是不需要指定类型的。但在 TypeScript 中声明变量就必须指定一个类型，当然你也可以不设置类型直接赋值。
 
-```
+```ts
 let isDone: boolean
 let decimal: number
 let big: bigint
 let color: string
-let name = "John"
+let name = 'John'
 ```
 
 跟 JavaScript(.js)不同，TypeScript 文件后缀使用 .ts 扩展名。浏览器是不识别 .ts 文件，所以使用时必须提前把 TS 代码转换成 JavaScript 代码。这个转换过程被称为转译，编译和转译的微小差别在于：
@@ -166,26 +166,26 @@ let list: Array<number> = [1, 2, 3]
 
 比如我们要创建第一个元素是 `string` 和 第二个元素是 `number` 的数组这样或者类似的场景，我们就可以使用 `Tuple`。
 
-```
+```ts
 let x: [string, number]
 x = ['hello', 10]
 ```
 
 重要的是要理解 TS 对类型及其声明的顺序施加了严格的控制，所以，基于上面的定义，下面的代码就会报错。
 
-```
-x = [10, 'hello']  // WRONG
+```ts
+x = [10, 'hello'] // WRONG
 ```
 
 #### 枚举
 
 与其他语言（例如：C 或 C++）一样，TypeScript 也具有用于声明多个常数的枚举类型。跟其他语言不同的是，TS 的枚举更灵活。
 
-```
+```ts
 enum Color {
   Red,
   Green,
-  Blue
+  Blue,
 }
 
 let c: Color = Color.Green
@@ -193,32 +193,32 @@ let c: Color = Color.Green
 
 枚举从 0 开始，所以 Red = 0 , Green = 1 , Blue = 2 ，不过在 TS 中，你可以通过下面的方式改变顺序：
 
-```
+```ts
 enum Color {
   Red = 1,
   Green,
-  Blue
+  Blue,
 }
 ```
 
 或者给每个常量分配不同的数字
 
-```
+```ts
 enum Color {
   Red = 2,
   Green = 6,
-  Blue = 5
+  Blue = 5,
 }
 ```
 
 甚至可以给每个常量分配字符串类型的值
 
-```
+```ts
 enum Color {
-  Up = "Up",
-  Down = "Down",
-  Left = "Left",
-  Right = "Right"
+  Up = 'Up',
+  Down = 'Down',
+  Left = 'Left',
+  Right = 'Right',
 }
 ```
 

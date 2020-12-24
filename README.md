@@ -2,10 +2,7 @@
 
 前端基础知识的总结，可以当笔记用的那种。
 
-静态文档托管的访问地址：[https://chenfangxu.lap.360.cn/](https://chenfangxu.lap.360.cn/)
-
-gitbook托管访问地址是：[https://cfangxu-2.gitbook.io/front-end-basics/](https://cfangxu-2.gitbook.io/front-end-basics/)
-
+gitbook 托管访问地址是：[https://cfangxu-2.gitbook.io/front-end-basics/](https://cfangxu-2.gitbook.io/front-end-basics/)
 
 <br>
 <br>
