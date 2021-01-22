@@ -3,7 +3,7 @@
  * @Date: 2020-12-20 11:30:46
  * @Description: JavaScript 词法
  * @LastEditors: chenfangxu
- * @LastEditTime: 2020-12-21 21:49:29
+ * @LastEditTime: 2020-12-28 21:12:52
  * @FilePath: /front/JavaScript/utility/lexical-grammar.md
 -->
 
@@ -40,6 +40,8 @@ console.log(`Hello, ${function () {}}`)
   - NumbericLiteral 数字直接量，就是数字
   - StringLiteral 字符串直接量，就是直接用单引号或双引号引起来的字符串
   - Template 字符串模板，用反引号 ` 括起来的直接量
+
+注：直接量（literal），就是程序中能直接使用的数据值。
 
 ## 空白符号 WhiteSpace
 
@@ -85,13 +87,15 @@ console.log(`Hello, ${function () {}}`)
 
 ## 标识符名称 IdentifierName
 
-IdentifierName 可以是 Identifier（就是我们自己定义的变量）、NullLiteral（null 字面量）、BooleanLiteral 或者 keyword（关键字），在 ObjectLiteral 中，IdentifierName 还可以直接当做属性名称使用。仅当不是保留字时，IdentifierName 会被解析成 Identifier。
+IdentifierName 可以是 Identifier（就是我们自己定义的变量、函数）、NullLiteral（null 直接量）、BooleanLiteral 或者 keyword（关键字），在 ObjectLiteral 中，IdentifierName 还可以直接当做属性名称使用。仅当不是保留字时，IdentifierName 会被解析成 Identifier。
 
-IdentifierName 可以以美元符“$”、下划线“\_”、或者字母开始，除了开始字符以外，IdentifierName 中还可以使用连接标记、数字、以及连接符号。
+IdentifierName 可以以美元符`$`、下划线`_`、或者字母开始，除了开始字符以外，IdentifierName 中还可以使用连接标记、数字、以及连接符号。
+
+JavaScript 中的一切都是区分大小写的，即关键字、变量、函数名和所有的标识符（Identifier）都要区分大小写。
 
 ### 关键字
 
-关键字属于 IdentifierName ，在 JavaScript 中，关键字有：
+关键字属于 IdentifierName ，这些关键字可用于表示控制语句的开始或结束，或者用于执行特定操作等。在 JavaScript 中，关键字有：
 
 - await
 - break
