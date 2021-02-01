@@ -3,7 +3,7 @@
  * @Date: 2020-12-26 15:57:35
  * @Description: JavaScript 的数据类型
  * @LastEditors: chenfangxu
- * @LastEditTime: 2021-01-24 23:31:45
+ * @LastEditTime: 2021-02-01 16:29:07
  * @FilePath: /front/JavaScript/utility/javascript-type.md
 -->
 
@@ -94,6 +94,8 @@ if(car !== null) {
 ```
 
 换句话说，只要意在保存对象的变量还没有真正保存对象，就应该明确地给把该变量赋值成 null。这样做不仅可以体现 null 作为空对象指针的惯例，而且也有助于进一步区分 null 和 undefined。
+
+扩展：关于 undefined 和 null 的一篇文章：[undefined-null-revisited](https://2ality.com/2021/01/undefined-null-revisited.html)
 
 ### Boolean
 
