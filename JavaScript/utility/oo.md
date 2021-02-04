@@ -351,7 +351,7 @@ console.log(delete x)
 - 内置对象（Built-in Objects）：由 JavaScript 语言实现提供的对象，不依赖于宿主环境。
   - 固有对象（Intrinsic Objects）：由标准规定，随着 JavaScript 运行时创建而自动创建的对象实例。
   - 原生对象（Native Objects）：可以由用户通过 Array、RegExp 等内置构造器或者特殊语法创建的对象。
-  - 普通对象（Ordinary Objects）：由 {} 语法，Object 构造器或者 Class 关键字等定义类所创建的对象，它能够被原型继承。
+  - 普通对象（Ordinary Objects）：由 {} 语法，Object 构造器或者 class 关键字等定义类所创建的对象，它能够被原型继承。
 
 ### 宿主对象
 
@@ -578,7 +578,7 @@ JavaScript 面向对象的形式可以说有两种：**基于原型的面向对�
 
 事实上，因为公司的一些政治原因，JavaScript 推出之时，管理层就要求它去模仿 Java，所以 JavaScript 创始人在“原型运行时”的基础上引入了 new、this 等语言特性，使之“看起来语法更像 Java”，而 Java 正式基于类的面向对象的代表语言之一。不过但是 JavaScript 模拟的并不全，缺少了继承等关键特性，导致大家试图对它进行修补，进而产生了种种互不相容的解决方案。
 
-庆幸的是，从 ES6 开始，JavaScript 提供了 Class 关键字来定义类，尽管，这样的方案仍然是基于原型运行时系统的类的模拟，但是它修正了之前的一些常见的“坑”，统一了社区的方案，这对语言的发展有着非常大的好处。
+庆幸的是，从 ES6 开始，JavaScript 提供了 class 关键字来定义类，尽管，这样的方案仍然是基于原型运行时系统的类的模拟，但是它修正了之前的一些常见的“坑”，统一了社区的方案，这对语言的发展有着非常大的好处。
 
 ### 基于原型的面向对象
 
@@ -599,7 +599,7 @@ JavaScript 并非第一个使用原型的语言，在它之前，self、kevo 等
 
 如果抛开 JavaScript 用于模拟 Java 类的复杂语法设施（如 new、Function、Object、函数的 prototype 属性等），原型系统简单到可以用两条概括：
 
-- 所有对象都有私有字段[[Prototype]]（即对象的原型）
+- 所有对象都有私有字段[[prototype]]（即对象的原型）
 - 读一个属性，如果对象本身没有，则会继续访问对象的原型，直到原型为空或者找到为止。
 
 #### 利用原型实现抽象和复用
@@ -683,25 +683,44 @@ var o = { [Symbol.toStringTag]: "myObject"};
 console.log(o + ""); // "[object myObject]"
 ```
 
-#### 理解原型对象
+##### 理解原型对象
 
 无论什么时候，只要创建了一个新函数，就会根据一组特定的规则为该函数创建一个 prototype 属性，这个属性指向函数的原型对象。在默认情况下，所有原型对象都会自动获得一个 constructor（构造函数）属性，这个属性是一个指向 prototype 属性所在函数的指针。
 
-创建了自定义的构造函数后，其原型对象默认只会获得 constructor 属性；至于其他方法，则都是从 Object 继承而来的。当调用构造函数创建一个新实例后，该实例的内部将包含一个指针[[Prototype]]（内部属性），指向构造函数的原型对象。因为是内部属性，[[Prototype]]对脚本是完全不可见的（即不能直接访问）。ES6 之前在脚本没有标准的方式访问[[Prototype]]，但 Firefox、Safari 和 Chrome 在每个对象上都支持一个属性 `__proto__`，可以间接访问。ES6 开始，有了标准的 Object.getPrototypeOf 方法，可以访问[[Prototype]]。所以 ES6 之后，不建议再使用 `__proto__`。
+创建了自定义的构造函数后，其原型对象默认只会获得 constructor 属性；至于其他方法，则都是从 Object 继承而来的。当调用构造函数创建一个新实例后，该实例的内部将包含一个指针[[prototype]]（内部属性），指向构造函数的原型对象。因为是内部属性，[[prototype]]对脚本是完全不可见的（即不能直接访问）。ES6 之前在脚本没有标准的方式访问[[prototype]]，但 Firefox、Safari 和 Chrome 在每个对象上都支持一个属性 `__proto__`，可以间接访问。ES6 开始，有了标准的 Object.getPrototypeOf 方法，可以访问[[prototype]]。所以 ES6 之后，不建议再使用 `__proto__`。
 
-要明确的重要的一点是：这个[[Prototype]]内部属性连接了实例和构造函数的原型对象，而不是实例与构造函数。
+要明确的重要的一点是：这个[[prototype]]内部属性连接了实例和构造函数的原型对象，而不是实例与构造函数。
+
+###### 扩展
+
+1、`__proto__`
+
+属性原型链,实例对象与原型之间的连接，叫做原型链。
+
+**对象身上只有 `__proto__` 构造函数身上有 prototype 也有 `__proto__`**
+
+2、 constructor
+
+返回创建实例对象的构造函数的引用,每个原型都会自动添加 constructor 属性,for..in..遍历原型是找不到这个属性的。
+
+```
+var a = new A();
+console.log(a.constructor == A) //true
+```
+
+虽然原型的 constructor 属性有可能发生变化，改变 constructor 属性没有任何直接或明显的建设性目的（可能要考虑极端情况）。constructor 属性的存在仅仅是为了说明该对象是从哪儿创建出来的。如果重写了 constructor 属性，那么原始值就被丢失了。
 
 #### new 是 JavaScript 面向对象的一部分
 
 new 运算接受一个构造器和一组调用参数，实际上做了几件事：
 
-- 以构造器的 prototype 属性（注意与私有字段[[Prototype]]的区分）为原型，创建新对象；
+- 以构造器的 prototype 属性（注意与私有字段[[prototype]]的区分）为原型，创建新对象；
 - 将 this 和调用参数传给构造器，执行；
 - 如果构造器返回的是对象，则返回，否则返回第一步创建的对象。
 
 new 这样的行为，试图让函数对象在语法上跟类变得相似，但是，它客观上提供了两种方式，一是在构造器中添加属性，而是在构造器的 prototype 属性上添加属性。
 
-**没有 Object.create、Object.setPrototypeOf 的早期版本中，new 运算符是唯一一个可以指定[[Prototype]]的方法**（Mozilla 提供了私有属性 `__proto__` ，但是多数环境并不支持），所以，当时已经有人试图用它来实现后来的 Object.create，甚至可以用它来实现一个 Object.create 的不完整 ployfill。
+**没有 Object.create、Object.setPrototypeOf 的早期版本中，new 运算符是唯一一个可以指定[[prototype]]的方法**（Mozilla 提供了私有属性 `__proto__` ，但是多数环境并不支持），所以，当时已经有人试图用它来实现后来的 Object.create，甚至可以用它来实现一个 Object.create 的不完整 ployfill。
 
 ```
 Object.create = function (prototype) {
@@ -737,6 +756,8 @@ hashiqi.color = 'blackandwhite';
 **缺点：**
 1、如果要生成多个实例对象，要重复写多次。
 2、实例和原型之间没有联系。
+
+扩展：如果我们要出创建多个相同类型的对象实例，像上面那样为每个实例单独进行属性分配，不仅繁琐，而且非常容易出错。这时我们肯定希望能够在一个地方将这些对象的属性和方法整合为一个类。这就是基于类的面向对象的起源。
 
 ##### 2、工厂模式
 
@@ -899,7 +920,7 @@ Object.defineProperty(Dog.prototype, 'constructor', {
 
 由于每一次在原型中查找值的过程都会进行一次搜索，因此对原型对象所做的任何修改都能够立即从实例上反映出来——即使是先创建了实例后修改原型也照样如此。因为实例与原型对象之间的连接只不过是一个指针，而非一个副本。
 
-尽管可以随时为原型添加属性和方法，并且修改能够立即在所有对象实例中反映出来，但是如果重写了整个原型对象，那么情况就不一样了。因为调用构造函数时会为实例添加一个指向最初原型的[[Prototype]]指针，而把原型修改为另一个对象就等于切断了构造函数与最初原型之间的联系，所以要时刻记住：实例中的指针仅指向原型，而不指向构造函数。
+尽管可以随时为原型添加属性和方法，并且修改能够立即在所有对象实例中反映出来，但是如果重写了整个原型对象，那么情况就不一样了。因为调用构造函数时会为实例添加一个指向最初原型的[[prototype]]指针，而把原型修改为另一个对象就等于切断了构造函数与最初原型之间的联系，所以要时刻记住：实例中的指针仅指向原型，而不指向构造函数。
 
 ###### 原型模式的问题
 
@@ -997,11 +1018,13 @@ function Person(name, age){
 
 #### 早期面向对象——继承
 
+继承（Inheritance）是代码复用的一种方式，并且有助于合理地组织程序代码。
+
 许多面向对象语言都支持两种继承方式：接口继承和实现继承。接口继承只继承方法签名，而实现继承则继承实际的方法。我们知道，由于 JavaScript 函数没有签名，所以在 JavaScript 中无法实现接口继承（TS 可以）。JavaScript 只支持实现继承，而且其实现继承主要是依靠原型链实现的。
 
 ##### 原型链
 
-JavaScript 中描述了原型链的概念，并将原型链作为实现继承的主要方法。其基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。我们知道构造函数、原型和实例的关系：每个构造函数都有一个原型对象，原型对象都包含一个指向构造函数的指针 constructor，而实例都包含一个指向原型对象的内部指针[[Prototype]]。那么，假如我们让原型对象等于另一个类型的实例，此时的原型对象将包含一个指向另一个原型的内部指针，相应地，另一个原型中也包含着一个指向另一个构造函数的指针。加入另一个原型又是另一个类型的实例，那么上述关系依然成立，如此层层递进，就构成了实例与原型的链条。这就是所谓原型链的基本概念。
+JavaScript 中描述了原型链的概念，并将原型链作为实现继承的主要方法。其基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。我们知道构造函数、原型和实例的关系：每个构造函数都有一个原型对象，原型对象都包含一个指向构造函数的指针 constructor，而实例都包含一个指向原型对象的内部指针[[prototype]]。那么，假如我们让原型对象等于另一个类型的实例，此时的原型对象将包含一个指向另一个原型的内部指针，相应地，另一个原型中也包含着一个指向另一个构造函数的指针。加入另一个原型又是另一个类型的实例，那么上述关系依然成立，如此层层递进，就构成了实例与原型的链条。这就是所谓原型链的基本概念。
 
 在原型链中有几个点需要注意：
 
@@ -1248,10 +1271,13 @@ SubType.prototype.sayAge = function() {
 
 这个例子的高效率体现在它只调用了一次 SuperType 构造函数，并且因此避免了在 SubType.prototype 上面创建不必要的，多于的属性。与此同时，原型链还能保持不变；因此，还能正常使用 instanceof 和 isPrototypeOf()。基本上普遍认为寄生组合式继承是引用类型最理想的继承范式。
 
-### ES6 的面向对象
+### ES6 的 class——基于类的面向对象
 
-上面所说的是 JavaScript 语言的传统方法，通过构造函数，定义并生成新的对象。
-ES6 中提供了更接近传统语言的写法，引入了 Class(类)的概念，通过 class 关键字，可以定义类。
+上面所说的是 JavaScript 语言的传统方法，通过构造函数，定义并生成新的对象。而且因为从其它面向对象语言转向 JavaScript 的开发者来说，他们会更喜欢把 JavaScript 的继承系统简化，抽象化成他们更熟悉的形式，这就导致虽然 JavaScript 本身不支持经典的继承，但还是不可避免地进入类的范畴。为了解决类的问题，出现了一些模拟类的继承的 JavaScript 库。由于每个类库对类的实现都有不同的方式，ECMAScript 委员会对“模拟”基于类的继承语法进行了标准化，ES6 引入新的关键字 class，它提供了一种更为优雅的创建对象和实现继承的方式，底层仍然是基于原型的实现。class 只是语法糖，使得在 JavaScript 模拟类的代码更为简洁。
+
+ES6 中提供了更接近传统语言的写法，引入了 Class(类)的概念，通过 class 关键字，可以定义类。new 和 function 搭配的怪异行为终于可以退休了（虽然运行时没有改变）。在任何场景，我都推荐使用 ES6 的语法来定义类，而令 function 回归原本的函数语义。
+
+ES6 中引入了 class 关键字，并且在标准中删除了所有[[class]]相关的私有属性描述，类的概念正式从属性升级成语言的基础设施，从此，基于类的编程方式成为了 JavaScript 的官方编程语言。
 
 #### 语法
 
@@ -1268,25 +1294,39 @@ class Dog {
     [method] () {
         console.log('汪汪');
     }
+
+    // Getter
+    get dogName() {
+        return this.showName();
+    }
+
+    // Method
+    showName() {
+        return this.name;
+    }
 }
 console.log(typeof Dog); // function 类的数据类型就是函数
 console.log(Dog === Dog.prototype.constructor); // true 类本身就是构造函数
 ```
+
+在现有的类语法中，getter/setter 和 method 是兼容性最好的。可以通过 get/set 关键字来创建 getter/setter，通过括号和大括号来创建方法，数据型成员（属性）最好写在构造器里面。
 
 既然是构造函数，所以在使用的时候，也是直接对类使用 new 命令，跟构造函数的用法完全一致。
 
 ```
 var hashiqi = new Dog('hashiqi', 'blackandwhite');
 console.log(hashiqi.color); // blackandwhite
+console.log(hashiqi.dogName); // hashiqi
 
 //上面采用表达式声明的类的属性可以用一下两种方式调用
 hashiqi[method](); // 汪汪
 hashiqi.say(); // 汪汪
 ```
 
-**注意：**
+##### 注意：
+
 1、先声明定义类，再创建实例，否则会报错
-`class` 不存在变量提升，这一点与 ES5 的构造函数完全不同
+`class` 不存在变量提升（不过存在预解析），这一点与 ES5 的构造函数完全不同
 
 ```
 new Dog('hashiqi','blackandwhite')
@@ -1313,7 +1353,9 @@ class Dog {
 Dog(); // Uncaught TypeError: Class constructor Dog cannot be invoked without 'new'
 ```
 
-3、定义“类”的方法的时候，前面不需要加上 function 这个关键字，直接把函数定义放进去了就可以了。并且，方法之间不需要逗号分隔，加了会报错。
+3、定义“类”的方法（Method）的时候，前面不需要加上 function 这个关键字，直接把函数定义放进去就可以了。并且，方法之间不需要逗号分隔，加了会报错。
+
+4、类的写法实际上也是由原型运行时来承载的，逻辑上 JavaScript 认为每个类都是有共同原型的一组对象，类中定义的方法则会被写在原型对象之上。
 
 #### 属性概念
 
@@ -1337,8 +1379,6 @@ class Dog {
 new Dog('hashiqi', 'blackandwhite')
 //Uncaught SyntaxError: A class may only have one constructor
 ```
-
-<br />
 
 > Class 表达式
 
@@ -1371,10 +1411,10 @@ const Hashiqi = class {
 var hashiqi = new Hashiqi('hashiqi', 'blackandwhite');
 ```
 
-<br />
-
 > 实例方法和静态方法
+>
 > 实例化后的对象才可以调用的方法叫做实例方法。
+>
 > 直接使用类名即可访问的方法，称之为“静态方法”
 
 类相当于实例的原型，所有在类中定义的方法，都会被实例继承。如果在一个方法前，加上 static 关键字，就表示该方法不会被实例继承，而是直接通过类来调用，这就称为“静态方法”。
@@ -1412,7 +1452,6 @@ extends 关键字后面可以跟多种类型的值，有三种特殊情况
 ```
 class A extends Object {}
 console.log(A.__proto__ === Object) //true
-console.log(A.prototype.__proto__ == Object.prototype) //true
 //这种情况下，A其实就是构造函数Object的复制，A的实例就是Object的实例。
 ```
 
@@ -1437,8 +1476,6 @@ console.log(A.prototype) //只有一个constructor属性，没有__proto__属性
 这种情况与第二种情况非常像。A也是一个普通函数，所以直接继承Funciton.prototype。
 但是，A调用后返回的对象不继承任何方法，所以没有__proto__这属性
 ```
-
-<br/>
 
 > super
 
@@ -1481,13 +1518,17 @@ hashiqi.getInfo() //动物：hashiqi,balckandwhite
 
 3、使用 super 的时候，必须显式指定是作为函数、还是作为对象使用，否则会报错。
 
+## 控制对象
+
 ## 扩展
 
-### 检测属性的方式汇总
+### 检测属性是否存在的方法汇总
 
 #### in 运算符
 
 in 运算符的左侧是属性名(字符串),右侧是对象。如果对象的自有属性或继承属性中包含这个属性则返回 true。
+
+注意：in 运算符检查的属性名而非属性值，会查询原型链，而且不论属性是否可枚举。
 
 ```
 var a = {b:1};
@@ -1509,7 +1550,7 @@ console.log('c' in a); //false
 
 #### hasOwnProperty
 
-对象的`hasOwnProperty()`方法用来检测给定的名字是否是对象的自有属性。**对于继承属性它将返回 false**
+对象的`hasOwnProperty()`方法用来检测给定的名字是否是对象的自有属性，不论属性是否可枚举。**对于继承属性它将返回 false（即不会查询原型链）**
 
 ```
 var a = {b:1};
@@ -1518,17 +1559,66 @@ console.log(a.hasOwnProperty('c')); //false
 console.log(a.hasOwnProperty('toString')); //false toString是继承属性
 ```
 
+##### 扩展
+
+因为普通对象的 hasOwnProperty 是继承自 Object.prototype 的，所以如果创建的普通对象切断了跟 Object.prototype 的原型链，就会导致对象无法使用该方法。
+
+```
+var a = Object.create(null)
+a.name = '123';
+a.hasOwnProperty("name") // Uncaught TypeError: a.hasOwnProperty is not a function
+Object.prototype.hasOwnProperty.call(a, "name") // true
+```
+
 #### propertyIsEnumerable
 
-对象的`propertyIsEnumerable()`方法只有检测到是自身属性(不包括继承的属性)且这个属性的可枚举性为 true 时它才返回 true。
+对象的`propertyIsEnumerable()`方法只有检测到是自身属性(不包括继承的属性，不会查询原型链)且这个属性的可枚举性为 true 时它才返回 true。
 
 ```
 var a = {b:1};
-console.log(a.propertyIsEnumerable('b'));
-console.log(a.propertyIsEnumerable('toString'));
+Object.defineProperty(a, 'c', {
+    enumerable: false,
+    value: 2
+})
+Object.setPrototypeOf(a, {d: 3})
+console.log(a.propertyIsEnumerable('b')); // true
+console.log(a.propertyIsEnumerable('c')); // false 不可枚举的自身属性
+console.log(a.propertyIsEnumerable('d')); // false 可枚举的继承属性
 ```
 
-### 遍历属性的方式汇总
+### 遍历属性的方法汇总
+
+#### for...in
+
+for...in 会遍历当前对象及其原型链上的所有可枚举属性（获取当前对象及其原型链上的所有可枚举属性）。
+
+#### Object.entries
+
+Object.entries() 方法返回一个给定对象自身可枚举属性的键值对数组，其排列与使用 for...in 循环遍历该对象时返回的顺序一致（区别在于 for...in 循环还会枚举原型链中的属性）
+
+#### Object.keys
+
+获取当前对象上的所有可枚举属性。Object.keys 是获取对象属性的所有方法中范围最小的一种方法。
+
+#### Object.getOwnPropertyNames
+
+获取当前对象上的所有可枚举和不可枚举属性。
+
+#### Object.getOwnPropertySymbols
+
+获取当前对象上的所有 Symbol 属性。
+
+#### Reflect.ownKeys
+
+获取当前对象上的所有可枚举、不可枚举属性已经 Symbol 属性。所有可以理解为：Reflect.ownKeys = Object.getOwnPropertyNames + Object.getOwnPropertySymbols ，它是获取到对象属性的所有方法中范围最大的一种方法。
+
+#### 总结
+
+一般平时开发，如果只是想访问当前对象上的属性，可以使用 Object.keys，如果想访问当前对象以及其原型链上的属性最好使用 for...in 。因为如果对象的创建者在创建的时候故意将某个属性设置为 enumerable:false 或者用 Symbol 来设置属性，那么其本意应该是把这些属性当成对象的内部属性，不应该暴露给外部用户。
+
+##### 注意
+
+所有通过 Object 和 Reflect 方法获取对象的属性，都无法访问到原型链上的属性。
 
 ### 获取全部 JavaScript 固有对象
 
@@ -1626,78 +1716,4 @@ for(var i = 0; i < objects.length; i++) {
 }
 ```
 
----
-
-#### 面向对象相关的属性和概念
-
-> `__proto__`
-> 属性原型链,实例对象与原型之间的连接，叫做原型链。
-
-**对象身上只有 `__proto__` 构造函数身上有 prototype 也有 `__proto__`**
-
-<br />
-
-> constructor
-> 返回创建实例对象的构造函数的引用,每个原型都会自动添加 constructor 属性,for..in..遍历原型是找不到这个属性的。
-
-```
-var a = new A();
-console.log(a.constructor == A) //true
-```
-
-<br />
-
-> hasOwnProperty
-> 可以用来判断某属性是不是这个构造函数的内部属性（不包括继承的）
-
-语法： `obj.hasOwnProperty(prop)` 返回 Boolean
-
-```
-function A (){
-    this.b = 1;
-}
-var a = new A();
-console.log(a.hasOwnProperty('b'));  //打印true
-console.log(a.hasOwnProperty('toString')); //toString是继承属性 打印 false
-console.log(a.hasOwnProperty('hasOwnProperty')); //同上，打印false
-```
-
-<br />
-
-> instanceof
-> 二元运算符,用来检测一个对象在其原型链中是否存在一个构造函数的 prototype 属性。
-
-语法： `object instanceof constructor` 即检测 constructor.prototype 是否存在于参数 object 的原型链上。
-
-```
-// 定义构造函数
-function C(){}
-function D(){}
-
-var o = new C();
-o instanceof C; // true，因为 Object.getPrototypeOf(o) === C.prototype
-o instanceof D; // false，因为 D.prototype不在o的原型链上
-o instanceof Object; // true,因为Object.prototype.isPrototypeOf(o)返回true
-C.prototype instanceof Object // true,同上
-```
-
-<br />
-
-> toString
-> 返回一个表示该对象的字符串
-
-**作用：**
-1、进行数字之间的进制转换
-
-```
-例如：var num = 255;
-alert( num.toString(16) ); //结果就是'ff'
-```
-
-2、利用 toString 做类型的判断
-
-```
-例如：var arr = [];
-alert( Object.prototype.toString.call(arr) == '[object Array]' ); 	弹出true
-Object.prototype.toString.call()	得到是类似于'[object Array]'  '[object Object]'
-```
+### 控制对象的访问（对象进阶，待整理，可以跟 Vue 一起）
