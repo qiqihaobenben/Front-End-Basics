@@ -3,7 +3,7 @@
  * @Date: 2020-12-26 15:14:02
  * @Description: JavaScript 语法
  * @LastEditors: chenfangxu
- * @LastEditTime: 2021-01-21 07:48:34
+ * @LastEditTime: 2021-02-08 18:02:39
  * @FilePath: /front/JavaScript/utility/syntax.md
 -->
 
@@ -312,7 +312,7 @@ async function *f() {
 
 ### 预处理机制
 
-JavaScript 执行前，会对脚本、模块、函数体和块级作用域中的语句进行预处理。预处理过程将会提前处理 var、函数声明、class、const 和 let 语句，以确定其中变量的意义。
+JavaScript 执行前，会对脚本、模块、函数体和块级作用域中的语句进行预处理。预处理过程将会提前处理 var 语句、函数声明、class 声明、const 和 let 语句，以确定其中变量的意义。
 
 词法环境又称作用域，可以分类：
 

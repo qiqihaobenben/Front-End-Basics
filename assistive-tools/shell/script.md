@@ -1,7 +1,7 @@
 <!--
  * @Author: chenfangxu
  * @Date: 2020-10-05 20:22:20
- * @LastEditTime: 2020-11-20 10:29:23
+ * @LastEditTime: 2021-02-04 09:47:43
  * @LastEditors: chenfangxu
  * @Description: Shell 脚本编程详解
  * @FilePath: /front/assistive-tools/shell/script.md
@@ -47,6 +47,16 @@ source ./test.sh
 **注意：一定要写成 ./test.sh ,而不是 test.sh 。运行其他二进制的程序也是一样，直接写 test.sh，Linux 系统会去 PATH 中寻找有没有叫 test.sh 的，而只有 /bin, /sbin, /usr/bin, /usr/sbin 等在 PATH 中。你的当前目录通常不在 PATH 中，所以写成 test.sh 是找不到命令的，要用./test.sh 告诉系统，就在当前目录找。**
 
 通过这种方式运行 bash 脚本，第一行一定要写对，好让系统（Shell 程序）查找到正确的解释器。如果是使用标准默认的 Shell，可以省去第一行。
+
+#### 扩展：`source script.sh` 和 `./script.sh` 有什么区别?
+
+这两种情况 script.sh 都会在 bash 会话中被读取和执行，不同点在于哪个会话执行这个命令。
+
+对于 source 命令来说，命令是在当前的 bash 会话中执行的，因此当 source 执行完毕，对当前环境的任何更改（例如更改目录或是定义函数）都会留存在当前会话中。
+
+单独运行 ./script.sh 时，当前的 bash 会话将启动新的 bash 会话（实例），并在新实例中运行命令 script.sh。因此，如果 script.sh 更改目录，新的 bash 会话（实例）会更改目录，但是一旦退出并将控制权返回给父 bash 会话，父会话仍然留在先前的位置（不会有目录的更改）。
+
+同样，如果 script.sh 定义了要在终端中访问的函数，需要用 source 命令在当前 bash 会话中定义这个函数。否则，如果你运行 ./script.sh，只有新的 bash 会话（进程）才能执行定义的函数，而当前的 shell 不能。
 
 ### 第二种方式：作为解释器参数
 
