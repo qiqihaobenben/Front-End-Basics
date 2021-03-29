@@ -2,10 +2,10 @@ name: Deploy site
 
 on:
   push:
-    branchs:
+    branches:
       - master
   pull_request:
-    branchs:
+    branches:
       - master
 
 jobs:
