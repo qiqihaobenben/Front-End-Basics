@@ -31,8 +31,7 @@ jobs:
           path: |
             **/node_modules
           key: ${{runner.os}}-yarn-${{hashFiles('**/yarn.lock')}}
-          resotre-keys: |
-            ${{runner.os}}-yarn-
+
       # 如果缓存没有命中，安装依赖
       - name: install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
