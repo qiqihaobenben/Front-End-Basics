@@ -11,6 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+  strategy:
     matrix:
       node-version: '14.x'
 
@@ -26,7 +27,7 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v2
         id: yarn-cache
-        width:
+        with:
           path: |
             **/node_modules
           key: ${{runner.os}}-yarn-${{hashFiles('**/yarn.lock')}}
