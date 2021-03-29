@@ -24,7 +24,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           script: whoami
       # - name: use Node.js ${{matrix.node-version}}
       #   uses: actions/setup-node@v1
