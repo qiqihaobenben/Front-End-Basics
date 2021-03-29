@@ -35,7 +35,7 @@ jobs:
             ${{runner.os}}-yarn-
       # 如果缓存没有命中，安装依赖
       - name: install dependencies
-        if: stpes.yarn-cache.outputs.cache-hit != 'true'
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn --forzen-lockfile
 
       - name: Build VuePress site
