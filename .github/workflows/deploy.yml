@@ -1,0 +1,52 @@
+name: Deploy site
+
+on:
+  push:
+    branchs:
+      - master
+  pull_request:
+    branchs:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    matrix:
+      node-version: '14.x'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: use Node.js ${{matrix.node-version}}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.node-version}}
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        id: yarn-cache
+        width:
+          path: |
+            **/node_modules
+          key: ${{runner.os}}-yarn-${{hashFiles('**/yarn.lock')}}
+          resotre-keys: |
+            ${{runner.os}}-yarn-
+      # 如果缓存没有命中，安装依赖
+      - name: install dependencies
+        if: stpes.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn --forzen-lockfile
+
+      - name: Build VuePress site
+        run: yarn build
+
+      - name: Deploy to Server
+        uses: AEnterprise/rsync-deploy@v1.0
+        env:
+          DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
+          ARGS: -avz --delete
+          SERVER_PORT: '22'
+          FOLDER: ./docs/.vuepress/dist
+          SERVER_IP: ${{secrets.SSH_HOST}}
+          USERNAME: ${{secrets.USERNAME}}
+          SERVER_DESTINATION: /home/www/docs.chenfangxu.com/

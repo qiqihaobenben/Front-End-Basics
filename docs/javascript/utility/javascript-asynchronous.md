@@ -1,0 +1,825 @@
+# JavaScript 异步
+
+## JavaScript 的执行模型
+
+### JavaScript 是基于单线程的执行模型
+
+我们常说的“JavaScript 是单线程的”中，所谓的单线程，是指在 JavaScript 引擎中负责解释和执行 JavaScript 代码的线程只有一个（即 JS 引擎线程，例如 V8），可以理解为是**主线程**，在这个线程中，一次只能完成一个任务，如果有多个任务，就必须排队，前面的一个任务完成，再执行后面一个任务，以此类推。
+
+但是除此之外还存在其他的线程。例如：处理 Ajax 请求的 HTTP 异步请求线程、处理 DOM 事件的事件触发线程、定时器线程、读写文件的线程。这些线程可能存在于 JavaScript 引擎之内，也可能存在于 JavaScript 引擎之外，这些线程可以理解为是**工作线程**。
+
+这种模式的好处是实现起来比较简单，执行环境相对单纯；坏处是只要有一个任务耗时较长，后面的任务都必须排队等着，会拖延整个程序的执行。常见的浏览器无响应（假死），往往就是因为某一段 JavaScript 代码长时间运行（比如死循环），导致整个页面卡在这个地方，其他任务无法执行。为了解决这个问题，JavaScript 语言将任务的执行模式分成两种：同步（Synchronous）和异步（Asynchronous）。
+
+#### 为什么 JavaScript 是单线程的？
+
+JavaScript 之所以设计为单线程，这与它的用途有关。它作为浏览器脚本语言，主要用途是负责与页面的交互，以及操作 DOM，它只能是单线程的，否则它就会带来很复杂的同步问题。
+
+比如，在网页上有若干个操作，如果是多线程的话，一个线程任务是在某个 DOM 节点上添加内容，另一个线程任务是删除这个节点，这时浏览器应该以哪个线程为准？
+
+所以为了避免复杂性，从最初诞生，JavaScript 就是单线程的，这时语言的核心特征，将来也不会改变。
+
+不过这里的单线程是指在 JavaScript 引擎中负责解释和执行 JavaScript 代码的线程只有一个，但浏览器是多线程的，两个并不矛盾，浏览器只是 JavaScript 运行环境的宿主。
+
+后来，为了利用多喝 CPU 的计算能力，HTML5 提出 Web Worker 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制，且不得操作 DOM。所以这个标准并没有改变 JavaScript 单线程的本质。
+
+#### 扩展
+
+进程：它是系统进行资源分配和调度的一个独立单位，具有一定独立功能的程序关于某个数据集合上一次运行活动，可以粗略的理解为主（大）任务。
+
+线程：安排 CPU 执行的最小单位，可以理解为子任务。线程可以视作进行的子集，一个进程可以有多个线程并发执行。
+
+进程和线程的主要差别在于，他们是不同的操作和管理系统资源的方式。进程有独立的地址空间，一个进程崩溃后，在保护模式下不会对其他进程产生影响，而线程只是一个进程中的不同执行路径。线程有自己的堆栈和局部变量，但线程之间没有单独的地址空间，一个线程死掉就等于整个进程死掉，所以多进程的程序要比多线程的程序健壮，但在进程切换时，耗费资源较大，效率要差一些。但对于一些要求同时进行并且又要共享某些变量的并发操作，只能用线程，不能用进程。
+
+### 同步和异步
+
+#### 同步：
+
+广义上，同步模式就是后一个任务等待前一个任务结束，然后再执行，程序的执行顺序与任务的排列顺序是一致的、同步的；
+
+狭义上，假设存在一个函数 A，同步就是如果函数 A 在返回的时候，调用者就能够得到预期结果（即拿到了预期的返回值或者看到了预期的效果），那么这个函数就是同步的。
+
+#### 异步：
+
+广义上，异步模式是每一个任务有一个或多个回调函数（callback），前一个任务结束后，不是执行后一个任务，而是执行回调函数，后一个任务则是不等前一个任务结束就执行，所以程序的执行顺序与任务的排列顺序是不一致的，异步的。
+
+狭义上，假设存在一个函数 A，异步就是如果在函数 A 返回的时候，调用者还不能够得到预期结果，而是需要在将来通过一定的手段得到，那么这个函数就是异步的。
+
+异步模式非常重要。在浏览器端，耗时很长的操作都应该异步执行，避免浏览器失去响应，最好的例子就是 Ajax 操作。在服务器端，异步模式甚至是唯一的模式，因为执行环境是单线程的，如果允许同步执行所有 http 请求，服务器性能会急剧下降，很快就会失去响应。
+
+#### 异步过程的构成要素
+
+显然，异步函数实际上很快就调用完成了。但是后面还有工作线程执行异步任务、通知主线程、主线程调用回调函数等很多步骤。我们把整个过程叫做异步过程。异步函数的调用在整个一步过程中，只是一小部分。
+
+一个异步过程通常是这样的：
+
+主线程发起一个异步请求，相应的工作线程接收请求并告知主线程已收到（异步函数返回）；主线程可以继续执行后面的代码，同时工作线程执行异步任务；工作线程完成工作后，通知主线程；主线程收到通知后，执行一定的动作（调用回调函数）。
+
+异步过程中的异步函数通常具有以下的形式（一种抽象的表示，并不代表回调函数一定要作为发起函数的参数）：
+
+```
+A(args..., callbackFn)
+```
+
+上面的函数可以叫做异步过程的发起函数，或者叫做异步任务的注册函数。所以，从主线程的角度看，一个异步过程包括以下两个要素：
+
+- 发起函数（或叫注册函数）
+- 回调函数 callbackFn
+
+例如：
+
+```
+setTimeout(fn, 1000)
+```
+
+## 异步编程方法
+
+JavaScript 中的异步编程共有下面这些方法：
+
+- 回调函数
+- 事件监听
+- 观察者模式（observer pattern）也称 发布/订阅（publish-subscribe pattern）
+- Promise
+- Generator
+- async/await
+
+异步模式可以让开发者写出结构更合理，性能更出色，维护更方便的 JavaScript 程序。
+
+![](./images/async1.png)
+
+## 回调函数
+
+这是异步编程最基本的方式。使用异步代码的原因在于不希望在执行长时间任务的时候，应用程序的执行被阻塞（影响用户体验）。可以通过使用回调函数解决这个问题：对长期执行的任务提供一个函数，当任务结束后会调用该回调函数。
+
+假定有两个函数 f1 和 f2，后者等待前者的执行结果。
+
+```
+f1();
+f2();
+```
+
+如果 f1 是一个很耗时的任务，可以考虑改写 f1，把 f2 写成 f1 的回调函数。
+
+```
+function f1(callback) {
+  setTimout(function() {
+    // f1 的任务代码
+    callback();
+  }，100)
+}
+
+// 执行代码变成了下面这样：
+f1(f2)
+```
+
+采用这种方式，我们把同步操作变成了异步操作，f1 不会阻塞程序运行，相当于先执行程序的主要逻辑，将耗时的操作推迟执行。
+
+再举一个实际例子：从服务器获取 JSON 文件是一个长时间任务，在这个任务执行期间我们不希望用户感到应用未响应。因此，我们提供了一个回调函数用于任务结束后调用：
+
+```
+getJSON('data/list.json', function () {
+  /* Handle results */
+})
+```
+
+### 列举回调函数的几个问题
+
+回调函数的优点就是简单、容易理解和部署。
+
+- 违反直觉，流程会很混乱
+
+  违反直觉并不是说缩进，缩进其实可以通过拆分函数来解决，而是执行顺序问题，对人友好的是顺序执行，回调函数要跳来跳去。
+
+- 错误追踪
+
+长时间任务下发生错误也是很自然的现象。**问题就在于当回调函数发生错误时，你无法用内置构造函数来处理。**类似下面使用 try-catch 的方式：
+
+```
+try {
+  getJSON('data/list.json', function () {
+    /* Handle results */
+  })
+} catch(err) {
+  /* Handle errors */
+}
+```
+
+导致这个问题的原因在于，当长时间任务开始运行，调用回调函数的代码一般不会和开始任务中的这段代码位于事件循环的同一步骤。（当前 try-catch 执行的这一个循环中，只是注册了一个事件回调函数，回调函数中如果发生错误，就是在之后的事件循环中了。）导致的结果就是错误经常会丢失。
+
+异步让 try catch 直接跪了，为了能够获取到异步的错误，有两种方案：分离回调和 first error 。jquery 的 ajax 就是典型的分离回调。Node 采用的是 first error，所以系统异步接口第一个参数都是 error 对象。
+
+- 模拟同步
+- 回调地狱，各个部分之间高度耦合（Coupling），不利于代码的阅读和维护
+
+经常会存在一系列互相依赖的异步回调任务（需要执行连续步骤），一个长时间运行的任务执行后会触发另一项长期的任务，该任务最后又会触发另一个长期运行的任务，这样就会出现一堆嵌套的回调函数来表明需要执行的一系列步骤。这样的代码不仅难以理解，而且向其中再插入几步简直是一种痛苦，增加错误处理也会大大增加代码的复杂度，回调层级不断增长，代码越来越难以管理。
+
+- 并发执行，每个任务只能指定一个回调函数
+
+有时候得到最终结果的这些步骤并不相互依赖，所以我们不必让它们按顺序执行，为了节省时间可以并行地执行这些任务。
+
+```
+var a,b,c
+
+getJSON('a.json', function (err, data) {
+  if(err) { return }
+  a = data;
+  actionItemArrived();
+})
+
+getJSON('b.json', function (err, data) {
+  if(err) { return }
+  b = data;
+  actionItemArrived();
+})
+
+getJSON('c.json', function (err, data) {
+  if(err) { return }
+  c = data;
+  actionItemArrived();
+})
+
+function actionItemArrived() {
+  if(a !== undefined && b !== undefined && c !== undefined ) {
+    console.log("ready")
+  }
+}
+```
+
+这段代码中，由于结果之间互不依赖，所以只需要关心最后是否能获取所有的数据，但是我们不知道这些数据获取的顺序，每次获取一些数据，都检查看看是否是最后一段缺失的数据。最后，当所有的数据都获取到了，才能进行后续的操作。注意，我们依然不得不书写很多样板代码仅仅用于并行制西宁多个任务。
+
+- 信任问题（多次调用）
+
+## 事件监听
+
+另一种思路是采用事件驱动模式，任务的执行不取决于代码的顺序，而取决于某个事件是否发生。
+
+还是以 f1 和 f2 为例。首先，为 f1 绑定一个事件（这里采用的 jQuery 的写法）,当 f1 发生 done 事件，就执行 f2。
+
+```
+f1.on('done', f2);
+
+function f1() {
+  setTimeout(function () {
+    // f1 的任务代码
+    f1.trigger('done')
+  }, 1000)
+}
+```
+
+f1.trigger('done')表示，执行完成后，立即触发 done 事件，从而开始执行 f2。
+
+这种方法的优点是比较容易理解，可以绑定多个事件，每个事件可以指定多个回调函数。而且可以“去耦合”（Decoupling），有利于实现模块化。
+
+缺点是整个程序都要变成事件驱动型，运行流程会变得很不清晰。
+
+## 观察者模式
+
+上一节的“事件”，完全可以理解成“信号”。
+
+假设，存在一个“信号中心”，某个任务执行完成，就向信号中心“发布”（publish）一个信号，其他任务可以向信号中心“订阅”（subscribe）这个信号，从而知道什么时候自己可以开始执行。这就叫做“发布/订阅模式”（publish-subscribe pattern），又称“观察者模式”（observer pattern）。
+
+这个模式有多种实现，观察者模式需要一个 publish 和 subscribe 函数，或者其他类似的工具。
+
+publish 和 subscribe 函数的最简单实现如下：
+
+```
+let eventMap = {};
+
+function publish(msg, ...rest) {
+  eventMap[msg] && eventMap[msg].forEach((cb) => {
+    cb(...rest)
+  });
+}
+
+function subscribe(msg, cb) {
+  eventMap[msg] = eventMap[msg] || [];
+  eventMap[msg].push(cb)
+}
+```
+
+还是 f1 和 f2，首先 f2 向“信号中心”订阅“done”信号。
+
+```
+subscribe('done', f2);
+
+function f1() {
+  setTimeout(function () {
+    // f1的任务代码
+    publish('done')
+  }, 1000);
+}
+```
+
+publish('done')的意思是，f1 执行完成后，向“信号中心”发布“done”信号，从而引发 f2 的执行。
+
+这种方法的性质与“事件监听”类似，但是明显优于后者。因为我们可以通过查看“消息中心”，了解存在多少信号、每个信号有多少订阅者，从而监控程序的运行。
+
+## Promise
+
+Promise 是设计用来处理异步任务的。
+
+### 概念
+
+promise 对象是我们现在尚未得到但将来会得到值的占位符；它是对我们最终能够得知异步计算结果的一种保证。如果我们兑现了我们的承诺，那结果会得到一个值。如果发生了问题，结果则是一个错误，一个为什么不能交付的借口（reason，也叫拒绝的原因）。
+
+### 状态
+
+promise 对象用于作为异步任务结果的占位符。它代表了一个我们暂时还没获得但在未来有希望获得的值。基于这点原因，在一个 promise 对象的整个生命周期中，它会经历多种状态，一个 promise 对象的当前状态必须为以下三种状态中的一种：
+
+- 等待（pending）：初始状态，既没有被兑现，也没有被拒绝。也称为等待态。
+
+处于等待态时，promise 可以迁移至执行态或拒绝态。
+
+- 已兑现（fulfilled/resolved）：意味着操作成功完成。也称为执行态。
+
+处于执行态时，promise 不能迁移至其他任何状态，并且必须拥有一个不可变的终值。
+
+- 已拒绝（rejectd）：意味着操作失败。也称为拒绝态。
+
+处于拒绝态时，promise 不能迁移至其他任何状态，并且必须拥有一个不可变的拒因。
+
+一个 promise 对象从等待（pending）状态开始，此时我们对承诺的值一无所知。因此一个等待状态的 promise 也称为未实现（unresolved）的 promise。在程序执行过程中，如果 promise 的 resolve 函数被调用，promise 就会进入已兑现（fulfilled）状态，在该状态下我们能够成功获取到承诺的值。
+
+另一方面，如果 promise 的 reject 函数被调用，或者如果一个未处理的异常在 promise 调用的过程中发生了，promise 就会进入到拒绝状态，尽管在该状态下我们无法获取承诺的值，但我们至少知道了原因。
+
+一旦某个 promise 进入到执行态或者拒绝态，它的状态都不能再切换了（一个 promise 对象无法从执行态再进入到拒绝态或者相反）。
+
+![](./images/async2.png)
+
+### 使用
+
+使用内置构造函数 Promise 来创建一个 promise 需要传入一个函数，这个函数被称为执行函数（executor function），它包含两个参数 resolve 和 reject。当把两个内置函数：resolve 和 reject 作为参数传入 Promise 构造函数后，执行函数会立刻调用。我们可以手动调用 resolve 让承诺兑现，也可以当错误发生时手动调用 reject。
+
+#### then 方法
+
+代码调用 Promise 对象内置的 then 方法，我们向这个方法中传入了两个回调函数：一个成功回调函数和一个失败回调函数。当承诺成功兑现（在 promise 上调用了 resolve），前一个回调就会被调用，而当出现错误就会调用后一个回调函数（可以是发生了一个未处理的异常，也可以是 promise 上调用了 reject）。
+
+无论当前 promise 的状态是 fulfilled 还是 rejected，都可以添加 finally 方法，在当前 promise 运行完毕后被调用。
+
+最后，在原 promise 对象的解析完毕后，**返回一个新的 promise 对象**。
+
+**注意：then 方法可以被同一个 promise 调用多次。也就是说同一个 promise 可以多次调用 then 方法注册回调处理函数，所以 promise 内部其实是维护了一个处理函数的数组**
+
+#### 拒绝 promise
+
+拒绝一个 promise 有两种方式：
+
+- 显式拒绝，即在一个 promise 的执行函数中调用传入的 reject 方法；
+- 隐式调用：正处理一个 promise 的过程中抛出一个未捕获的异常。
+
+不管是编写代码的人主动的 throw new Error('xxx')，还是被动的、由 JavaScript 引擎检查出来的错误，如语法错误等等。
+
+#### 设置 promise 成功和失败回调函数
+
+promise 设置成功回调函数的方法只有一种。promise 已兑现，由 pending -> fulfilled。直接在 then 方法中传入第一个参数（成功回调函数）。
+
+promise 设置失败回调函数的方法有两种。promise 已拒绝，由 pending -> rejected。
+
+- 第一种，在 then 方法中传入第二个参数（失败回调函数）。
+- 第二种，链式调用 catch 方法，传入失败回调函数。
+
+#### 链式调用 promise
+
+上面在回调函数一节我们提到处理一连串相互关联步骤导致的回调地狱问题，嵌套太深将形成难以维护的回调函数序列。由于 promise 可以链式调用，所以它也是用于解决该问题的重要一步。
+
+```
+getJSON('a.json', function (err, data) {
+  getJSON(data.url, function (err, data) {
+    getJSON(data.url, function (err, data) {
+      // 获取到最后的数据
+    })
+  })
+})
+
+// 把回调函数的回调地狱问题的代码用promise实现
+
+getJSON('a.json')
+  .then((data) => getJSON(data.url))
+  .then((data) => getJSON(data.url))
+  .then((data) => {
+    // 获取到之后的数据
+  })
+  .catch(error => { // 捕获以上任何步骤中产生的promise错误})
+```
+
+**在链式调用过程中，每一次 then 方法都会返回一个新的 promise。如果 then 方法没有返回值，那之后的链式调用接收到的数据就是 undefined。**虽然 then 返回的是新的 promise，但是 then 中注册的回调依然是属于上一个 promise 的。
+
+#### promise 链中的错误捕捉
+
+当处理一连串异步任务步骤的时候，任何一步都可能出现错误。我们知道，既可以通过 then 方法传递第二个回调函数，也可以链式地调用一个 catch 方法并向其中传入错误处理回调函数。当我们仅关心整个序列步骤的成功/失败时，为每一步都指定错误处理函数就显得很冗长乏味，那我们就可以像上面一段代码一样，在最后使用 catch 方法捕捉前面任何一个 promise 产生的错误。如果前面的步骤没发生任何错误，则程序流程只会无障碍地继续通过。
+
+#### 等待多个 promise
+
+除了处理相互依赖的异步任务序列以外，对于等待多个独立的异步任务，promise 也能显著地减少代码量。
+
+- Promise.all(iterable)：全都成功才返回成功值数组，其中有一个失败，就被拒绝。
+
+这个方法将一个 promise 数组作为参数，然后创建一个新的 promise 对象，一旦数组中的 promise 全部被解决，这个返回的 promise 就会被解决（兑现），后续的回调函数接收成功值组成的数组，数组中的每一项都对应 promise 数组中的对应项，而一旦其中有一个 promise 失败了，那么整个新 promise 对象也会被拒绝，被 catch 方法捕获。
+
+- Promise.allSettled(iterable)：不管成功还是失败，都会返回一个敲定值数组。
+
+这个方法也是讲一个 promise 数组作为参数，然后创建一个新的 promise 对象。等到所有 promise 都已敲定（settled）（每个 promise 都已兑现（fulfilled）或已拒绝（rejected）），这个返回的 promise 就会被解决，后续的回调阿寒湖接受敲定值组成的数组，数组中的每一项都对应 promise 数组中的对应项。
+
+#### 等待首先敲定的 promise
+
+- Promise.any(iterable)：有一个成功就返回
+
+接收一个 promise 数组作为参数，然后创建一个新的 promise 对象，当其中一个 promise 成功，就返回那个成功的 promise 值。
+
+- Promise.race(iterable)：有一个被敲定就返回
+
+接收一个 promise 数组作为参数，然后创建一个新的 promise 对象，当其中任意一个 promise 成功或者失败后，这个返回的 promise 就同样会被处理或拒绝。
+
+#### 跳过等待状态的 promise
+
+- Promise.reject(reason)
+
+返回一个状态为失败的 promise 对象，并将给定的失败信息传递给对应的处理方法。
+
+- Promise.resolve(value)
+
+返回一个 **状态由给定 value 决定** 的 promise 对象。如果该值是 thenable（即带有 then 方法的对象），返回的 promise 对象的最终状态由 then 方法执行决定；否则的话（该 value 为 null，基本类型或者不带 then 方法的对象），返回的 promise 对象状态为 fulfilled，并且将该 value 传递给对应的 then 方法。
+
+### 为什么 JavaScript 语言标准制定者引入 promise，并将它用于处理异步计算的关键方法？
+
+Promise 可以解决回调函数带来的很多问题：
+
+- 错误难以被追踪处理
+
+- 执行连续步骤非常困难，会形成回调地狱
+
+- 执行很多并行任务也很困难
+
+## Generator
+
+### 生成器
+
+生成器函数几乎是一个完全崭新的函数类型，它和标准的普通函数不同。
+
+生成器（generator）函数能生成一组值的序列，但每个值的生成是基于每次请求，并不同于标准函数那样立即生成。必须显示地向生成器请求一个新的值，随后生成器要么响应一个新生成的值，要么就告诉我们它之后都不会再生成新值。更特殊的是，每当生成器函数生成了一个值，它都不会像普通函数一样停止执行。相反，生成器则会非阻塞地挂起。随后，当对另一个值的请求到来后，生成器就会从上次离开的位置恢复执行。
+
+创建生成器函数非常简单：仅仅需要在关键字 function 后面加上一个星号（`*`）。这样一来生成器函数体内就能够使用新关键字 yield，从而生成独立的值。
+
+```
+function* WeaponGenerator() {
+  yield "Katana 武士刀";
+  yield "Wakizashi 长型腰刀";
+  yield "Kusarigama 锁镰"
+}
+
+for(let weapon of WeaponGenerator()) {
+  console.log(weapon)
+}
+// Katana 武士刀
+// Wakizashi 长型腰刀
+// Kusarigama 锁镰
+```
+
+#### 生成器嵌套
+
+正如在标准函数中调用另一个标准函数，在生成器函数里面调用另一个生成器函数，会把外层的生成器的执行委托给另一个生成器。
+
+```
+function* WeaponGenerator() {
+  yield "Katana 武士刀";
+  yield* NinjaGenerator();
+  yield "Wakizashi 长型腰刀";
+  yield "Kusarigama 锁镰"
+}
+
+for(let name of WeaponGenerator()) {
+  console.log(name)
+}
+// 有预处理
+function* NinjaGenerator() {
+  yield "Hattori";
+  yield "Yoshi"
+}
+
+// Katana 武士刀
+// Hattori
+// Yoshi
+// Wakizashi 长型腰刀
+// Kusarigama 锁镰
+```
+
+迭代器执行碰到 `yield*` 操作符，程序会跳转到另一个生成器上执行，该生成器会一直持有执行权直到无工作可做，然后迭代器才会回到原来的生成器上继续执行。
+
+注意：对于调用最初的迭代器代码来说，这一切都是透明的（看不见，不可知的），for-of 循环不会关心原来的生成器委托到另一个生成器上，它只关心在 done 状态到来之前都一直调用 next 方法。
+
+### 迭代器
+
+生成器函数和标准函数非常不同。调用生成器函数并不会执行生成器函数函数体，它会创建一个叫做迭代器（iterator）的对象。通过创建迭代器对象，可以与生成器通信。
+
+迭代器是通过使用 next()方法实现 iterator protocol 的任何一个对象，该方法返回具有两个属性的对象：value，这是序列中的 next 值；和 done。如果已经迭代到序列中的最后一个值，则它为 true，否则为 false。
+
+一旦创建，迭代器对象可以通过重复调用 next() 显式地迭代。在产生终止值后，对 next() 的额外调用应该继续返回{done: true}。
+
+```
+function* WeaponGenerator() {
+  yield "Katana 武士刀";
+  yield "Wakizashi 长型腰刀";
+}
+
+const weaponsIterator = WeaponGenerator();
+
+const result1 = weaponsIterator.next();
+console.log(result1.value, result1.done) // Katana 武士刀 false
+
+const result2 = weaponsIterator.next();
+console.log(result2.value, result2.done) // Wakizashi 长型腰刀 false
+
+const result3 = weaponsIterator.next();
+console.log(result3.value,result3.done,result3) // undefined true
+
+const result4 = weaponsIterator.next();
+console.log(result4.value,result4.done,result4) // undefined true
+```
+
+调用生成器后，就会创建一个迭代器 weaponsIterator ，迭代器用于控制生成器的执行。迭代器对象暴露的最基本接口是 next 方法。这个方法可以用来向生成器请求一个值，从而控制生成器。
+
+next 函数调用后，生成器就开始执行代码，当代码执行到 yield 关键字时。就会生成一个中间结果（生成值序列中的一项），然后返回一个新对象，其中封装了结果值 value 和一个指标完成的指示器 done。
+
+每当生成一个当前值后，生成器就会非阻塞地挂起执行，随后耐心等待下一次值请求的到达（即 next 函数再次调用），然后生成器从挂起状态唤醒，中断执行的生成器从上次离开的位置继续执行代码，直到再次遇到 yield。
+
+最后，当再次执行 next 方法，没有可供执行的代码后，生成器会返回一个结果对象，属性 value 被置为 undefined，属性 done 被置为 true，表明它的工作已经完成了，此后再执行 next 方法，还是会继续返回 done 为 true 的结果对象。
+
+#### 探究 for-of 的原理
+
+通过调用生成器得到的迭代器，暴露出一个 next 方法能让我们向迭代器请求一个新值。next 方法返回一个携带着生成值的对象，而该对象中包含的另一个属性 done 也向我们指示了生成器是否还会追加生成值。
+
+利用这一原理，我们可以使用 while 循环来模拟 for-of 迭代生成器生成的值序列。
+
+```
+function* WeaponGenerator() {
+  yield "Katana 武士刀";
+  yield "Wakizashi 长型腰刀";
+}
+
+const weaponsIterator = WeaponGenerator()
+let item;
+while(!(item = weaponsIterator.next()).done) {
+  console.log(item.value)
+}
+```
+
+以上代码中的 while 循环就是 for-of 循环的原理。for-of 循环不过是对迭代器进行迭代的语法糖。不同于手动调用迭代器的 next 方法，for-of 循环同时还要查看生成器是否完成，它在后台自动做了完全相同的工作。
+
+```
+for(let item of WeaponGenerator()) {
+  console.log(item)
+}
+```
+
+### 外部环境与生成器交互
+
+之前我们都是通过使用 yield 表达式从生成器中返回多个值，此外，我们还能向生成器发送值，从而实现双向通信。
+
+#### 作为生成器函数参数发送值
+
+如其他函数一样，调用函数并传入实参，是向生成器发送值的最简单的方法。
+
+```
+function* Gen(val) {
+  yield val * 2;
+}
+
+const numbers = Gen(2)
+```
+
+#### 使用 next 方法向生成器发送值
+
+除了在第一次调用生成器的时候向生成器提供数据，我们还能通过 next 方法向生成器传入参数。在这个过程中，我们把生成器函数从挂起状态恢复到了执行状态。在当前挂起的生成器中，生成器把这个传入的值用于整个 yield 表达式。
+
+```
+function* Gen(val) {
+  val = yield val * 2;
+  yield val;
+}
+
+const numbers = Gen(2)
+const number1 = numbers.next(3).value; // 4 此处传入3无效
+const number2 = numbers.next(5).value; // 5 此处传入5会作为yield val * 2 表达式的返回值
+```
+
+注意：next 方法为等待中的 yield 表达式提供了值，所以，如果没有等待中的 yield 表达式，也就没有向生成器发送值一说。基于这个原因，我们无法通过第一次调用 next 方法来向生成器提供该值。但记住，如果你需要为生成器提供一个初始值，可以把初始值作为生成器函数的参数，传入实参。
+
+#### 抛出异常
+
+还有一种不那么正统的方式将值应用到生成器上：通过抛出一个异常。每个迭代器除了有一个 next 方法，还有一个抛出方法，即 throw 方法。这个能让我们把异常抛回生成器的特性，也是外部跟生成器交互的重要一环，这个特性能改善一步服务器端的通信，promise 跟生成器配合成自动异步执行迭代器时显得尤为重要。
+
+```
+function* NinjaGenerator() {
+  try {
+    yield "Hattori"
+    // 因为throw，之后的不再执行
+    console.log("continue")
+  } catch(e) {
+    console.log(e) // catch this
+  }
+}
+
+const ninjaIterator = NinjaGenerator()
+const result1 = ninjaIterator.next()
+console.log(result1.value) // Hattori
+
+ninjaIterator.throw("catch this")
+```
+
+### 生成器的内部执行原理
+
+调用一个生成器不会实际执行它，而是会创建有一个新的迭代器，通过该迭代器我们才能从生成器中请求值。在生成器生成（或让渡）了一个值后，生成器会挂起执行并等待下一次请求的到来。在某种方面来说，生成器的工作更像是一个小程序，一个在状态中运动的状态机。
+
+- 挂起开始——创建了一个生成器后，它最先以这种状态开始。其中的任何代码都未执行。
+- 执行——生成器中的代码已执行。执行要么是刚开始，要么是从上次挂起的地方继续的。当生成器对应的迭代器调用了 next 方法，并且当前存在可执行的代码时，生成器都会转移到这个状态。
+- 挂起让渡——当生成器在执行过程中遇到了一个 yield 表达式，它会创建一个包含着返回值的新对象，随后再挂起执行。生成器在这个状态暂停并等待继续执行。
+- 完成——在生成器执行期间，如果代码执行到 return 语句或者全部代码执行完毕，生成器就进入该状态。
+
+### 生成器函数的执行上下文
+
+尽管有些特别，生成器依然是一种函数，那就有执行环境上下文。调用生成器之前，由于正在执行的是全局代码，故执行上下文栈仅仅包含全局执行上下文，该上下文引用了当前标识符所在的全局环境。
+
+调用生成器函数，正如调用任何其他函数一样，当前将会创建一个新的函数环境上下文并将该上下文入栈，生成器比较特殊，它不会执行任何函数代码。而是生成并返回一个新的迭代器，由于迭代器是用来控制生成器执行的，所以迭代器中保存着一个在它创建位置处的执行上下文。
+
+当程序从生成器中执行完毕后，发生了一个有趣的现象。一般情况下，当程序从一个标准函数返回后，对应的执行环境上下文会从栈中弹出，并被完整地销毁。但在生成器中不是这样。相应的生成器会从栈中弹出，但是由于迭代器还保存着对它的引用，所以它不会销毁，类似于闭包。生成器，从另一个角度看，还必须恢复执行。由于所有函数的执行都被执行上下文所控制，所以迭代器保持了一个对当前执行环境的引用，保证只要迭代器还需要它的时候它都存在。
+
+当调用迭代器的 next 方法时发生了另一件有趣的事：如果只是一个普通的函数调用，这个语句会创建一个新的 next()的执行环境上下文并放入栈中。但是生成器绝不标准，对 next 方法调用的表现也很不同。它会重新激活之前保存的对应的执行环境上下文，并把该上下文放入栈的顶部，从它上次离开的地方继续执行。（普通函数和生成器之间的关键不同：标准函数仅仅会被重复调用，每次调用都会创建一个新的执行环境上下文。而生成器的执行环境上下文则会暂时挂起并在将来恢复。）
+
+如果是第一次调用 next 方法，而生成器之前并没有执行过，此时生成器开始执行并进入执行状态。当生成器函数运行碰到 yield 关键字时，需要挂起生成器的执行并返回 yield 后面的值。从应用状态的角度来看，又是跟之前类似的一种情况：生成器的执行上下文离开了调用栈，但是由于迭代器还持有着对它的引用，故而它并未被销毁。现在生成器挂起了，有在非阻塞的情况下移动到了挂起让渡状态。程序在全局代码中恢复执行，并将生产出的值存入变量。
+
+此后调用 next 方法，还是上面的执行逻辑，直至遇到一个 return 语句或者代码全部执行完毕了，生成器就进入结束状态。（不过此时生成器的执行上下文还是被一直保存着，再而外多次调用 next 方法也是结束状态）
+
+### 生成器的实际应用
+
+#### 用生成器生成 ID 序列
+
+生成 ID 序列，之前最简单的方式是通过一个全局的计数器变量，但这是一种丑陋的写法，因为这个计数器变量很容易就会不慎淹没在混乱的代码中，下面的代码是使用生成器生成 ID 序列：
+
+```
+function* IdGenerator() {
+  let id = 0;
+  while(true) {
+    yield ++id
+  }
+}
+
+const idIterator = IdGenerator();
+const id1 = idIterator.next().value;
+const id2 = idIterator.next().value;
+const id3 = idIterator.next().value;
+console.log(id1,id2,id3) // 1,2,3
+```
+
+这样写法的好处是：代码中没有任何会被不小心修改的全局变量，而且如果还需要另外一个新的记录 ID 序列，只需要再初始化一个新迭代器就可以了。
+
+#### 用生成器遍历 DOM 树
+
+网页的布局是基于 DOM 结构的，它是由 HTML 节点组成的树形结构，除了根节点的每个节点都只有一个父节点，并且可以有 0 个或多个孩子节点。由于 DOM 是网页开发中的基础，所以我们大部分代码都是围绕着对它的遍历。
+
+```
+function* DomTraversal(element) {
+  yield element;
+  element = element.firstElementChild;
+  while(element) {
+    yield* DomTraversal(element)
+    element = element.nextElementSibling;
+  }
+}
+
+const subTree = document.body;
+for(let element of DomTraversal(subTree)) {
+  console.log(element.nodeName);
+}
+```
+
+### 扩展
+
+#### 可迭代对象
+
+若一个对象拥有迭代行为，比如在 for-of 中会循环哪些值，那么那个对象便是一个可迭代对象。
+
+为了实现可迭代，一个对象必须实现@@iterator 方法，这意味着这个对象（或其原型链中的任意一个对象）必须具有一个带 Symbol.iterator 键（key）的方法（有时称为迭代器接口）。一个对象实现了 Symbol.iterator 接口就成为了一个可迭代对象。
+
+有些迭代器可以多次迭代，有些只迭代一次。只能迭代一次的 Iterables(例如 Generators)通常从它们的@@iterator 方法中返回它本身。那些可以多次迭代的 Iterables 必须在每次调用@@iterator 是返回一个新的迭代器。
+
+##### 自定义的可迭代对象
+
+可以按照如下规则可以实现自己的可迭代对象：
+
+1. 实现对象的迭代器接口 [Symbol.iterator]()，注意它是一个方法。
+2. 在迭代器接口中返回一个迭代器对象
+3. 确保迭代器对象具有 next()方法，并且返回 `{value: value, done: boolean}`的结构。
+
+例一：使用 Range 对象来封装一个左闭右开的返回 `[from, to)`
+
+```
+function Range(from, to) {
+    this.from = from;
+    this.to = to;
+}
+Range.prototype[Symbol.iterator] = function () {
+    //返回一个迭代器对象
+    return {
+        cur: this.from,
+        to: this.to, //保证next()中可以获取
+        next() {
+            return (this.cur < this.to) ? {
+                value: this.cur++,
+                done: false
+            } : {
+                value: undefined,
+                done: true
+            };
+        }
+    }
+}
+let range = new Range(5, 11);  //创建一个range对象
+//使用for...of循环
+for (const num of range) {
+    console.log(num);    //依次打印5,6,7,8,9,10
+}
+//使用
+let arrFromRange = Array.from(range);
+console.log(arrFromRange);   //[5,6,7,8,9,10]
+
+```
+
+例二：生成器函数本身就会创建迭代器，所以可以直接使用生成器函数作为对象的可迭代接口。
+
+```
+Range.prototype[Symbol.iterator] = function* () {
+    for (let i = this.from; i < this.to; i++) {
+        yield i;
+    }
+}
+
+// 另一种写法
+let myIterable = {
+  *[Symbol.iterator] () {
+    yield 1;
+    yield 2;
+    yield 3;
+  }
+}
+
+for(let value of myIterable) {
+  console.log(value)
+}
+// 1
+// 2
+// 3
+
+console.log([...myIterable]) // [1,2,3]
+```
+
+##### 内置可迭代对象
+
+String、Array、TypedArray、Map、Set、DOM 中的 NodeList 对象、函数的 arguments 属性 都是内置可迭代对象，因为它们的原型对象都拥有一个 Symbol.iterator 方法。
+
+```
+let arr = [1,2,3]
+let arrIterator = arr[Symbol.iterator]()
+console.log(arrIterator.next()) // {value: 1, done: false}
+console.log(arrIterator.next()) // {value: 2, done: false}
+console.log(arrIterator.next()) // {value: 3, done: false}
+console.log(arrIterator.next()) // {value: undefined, done: true}
+```
+
+##### 用于可迭代对象的语法
+
+一些语句和表达式专用于可迭代对象，例如 for-of 循环，展开语法，`yield*`、Map,Set，WeakMap,WeakSet 的构造器、Array.from(iterable)、Object.fromEntries(iterable)、promise.all(iterable)和 promise.race(iterable) 和解构赋值
+
+## async/await
+
+### 把生成器和 promise 相结合
+
+先来看一下，结合生成器（以及生成器暂停和恢复执行的能力）和 promise，来实现更加优雅的异步代码。
+
+先看个例子，展示被最受欢迎“忍者”完成率最高的任务详情，所有这些子任务都是长期运行且相互依赖的，如果用同步的方式来实现，代码如下：
+
+```
+try {
+  const ninjas = syncGetJSON("data/ninjas.json");
+  const missions = syncGetJSON(ninjas[0].missionsUrl);
+  const missionDetails = syncGetJSON(missions[0].detailsUrl);
+  // 同步方式获取到了被最受欢迎“忍者”完成率最高的任务详情
+} catch(e) {
+
+}
+```
+
+尽管这段代码对于简化错误处理很方便，但是 UI 被阻塞了，用户体验差。
+
+所以我们需要修改代码，让其运行长时间任务也不会发生阻塞。方法就是将生成器跟 promise 相结合，因为我们知道几个特性，从生成器中让渡后会挂起执行而不会发生阻塞，而且仅需调用生成器迭代器的 next 方法就可以激活生成器并继续执行。而 promise 在未来触发某种条件的情况下让我们得到它事先许诺的值，而且当错误发生后也会执行相应的回调函数。
+
+具体的做法是：把异步任务放入一个生成器中，然后执行生成器函数。因为我们没办法知道承诺什么时候会被兑现（或什么时候调用了 resolved），所以在异步任务执行的时候，我们会把执行权从生成器中让渡出来，从而不会导致阻塞。过一会儿，当承诺被兑现，我们会继续通过迭代器的 next 函数执行生成器（还可以向生成器发送值或者抛出错误）。只要有需要就可以重复这个过程。
+
+可以构建一个实验性的 async 函数，用最小化的代码把生成器和 promise 结合在一起。
+
+```
+function async(generator) {
+  let iterator = generator();
+
+  function handle(iteratorResult) {
+    if(iteratorResult.done) {return ;}
+
+    const iteratorValue = iteratorResult.value;
+
+    if(iteratorValue instanceof Promise) {
+      iteratorValue.then(res => handle(iterator.next(res)))
+                    .catch(err => iterator.throw(err));
+    }
+  }
+
+  try {
+    handle(iterator.next())
+  } catch (err){
+    iterator.throw(err)
+  }
+}
+```
+
+async 函数获取了一个生成器，调用它并创建了一个迭代器用来恢复生成器的执行。在 async 函数内，我们声明了一个处理函数 handle 用于处理从生成器中返回的值——迭代器的一次“迭代”。如果生成器的结果是一个被成功兑现的承诺，我们就用迭代器的 next 方法把承诺的值返回给生成器并恢复执行。如果出现错误，承诺被拒绝，我们就是用迭代器的 throw 方法往生成器中抛出一个异常。直到生成器的工作完成前，我们都会一直重复这几个操作。
+
+下面就是使用 async 的效果：
+
+```
+async(function* () {
+  try {
+    const ninjas = yield getJSON("data/ninjas.json");
+    const missions = yield getJSON(ninjas[0].missionsUrl);
+    const missionDetails = yield getJSON(missions[0].detailsUrl);
+    // 获取到了被最受欢迎“忍者”完成率最高的任务详情
+  } catch(e) {
+
+  }
+})
+```
+
+最终结果是结合了同步代码和异步代码的有点。有了同步代码，我们能更容易地理解、使用标准控制流以及异常处理机制、try-catch 语句的能力。而对于异步代码来说，有着天生的非阻塞：当等待长时间运行的异步任务时，应用的执行不会被阻塞。
+
+### async
+
+首先来看一下用 JavaScript 标准中的 async 是什么样的。
+
+```
+void (async function () {
+  try {
+    const ninjas = await getJSON("data/ninjas.json");
+    const missions = await getJSON(ninjas[0].missionsUrl);
+    const missionDetails = await getJSON(missions[0].detailsUrl);
+    // 获取到了被最受欢迎“忍者”完成率最高的任务详情
+  } catch(err) {
+    console.log(err)
+  }
+}())
+```
+
+通过在关键字 function 之前使用关键字 async，可以表明当前的函数依赖一个异步返回的值。在每个调用异步任务的位置上，都要放置一个 await 关键字，用来告诉 JavaScript 引擎，请在不阻塞应用执行的情况下在这个位置上等待执行结果。在这个过程背后，其实发生着前面讨论的把生成器和 promise 相结合的内容。
+
+#### 概念
+
+## 参考链接
+
+[Javascript 异步编程的 4 种方法](https://www.ruanyifeng.com/blog/2012/12/asynchronous%EF%BC%BFjavascript.html)
+
+[异步编程那些事](https://yanhaijing.com/javascript/2017/08/02/talk-async/)

@@ -1,0 +1,16 @@
+{
+  "name": "chenfangxu-blog",
+  "version": "1.0.0",
+  "description": "陈方旭的个人文档",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "main": "index.js",
+  "repository": "https://github.com/qiqihaobenben/Front-End-Basics.git",
+  "author": "cfangxu <chenfangxu_qixin@163.com> (https://qiqihaobenben.github.io/)",
+  "license": "CC-BY-4.0",
+  "devDependencies": {
+    "vuepress": "^1.8.2"
+  }
+}
