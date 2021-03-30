@@ -23,8 +23,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.DEPLOY_KEY }}
           script: whoami
       # - name: use Node.js ${{matrix.node-version}}
       #   uses: actions/setup-node@v1
