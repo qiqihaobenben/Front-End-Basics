@@ -19,37 +19,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@master
+      - name: use Node.js ${{matrix.node-version}}
+        uses: actions/setup-node@v1
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.DEPLOY_KEY }}
-          script: whoami
-      # - name: use Node.js ${{matrix.node-version}}
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: ${{matrix.node-version}}
-      # - name: Cache dependencies
-      #   uses: actions/cache@v2
-      #   id: yarn-cache
-      #   with:
-      #     path: |
-      #       **/node_modules
-      #     key: ${{runner.os}}-yarn-${{hashFiles('**/yarn.lock')}}
-      # # 如果缓存没有命中，安装依赖
-      # - name: install dependencies
-      #   if: steps.yarn-cache.outputs.cache-hit != 'true'
-      #   run: yarn --forzen-lockfile
-      # - name: Build VuePress site
-      #   run: yarn build
-      # - name: Deploy to Server
-      #   uses: AEnterprise/rsync-deploy@v1.0
-      #   env:
-      #     DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
-      #     ARGS: -avz --delete
-      #     SERVER_PORT: '22'
-      #     FOLDER: ./docs/.vuepress/dist
-      #     SERVER_IP: ${{secrets.SSH_HOST}}
-      #     USERNAME: ${{secrets.USERNAME}}
-      #     SERVER_DESTINATION: /home/www/docs.chenfangxu.com/
+          node-version: ${{matrix.node-version}}
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: |
+            **/node_modules
+          key: ${{runner.os}}-yarn-${{hashFiles('**/yarn.lock')}}
+      # 如果缓存没有命中，安装依赖
+      - name: install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn --forzen-lockfile
+      - name: Build VuePress site
+        run: yarn build
+      - name: Deploy to Server
+        uses: AEnterprise/rsync-deploy@v1.0
+        env:
+          DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
+          ARGS: -avz --delete
+          SERVER_PORT: '22'
+          FOLDER: ./docs/.vuepress/dist
+          SERVER_IP: ${{secrets.SSH_HOST}}
+          USERNAME: ${{secrets.SSH_USERNAME}}
+          SERVER_DESTINATION: /home/www/docs.chenfangxu.com/
