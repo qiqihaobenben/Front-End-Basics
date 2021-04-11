@@ -44,11 +44,11 @@ module.exports = {
           children: [
             'utility/lexical-grammar',
             'utility/syntax',
-            'utility/operatorAbout',
             'utility/javascript-type',
             'utility/javascript-function',
             'utility/javascript-object',
             'utility/javascript-asynchronous',
+            'ES6/promise',
             'utility/javascript-runing',
             'ES6/block',
             'ES6/string',

@@ -273,7 +273,7 @@ promise 对象用于作为异步任务结果的占位符。它代表了一个我
 
 处于执行态时，promise 不能迁移至其他任何状态，并且必须拥有一个不可变的终值。
 
-- 已拒绝（rejectd）：意味着操作失败。也称为拒绝态。
+- 已拒绝（rejected）：意味着操作失败。也称为拒绝态。
 
 处于拒绝态时，promise 不能迁移至其他任何状态，并且必须拥有一个不可变的拒因。
 
@@ -316,6 +316,8 @@ promise 设置失败回调函数的方法有两种。promise 已拒绝，由 pen
 
 - 第一种，在 then 方法中传入第二个参数（失败回调函数）。
 - 第二种，链式调用 catch 方法，传入失败回调函数。
+
+注意：Promise 对象的错误具有“冒泡”性质，会一直往后传递，知道被 onRejected 函数处理或 catch 语句捕获为止。具备了这样的“冒泡” 的特性后，就不需要在每个 Promise 对象中单独捕获异常了。
 
 #### 链式调用 promise
 
@@ -797,7 +799,7 @@ async(function* () {
 
 最终结果是结合了同步代码和异步代码的有点。有了同步代码，我们能更容易地理解、使用标准控制流以及异常处理机制、try-catch 语句的能力。而对于异步代码来说，有着天生的非阻塞：当等待长时间运行的异步任务时，应用的执行不会被阻塞。
 
-### async
+### ES7 标准中的 async/await
 
 首先来看一下用 JavaScript 标准中的 async 是什么样的。
 
@@ -816,10 +818,65 @@ void (async function () {
 
 通过在关键字 function 之前使用关键字 async，可以表明当前的函数依赖一个异步返回的值。在每个调用异步任务的位置上，都要放置一个 await 关键字，用来告诉 JavaScript 引擎，请在不阻塞应用执行的情况下在这个位置上等待执行结果。在这个过程背后，其实发生着前面讨论的把生成器和 promise 相结合的内容。
 
-#### 概念
+Promise 虽然跳出了异步嵌套地狱，用链式表达更加清晰，但是如果有大量的异步请求的时候，流程复杂的情况下，还是会有大量的 then，看起来非常吃力。
+
+ES7 中新增的异步编程方法 async/await 可以解决这个问题，它的实现是基于 Promise 的，简单来说，async 函数是 generator 的语法糖，返回值是 Promise 对象。
+
+很多人认为 async/await 是异步操作的终极解决方案：
+
+- 语法简洁，更像是同步代码，也更符合普通人的阅读习惯
+- 改进 JS 中异步操作为串行执行的代码组织方式，减少 callback 的嵌套
+- Promise 中不能自定义使用 try/catch 进行错误捕获，但是在 async/await 中可以像处理同步代码处理错误。
+
+不过使用不当还是会有一些问题，因为 await 将异步代码改造成了同步代码，如果多个异步代码没有依赖性却使用了 await 就会导致性能上的歼敌，所以一般这种情况会使用 Promise.all 包一下。
+
+### async
+
+async 声明的必须是一个 function，后面必须紧跟着 function，await 必须在 async 声明的函数内部使用。
+
+async 函数返回值必须是一个 Promise，不管内部如何处理，返回值肯定是个 Promise
+
+```js
+;(async function() {
+  return '我是Promise'
+})()
+// 返回是Promise
+// Promise {<fulfilled>: "我是Promise"}
+
+// 等同于
+;(async function() {
+  return Promise.resolve('我是Promise')
+})()
+```
+
+### await
+
+await 本质上是可以提供等同于“同步效果”的等待异步返回能力的语法糖。
+
+用 await 声明的 Promise 异步，必须“等待”到右返回值的时候，代码才继续执行下去。对于其他的异步操作（例如 setTimeout）没有效果，所以，一定要记住，await 是在等待一个 Promise 异步返回。
+
+虽然等待的效果只存在于 Promise 的异步情况，但是 await 可以用于同步的一般情况下的传值。
+
+```js
+;(async function() {
+  let message = '我是一个同步声明的值'
+  let result = await message
+  console.log(result) // 我是一个同步声明的值
+})()
+```
+
+### 错误处理
+
+因为 async 函数返回的是一个 Promise，所以可以在外面用 catch 捕获错误。不过，async/await 还可以用 `try...catch` 语句捕获错误。
+
+### async/await 中断（终止程序）
+
+首先我们要明确的是，Promise 本身是无法终止的， Promise 本身只是一个状态机，有三种状态，一旦发出请求了，必须闭环，无法取消，虽然我们可以使用一个始终处于 pending 状态的 promise 来挂起，不让后面的链式调用继续执行，但这并不是取消。Promise 没有 cancel 状态。
+
+不同于 Promise 的链式写法，在 async/await 中想要中断程序很简单，跟一般的 function 写法一样，在想中断的时候，直接 return 就可以。
 
 ## 参考链接
 
-[Javascript 异步编程的 4 种方法](https://www.ruanyifeng.com/blog/2012/12/asynchronous%EF%BC%BFjavascript.html)
-
-[异步编程那些事](https://yanhaijing.com/javascript/2017/08/02/talk-async/)
+- [Javascript 异步编程的 4 种方法](https://www.ruanyifeng.com/blog/2012/12/asynchronous%EF%BC%BFjavascript.html)
+- [异步编程那些事](https://yanhaijing.com/javascript/2017/08/02/talk-async/)
+- [异步 Promise 及 Async/Await 可能最完整入门攻略](https://segmentfault.com/a/1190000016788484)

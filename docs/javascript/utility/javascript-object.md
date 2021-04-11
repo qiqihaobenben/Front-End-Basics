@@ -1716,4 +1716,8 @@ for(var i = 0; i < objects.length; i++) {
 }
 ```
 
+### 待处理问题：为什么 super() 之前不能访问 this？
+
+https://zhuanlan.zhihu.com/p/354146530
+
 ### 控制对象的访问（对象进阶，待整理，可以跟 Vue 一起）
