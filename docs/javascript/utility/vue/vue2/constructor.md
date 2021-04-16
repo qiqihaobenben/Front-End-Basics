@@ -272,3 +272,9 @@ compileToFunctions 函数的作用就是将模板 template 编译成 render 函�
 3. `runtime/index.js` 主要是添加 web 平台特有的配置、组件和指令，还有挂载 `$mount` ，`entry-runtime-with-compiler.js` 主要是重写了 `$mount` 方法，添加了 compiler 编译器，支持 template
 
 具体每一个挂载到 `Vue` 上的全局 API 和 `Vue.prototype` 上的实例方法的实现原理，在最后会单独拿出一节来介绍。
+
+### 扩展
+
+#### 为什么 Vue 不用 ES6 的 Class 实现呢？
+
+我们在 `src/core/instance/index.js` 文件中 Vue 构造函数后面有很多 `xxxMixin` 的函数调用，并打 Vue 当做参数传入，它们的功能都是给 Vue 的 prototype 上扩展一些方法，Vue 按功能把这些扩展分散到多个模块中实现，而不是在一个模块里实现所有的扩展，这种方式是用 Class 难以实现的。这么做的好处是非常方便代码的维护和管理。
