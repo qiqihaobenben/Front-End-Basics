@@ -1,5 +1,7 @@
 # Vue.js 源码-项目基础和项目构建
 
+> Vue.js 版本为 v2.5.20
+
 项目基础包括：项目结构、架构设计和构建流程。
 
 既然是学习源码，那我们就有必要阅读项目的贡献规则文档，好的开源项目肯定会包含这部分内容的，Vue.js 的贡献文档位置在 `.github/CONTRIBUTING.md`, 可以直接访问链接查看具体内容：[https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md](https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md)，在这个文档里说明了一些行为准则、PR 指南、Issue Reporting 指南、Development Setup、以及项目结构。通过阅读这些内容我们可以了解项目如何开发和启动以及目录说明。
@@ -278,3 +280,8 @@ dist 文件夹存放构建后的文件，在这个目录下你会找到很多不
 我们在使用 Runtime Only 版本时，通常需要借助如 webpack 的 vue-loader 工具把.vue 文件编译成 JavaScript，因为是在编译阶段做的，所以只包含运行时的 Vue.js 代码，因此代码体积也会更轻量。
 
 如果没有对代码做预编译，但是又使用了 template 属性并传入一个字符串，就需要用完整版在客户端编译模板。最终 template 属性会被编译成 render 函数。很显然，编译过程对性能会有一定损耗，所以通常更推荐使用 Runtime Only 的 Vue.js。
+
+## 参考文档
+
+- [Vue2.1.7 源码学习](http://hcysun.me/2017/03/03/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/#%E4%B8%80%E3%80%81%E4%BB%8E%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%AA%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%85%A5%E6%89%8B)
+- [Vue.js 源码目录设计](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/directory.html)
