@@ -341,6 +341,7 @@ watch: {
 这样就创建了一个 `deep watcher`，在 `watcher` 执行 `get` 求值的过程中有一段逻辑：
 
 ```js
+/** src/core/observer/watcher.js */
 get() {
   //……
 
@@ -393,3 +394,85 @@ function _traverse(val: any, seen: ISet) {
 ```
 
 `traverse` 的逻辑也很简单，它实际上就是对一个对象做深度递归遍历，因为遍历过程中就是对一个子对象的访问，会触发他们的 getter 过程，这样就可以收集到依赖，也就是订阅它们变化的 `watcher`，这个函数实现还有一个小的优化，遍历过程中会把子响应式对象它们的 `dep.id` 记录到 `seenObjects`，避免以后重复访问。
+
+那么在执行了 `traverse` 后，我们在对 watch 的对象内部任何一个值做修改，也会调用 `watcher` 的回调函数了。
+
+对 `deep watcher` 的理解非常重要，今后工作中如果大家 watch 了一个复杂对象，并且希望改变对象内部深层某个值的时候也触发回调，一定要设置 `deep` 为 true，但是因为设置了 `deep` 后会执行 `traverse` 函数，会有一定的性能开销，所以一定要根据应用场景权衡是否要开启这个配置。
+
+### user watcher
+
+前面我们分析过，通过 `vm.$watch` 创建的 watcher 是一个 `user watcher`，其实它的功能很简单，在对 watcher 求值以及在执行回调函数的时候，会处理一下错误，如下：
+
+```js
+/** src/core/observer/watcher.js 中 Watcher 构造函数的 get 实例方法中*/
+
+if (this.user) {
+  handleError(e, vm, `getter for watcher "${this.expression}"`)
+} else {
+  throw e
+}
+```
+
+`handleError` 在 Vue 中是一个错误捕获并且暴露给用户的一个利器。
+
+在创建 `user watcher` 时，还有一个 `immediate watcher` 的概念，如果 `immediate` 为 true，立即执行 `cb`：
+
+```js
+/** src/core/instance/state.js */
+
+export function stateMixin(Vue: Class<Component>) {
+  // ……
+  Vue.prototype.$watch = function(
+    expOrFn: string | Function,
+    cb: any,
+    options?: Object
+  ): Function {
+    // ……
+    const watcher = new Watcher(vm, expOrFn, cb, options)
+    if (options.immediate) {
+      try {
+        cb.call(vm, watcher.value)
+      } catch (error) {
+        handleError(
+          error,
+          vm,
+          `callback for immediate watcher "${watcher.expression}"`
+        )
+      }
+    }
+    // ……
+  }
+}
+```
+
+### lazy watcher
+
+`lazy watcher` 几乎就是为计算属性量身定做的，我们刚才已经对它做了详细的分析，之前可能也有 `computed watcher` 的叫法。
+
+### sync watcher
+
+在我们之前对 `setter` 的分析过程知道，当响应式数据发生变化后，触发了 `watcher.update()`，只是把这个 `watcher` 推送到一个队列中，在 `nextTick` 后才会真正执行 `watcher.run()` ，然后触发回调函数。而一旦我们设置了 `sync`，就可以在当前 `Tick` 中同步执行 `watcher` 的回调函数。
+
+```js
+/** src/core/observer/watcher.js 中 Watcher 构造函数的 update 实例方法中 */
+/**
+   * Subscriber interface.
+   * Will be called when a dependency changes.
+   */
+  update () {
+    /* istanbul ignore else */
+    if (this.lazy) {
+      this.dirty = true
+    } else if (this.sync) {
+      this.run()
+    } else {
+      queueWatcher(this)
+    }
+  }
+```
+
+只有当我们需要 watch 的值的变化到执行 `watcher` 的回调函数是一个同步过程的时候才会去设置该属性为 true。
+
+## 总结
+
+计算属性本质上是 `lazy watcher`，而侦听属性本质上是 `user watcher`。就应用场景而言，计算属性适合用在模板渲染中，某个值是依赖了其他的响应式对象甚至是计算属性计算而来；而侦听属性适用于观测某个值的变化去完成一段复杂的业务逻辑。
