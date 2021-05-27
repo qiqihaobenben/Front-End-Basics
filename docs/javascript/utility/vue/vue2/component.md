@@ -1272,7 +1272,226 @@ export function mountComponent(
 }
 ```
 
-在执行 `vm._render()` 函数渲染 VNode 之前，执行了 `beforeMount` 钩子函数，在执行完 `vm._update()` 把 VNode patch 到真实 DOM 后，执行 `mounted` 钩子。注意，这里对 `mounted` 钩子函数执行有一个判断逻辑。
+在执行 `vm._render()` 函数渲染 VNode 之前，执行了 `beforeMount` 钩子函数，在执行完 `vm._update()` 把 VNode patch 到真实 DOM 后，执行 `mounted` 钩子。注意，这里对 `mounted` 钩子函数执行有一个判断逻辑，`vm.$vnode` 如果为 `null`，则表明这不是一次组件的初始化过程，而是我们通过外部 `new Vue` 初始化过程。
+
+那么对于组件，它的 `mounted` 时机在哪儿呢？之前我们提到过，组件的 VNode patch 到 DOM 后，会执行 `invokeInsertHook` 函数，把 `insertedVnodeQueue` 里保存的钩子函数一次执行一遍，它定义在 `src/core/vdom/patch.js` 中：
+
+```js
+function invokeInsertHook(vnode, queue, initial) {
+  // delay insert hooks for component root nodes, invoke them after the
+  // element is really inserted
+  if (isTrue(initial) && isDef(vnode.parent)) {
+    vnode.parent.data.pendingInsert = queue
+  } else {
+    for (let i = 0; i < queue.length; ++i) {
+      queue[i].data.hook.insert(queue[i])
+    }
+  }
+}
+```
+
+该函数会执行 `insert` 这个钩子函数，对于组件而言， `insert` 钩子函数的定义在 `src/core/vdom/create-component.js` 中的 `componentVNodeHooks` 中：
+
+```js
+// inline hooks to be invoked on component VNodes during patch
+const componentVNodeHooks = {
+  //……
+
+  insert(vnode: MountedComponentVNode) {
+    const { context, componentInstance } = vnode
+    if (!componentInstance._isMounted) {
+      componentInstance._isMounted = true
+      callHook(componentInstance, 'mounted')
+    }
+    //……
+  },
+
+  //……
+}
+```
+
+我们可以看到，每个子组件都是在这个钩子函数中执行 `mounted` 钩子函数，并且我们之前分析过， `insertedVnodeQueue` 的添加顺序是先子后父，所以对于同步渲染的子组件而言，`mounted` 钩子函数的执行顺序也是先子后父。
+
+### beforeUpdate & updated
+
+顾名思义， `beforeUpdate` 和 `updated` 的钩子函数执行时机都应该是在数据更新的时候。
+
+`beforeUpdate` 的执行时机是在渲染 Watcher 的 `before` 函数中，我们刚才提到了：
+
+```js
+/** src/core/instance/lifecycle.js */
+export function mountComponent(
+  vm: Component,
+  el: ?Element,
+  hydrating?: boolean
+): Component {
+  //……
+
+  // we set this to vm._watcher inside the watcher's constructor
+  // since the watcher's initial patch may call $forceUpdate (e.g. inside child
+  // component's mounted hook), which relies on vm._watcher being already defined
+  new Watcher(
+    vm,
+    updateComponent,
+    noop,
+    {
+      before() {
+        if (vm._isMounted && !vm._isDestroyed) {
+          callHook(vm, 'beforeUpdate')
+        }
+      },
+    },
+    true /* isRenderWatcher */
+  )
+  //……
+}
+```
+
+注意这里有个判断，也就是在组件已经 `mounted` 之后并且没有 `destroyed`，才会去调用这个钩子函数。
+
+`update` 的执行时机是在 `flushSchedulerQueue` 函数调用的时候，它定义在 `src/core/observer/scheduler.js` 中：
+
+```js
+/**
+ * Flush both queues and run the watchers.
+ */
+function flushSchedulerQueue() {
+  // ……
+
+  callUpdatedHooks(updatedQueue)
+
+  // ……
+}
+
+function callUpdatedHooks(queue) {
+  let i = queue.length
+  while (i--) {
+    const watcher = queue[i]
+    const vm = watcher.vm
+    if (vm._watcher === watcher && vm._isMounted && !vm._isDestroyed) {
+      callHook(vm, 'updated')
+    }
+  }
+}
+```
+
+`updateQueue` 是更新了的 `watcher` 数组，那么在 `callUpdatedHooks` 函数中，它对这些数组做遍历，只有满足当前 `watcher` 为 `vm._watcher`， 并且组件已经 `mounted`，以及组件没有 `destroyed` 这三个条件，才会执行 `updated` 钩子函数。
+
+我们之前提到过，在组件 mount 的过程中，会实例化一个渲染的 `Watcher` 去监听 `vm` 上的数据变化重新渲染，这段逻辑发生在 `mountComponent` 函数执行的时候：
+
+```js
+/** src/core/instance/lifecycle.js */
+export function mountComponent(
+  vm: Component,
+  el: ?Element,
+  hydrating?: boolean
+): Component {
+  let updateComponent
+  /* istanbul ignore if */
+  if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    //……
+  } else {
+    updateComponent = () => {
+      vm._update(vm._render(), hydrating)
+    }
+  }
+  new Watcher(
+    vm,
+    updateComponent,
+    noop,
+    {
+      before() {
+        if (vm._isMounted && !vm._isDestroyed) {
+          callHook(vm, 'beforeUpdate')
+        }
+      },
+    },
+    true /* isRenderWatcher */
+  )
+}
+```
+
+那么在实例化 `Watcher` 的过程中，在它的构造函数里会判断 `isRenderWatcher`，接着把当前 `watcher` 的实例赋值给 `vm._watcher`， 定义在 `src/core/observer/watcher.js` 中：
+
+```js
+export default class Watcher {
+  constructor(
+    vm: Component,
+    expOrFn: string | Function,
+    cb: Function,
+    options?: ?Object,
+    isRenderWatcher?: boolean
+  ) {
+    this.vm = vm
+    if (isRenderWatcher) {
+      vm._watcher = this
+    }
+    vm._watchers.push(this)
+
+    //……
+  }
+}
+```
+
+同时，还把当前 `watcher` 实例 push 到 `vm._watchers` 中， `vm._watcher` 是专门用来监听 `vm` 上数据变化然后重新渲染的 watcher,因此在 `callUpdatedHooks` 函数中，只有 `vm._watcher` 的回调执行完毕后，才会执行 `updated` 钩子函数。
+
+### beforeDestroy & destroyed
+
+顾名思义，`beforeDestroy` 和 `destroyed` 钩子函数的执行时机在组件销毁的阶段，组件销毁过程最终会调用 `$destroy` 方法，它定义在 `src/core/instance/lifecycle.js` 中：
+
+```js
+Vue.prototype.$destroy = function () {
+    const vm: Component = this
+    if (vm._isBeingDestroyed) {
+      return
+    }
+    callHook(vm, 'beforeDestroy')
+    vm._isBeingDestroyed = true
+    // remove self from parent
+    const parent = vm.$parent
+    if (parent && !parent._isBeingDestroyed && !vm.$options.abstract) {
+      remove(parent.$children, vm)
+    }
+    // teardown watchers
+    if (vm._watcher) {
+      vm._watcher.teardown()
+    }
+    let i = vm._watchers.length
+    while (i--) {
+      vm._watchers[i].teardown()
+    }
+    // remove reference from data ob
+    // frozen object may not have observer.
+    if (vm._data.__ob__) {
+      vm._data.__ob__.vmCount--
+    }
+    // call the last hook...
+    vm._isDestroyed = true
+    // invoke destroy hooks on current rendered tree
+    vm.__patch__(vm._vnode, null)
+    // fire destroyed hook
+    callHook(vm, 'destroyed')
+    // turn off all instance listeners.
+    vm.$off()
+    // remove __vue__ reference
+    if (vm.$el) {
+      vm.$el.__vue__ = null
+    }
+    // release circular reference (#6759)
+    if (vm.$vnode) {
+      vm.$vnode.parent = null
+    }
+  }
+}
+```
+
+`beforeDestroy` 钩子函数的执行时机在 `$destroy` 函数执行最开始的地方，接着执行了一系列的销毁动作，包括从 `parent` 的 `$children` 中删掉自身，删除 `watcher`，当前渲染的 VNode 执行销毁钩子函数等，执行完毕后再调用 `destroyed` 钩子函数。
+
+在 `$destroy` 的执行过程中，它又会执行 `vm.__patch__(vm._vnode, null)` 触发它的子组件的销毁钩子函数，这样一层层的递归调用，所以 `destroyed` 钩子函数执行顺序是先子后父，和 `mounted` 过程一样。
+
+### activated & deactivated
+
+`activated` 和 `deactivated` 钩子函数是专门为 `keep-alive` 组件定制的钩子函数。
 
 ## 组件更新
 
