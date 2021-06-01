@@ -438,3 +438,182 @@ const code = generate(ast, options)
 ```
 
 编译入口逻辑之所以这么绕，是因为 Vue.js 在不同的平台下都会有编译的过程，因此编译过程中依赖的配置 `baseOptions` 会有所不同。而编译过程会多次执行，但同一个平台下每一次的编译过程配置又是相同的，为了不让这些配置在每次编译过程都通过参数传入，Vue.js 利用了函数柯里化的技巧很好的实现了 `baseOptions` 的参数保留。同样，Vue.js 也是利用函数柯里化的技巧把基础的编译过程函数抽出来，通过 `createCompilerCreator(baseCompile)` 的方式把真正编译的过程和其他逻辑，如对编译配置处理、缓存处理等剥离开，这样的设计还是非常巧妙的。
+
+## parse
+
+编译过程首先就是对模板做解析，生成 AST，它是一种抽象语法树，是对源代码抽象语法结构的树状表现形式。在很多编译技术中，如 babel 编译 ES6 的代码都会先生成 AST。
+
+这个过程是比较复杂的，它会用到大量正则表达式对字符串解析。为了直观的演示 `parse` 的过程，我们先来看一个例子：
+
+```html
+<ul :class="bindCls" class="list" v-if="isShow">
+  <li v-for="(item,index) in data" @click="clickItem(index)">
+    {{item}}:{{index}}
+  </li>
+</ul>
+```
+
+经过 `parse` 过程后，生成的 AST 如下：
+
+```js
+ast = {
+  'type': 1,
+  'tag': 'ul',
+  'attrsList': [],
+  'attrsMap': {
+    ':class': 'bindCls',
+    'class': 'list',
+    'v-if': 'isShow'
+  },
+  'if': 'isShow',
+  'ifConditions': [{
+    'exp': 'isShow',
+    'block': // ul ast element
+  }],
+  'parent': undefined,
+  'plain': false,
+  'staticClass': 'list',
+  'classBinding': 'bindCls',
+  'children': [{
+    'type': 1,
+    'tag': 'li',
+    'attrsList': [{
+      'name': '@click',
+      'value': 'clickItem(index)'
+    }],
+    'attrsMap': {
+      '@click': 'clickItem(index)',
+      'v-for': '(item,index) in data'
+     },
+    'parent': // ul ast element
+    'plain': false,
+    'events': {
+      'click': {
+        'value': 'clickItem(index)'
+      }
+    },
+    'hasBindings': true,
+    'for': 'data',
+    'alias': 'item',
+    'iterator1': 'index',
+    'children': [
+      'type': 2,
+      'expression': '_s(item)+":"+_s(index)'
+      'text': '{{item}}:{{index}}',
+      'tokens': [
+        {'@binding':'item'},
+        ':',
+        {'@binding':'index'}
+      ]
+    ]
+  }]
+}
+```
+
+可以看到，生成的 AST 是一个树状结构，每一个节点都是一个 `ast element`，除了它自身的一些属性，还维护了它的父子关系，如 `parent` 指向它的父节点， `children` 指向它的所有子节点。先对 AST 有一些直观的印象，那么接下来我们来分析一下这个 AST 是如何得到的。
+
+### parse 整体流程
+
+首先来看一下 `parse` 的定义，在 `src/compiler/parser/index.js` 中：
+
+```js
+/**
+ * Convert HTML string to AST.
+ */
+export function parse(
+  template: string,
+  options: CompilerOptions
+): ASTElement | void {
+  getFnsAndConfigFromOptions(options)
+
+  parseHTML(template, {
+    // options ...
+    start(tag, attrs, unary) {
+      let element = createASTElement(tag, attrs)
+      processElement(element)
+      treeManagement()
+    },
+
+    end() {
+      treeManagement()
+      closeElement()
+    },
+
+    chars(text: string) {
+      handleText()
+      createChildrenASTOfText()
+    },
+    comment(text: string) {
+      createChildrenASTOfComment()
+    },
+  })
+  return astRootElement
+}
+```
+
+`parse` 函数的代码很长，先把它拆成伪代码的形式，方便对整体流程现有一个大致的了解。接下来我们就来分解分析每段伪代码的作用。
+
+#### 从 options 中获取方法和配置
+
+对应伪代码：
+
+```js
+getFnsAndConfigFromOptions(options)
+```
+
+`parse` 函数的输入是 `template` 和 `options`，输出是 AST 的根节点。`template` 就是我们的模板字符串，而 `options` 实际上是和平台相关的一些配置，它定义在 `src/platforms/web/compiler/options.js` 中：
+
+```js
+import {
+  isPreTag,
+  mustUseProp,
+  isReservedTag,
+  getTagNamespace,
+} from '../util/index'
+
+import modules from './modules/index'
+import directives from './directives/index'
+import { genStaticKeys } from 'shared/util'
+import { isUnaryTag, canBeLeftOpenTag } from './util'
+
+export const baseOptions: CompilerOptions = {
+  expectHTML: true,
+  modules,
+  directives,
+  isPreTag,
+  isUnaryTag,
+  mustUseProp,
+  canBeLeftOpenTag,
+  isReservedTag,
+  getTagNamespace,
+  staticKeys: genStaticKeys(modules),
+}
+```
+
+这些属性和方法之所以放到 `platforms` 目录下是因为它们在不同的平台（web 和 weex）的实现是不同的。
+
+我们用伪代码 `getFnsAndConfigFromOptions` 表示了这一过程，它的实际代码如下：
+
+```js
+platformIsPreTag = options.isPreTag || no
+platformMustUseProp = options.mustUseProp || no
+platformGetTagNamespace = options.getTagNamespace || no
+const isReservedTag = options.isReservedTag || no
+maybeComponent = (el: ASTElement) => !!el.component || !isReservedTag(el.tag)
+
+transforms = pluckModuleFunction(options.modules, 'transformNode')
+preTransforms = pluckModuleFunction(options.modules, 'preTransformNode')
+postTransforms = pluckModuleFunction(options.modules, 'postTransformNode')
+
+delimiters = options.delimiters
+```
+
+这些方法和配置都是后续解析的时候需要的。
+
+#### 解析 HTML 模板
+
+对应伪代码：
+
+```js
+parseHTML(template, options)
+```
