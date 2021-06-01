@@ -1143,6 +1143,1243 @@ vm.$options = {
 }
 ```
 
+## 声明周期
+
+每个 Vue 实例在被创建之前都要经过一系列的初始化过程。例如需要设置数据监听、编译模板、挂载实例到 DOM、在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做生命周期钩子的函数，给用户在一些特定的场景下添加他们自己的代码的机会。
+
+在我们实际项目开发过程中，会非常频繁地和 Vue 组件的生命周期打交道，接下来我们就从源码的角度来看一下这些生命周期的钩子函数是如何被执行的。
+
+源码中最终执行生命周期的函数都是调用 `callHook` 方法，它定义在 `src/core/instance/lifecycle.js` 中：
+
+```js
+export function callHook(vm: Component, hook: string) {
+  // #7573 disable dep collection when invoking lifecycle hooks
+  pushTarget()
+  const handlers = vm.$options[hook]
+  const info = `${hook} hook`
+  if (handlers) {
+    for (let i = 0, j = handlers.length; i < j; i++) {
+      invokeWithErrorHandling(handlers[i], vm, null, vm, info)
+    }
+  }
+  if (vm._hasHookEvent) {
+    vm.$emit('hook:' + hook)
+  }
+  popTarget()
+}
+```
+
+`callHook` 函数的逻辑很简单，根据传入的字符串 `hook`，去拿到 `vm.$options[hook]` 对应的回调函数数组，然后遍历执行，执行的时候把 `vm` 作为函数执行的上下文。
+
+上一小节，我们详细地介绍了 Vue.js 合并 `options` 的过程，各个阶段的生命周期的函数也被合并到 `vm.$options` 里，并且是一个数组。因此 `callHook` 函数的功能就是调用某个生命周期钩子注册的所有回调函数。
+
+了解了生命周期的执行方式后，接下来我们会具体介绍每一个生命周期钩子函数的调用时机。
+
+### beforeCreate & created
+
+`beforeCreate` 和 `created` 函数都是在实例化 `Vue` 的阶段，在 `_init` 方法中执行的，它定义在 `src/core/instance/init.js` 中：
+
+```js
+Vue.prototype._init = function(options?: Object) {
+  const vm: Component = this
+  //……
+
+  initLifecycle(vm)
+  initEvents(vm)
+  initRender(vm)
+  callHook(vm, 'beforeCreate')
+  initInjections(vm) // resolve injections before data/props
+  initState(vm)
+  initProvide(vm) // resolve provide after data/props
+  callHook(vm, 'created')
+
+  //……
+}
+```
+
+可以看到 `beforeCreate` 和 `created` 的钩子调用是在 `initState` 的前后，`initState` 的作用是初始化 `props`、`data`、`methods`、`watch`、`computed` 等属性，那么显然 `beforeCreate` 的钩子函数中就不能获取到 `props`、`data` 中定义的值，也不能调用 `methods` 中定义的方法。
+
+在这 2 个钩子函数执行的时候，并没有渲染 DOM ，所以我们也不能够访问 DOM，一般来说，如果组件在加载的时候需要和后端有交互，放在这 2 个钩子函数执行都可以，如果是需要访问 `props`、`data` 等数据的话，就需要使用 `created` 钩子函数。
+
+我们如果去看 vue-router 和 vuex 的时候就会发现它们都混合了 `beforeCreate` 钩子函数。
+
+### beforeMount & mounted
+
+顾名思义，`beforeMount` 钩子函数发生在 `mount` 之前，也就是 DOM 挂载之前，它的调用时机是在 `mountComponent` 函数中，定义在 `src/core/instance/lifecycle.js` 中：
+
+```js
+export function mountComponent(
+  vm: Component,
+  el: ?Element,
+  hydrating?: boolean
+): Component {
+  vm.$el = el
+
+  //……
+
+  callHook(vm, 'beforeMount')
+
+  let updateComponent
+  /* istanbul ignore if */
+  if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    updateComponent = () => {
+      const name = vm._name
+      const id = vm._uid
+      const startTag = `vue-perf-start:${id}`
+      const endTag = `vue-perf-end:${id}`
+
+      mark(startTag)
+      const vnode = vm._render()
+      mark(endTag)
+      measure(`vue ${name} render`, startTag, endTag)
+
+      mark(startTag)
+      vm._update(vnode, hydrating)
+      mark(endTag)
+      measure(`vue ${name} patch`, startTag, endTag)
+    }
+  } else {
+    updateComponent = () => {
+      vm._update(vm._render(), hydrating)
+    }
+  }
+
+  // we set this to vm._watcher inside the watcher's constructor
+  // since the watcher's initial patch may call $forceUpdate (e.g. inside child
+  // component's mounted hook), which relies on vm._watcher being already defined
+  new Watcher(
+    vm,
+    updateComponent,
+    noop,
+    {
+      before() {
+        if (vm._isMounted && !vm._isDestroyed) {
+          callHook(vm, 'beforeUpdate')
+        }
+      },
+    },
+    true /* isRenderWatcher */
+  )
+  hydrating = false
+
+  // manually mounted instance, call mounted on self
+  // mounted is called for render-created child components in its inserted hook
+  if (vm.$vnode == null) {
+    vm._isMounted = true
+    callHook(vm, 'mounted')
+  }
+  return vm
+}
+```
+
+在执行 `vm._render()` 函数渲染 VNode 之前，执行了 `beforeMount` 钩子函数，在执行完 `vm._update()` 把 VNode patch 到真实 DOM 后，执行 `mounted` 钩子。注意，这里对 `mounted` 钩子函数执行有一个判断逻辑，`vm.$vnode` 如果为 `null`，则表明这不是一次组件的初始化过程，而是我们通过外部 `new Vue` 初始化过程。
+
+那么对于组件，它的 `mounted` 时机在哪儿呢？之前我们提到过，组件的 VNode patch 到 DOM 后，会执行 `invokeInsertHook` 函数，把 `insertedVnodeQueue` 里保存的钩子函数一次执行一遍，它定义在 `src/core/vdom/patch.js` 中：
+
+```js
+function invokeInsertHook(vnode, queue, initial) {
+  // delay insert hooks for component root nodes, invoke them after the
+  // element is really inserted
+  if (isTrue(initial) && isDef(vnode.parent)) {
+    vnode.parent.data.pendingInsert = queue
+  } else {
+    for (let i = 0; i < queue.length; ++i) {
+      queue[i].data.hook.insert(queue[i])
+    }
+  }
+}
+```
+
+该函数会执行 `insert` 这个钩子函数，对于组件而言， `insert` 钩子函数的定义在 `src/core/vdom/create-component.js` 中的 `componentVNodeHooks` 中：
+
+```js
+// inline hooks to be invoked on component VNodes during patch
+const componentVNodeHooks = {
+  //……
+
+  insert(vnode: MountedComponentVNode) {
+    const { context, componentInstance } = vnode
+    if (!componentInstance._isMounted) {
+      componentInstance._isMounted = true
+      callHook(componentInstance, 'mounted')
+    }
+    //……
+  },
+
+  //……
+}
+```
+
+我们可以看到，每个子组件都是在这个钩子函数中执行 `mounted` 钩子函数，并且我们之前分析过， `insertedVnodeQueue` 的添加顺序是先子后父，所以对于同步渲染的子组件而言，`mounted` 钩子函数的执行顺序也是先子后父。
+
+### beforeUpdate & updated
+
+顾名思义， `beforeUpdate` 和 `updated` 的钩子函数执行时机都应该是在数据更新的时候。
+
+`beforeUpdate` 的执行时机是在渲染 Watcher 的 `before` 函数中，我们刚才提到了：
+
+```js
+/** src/core/instance/lifecycle.js */
+export function mountComponent(
+  vm: Component,
+  el: ?Element,
+  hydrating?: boolean
+): Component {
+  //……
+
+  // we set this to vm._watcher inside the watcher's constructor
+  // since the watcher's initial patch may call $forceUpdate (e.g. inside child
+  // component's mounted hook), which relies on vm._watcher being already defined
+  new Watcher(
+    vm,
+    updateComponent,
+    noop,
+    {
+      before() {
+        if (vm._isMounted && !vm._isDestroyed) {
+          callHook(vm, 'beforeUpdate')
+        }
+      },
+    },
+    true /* isRenderWatcher */
+  )
+  //……
+}
+```
+
+注意这里有个判断，也就是在组件已经 `mounted` 之后并且没有 `destroyed`，才会去调用这个钩子函数。
+
+`update` 的执行时机是在 `flushSchedulerQueue` 函数调用的时候，它定义在 `src/core/observer/scheduler.js` 中：
+
+```js
+/**
+ * Flush both queues and run the watchers.
+ */
+function flushSchedulerQueue() {
+  // ……
+
+  callUpdatedHooks(updatedQueue)
+
+  // ……
+}
+
+function callUpdatedHooks(queue) {
+  let i = queue.length
+  while (i--) {
+    const watcher = queue[i]
+    const vm = watcher.vm
+    if (vm._watcher === watcher && vm._isMounted && !vm._isDestroyed) {
+      callHook(vm, 'updated')
+    }
+  }
+}
+```
+
+`updateQueue` 是更新了的 `watcher` 数组，那么在 `callUpdatedHooks` 函数中，它对这些数组做遍历，只有满足当前 `watcher` 为 `vm._watcher`， 并且组件已经 `mounted`，以及组件没有 `destroyed` 这三个条件，才会执行 `updated` 钩子函数。
+
+我们之前提到过，在组件 mount 的过程中，会实例化一个渲染的 `Watcher` 去监听 `vm` 上的数据变化重新渲染，这段逻辑发生在 `mountComponent` 函数执行的时候：
+
+```js
+/** src/core/instance/lifecycle.js */
+export function mountComponent(
+  vm: Component,
+  el: ?Element,
+  hydrating?: boolean
+): Component {
+  let updateComponent
+  /* istanbul ignore if */
+  if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    //……
+  } else {
+    updateComponent = () => {
+      vm._update(vm._render(), hydrating)
+    }
+  }
+  new Watcher(
+    vm,
+    updateComponent,
+    noop,
+    {
+      before() {
+        if (vm._isMounted && !vm._isDestroyed) {
+          callHook(vm, 'beforeUpdate')
+        }
+      },
+    },
+    true /* isRenderWatcher */
+  )
+}
+```
+
+那么在实例化 `Watcher` 的过程中，在它的构造函数里会判断 `isRenderWatcher`，接着把当前 `watcher` 的实例赋值给 `vm._watcher`， 定义在 `src/core/observer/watcher.js` 中：
+
+```js
+export default class Watcher {
+  constructor(
+    vm: Component,
+    expOrFn: string | Function,
+    cb: Function,
+    options?: ?Object,
+    isRenderWatcher?: boolean
+  ) {
+    this.vm = vm
+    if (isRenderWatcher) {
+      vm._watcher = this
+    }
+    vm._watchers.push(this)
+
+    //……
+  }
+}
+```
+
+同时，还把当前 `watcher` 实例 push 到 `vm._watchers` 中， `vm._watcher` 是专门用来监听 `vm` 上数据变化然后重新渲染的 watcher,因此在 `callUpdatedHooks` 函数中，只有 `vm._watcher` 的回调执行完毕后，才会执行 `updated` 钩子函数。
+
+### beforeDestroy & destroyed
+
+顾名思义，`beforeDestroy` 和 `destroyed` 钩子函数的执行时机在组件销毁的阶段，组件销毁过程最终会调用 `$destroy` 方法，它定义在 `src/core/instance/lifecycle.js` 中：
+
+```js
+Vue.prototype.$destroy = function () {
+    const vm: Component = this
+    if (vm._isBeingDestroyed) {
+      return
+    }
+    callHook(vm, 'beforeDestroy')
+    vm._isBeingDestroyed = true
+    // remove self from parent
+    const parent = vm.$parent
+    if (parent && !parent._isBeingDestroyed && !vm.$options.abstract) {
+      remove(parent.$children, vm)
+    }
+    // teardown watchers
+    if (vm._watcher) {
+      vm._watcher.teardown()
+    }
+    let i = vm._watchers.length
+    while (i--) {
+      vm._watchers[i].teardown()
+    }
+    // remove reference from data ob
+    // frozen object may not have observer.
+    if (vm._data.__ob__) {
+      vm._data.__ob__.vmCount--
+    }
+    // call the last hook...
+    vm._isDestroyed = true
+    // invoke destroy hooks on current rendered tree
+    vm.__patch__(vm._vnode, null)
+    // fire destroyed hook
+    callHook(vm, 'destroyed')
+    // turn off all instance listeners.
+    vm.$off()
+    // remove __vue__ reference
+    if (vm.$el) {
+      vm.$el.__vue__ = null
+    }
+    // release circular reference (#6759)
+    if (vm.$vnode) {
+      vm.$vnode.parent = null
+    }
+  }
+}
+```
+
+`beforeDestroy` 钩子函数的执行时机在 `$destroy` 函数执行最开始的地方，接着执行了一系列的销毁动作，包括从 `parent` 的 `$children` 中删掉自身，删除 `watcher`，当前渲染的 VNode 执行销毁钩子函数等，执行完毕后再调用 `destroyed` 钩子函数。
+
+在 `$destroy` 的执行过程中，它又会执行 `vm.__patch__(vm._vnode, null)` 触发它的子组件的销毁钩子函数，这样一层层的递归调用，所以 `destroyed` 钩子函数执行顺序是先子后父，和 `mounted` 过程一样。
+
+### activated & deactivated
+
+`activated` 和 `deactivated` 钩子函数是专门为 `keep-alive` 组件定制的钩子函数。
+
+## 组件注册
+
+在 Vue.js 中，除了它内置的组件，如 `keep-alive`、`transition`、 `transition-group` 等，其他用户自定义组件在使用前必须注册。在开发过程中可能会遇到如下报错信息：
+
+```
+'Unknown custom element: <xxx> - did you register the component correctly?
+ For recursive components, make sure to provide the "name" option.'
+```
+
+一般报这个错的原因都是使用了未注册的组件。Vue.js 提供了 2 种组件的注册方式，全局注册和局部注册。接下来从源码的角度来分析这两种注册方式：
+
+### 全局注册
+
+要注册一个全局组件，可以使用 `Vue.component(tagName, options)`。例如：
+
+```js
+Vue.component('my-component', {
+  // 选项
+})
+```
+
+那么， `Vue.component` 函数是在什么时候定义的呢，它的定义过程发生在最开始初始化 Vue 的全局函数的时候，代码在 `src/core/global-api/assets.js` 中：
+
+```js
+import { ASSET_TYPES } from 'shared/constants'
+import { isPlainObject, validateComponentName } from '../util/index'
+
+export function initAssetRegisters(Vue: GlobalAPI) {
+  /**
+   * Create asset registration methods.
+   */
+  ASSET_TYPES.forEach((type) => {
+    Vue[type] = function(
+      id: string,
+      definition: Function | Object
+    ): Function | Object | void {
+      if (!definition) {
+        return this.options[type + 's'][id]
+      } else {
+        /* istanbul ignore if */
+        if (process.env.NODE_ENV !== 'production' && type === 'component') {
+          validateComponentName(id)
+        }
+        if (type === 'component' && isPlainObject(definition)) {
+          definition.name = definition.name || id
+          definition = this.options._base.extend(definition)
+        }
+        if (type === 'directive' && typeof definition === 'function') {
+          definition = { bind: definition, update: definition }
+        }
+        this.options[type + 's'][id] = definition
+        return definition
+      }
+    }
+  })
+}
+```
+
+函数首先遍历 `ASSET_TYPES` ，得到 `type` 后挂载到 Vue 上。 `ASSET_TYPES` 定义在 `src/shared/constants.js`中：
+
+```js
+export const ASSET_TYPES = ['component', 'directive', 'filter']
+```
+
+所以在 `initAssetRegisters` 方法中，实际上 Vue 是初始化了 3 个全局函数，并且如果 `type` 是 `component` 且 `definition` 是一个对象的话，通过 `this.options._base.extend`，相当于 `Vue.extend` 把这个对象转换成一个继承于 Vue 的构造函数，最后通过 `this.options[type + 's'][id] = definition` 把它挂载到 `Vue.options.components` 上。
+
+由于我们每个组件的创建都是通过 `Vue.extend` 继承而来，我们之前分析过在继承的过程中有那么一段逻辑：
+
+```js
+Sub.options = mergeOptions(Super.options, extendOptions)
+```
+
+也就是说它会把 `Vue.options` 合并到 `Sub.options`，也就是组件的 `options` 上，然后在组件的实例化阶段，会执行 `merge options` 逻辑，把 `Sub.options.components` 合并到 `vm.$options.components` 上。
+
+然后在创建 `vnode` 的过程中，会执行 `_createElement` 方法，我们再来回顾一下这部分的逻辑，它定义在 `src/core/vdom/create-element.js` 中：
+
+```js
+export function _createElement(
+  context: Component,
+  tag?: string | Class<Component> | Function | Object,
+  data?: VNodeData,
+  children?: any,
+  normalizationType?: number
+): VNode | Array<VNode> {
+  // ……
+
+  let vnode, ns
+  if (typeof tag === 'string') {
+    let Ctor
+    ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
+    if (config.isReservedTag(tag)) {
+      // platform built-in elements
+      if (
+        process.env.NODE_ENV !== 'production' &&
+        isDef(data) &&
+        isDef(data.nativeOn)
+      ) {
+        warn(
+          `The .native modifier for v-on is only valid on components but it was used on <${tag}>.`,
+          context
+        )
+      }
+      vnode = new VNode(
+        config.parsePlatformTagName(tag),
+        data,
+        children,
+        undefined,
+        undefined,
+        context
+      )
+    } else if (
+      (!data || !data.pre) &&
+      isDef((Ctor = resolveAsset(context.$options, 'components', tag)))
+    ) {
+      // component
+      vnode = createComponent(Ctor, data, context, children, tag)
+    } else {
+      // unknown or unlisted namespaced elements
+      // check at runtime because it may get assigned a namespace when its
+      // parent normalizes children
+      vnode = new VNode(tag, data, children, undefined, undefined, context)
+    }
+  } else {
+    // direct component options / constructor
+    vnode = createComponent(tag, data, context, children)
+  }
+
+  // ……
+}
+```
+
+这里有一个判断逻辑 `isDef((Ctor = resolveAsset(context.$options, 'components', tag)))` 先来看一下 `resolveAsset` 的定义，在 `src/core/utils/options.js` 中：
+
+```js
+/**
+ * Resolve an asset.
+ * This function is used because child instances need access
+ * to assets defined in its ancestor chain.
+ */
+export function resolveAsset(
+  options: Object,
+  type: string,
+  id: string,
+  warnMissing?: boolean
+): any {
+  /* istanbul ignore if */
+  if (typeof id !== 'string') {
+    return
+  }
+  const assets = options[type]
+  // check local registration variations first
+  if (hasOwn(assets, id)) return assets[id]
+  const camelizedId = camelize(id)
+  if (hasOwn(assets, camelizedId)) return assets[camelizedId]
+  const PascalCaseId = capitalize(camelizedId)
+  if (hasOwn(assets, PascalCaseId)) return assets[PascalCaseId]
+  // fallback to prototype chain
+  const res = assets[id] || assets[camelizedId] || assets[PascalCaseId]
+  if (process.env.NODE_ENV !== 'production' && warnMissing && !res) {
+    warn('Failed to resolve ' + type.slice(0, -1) + ': ' + id, options)
+  }
+  return res
+}
+```
+
+这段逻辑很简单，先通过 `const assets = options[type]` 拿到 `assets`，然后再尝试拿 `assets[id]`，这里有个顺序，先直接使用 `id` 拿，如果不存在，则把 `id` 变成驼峰的形式再拿，如果仍然不存在，则在驼峰的基础上把首字母再变成大写的形式（大驼峰）再拿，如果仍然拿不到则报错。这样说明了我们在使用 `Vue.component(id, definition)` 全局注册组件的时候，id 可以是连字符、小驼峰或大驼峰的形式。
+
+那么回到我们的调用 `resolveAsset(context.$options, 'components', tag)`，即拿 `vm.$options.components[tag]`，这样我们就可以在 `resolveAsset` 的时候拿到这个组件的构造函数，并作为 `createComponent` 函数的参数。
+
+### 局部注册
+
+Vue.js 也同样支持局部注册组件，我们可以在一个组件内部使用 `components` 选项做组件的局部注册，例如：
+
+```js
+import HelloWorld from './components/HelloWorld'
+
+export default {
+  components: {
+    HelloWorld,
+  },
+}
+```
+
+其实理解了全局注册的过程，局部注册是非常简单的，在组件的 Vue 的实例化阶段有一个合并 `options` 的逻辑，之前我们也分析过，其中就有把 `components` 合并到 `vm.$options.components` 上，这样就可以在 `resolveAsset` 的时候拿到这个组件的构造函数，并作为 `createComponent` 函数的参数。
+
+注意：局部注册和全局注册不同的是，只有在组件引用并注册了，才能访问局部注册的子组件，而全局注册是扩展到 `Vue.options` 下，所以在所有组件的创建过程中，都会从全局的 `Vue.options.components` 扩展到当前组件的 `vm.$options.components` 下，这就是全局注册的组件能被任意使用的原因。
+
+## 异步组件
+
+在我们平时的开发工作中，为了减少首屏代码体积，往往会把一些非首屏的组件设计成异步组件，按需加载。Vue 也原生支持了异步组件的能力，如下：
+
+```js
+Vue.component('async-example', function(resolve, reject) {
+  // 这个特殊的 require 语法告诉 webpack
+  // 自动将编译后的代码分割成不同的块，
+  // 这些块将通过 Ajax 请求自动下载。
+  require(['./my-async-component'], resolve)
+})
+```
+
+示例中可以看到，Vue 注册的组件不再是一个对象，而是一个工厂函数，函数有两个参数 `resolve` 和 `reject`，函数内部用 `setTimeout` 模拟了异步，实际使用可能是通过动态请求异步组件的 JS 地址，最终通过执行 `resolve` 方法，它的参数就是我们的异步组件对象。
+
+在了解了异步组件如何注册后，我们从源码的角度来分析一下它的实现。
+
+上一节，我们分析了组件的注册逻辑，由于异步组件的定义并不是一个普通对象，所以不会执行 `Vue.extend` 的逻辑把它变成一个组件的构造函数，但是它仍然可以执行到 `createComponent` 函数，我们再来对这个函数做回顾，它定义在 `src/core/vdom/create-component.js` 中：
+
+```js
+export function createComponent(
+  Ctor: Class<Component> | Function | Object | void,
+  data: ?VNodeData,
+  context: Component,
+  children: ?Array<VNode>,
+  tag?: string
+): VNode | Array<VNode> | void {
+  if (isUndef(Ctor)) {
+    return
+  }
+
+  const baseCtor = context.$options._base
+
+  // plain options object: turn it into a constructor
+  if (isObject(Ctor)) {
+    Ctor = baseCtor.extend(Ctor)
+  }
+
+  // ……
+
+  // async component
+  let asyncFactory
+  if (isUndef(Ctor.cid)) {
+    asyncFactory = Ctor
+    Ctor = resolveAsyncComponent(asyncFactory, baseCtor)
+    if (Ctor === undefined) {
+      // return a placeholder node for async component, which is rendered
+      // as a comment node but preserves all the raw information for the node.
+      // the information will be used for async server-rendering and hydration.
+      return createAsyncPlaceholder(asyncFactory, data, context, children, tag)
+    }
+  }
+
+  //……
+}
+```
+
+我们省略了不必要的逻辑，只保留关键逻辑，由于我们这个时候传入的 `Ctor` 是一个函数，那么它也并不会执行 `Vue.extend` 逻辑，因此它的 `cid` 是 `undefined`，进入了异步组件创建的逻辑。这里首先执行了 `Ctor = resolveAsyncComponent(asyncFactory, baseCtor)` 方法，它定义在 `src/core/vdom/helpers/resolve-async-component.js` 中：
+
+```js
+export function resolveAsyncComponent(
+  factory: Function,
+  baseCtor: Class<Component>
+): Class<Component> | void {
+  if (isTrue(factory.error) && isDef(factory.errorComp)) {
+    return factory.errorComp
+  }
+
+  if (isDef(factory.resolved)) {
+    return factory.resolved
+  }
+
+  const owner = currentRenderingInstance
+  if (owner && isDef(factory.owners) && factory.owners.indexOf(owner) === -1) {
+    // already pending
+    factory.owners.push(owner)
+  }
+
+  if (isTrue(factory.loading) && isDef(factory.loadingComp)) {
+    return factory.loadingComp
+  }
+
+  if (owner && !isDef(factory.owners)) {
+    const owners = (factory.owners = [owner])
+    let sync = true
+    let timerLoading = null
+    let timerTimeout = null
+
+    ;(owner: any).$on('hook:destroyed', () => remove(owners, owner))
+
+    const forceRender = (renderCompleted: boolean) => {
+      for (let i = 0, l = owners.length; i < l; i++) {
+        ;(owners[i]: any).$forceUpdate()
+      }
+
+      if (renderCompleted) {
+        owners.length = 0
+        if (timerLoading !== null) {
+          clearTimeout(timerLoading)
+          timerLoading = null
+        }
+        if (timerTimeout !== null) {
+          clearTimeout(timerTimeout)
+          timerTimeout = null
+        }
+      }
+    }
+
+    const resolve = once((res: Object | Class<Component>) => {
+      // cache resolved
+      factory.resolved = ensureCtor(res, baseCtor)
+      // invoke callbacks only if this is not a synchronous resolve
+      // (async resolves are shimmed as synchronous during SSR)
+      if (!sync) {
+        forceRender(true)
+      } else {
+        owners.length = 0
+      }
+    })
+
+    const reject = once((reason) => {
+      process.env.NODE_ENV !== 'production' &&
+        warn(
+          `Failed to resolve async component: ${String(factory)}` +
+            (reason ? `\nReason: ${reason}` : '')
+        )
+      if (isDef(factory.errorComp)) {
+        factory.error = true
+        forceRender(true)
+      }
+    })
+
+    const res = factory(resolve, reject)
+
+    if (isObject(res)) {
+      if (isPromise(res)) {
+        // () => Promise
+        if (isUndef(factory.resolved)) {
+          res.then(resolve, reject)
+        }
+      } else if (isPromise(res.component)) {
+        res.component.then(resolve, reject)
+
+        if (isDef(res.error)) {
+          factory.errorComp = ensureCtor(res.error, baseCtor)
+        }
+
+        if (isDef(res.loading)) {
+          factory.loadingComp = ensureCtor(res.loading, baseCtor)
+          if (res.delay === 0) {
+            factory.loading = true
+          } else {
+            timerLoading = setTimeout(() => {
+              timerLoading = null
+              if (isUndef(factory.resolved) && isUndef(factory.error)) {
+                factory.loading = true
+                forceRender(false)
+              }
+            }, res.delay || 200)
+          }
+        }
+
+        if (isDef(res.timeout)) {
+          timerTimeout = setTimeout(() => {
+            timerTimeout = null
+            if (isUndef(factory.resolved)) {
+              reject(
+                process.env.NODE_ENV !== 'production'
+                  ? `timeout (${res.timeout}ms)`
+                  : null
+              )
+            }
+          }, res.timeout)
+        }
+      }
+    }
+
+    sync = false
+    // return in case resolved synchronously
+    return factory.loading ? factory.loadingComp : factory.resolved
+  }
+}
+```
+
+`resolveAsyncComponent` 函数的逻辑略复杂，因为它实际上处理了 3 种异步组件的创建方式，除了刚才示例的组件注册方式，还支持 2 种，一种是支持 `Promise` 创建组件的方式，如下：
+
+```js
+Vue.component(
+  'async-webpack-example',
+  // 该 `import` 函数返回一个 `Promise` 对象。
+  () => import('./my-async-component')
+)
+```
+
+另一种是高级异步组件，如下：
+
+```js
+const AsyncComp = () => ({
+  // 需要加载的组件。应当是一个 Promise
+  component: import('./MyComp.vue'),
+  // 加载中应当渲染的组件
+  loading: LoadingComp,
+  // 出错时渲染的组件
+  error: ErrorComp,
+  // 渲染加载中组件前的等待时间。默认：200ms。
+  delay: 200,
+  // 最长等待时间。超出此时间则渲染错误组件。默认：Infinity
+  timeout: 3000,
+})
+Vue.component('async-example', AsyncComp)
+```
+
+那么接下来，就根据这 3 种异步组件的情况，来分别去分析 `resolveAsyncComponent` 的逻辑。
+
+### 1、普通函数异步组件
+
+针对普通函数的情况，前面几个 if 判断可以忽略，它们是为高级组件所用，对于 `factory.owners` 的判断，是考虑到多个地方同时初始化一个异步组件，那么它的实际加载应该只有一次。接着进入实际加载逻辑，定义了 `forceRender`、`resolve` 和 `reject` 函数，注意 `resolve` 和 `reject` 函数用 `once` 函数做了一层包装，`once` 函数定义在 `src/shared/util.js` 中：
+
+```js
+/**
+ * Ensure a function is called only once.
+ */
+export function once(fn: Function): Function {
+  let called = false
+  return function() {
+    if (!called) {
+      called = true
+      fn.apply(this, arguments)
+    }
+  }
+}
+```
+
+`once` 逻辑非常简单，传入一个函数，并返回一个新函数，它非常巧妙地利用闭包和一个标志位保证了它包装的函数只会执行一次，在本小节中，就是确保了 `resolve` 和 `reject` 函数只执行一次。
+
+接下来执行 `const res = factory(resolve, reject)` 逻辑，这块儿就是执行我们异步组件的工厂函数，同时把 `resolve` 和 `reject` 函数作为参数传入，组件的工厂函数通常会先发送请求去加载异步组件的 JS 文件，拿到组件定义的对象 `res` 后，执行 `resolve(res)` 逻辑，它会先执行 `factory.resolved = ensureCtor(res, baseCtor)` ：
+
+```js
+/** src/core/vdom/helpers/resolve-async-component.js */
+
+function ensureCtor(comp: any, base) {
+  if (comp.__esModule || (hasSymbol && comp[Symbol.toStringTag] === 'Module')) {
+    comp = comp.default
+  }
+  return isObject(comp) ? base.extend(comp) : comp
+}
+```
+
+这个函数目的是为了保证能找到异步组件 JS 定义的组件对象，并且如果它是一个普通对象，则调用 `Vue.extend` 把它转换成一个组件的构造函数。
+
+`resolve` 逻辑最后判断了 `sync`，显然我们这个场景下 `sync` 为 false，那么就会执行 `forceRender` 函数，它会遍历 `factory.owners`，拿到每一个调用异步组件的实例 `vm`，执行 `vm.$forceUpdate()` 方法，它定义在 `src/core/instance/lifecycle.js` 中：
+
+```js
+Vue.prototype.$forceUpdate = function() {
+  const vm: Component = this
+  if (vm._watcher) {
+    vm._watcher.update()
+  }
+}
+```
+
+`$forceUpdate` 的逻辑非常简单，就是调用渲染 `watcher` 的 `update` 方法，让渲染 `watcher` 对应的回调函数执行，也就是触发了组件的重新渲染。之所以这么做是因为 Vue 通常是数据驱动视图重新渲染，但是在整个异步组件加载过程中是没有数据发生变化的，所以通过执行 `$forceUpdate` 可以强制组件重新渲染一次。
+
+### 2、 Promise 异步组件
+
+```js
+Vue.component(
+  'async-webpack-example',
+  // 该 `import` 函数返回一个 `Promise` 对象。
+  () => import('./my-async-component')
+)
+```
+
+webpack 2+ 支持了异步加载的语法糖： `() => import('./my-async-component')` ，当执行完 `res = factory(resolve, reject)`，返回的值是 `import('./my-async-component')` 的返回值，它是一个 `Promise` 对象，接着进入 if 条件，判断了 `isPromise(res)` ，条件满足，执行：
+
+```js
+if (isUndef(factory.resolved)) {
+  res.then(resolve, reject)
+}
+```
+
+当组件异步加载成功后，执行 `resolve`， 加载失败则执行 `reject`，这样就非常巧妙地实现了配合 webpack 2+ 的异步加载组件的方式（Promise）加载异步组件。
+
+### 3、高级异步组件
+
+由于异步加载组件需要动态加载 JS，有一定网络延时，而且有加载失败的情况，所以通常我们在开发异步组件相关逻辑的时候需要设计 loading 组件和 error 组件，并在适当的实际渲染它们。 Vue.js 2.3+支持了一种高级异步组件的方式，他通过一个简单的对象配置，帮你搞定 loading 组件和 error 组件的渲染时机，你完全不用关心细节，非常方便。接下来，我们就从源码的角度来分析高级异步组件是怎么实现的。
+
+```js
+const AsyncComp = () => ({
+  // 需要加载的组件。应当是一个 Promise
+  component: import('./MyComp.vue'),
+  // 加载中应当渲染的组件
+  loading: LoadingComp,
+  // 出错时渲染的组件
+  error: ErrorComp,
+  // 渲染加载中组件前的等待时间。默认：200ms。
+  delay: 200,
+  // 最长等待时间。超出此时间则渲染错误组件。默认：Infinity
+  timeout: 3000,
+})
+Vue.component('async-example', AsyncComp)
+```
+
+高级异步组件的初始化逻辑和普通异步组件一样，也是执行 `resolveAsyncComponent`，当执行完 `res = factory(resolve, reject)`，返回值就是定义的组件对象，显然满足 `else if (isPromise(res.component))` 的逻辑，接着执行 `res.component.then(resolve, reject)`，当异步组件加载成功后，执行 `resolve`，失败执行 `reject`。
+
+因为异步组件加载是一个异步过程，它接着又同步执行了如下逻辑：
+
+```js
+if (isDef(res.error)) {
+  factory.errorComp = ensureCtor(res.error, baseCtor)
+}
+
+if (isDef(res.loading)) {
+  factory.loadingComp = ensureCtor(res.loading, baseCtor)
+  if (res.delay === 0) {
+    factory.loading = true
+  } else {
+    timerLoading = setTimeout(() => {
+      timerLoading = null
+      if (isUndef(factory.resolved) && isUndef(factory.error)) {
+        factory.loading = true
+        forceRender(false)
+      }
+    }, res.delay || 200)
+  }
+}
+
+if (isDef(res.timeout)) {
+  timerTimeout = setTimeout(() => {
+    timerTimeout = null
+    if (isUndef(factory.resolved)) {
+      reject(
+        process.env.NODE_ENV !== 'production'
+          ? `timeout (${res.timeout}ms)`
+          : null
+      )
+    }
+  }, res.timeout)
+}
+```
+
+先判断 `res.error` 是否定义了 error 组件，如果有的话则赋值给 `factory.errorComp`。接着判断 `res.loading` 是否定义了 loading 组件，如果有的话则赋值给 `factory.loadingComp`，如果设置了 `res.delay` 且为 0，就立即执行 `facotry.loading = true`，否则延时 `delay` 的时间执行。
+
+```js
+if (isUndef(factory.resolved) && isUndef(factory.error)) {
+  factory.loading = true
+  forceRender(false)
+}
+```
+
+最后判断 `res.timeout` 如果配置了该项，则超过 `res.timeout` 时间，如果组件没有成功加载，执行 `reject`。
+
+在 `resolveAsyncComponent` 的最后有一段逻辑：
+
+```js
+sync = false
+// return in case resolved synchronously
+return factory.loading ? factory.loadingComp : factory.resolved
+```
+
+如果 `delay` 的配置为 0，则这次直接渲染 loading 组件，否则延时 `delay` 执行 `forceRender`，那么又会再一次执行到 `resolveAsyncComponent`。
+
+那么这时候，我们有几种情况，按逻辑的执行顺序，对不同的情况做判断。
+
+#### 异步组件加载失败
+
+当异步组件加载失败，会执行 `reject` 函数：
+
+```js
+const reject = once((reason) => {
+  process.env.NODE_ENV !== 'production' &&
+    warn(
+      `Failed to resolve async component: ${String(factory)}` +
+        (reason ? `\nReason: ${reason}` : '')
+    )
+  if (isDef(factory.errorComp)) {
+    factory.error = true
+    forceRender(true)
+  }
+})
+```
+
+这个时候会把 `factory.error` 设置为 `true`，同步执行 `forceRender()` 再次执行到 `resolveAsyncComponent` ：
+
+```js
+if (isTrue(factory.error) && isDef(factory.errorComp)) {
+  return factory.errorComp
+}
+```
+
+那么这个时候就返回 `factory.errorComp`，直接渲染 error 组件。
+
+#### 异步组件加载成功
+
+当异步组件加载成功，会执行 `resolve` 函数：
+
+```js
+const resolve = once((res: Object | Class<Component>) => {
+  // cache resolved
+  factory.resolved = ensureCtor(res, baseCtor)
+  // invoke callbacks only if this is not a synchronous resolve
+  // (async resolves are shimmed as synchronous during SSR)
+  if (!sync) {
+    forceRender(true)
+  } else {
+    owners.length = 0
+  }
+})
+```
+
+首先把加载结果缓存到 `factory.resolved` 中，这个时候因为 `sync` 已经是 false，则执行 `forceRender` 再次执行到 `resolveAsyncComponent`：
+
+```js
+if (isDef(factory.resolved)) {
+  return factory.resolved
+}
+```
+
+那么这个时候直接返回 `factory.resolved`，渲染成功加载的组件。
+
+#### 异步组件加载中
+
+如果异步组件加载中并未返回，这时候会走到这个逻辑：
+
+```js
+if (isTrue(factory.loading) && isDef(factory.loadingComp)) {
+  return factory.loadingComp
+}
+```
+
+那么则会返回 `factory.loadingComp`，渲染 loading 组件。
+
+#### 异步组件加载超时
+
+如果超时，则走到了 `reject` 逻辑，之后逻辑和加载失败一样，渲染 error 组件。
+
+### 异步组件 patch
+
+回到 `createComponent` 的逻辑：
+
+```js
+// async component
+let asyncFactory
+if (isUndef(Ctor.cid)) {
+  asyncFactory = Ctor
+  Ctor = resolveAsyncComponent(asyncFactory, baseCtor)
+  if (Ctor === undefined) {
+    // return a placeholder node for async component, which is rendered
+    // as a comment node but preserves all the raw information for the node.
+    // the information will be used for async server-rendering and hydration.
+    return createAsyncPlaceholder(asyncFactory, data, context, children, tag)
+  }
+}
+```
+
+如果是第一次执行 `resolveAsyncComponent`，除非使用高级异步组件 `0 delay` 创建了一个 loading 组件，否则返回是 `undefined`，接着通过 `createAsyncPlaceholder` 创建一个注释节点作为占位符。它定义在 `src/core/vdom/helpers/resolve-async-component.js` 中：
+
+```js
+export function createAsyncPlaceholder(
+  factory: Function,
+  data: ?VNodeData,
+  context: Component,
+  children: ?Array<VNode>,
+  tag: ?string
+): VNode {
+  const node = createEmptyVNode()
+  node.asyncFactory = factory
+  node.asyncMeta = { data, context, children, tag }
+  return node
+}
+```
+
+实际上就是创建一个占位的注释 VNode，同时把 `asyncFactory` 和 `asyncMeta` 赋值给当前 `vnode`。
+
+当运行 `forceRender` 的时候，会触发组件的重新渲染，那么会再一次执行 `resolveAsyncComponent`，这个时候就会根据不同的情况，可能返回 loading、error 或成功加载的异步组件，返回值不为 `undefined`，因此就走正常的组件 `render`、`patch` 过程，与组件第一次渲染流程不一样，这个时候是存在新旧 `vnode` 的，会执行组件更新的 `patch` 过程。
+
 ## 组件更新
 
-## Props 详解
+```js
+/** src/core/instance/lifecycle.js 中的 mountComponent 函数 */
+updateComponent = () => {
+  vm._update(vm._render(), hydrating)
+}
+new Watcher(
+  vm,
+  updateComponent,
+  noop,
+  {
+    before() {
+      if (vm._isMounted) {
+        callHook(vm, 'beforeUpdate')
+      }
+    },
+  },
+  true /* isRenderWatcher */
+)
+```
+
+组件的更新还是调用了 `vm._update` 方法，我们再回顾一下这个方法，它定义在 `src/core/instance/lifecycle.js` 中：
+
+```js
+Vue.prototype._update = function(vnode: VNode, hydrating?: boolean) {
+  const vm: Component = this
+  //……
+  const prevVnode = vm._vnode
+  //……
+  if (!prevVnode) {
+    // initial render
+    vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
+  } else {
+    // updates
+    vm.$el = vm.__patch__(prevVnode, vnode)
+  }
+  //……
+}
+```
+
+组件更新的过程，会执行 `vm.$el = vm.__patch__(prevVnode, vnode)`，它仍然会调用 `patch` 函数，在 `src/core/vdom/patch.js` 中定义：
+
+```js
+export function createPatchFunction(backend) {
+  //……
+
+  return function patch(oldVnode, vnode, hydrating, removeOnly) {
+    if (isUndef(vnode)) {
+      if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
+      return
+    }
+
+    let isInitialPatch = false
+    const insertedVnodeQueue = []
+
+    if (isUndef(oldVnode)) {
+      // empty mount (likely as component), create new root element
+      isInitialPatch = true
+      createElm(vnode, insertedVnodeQueue)
+    } else {
+      const isRealElement = isDef(oldVnode.nodeType)
+      if (!isRealElement && sameVnode(oldVnode, vnode)) {
+        // patch existing root node
+        patchVnode(oldVnode, vnode, insertedVnodeQueue, null, null, removeOnly)
+      } else {
+        if (isRealElement) {
+          //……
+        }
+
+        // replacing existing element
+        const oldElm = oldVnode.elm
+        const parentElm = nodeOps.parentNode(oldElm)
+
+        // create new node
+        createElm(
+          vnode,
+          insertedVnodeQueue,
+          // extremely rare edge case: do not insert if old element is in a
+          // leaving transition. Only happens when combining transition +
+          // keep-alive + HOCs. (#4590)
+          oldElm._leaveCb ? null : parentElm,
+          nodeOps.nextSibling(oldElm)
+        )
+
+        // update parent placeholder node element, recursively
+        if (isDef(vnode.parent)) {
+          let ancestor = vnode.parent
+          const patchable = isPatchable(vnode)
+          while (ancestor) {
+            for (let i = 0; i < cbs.destroy.length; ++i) {
+              cbs.destroy[i](ancestor)
+            }
+            ancestor.elm = vnode.elm
+            if (patchable) {
+              for (let i = 0; i < cbs.create.length; ++i) {
+                cbs.create[i](emptyNode, ancestor)
+              }
+              // #6513
+              // invoke insert hooks that may have been merged by create hooks.
+              // e.g. for directives that uses the "inserted" hook.
+              const insert = ancestor.data.hook.insert
+              if (insert.merged) {
+                // start at index 1 to avoid re-invoking component mounted hook
+                for (let i = 1; i < insert.fns.length; i++) {
+                  insert.fns[i]()
+                }
+              }
+            } else {
+              registerRef(ancestor)
+            }
+            ancestor = ancestor.parent
+          }
+        }
+
+        // destroy old node
+        if (isDef(parentElm)) {
+          removeVnodes([oldVnode], 0, 0)
+        } else if (isDef(oldVnode.tag)) {
+          invokeDestroyHook(oldVnode)
+        }
+      }
+    }
+
+    invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch)
+    return vnode.elm
+  }
+}
+```
+
+这里执行 `patch` 的逻辑和首次渲染是不一样的，因为 `oldVnode` 不为空，并且它和 `vnode` 都是 VNode
+类型，接下来会通过 `sameVnode(oldVnode, vnode)` 判断它们是否是相同的 VNode 来决定走不同的更新逻辑：
+
+```
+function sameVnode (a, b) {
+  return (
+    a.key === b.key && (
+      (
+        a.tag === b.tag &&
+        a.isComment === b.isComment &&
+        isDef(a.data) === isDef(b.data) &&
+        sameInputType(a, b)
+      ) || (
+        isTrue(a.isAsyncPlaceholder) &&
+        a.asyncFactory === b.asyncFactory &&
+        isUndef(b.asyncFactory.error)
+      )
+    )
+  )
+}
+```
+
+`sameVnode` 的逻辑非常简单，如果两个 `vnode` 的 `key` 不相等，则是不同的；否则继续判断，对于同步组件，则判断 `isComment`、`data`、`input` 类型等是否相同，对于异步组件，则判断 `asyncFactory` 是否相同。
+
+所以根据新旧 `vnode` 是否为 `sameVnode` 会走到不同的更新逻辑，我们先来说一下不同的情况。
+
+### 新旧节点不同
+
+如果新旧 `vnode` 不同，那么更新的逻辑非常简单，它本质上是要替换已存在的节点，大致分为 3 步：
+
+- 创建新节点
+
+```js
+// replacing existing element
+const oldElm = oldVnode.elm
+const parentElm = nodeOps.parentNode(oldElm)
+
+// create new node
+createElm(
+  vnode,
+  insertedVnodeQueue,
+  // extremely rare edge case: do not insert if old element is in a
+  // leaving transition. Only happens when combining transition +
+  // keep-alive + HOCs. (#4590)
+  oldElm._leaveCb ? null : parentElm,
+  nodeOps.nextSibling(oldElm)
+)
+```
+
+以当前旧节点为参考节点，创建新的节点，并插入到 DOM 中。
+
+- 更新父的占位符节点
+
+```js
+// update parent placeholder node element, recursively
+if (isDef(vnode.parent)) {
+  let ancestor = vnode.parent
+  const patchable = isPatchable(vnode)
+  while (ancestor) {
+    for (let i = 0; i < cbs.destroy.length; ++i) {
+      cbs.destroy[i](ancestor)
+    }
+    ancestor.elm = vnode.elm
+    if (patchable) {
+      for (let i = 0; i < cbs.create.length; ++i) {
+        cbs.create[i](emptyNode, ancestor)
+      }
+      // #6513
+      // invoke insert hooks that may have been merged by create hooks.
+      // e.g. for directives that uses the "inserted" hook.
+      const insert = ancestor.data.hook.insert
+      if (insert.merged) {
+        // start at index 1 to avoid re-invoking component mounted hook
+        for (let i = 1; i < insert.fns.length; i++) {
+          insert.fns[i]()
+        }
+      }
+    } else {
+      registerRef(ancestor)
+    }
+    ancestor = ancestor.parent
+  }
+}
+```
+
+我们只关注主要逻辑即可，找到当前 `vnode` 的父的占位符节点，先执行各个 `module` 的 `destroy` 的钩子函数，如果当前占位符是一个可挂载的节点，则执行 `module` 的 `create` 钩子函数。
+
+- 删除旧节点
+
+```js
+// destroy old node
+if (isDef(parentElm)) {
+  removeVnodes([oldVnode], 0, 0)
+} else if (isDef(oldVnode.tag)) {
+  invokeDestroyHook(oldVnode)
+}
+```
