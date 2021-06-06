@@ -617,3 +617,357 @@ delimiters = options.delimiters
 ```js
 parseHTML(template, options)
 ```
+
+对于 `template` 模板的解析主要是通过 `parseHTML` 函数，它定义在 `src/compiler/parser/html-parser.js` 中：
+
+```js
+export function parseHTML(html, options) {
+  let lastTag
+  while (html) {
+    if (!lastTag || !isPlainTextElement(lastTag)) {
+      let textEnd = html.indexOf('<')
+      if (textEnd === 0) {
+        if (matchComment) {
+          advance(commentLength)
+          continue
+        }
+        if (matchDoctype) {
+          advance(doctypeLength)
+          continue
+        }
+        if (matchEndTag) {
+          advance(endTagLength)
+          parseEndTag()
+          continue
+        }
+        if (matchStartTag) {
+          parseStartTag()
+          handleStartTag()
+          continue
+        }
+      }
+      handleText()
+      advance(textLength)
+    } else {
+      handlePlainTextElement()
+      parseEndTag()
+    }
+  }
+}
+```
+
+由于 `parseHTML` 的逻辑也非常复杂，因此也用了伪代码的方式表达，整体来说它的逻辑就是循环解析 `template`，用正则做各种匹配，对于不同情况分别进行不同的处理，直到整个 template 被解析完毕。在匹配的过程中会利用 `advance` 函数不断前进整个模板字符串，直到字符串末尾。
+
+```js
+function advance(n) {
+  index += n
+  html = html.substring(n)
+}
+```
+
+为了更加直观地说明 `advance` 的作用，可以通过一幅图表示，最开始 index 是 0 ：
+
+[](./images/advance1.png)
+
+然后调用 `advance` 函数：
+
+```js
+advance(4)
+```
+
+得到结果：
+
+[](./images/advance2.png)
+
+匹配的过程中主要利用了正则表达式，如下：
+
+```js
+// Regular Expressions for parsing tags and attributes
+const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/
+const dynamicArgAttribute = /^\s*((?:v-[\w-]+:|@|:|#)\[[^=]+\][^\s"'<>\/=]*)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/
+const ncname = `[a-zA-Z_][\\-\\.0-9_a-zA-Z${unicodeRegExp.source}]*`
+const qnameCapture = `((?:${ncname}\\:)?${ncname})`
+const startTagOpen = new RegExp(`^<${qnameCapture}`)
+const startTagClose = /^\s*(\/?)>/
+const endTag = new RegExp(`^<\\/${qnameCapture}[^>]*>`)
+const doctype = /^<!DOCTYPE [^>]+>/i
+// #7298: escape - to avoid being passed as HTML comment when inlined in page
+const comment = /^<!\--/
+const conditionalComment = /^<!\[/
+```
+
+通过这些正则表达式，我们可以匹配注释节点、文档类型节点、开始闭合标签等。
+
+- 注释节点、文档类型节点
+
+对于注释节点和文档类型节点的匹配，如果匹配到，我们仅仅做的是前进即可。
+
+```js
+// Comment:
+if (comment.test(html)) {
+  const commentEnd = html.indexOf('-->')
+
+  if (commentEnd >= 0) {
+    if (options.shouldKeepComment) {
+      options.comment(
+        html.substring(4, commentEnd),
+        index,
+        index + commentEnd + 3
+      )
+    }
+    advance(commentEnd + 3)
+    continue
+  }
+}
+
+// http://en.wikipedia.org/wiki/Conditional_comment#Downlevel-revealed_conditional_comment
+if (conditionalComment.test(html)) {
+  const conditionalEnd = html.indexOf(']>')
+
+  if (conditionalEnd >= 0) {
+    advance(conditionalEnd + 2)
+    continue
+  }
+}
+
+// Doctype:
+const doctypeMatch = html.match(doctype)
+if (doctypeMatch) {
+  advance(doctypeMatch[0].length)
+  continue
+}
+```
+
+对于注释和条件注释节点，前进至它们的末位位置；对于文档类型节点，则前进它自身长度。
+
+- 开始标签
+
+```js
+// Start tag:
+const startTagMatch = parseStartTag()
+if (startTagMatch) {
+  handleStartTag(startTagMatch)
+  if (shouldIgnoreFirstNewline(startTagMatch.tagName, html)) {
+    advance(1)
+  }
+  continue
+}
+```
+
+首先通过 `parseStartTag` 解析开始标签：
+
+```js
+function parseStartTag() {
+  const start = html.match(startTagOpen)
+  if (start) {
+    const match = {
+      tagName: start[1],
+      attrs: [],
+      start: index,
+    }
+    advance(start[0].length)
+    let end, attr
+    while (
+      !(end = html.match(startTagClose)) &&
+      (attr = html.match(dynamicArgAttribute) || html.match(attribute))
+    ) {
+      attr.start = index
+      advance(attr[0].length)
+      attr.end = index
+      match.attrs.push(attr)
+    }
+    if (end) {
+      match.unarySlash = end[1]
+      advance(end[0].length)
+      match.end = index
+      return match
+    }
+  }
+}
+```
+
+对于开始标签，除了标签名之外，还有一些标签相关的属性。函数先通过正则表达式 `startTagOpen` 匹配到开始标签，然后定义了 `match` 对象，接着循环去匹配开始标签中的属性并添加到 `match.attrs` 中，直到匹配的开始标签的闭合符结束。如果匹配到闭合符，则获取一元斜线符，前进到闭合符尾，并把当前索引赋值给 `match.end`。
+
+`parseStartTag` 对开始标签解析拿到 `match` 后，紧接着会执行 `handleStartTag` 对 `match` 做处理：
+
+```js
+function handleStartTag(match) {
+  const tagName = match.tagName
+  const unarySlash = match.unarySlash
+
+  if (expectHTML) {
+    if (lastTag === 'p' && isNonPhrasingTag(tagName)) {
+      parseEndTag(lastTag)
+    }
+    if (canBeLeftOpenTag(tagName) && lastTag === tagName) {
+      parseEndTag(tagName)
+    }
+  }
+
+  const unary = isUnaryTag(tagName) || !!unarySlash
+
+  const l = match.attrs.length
+  const attrs = new Array(l)
+  for (let i = 0; i < l; i++) {
+    const args = match.attrs[i]
+    const value = args[3] || args[4] || args[5] || ''
+    const shouldDecodeNewlines =
+      tagName === 'a' && args[1] === 'href'
+        ? options.shouldDecodeNewlinesForHref
+        : options.shouldDecodeNewlines
+    attrs[i] = {
+      name: args[1],
+      value: decodeAttr(value, shouldDecodeNewlines),
+    }
+    if (process.env.NODE_ENV !== 'production' && options.outputSourceRange) {
+      attrs[i].start = args.start + args[0].match(/^\s*/).length
+      attrs[i].end = args.end
+    }
+  }
+
+  if (!unary) {
+    stack.push({
+      tag: tagName,
+      lowerCasedTag: tagName.toLowerCase(),
+      attrs: attrs,
+      start: match.start,
+      end: match.end,
+    })
+    lastTag = tagName
+  }
+
+  if (options.start) {
+    options.start(tagName, attrs, unary, match.start, match.end)
+  }
+}
+```
+
+`handleStartTag` 的核心逻辑很简单，先判断开始标签是否是一元标签，类似 `<img> 、 <br/>` 这样，接着对 `match.attrs` 遍历并做了一些处理，最后判断如果非一元标签，则往`stack` 里 push 一个对象，并且把 `tagName` 赋值给 `lastTag`。
+
+最后调用了 `options.start` 回调函数，并传入一些参数。
+
+- 闭合标签
+
+```js
+// End tag:
+const endTagMatch = html.match(endTag)
+if (endTagMatch) {
+  const curIndex = index
+  advance(endTagMatch[0].length)
+  parseEndTag(endTagMatch[1], curIndex, index)
+  continue
+}
+```
+
+先通过正则 `endTag` 匹配到闭合标签，然后前进到闭合标签末尾，然后执行 `parseEndTag` 方法对闭合标签做解析。
+
+```js
+function parseEndTag(tagName, start, end) {
+  let pos, lowerCasedTagName
+  if (start == null) start = index
+  if (end == null) end = index
+
+  // Find the closest opened tag of the same type
+  if (tagName) {
+    lowerCasedTagName = tagName.toLowerCase()
+    for (pos = stack.length - 1; pos >= 0; pos--) {
+      if (stack[pos].lowerCasedTag === lowerCasedTagName) {
+        break
+      }
+    }
+  } else {
+    // If no tag name is provided, clean shop
+    pos = 0
+  }
+
+  if (pos >= 0) {
+    // Close all the open elements, up the stack
+    for (let i = stack.length - 1; i >= pos; i--) {
+      if (
+        process.env.NODE_ENV !== 'production' &&
+        (i > pos || !tagName) &&
+        options.warn
+      ) {
+        options.warn(`tag <${stack[i].tag}> has no matching end tag.`, {
+          start: stack[i].start,
+          end: stack[i].end,
+        })
+      }
+      if (options.end) {
+        options.end(stack[i].tag, start, end)
+      }
+    }
+
+    // Remove the open elements from the stack
+    stack.length = pos
+    lastTag = pos && stack[pos - 1].tag
+  } else if (lowerCasedTagName === 'br') {
+    if (options.start) {
+      options.start(tagName, [], true, start, end)
+    }
+  } else if (lowerCasedTagName === 'p') {
+    if (options.start) {
+      options.start(tagName, [], false, start, end)
+    }
+    if (options.end) {
+      options.end(tagName, start, end)
+    }
+  }
+}
+```
+
+`parseEndTag` 的核心逻辑很简单，在介绍之前我们回顾一下在执行 `handleStartTag` 的时候，对于非一元标签（有 endTag），我们都把它构成一个对象压入到 `stack` 中，如图所示：
+
+[](./images/stack.png)
+
+那么对于闭合标签的解析，就是倒序 `stack` 找到第一个和当前 `endTag` 匹配的元素。如果是正常的标签匹配，那么 `stack` 的最后一个元素应该和当前的 `endTag` 匹配，但是考虑到如下错误情况：
+
+```html
+<div><span></div>
+```
+
+这个时候当 `endTag` 为 `</div>` 的时候，从 `stack` 尾部找到的标签是 `<span>`，就不能匹配，因此这种情况会报警告。匹配后把栈到 `pos` 位置的都弹出，并从 `stack` 尾部拿到 `lastTag`。
+
+最后调用了 `options.end` 回到函数，并传入一些参数。
+
+- 文本
+
+```js
+let text, rest, next
+if (textEnd >= 0) {
+  rest = html.slice(textEnd)
+  while (
+    !endTag.test(rest) &&
+    !startTagOpen.test(rest) &&
+    !comment.test(rest) &&
+    !conditionalComment.test(rest)
+  ) {
+    // < in plain text, be forgiving and treat it as text
+    next = rest.indexOf('<', 1)
+    if (next < 0) break
+    textEnd += next
+    rest = html.slice(textEnd)
+  }
+  text = html.substring(0, textEnd)
+}
+
+if (textEnd < 0) {
+  text = html
+}
+
+if (text) {
+  advance(text.length)
+}
+
+if (options.chars && text) {
+  options.chars(text, index - text.length, index)
+}
+```
+
+接下来判断 `textEnd` 是否是大于等于 0 的，满足则说明从当前位置到 `textEnd` 位置都是文本，并且如果 `<` 是纯文本中的字符，就继续找到真正的文本结束的位置，然后前进到结束的位置。
+
+再继续判断 `textEnd` 小于 0 的情况，则说明整个 `template` 解析完毕了，把剩余的 `html` 都复制给了 `text`。
+
+最后调用了 `options.chars` 回到函数，并传入 `text` 参数。
+
+因此，在循环解析整个 `template` 的过程中，会根据不同的情况，去执行不同的回调函数。
