@@ -253,7 +253,7 @@ const resolve = (p) => {
 
 这样我们就找到了 `web-full-cjs` 配置的入口文件：`src/platforms/web/entry-runtime-with-compiler.js`，它经过 Rollup 构建打包后，最终会在 `dist` 目录下生成 `vue.common.js` 。
 
-上面是以构建 Web 平台下运行的文件为例，我们构建的是完整版本，那么会选择 Web 平台的入口文件开始构建，这个入口文件最终会导出一个 Vue 构造函数。在导出之前，会向 Vue 构造函数中添加一些方法，其流程是：先向 Vue 构造函数的 prototype 属性上添加一些方法，然后向 Vue 构造函数自身添加一些全局 API，接着将平台特有的代码导入进来，最后将编译器导入进来，最终将所有代码通 Vue 构造函数一起导出去。
+上面是以构建 Web 平台下运行的文件为例，我们构建的是完整版本，那么会选择 Web 平台的入口文件开始构建，这个入口文件最终会导出一个 Vue 构造函数。在导出之前，会向 Vue 构造函数中添加一些方法，其流程是：先向 Vue 构造函数的 prototype 属性上添加一些方法，然后向 Vue 构造函数自身添加一些全局 API，接着将平台特有的代码导入进来，最后将编译器导入进来，最终将所有代码同 Vue 构造函数一起导出去。
 
 ## Vue.js 构建版本
 
@@ -273,7 +273,7 @@ dist 文件夹存放构建后的文件，在这个目录下你会找到很多不
 - CommonJS：CommonJS 版本用来配合较旧的打包工具，比如 Browserify 或 webpack 1，这些打包工具的默认文件（pkg.main）只包含运行时的 CommonJS 版本（vue.runtime.common.js）。
 - ES Module：ES Module 版本用来配合现代打包工具，比如 webpack2 或 Rollup，这些打包工具的默认文件（pkg.main）只包含运行时的 ES Module 版本（vue.runtime.esm.js）。
 
-完整版和只包含运行时的版本区别在于是否需要在客户端编译模板，即是否要处理字符串的 template，如果需要，那就用到编译器，就需要完整版。
+完整版和只包含运行时的版本区别在于是否需要在客户端编译模板，即是否要处理字符串的 template，如果需要，就用到编译器，就需要完整版。
 
 通常我们利用 vue-cli 去初始化我们的 Vue.js 项目的时候会询问我们用 Runtime Only 版本还是 Runtime + Compiler 版本。就是上面说的只包含运行时的版本和完整版。
 
