@@ -12,11 +12,3 @@
 <br>
 
 文档地址：[http://www.chenfangxu.com/](http://www.chenfangxu.com/)
-
-<br>
-
-#### 彩蛋
-
-##### 彩蛋就是关注奇舞精选啊，文章写得好，想让更多人看到的同学，可以找我投稿啊。微信号：qiqihaobenben(备注:公司+名字)
-
-![](https://cdn.jsdelivr.net/gh/qiqihaobenben/picture/2021-3-28/1616941645581-image.png)

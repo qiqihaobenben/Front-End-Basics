@@ -1,6 +1,8 @@
 # JavaScript Promise 详解
 
-Promise 规范有很多，如 Promise/A、Promise/B、Promise/D 以及 Promise/A+。最终 ES6 中采用了 Promise/A+规范。我们可以按照 Promise/A+ 规范，来从头实现一个 MyPromise。
+Promise 规范有很多，如 Promises/A、Promises/B、Promises/D 以及 Promises/A+。最终 ES6 中采用了 Promises/A+规范。
+
+Promises/A+规范，有现成的单元测试套件，很容易搭建开发环境，以及验证代码是否符合规范要求。我们可以按照 Promises/A+ 规范，来从头实现一个 MyPromise。
 
 ## 1、Promise 的状态
 
@@ -28,6 +30,10 @@ Promise 规范有很多，如 Promise/A、Promise/B、Promise/D 以及 Promise/A
 
 #### 术语解释
 
+promise：是一个包含 then 方法的对象或函数，该方法符合规范（即 Promises/A+）制定的行为。
+
+thenable：是一个包含 then 方法的对象或者函数。
+
 终值（eventual value）：所谓的终值，指的是 promise 被**解决**时传递给解决回调的值，因为 promise 有**一次性**的特征，因此当这个值被传递时，标志着 promise 等待态的结束，故称之为终值，有时候也直接简称为值（value），值可以是任何 JavaScript 合法值（包括 undefined、thenable 和 promise）
 
 拒因（reason）：也就是拒绝原因，指的是 promise 被**拒绝**时传递给拒绝回调的值。
@@ -35,6 +41,8 @@ Promise 规范有很多，如 Promise/A、Promise/B、Promise/D 以及 Promise/A
 解决（fulfill）：指一个 promise 成功时（调用 resolve ）进行的一系列操作，如状态的改变，回调的执行。虽然规范中用 fulfill 表示解决，但现在的 promise 实现中多以 resolve 指代之。
 
 拒绝（reject）: 指一个 promise 失败时（调用 reject 或抛出异常）进行的一系列操作。
+
+exception（异常）：就是 throw 语句抛出的值。
 
 > 代码更新
 

@@ -214,6 +214,7 @@ module.exports = {
           title: '读书笔记',
           children: [
             'book/xiaogouqianqian',
+            'book/ganfa'
           ]
         },
         {

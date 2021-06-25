@@ -1,8 +1,10 @@
 # Vue.js 源码-项目基础和项目构建
 
+> Vue.js 版本为 v2.6.14
+
 项目基础包括：项目结构、架构设计和构建流程。
 
-既然是学习源码，那我们就有必要阅读项目的贡献规则文档，好的开源项目肯定会包含这部分内容的，Vue.js 的贡献文档位置在 `.github/CONTRIBUTING.md`, 可以直接访问链接查看具体内容：[https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md](https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md)，在这个文档里说明了一些行为准则、PR 指南、Issue Reporting 指南、Development Setup、以及项目结构。通过阅读这些内容我们可以了解项目如何开发和启动以及目录说明。
+既然是学习源码，那我们就有必要阅读项目的贡献规则文档，好的开源项目肯定会包含这部分内容，Vue.js 的贡献文档位置在 `.github/CONTRIBUTING.md`, 可以直接访问链接查看具体内容：[https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md](https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md)，在这个文档里说明了一些行为准则、PR 指南、Issue Reporting 指南、Development Setup 以及项目结构。通过阅读这些内容我们可以了解项目如何开发和启动以及目录说明。
 
 ## 项目目录
 
@@ -37,27 +39,27 @@ Vue.js 的目录结构如下：
 
 ### packages
 
-packages 目录中包含的 vue-server-renderer 和 vue-template-compiler 会作为单独的 NPM 包发布，自动从源码中生成，并且始终与 Vue.js 具有相同的版本。
+`packages` 目录中包含的 vue-server-renderer 和 vue-template-compiler 会作为单独的 NPM 包发布，自动从源码中生成，并且始终与 Vue.js 具有相同的版本。
 
 ### compiler
 
-src/compiler 目录包含 Vue.js 所有编译相关的代码。它包括把模板解析成抽象语法树（AST），抽象语法树优化，代码生成等功能。
+`src/compiler` 目录包含 Vue.js 所有编译相关的代码。它包括把模板解析成抽象语法树（AST），抽象语法树优化，代码生成等功能。
 
-编译的工作可以在构建时做（借助 webpack、vue-loader 等辅助）；也可以在运行时做，使用包含构建功能的 Vue.js。显然，编译是一项耗性能的工作，所以更推荐前者——离线编译。
+编译工作可以在构建时做（借助 webpack、vue-loader 等辅助）；也可以在运行时做，使用包含构建功能的 Vue.js。显然，编译是一项耗性能的工作，所以更推荐前者——离线编译。
 
 ### core
 
-src/core 目录下是 Vue.js 的核心代码，包括内置组件、全局 API 封装，Vue 实例化、观察者、虚拟 DOM、工具函数等，这部分逻辑是与平台无关的，也就是说，他们可以在任何 JavaScript 环境下运行，比如浏览器、Node.js 或者嵌入到原生应用中。
+`src/core` 目录下是 Vue.js 的核心代码，包括内置组件、全局 API 封装，Vue 实例化、观察者、虚拟 DOM、工具函数等，这部分逻辑是与平台无关的，也就是说，他们可以在任何 JavaScript 环境下运行，比如浏览器、Node.js 或者嵌入到原生应用中。
 
 ### platforms
 
-src/platforms 目录中包含特定平台的代码，跨平台相关的代码也会放在这里。
+`src/platforms` 目录中包含特定平台的代码，跨平台相关的代码也会放在这里。
 
 Vue.js 是一个跨平台的 MVVM 框架，它可以跑在 web 上，也可以配合 weex 跑在 native 客户端上。platforms 是 Vue.js 的入口，2 个目录代表 2 个主要入口，分别打包成运行在 web 上的和 weex 上的 Vue.js。
 
 ### server
 
-Vue.js 2.0 支持了服务端渲染，所有服务端渲染相关的逻辑都在这个 src/server 目录下。注意：这部分代码是跑在服务端的 Node.js，不要和跑在浏览器端的 Vue.js 混为一谈。
+Vue.js 2.0 支持了服务端渲染，所有服务端渲染相关的逻辑都在这个 `src/server` 目录下。注意：这部分代码是跑在服务端的 Node.js，不要和跑在浏览器端的 Vue.js 混为一谈。
 
 服务端渲染主要的工作是把组件渲染为服务端的 HTML 字符串，将它们直接发送到浏览器，最后将静态标签“混合”为客户端上完全交互的应用程序。
 
@@ -65,11 +67,11 @@ Vue.js 2.0 支持了服务端渲染，所有服务端渲染相关的逻辑都在
 
 通常我们开发 Vue.js 都会借助 webpack，然后通过 .vue 单文件来编写组件。
 
-src/sfc 目录下的代码逻辑会把 .vue 文件内容解析成一个 JavaScript 对象。
+`src/sfc` 目录下的代码逻辑会把 .vue 文件内容解析成一个 JavaScript 对象。
 
 ### shared
 
-src/shared 目录下存放 Vue.js 定义的一些工具方法，这里定义的工具方法是会被浏览器端的 Vue.js 和服务端的 Vue.js 所共享的。
+`src/shared` 目录下存放 Vue.js 定义的一些工具方法，这里定义的工具方法是会被浏览器端的 Vue.js 和服务端的 Vue.js 所共享的。
 
 ### 总结
 
@@ -251,7 +253,7 @@ const resolve = (p) => {
 
 这样我们就找到了 `web-full-cjs` 配置的入口文件：`src/platforms/web/entry-runtime-with-compiler.js`，它经过 Rollup 构建打包后，最终会在 `dist` 目录下生成 `vue.common.js` 。
 
-上面是以构建 Web 平台下运行的文件为例，我们构建的是完整版本，那么会选择 Web 平台的入口文件开始构建，这个入口文件最终会导出一个 Vue 构造函数。在导出之前，会向 Vue 构造函数中添加一些方法，其流程是：先向 Vue 构造函数的 prototype 属性上添加一些方法，然后向 Vue 构造函数自身添加一些全局 API，接着将平台特有的代码导入进来，最后将编译器导入进来，最终将所有代码通 Vue 构造函数一起导出去。
+上面是以构建 Web 平台下运行的文件为例，我们构建的是完整版本，那么会选择 Web 平台的入口文件开始构建，这个入口文件最终会导出一个 Vue 构造函数。在导出之前，会向 Vue 构造函数中添加一些方法，其流程是：先向 Vue 构造函数的 prototype 属性上添加一些方法，然后向 Vue 构造函数自身添加一些全局 API，接着将平台特有的代码导入进来，最后将编译器导入进来，最终将所有代码同 Vue 构造函数一起导出去。
 
 ## Vue.js 构建版本
 
@@ -271,10 +273,15 @@ dist 文件夹存放构建后的文件，在这个目录下你会找到很多不
 - CommonJS：CommonJS 版本用来配合较旧的打包工具，比如 Browserify 或 webpack 1，这些打包工具的默认文件（pkg.main）只包含运行时的 CommonJS 版本（vue.runtime.common.js）。
 - ES Module：ES Module 版本用来配合现代打包工具，比如 webpack2 或 Rollup，这些打包工具的默认文件（pkg.main）只包含运行时的 ES Module 版本（vue.runtime.esm.js）。
 
-完整版和只包含运行时的版本区别在于是否需要在客户端编译模板，即是否要处理字符串的 template，如果需要，那就用到编译器，就需要完整版。
+完整版和只包含运行时的版本区别在于是否需要在客户端编译模板，即是否要处理字符串的 template，如果需要，就用到编译器，就需要完整版。
 
 通常我们利用 vue-cli 去初始化我们的 Vue.js 项目的时候会询问我们用 Runtime Only 版本还是 Runtime + Compiler 版本。就是上面说的只包含运行时的版本和完整版。
 
 我们在使用 Runtime Only 版本时，通常需要借助如 webpack 的 vue-loader 工具把.vue 文件编译成 JavaScript，因为是在编译阶段做的，所以只包含运行时的 Vue.js 代码，因此代码体积也会更轻量。
 
 如果没有对代码做预编译，但是又使用了 template 属性并传入一个字符串，就需要用完整版在客户端编译模板。最终 template 属性会被编译成 render 函数。很显然，编译过程对性能会有一定损耗，所以通常更推荐使用 Runtime Only 的 Vue.js。
+
+## 参考文档
+
+- [Vue2.1.7 源码学习](http://hcysun.me/2017/03/03/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/#%E4%B8%80%E3%80%81%E4%BB%8E%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%AA%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%85%A5%E6%89%8B)
+- [Vue.js 源码目录设计](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/directory.html)
