@@ -1132,7 +1132,7 @@ createComponent 创建组件类型的 VNode 的过程，后续会介绍，本质
 
 回到 `mountComponent` 函数中，我们已经知道 `vm._render` 是如何创建了一个 VNode，接下来就要把这个 VNode 生成一个真实的 DOM 并渲染出来，这个过程是通过 `vm._update` 完成的。
 
-`vm._update` 是实例的一个私有方法，它被调用的时机有 2 个：一个是首次渲染，一个是数据更新的时候。本节我们值分析首次渲染部分，数据更新部分会在之后分析响应式原理的时候涉及。
+`vm._update` 是实例的一个私有方法，它被调用的时机有 2 个：一个是首次渲染，一个是数据更新的时候。本节我们只分析首次渲染部分，数据更新部分会在之后分析响应式原理的时候涉及。
 
 `_update` 方法的作用是把 VNode 渲染成真实的 DOM，它定义在 `src/core/instance/lifecycle.js` 文件中：
 
@@ -1594,7 +1594,7 @@ function insert(parent, elm, ref) {
 
 通过上面的分析，我们从主线上把模板和数据如何渲染成最终的 DOM 的过程分析完毕了，通过下图可以更直观的看到从初始化 Vue 到最终渲染的整个过程。
 
-![](../../images/new-vue.png)
+![](./images/new-vue.png)
 
 ## 扩展
 

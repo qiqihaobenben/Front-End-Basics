@@ -88,6 +88,7 @@ module.exports = {
           children: [
             'vue2/directory-build',
             'vue2/constructor',
+            'vue2/data-view',
           ]
         },
       ],
