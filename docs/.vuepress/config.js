@@ -89,6 +89,8 @@ module.exports = {
             'vue2/directory-build',
             'vue2/constructor',
             'vue2/data-view',
+            'vue2/reactive',
+            'vue2/computed&watch',
           ]
         },
       ],
