@@ -2,11 +2,39 @@
 
 ## 什么是 Virtual DOM
 
-Virtual DOM 是将状态映射成视图的众多解决方案的其中一种，它的运作原理是使用状态生成虚拟节点，然后使用虚拟节点渲染视图。
+Virtual DOM (虚拟 DOM)，是由普通的 JavaScript 对象来描述 DOM 对象，因为不是真实的 DOM 对象，所以叫 Virtual DOM。
+
+Virtual DOM 是将状态映射成视图的众多解决方案的其中一种，它的运行原理是使用状态生成虚拟节点，然后使用虚拟节点渲染视图。
 
 ## 为什么需要 Virtual DOM
 
 ### Virtual DOM vs 真实 DOM
+
+1. 尝试获取真实 DOM 包含的属性
+
+```js
+const element = document.querySelector('#app')
+let s = ''
+let index = 0
+for (var key in element) {
+  s += key + ','
+  index++
+}
+console.log(s, index) // 通过index可知属性应该有200+
+```
+
+2. 如果使用 Virtual DOM 描述真实 DOM
+
+```js
+// 属性会很少
+{
+  sel: 'div',
+  data: {},
+  children: undefined,
+  key: undefined,
+  elm: undefined
+}
+```
 
 #### 真实 DOM 操作肯定比现代框架封装的 Virtual DOM 慢？
 
@@ -30,7 +58,7 @@ Vue2.0 使用 Virtual DOM
 
 ### Virtual DOM 方案
 
-Virtual DOM 的解决方式是通过状态生成一个虚拟节点树，然后使用虚拟节点树进行渲染。在渲染之前，会使用新生成的虚拟节点树和上一次生成的虚拟节点树进行对比，只渲染不同的部分。
+Virtual DOM 的解决方式是通过状态生成一个虚拟节点树，然后使用虚拟节点树进行渲染。在渲染之前，会使用新生成的虚拟节点树和上一次生成的虚拟节点树进行对比（diff），只渲染不同的部分。
 
 虚拟节点树是由组件树建立起来的整个虚拟节点（ Virtual Node，简写为 vnode）树。
 
