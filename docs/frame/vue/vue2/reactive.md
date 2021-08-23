@@ -1447,6 +1447,11 @@ methodsToPatch.forEach(function(method) {
 
 可以看到，`arrayMethods` 首先继承了 `Array`，然后对数组中所有能改变数组自身的方法，如 `push`、`pop` 等这些方法进行重写。重写后的方法会先执行原生方法本身原有的逻辑，并对能增加数组元素的 3 个方法 `push`、`unshift`、`splice` 做了判断，获取到插入的值，然后把新添加的值变成一个响应式对象。最后调用 `ob.dep.notify` 手动触发依赖通知。这就很好地解释了之前的示例中调用 `vm.items.splice(newLength)` 方法可以检测到变化。
 
+## 整个页面的渲染流程图
+
+![](./images/render.webp)
+
 ## 参考文档
 
 - [Vue.js 源码数据驱动](https://ustbhuangyi.github.io/vue-analysis/v2/data-driven/)
+- [Vue2.0 源码解读系列 - 来自 Vue 的神秘礼盒](https://mp.weixin.qq.com/s/hZE474iSQkiVrGsfr91WRQ)
