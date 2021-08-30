@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Git 常用命令 | Front-End-Basics</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="陈方旭的个人文档">
+    
+    <link rel="preload" href="/assets/css/0.styles.35bcedcf.css" as="style"><link rel="preload" href="/assets/js/app.cc7effe2.js" as="script"><link rel="preload" href="/assets/js/2.f8f5562f.js" as="script"><link rel="preload" href="/assets/js/93.a652939d.js" as="script"><link rel="prefetch" href="/assets/js/10.d631d72f.js"><link rel="prefetch" href="/assets/js/100.aaf375fa.js"><link rel="prefetch" href="/assets/js/101.4c8f4c78.js"><link rel="prefetch" href="/assets/js/102.eb4a448b.js"><link rel="prefetch" href="/assets/js/103.d08f6620.js"><link rel="prefetch" href="/assets/js/104.20fa3ea0.js"><link rel="prefetch" href="/assets/js/105.464bc1e2.js"><link rel="prefetch" href="/assets/js/106.62c6e0ad.js"><link rel="prefetch" href="/assets/js/107.acb7c117.js"><link rel="prefetch" href="/assets/js/108.6df0a390.js"><link rel="prefetch" href="/assets/js/109.049bb742.js"><link rel="prefetch" href="/assets/js/11.b31aec1a.js"><link rel="prefetch" href="/assets/js/110.2c553059.js"><link rel="prefetch" href="/assets/js/111.7d7e97d8.js"><link rel="prefetch" href="/assets/js/112.97363246.js"><link rel="prefetch" href="/assets/js/113.353033a0.js"><link rel="prefetch" href="/assets/js/114.206c02c5.js"><link rel="prefetch" href="/assets/js/115.4c3ff52a.js"><link rel="prefetch" href="/assets/js/116.2b3ff140.js"><link rel="prefetch" href="/assets/js/117.bd75c390.js"><link rel="prefetch" href="/assets/js/118.43d8a7c9.js"><link rel="prefetch" href="/assets/js/119.b18cae25.js"><link rel="prefetch" href="/assets/js/12.cdf900ed.js"><link rel="prefetch" href="/assets/js/120.e52084bc.js"><link rel="prefetch" href="/assets/js/121.f84789b2.js"><link rel="prefetch" href="/assets/js/122.dd0d0f40.js"><link rel="prefetch" href="/assets/js/123.2a93453b.js"><link rel="prefetch" href="/assets/js/124.5869bbd8.js"><link rel="prefetch" href="/assets/js/125.280a43bd.js"><link rel="prefetch" href="/assets/js/126.3db1f54c.js"><link rel="prefetch" href="/assets/js/127.f2a978d6.js"><link rel="prefetch" href="/assets/js/128.310bb1e1.js"><link rel="prefetch" href="/assets/js/129.fffabf0d.js"><link rel="prefetch" href="/assets/js/13.f1e9c52e.js"><link rel="prefetch" href="/assets/js/130.3864d9c9.js"><link rel="prefetch" href="/assets/js/131.7b624c88.js"><link rel="prefetch" href="/assets/js/132.a16aeb22.js"><link rel="prefetch" href="/assets/js/133.4528cbd4.js"><link rel="prefetch" href="/assets/js/134.e7c7cd7d.js"><link rel="prefetch" href="/assets/js/135.5408a0d4.js"><link rel="prefetch" href="/assets/js/136.166f7bd0.js"><link rel="prefetch" href="/assets/js/137.22d16b9a.js"><link rel="prefetch" href="/assets/js/138.5d7a178a.js"><link rel="prefetch" href="/assets/js/139.aeda3f2f.js"><link rel="prefetch" href="/assets/js/14.4f114a52.js"><link rel="prefetch" href="/assets/js/140.fc4f83e1.js"><link rel="prefetch" href="/assets/js/141.8c037f53.js"><link rel="prefetch" href="/assets/js/142.cfbcaa0c.js"><link rel="prefetch" href="/assets/js/143.3ab0e418.js"><link rel="prefetch" href="/assets/js/144.92d99d4f.js"><link rel="prefetch" href="/assets/js/15.5f8da9da.js"><link rel="prefetch" href="/assets/js/16.7f7805dd.js"><link rel="prefetch" href="/assets/js/17.3b098518.js"><link rel="prefetch" href="/assets/js/18.012f7d49.js"><link rel="prefetch" href="/assets/js/19.89ec6c8c.js"><link rel="prefetch" href="/assets/js/20.a7f04e88.js"><link rel="prefetch" href="/assets/js/21.fde2dafb.js"><link rel="prefetch" href="/assets/js/22.6d54f592.js"><link rel="prefetch" href="/assets/js/23.5fe4ba69.js"><link rel="prefetch" href="/assets/js/24.e37b0dbd.js"><link rel="prefetch" href="/assets/js/25.342cd954.js"><link rel="prefetch" href="/assets/js/26.a0476a75.js"><link rel="prefetch" href="/assets/js/27.abf629f2.js"><link rel="prefetch" href="/assets/js/28.80e83ef9.js"><link rel="prefetch" href="/assets/js/29.6c4447a2.js"><link rel="prefetch" href="/assets/js/3.d0d59f73.js"><link rel="prefetch" href="/assets/js/30.99a7300a.js"><link rel="prefetch" href="/assets/js/31.44e95289.js"><link rel="prefetch" href="/assets/js/32.452c5621.js"><link rel="prefetch" href="/assets/js/33.6e7fe57e.js"><link rel="prefetch" href="/assets/js/34.f2e6cc4e.js"><link rel="prefetch" href="/assets/js/35.796c7d12.js"><link rel="prefetch" href="/assets/js/36.3eef68d3.js"><link rel="prefetch" href="/assets/js/37.db27fc05.js"><link rel="prefetch" href="/assets/js/38.43266de8.js"><link rel="prefetch" href="/assets/js/39.e3b5b464.js"><link rel="prefetch" href="/assets/js/4.0768ab53.js"><link rel="prefetch" href="/assets/js/40.e57210f9.js"><link rel="prefetch" href="/assets/js/41.a2e5f5be.js"><link rel="prefetch" href="/assets/js/42.5823eee1.js"><link rel="prefetch" href="/assets/js/43.210b55e1.js"><link rel="prefetch" href="/assets/js/44.563b08e6.js"><link rel="prefetch" href="/assets/js/45.1fc050b2.js"><link rel="prefetch" href="/assets/js/46.f680d93b.js"><link rel="prefetch" href="/assets/js/47.e19ced39.js"><link rel="prefetch" href="/assets/js/48.29235634.js"><link rel="prefetch" href="/assets/js/49.f76ff105.js"><link rel="prefetch" href="/assets/js/5.a2a39642.js"><link rel="prefetch" href="/assets/js/50.085b2179.js"><link rel="prefetch" href="/assets/js/51.76f2d633.js"><link rel="prefetch" href="/assets/js/52.3150e87e.js"><link rel="prefetch" href="/assets/js/53.7212775e.js"><link rel="prefetch" href="/assets/js/54.2f20355e.js"><link rel="prefetch" href="/assets/js/55.3b69a50e.js"><link rel="prefetch" href="/assets/js/56.1a82e4d0.js"><link rel="prefetch" href="/assets/js/57.49686d87.js"><link rel="prefetch" href="/assets/js/58.b38a99ff.js"><link rel="prefetch" href="/assets/js/59.02aa6721.js"><link rel="prefetch" href="/assets/js/6.02b0eb41.js"><link rel="prefetch" href="/assets/js/60.1b9d1433.js"><link rel="prefetch" href="/assets/js/61.11e06b30.js"><link rel="prefetch" href="/assets/js/62.fb9f4051.js"><link rel="prefetch" href="/assets/js/63.b91e436f.js"><link rel="prefetch" href="/assets/js/64.973a82c0.js"><link rel="prefetch" href="/assets/js/65.e36e3ae1.js"><link rel="prefetch" href="/assets/js/66.9e73f086.js"><link rel="prefetch" href="/assets/js/67.e0a0687a.js"><link rel="prefetch" href="/assets/js/68.25e5aabf.js"><link rel="prefetch" href="/assets/js/69.ae419cb9.js"><link rel="prefetch" href="/assets/js/7.588f1b88.js"><link rel="prefetch" href="/assets/js/70.abd33074.js"><link rel="prefetch" href="/assets/js/71.c3791fa1.js"><link rel="prefetch" href="/assets/js/72.8c1d71e6.js"><link rel="prefetch" href="/assets/js/73.ba931ec3.js"><link rel="prefetch" href="/assets/js/74.4698ee39.js"><link rel="prefetch" href="/assets/js/75.15ca01f2.js"><link rel="prefetch" href="/assets/js/76.8ca4b5b0.js"><link rel="prefetch" href="/assets/js/77.da2c4bd6.js"><link rel="prefetch" href="/assets/js/78.97656ef5.js"><link rel="prefetch" href="/assets/js/79.32879105.js"><link rel="prefetch" href="/assets/js/8.63df1f5c.js"><link rel="prefetch" href="/assets/js/80.603e2d1b.js"><link rel="prefetch" href="/assets/js/81.3f6b8af8.js"><link rel="prefetch" href="/assets/js/82.b11b8937.js"><link rel="prefetch" href="/assets/js/83.b7f2b439.js"><link rel="prefetch" href="/assets/js/84.32b89b03.js"><link rel="prefetch" href="/assets/js/85.294b0bcb.js"><link rel="prefetch" href="/assets/js/86.01b71b92.js"><link rel="prefetch" href="/assets/js/87.048631b2.js"><link rel="prefetch" href="/assets/js/88.054e325b.js"><link rel="prefetch" href="/assets/js/89.381412e3.js"><link rel="prefetch" href="/assets/js/9.143b08ba.js"><link rel="prefetch" href="/assets/js/90.17a9db32.js"><link rel="prefetch" href="/assets/js/91.6e5d060e.js"><link rel="prefetch" href="/assets/js/92.1ea365c8.js"><link rel="prefetch" href="/assets/js/94.dd324120.js"><link rel="prefetch" href="/assets/js/95.ba4131c0.js"><link rel="prefetch" href="/assets/js/96.a56f29c6.js"><link rel="prefetch" href="/assets/js/97.90143192.js"><link rel="prefetch" href="/assets/js/98.d5f45a6f.js"><link rel="prefetch" href="/assets/js/99.d17eb214.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.35bcedcf.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="Front-End-Basics" class="logo"> <span class="site-name can-hide">Front-End-Basics</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Git 入门</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/git/intro.html" class="sidebar-link">版本控制系统简介</a></li><li><a href="/git/workflow.html" class="sidebar-link">安装和入门</a></li><li><a href="/git/theory.html" class="sidebar-link">基础和原理</a></li><li><a href="/git/directory.html" class="sidebar-link">目录讲解</a></li><li><a href="/git/setconfig.html" class="sidebar-link">Git 配置和.gitignore</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>命令&amp;实践</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/git/command.html" aria-current="page" class="active sidebar-link">Git 常用命令</a></li><li><a href="/git/commit.html" class="sidebar-link">让你的 commit 更有价值</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="git-常用命令"><a href="#git-常用命令" class="header-anchor">#</a> Git 常用命令</h1> <blockquote><p>在使用的任何的 git 命令前，都要切换到 git 项目目录下</p></blockquote> <ul><li><p>git init
+初始化一个 git 仓库</p></li> <li><p>git status
+查看当前 git 仓库的状态</p></li> <li><p>git log
+查看提交记录</p></li></ul> <h2 id="添加和提交"><a href="#添加和提交" class="header-anchor">#</a> 添加和提交</h2> <div class="language- extra-class"><pre class="language-text"><code>git add [files] #把当前文件放入暂存区域
+
+git add * # 把所有修改文件放入暂存区域
+
+git add -u [path] # 添加[指定路径下]已跟踪文件
+
+
+git commit # 给暂存区域生成快照并提交到本地版本库
+
+git commit [file1] [file2] ...
+# 提交指定文件，对于跟踪过的文件，也可以不用git add，直接git commit file提交到本地版本库
+
+git commit -m 'message' #添加注释
+
+git commit -a
+# 跳过使用暂存区域，把所有已经跟踪过的文件暂存起来一并提交,注意是已经跟踪过的，对Untracked files无效
+
+git commit --amend # 修改最后一次提交,git会使用与当前提交相同的父节点进行一次新提交，旧的提交会被取消。
+
+git commit -v # 提交时显示所有diff信息
+
+</code></pre></div><p>相关补充：
+<a href="http://yanhaijing.com/git/2016/02/17/my-commit-message/" target="_blank" rel="noopener noreferrer">提交信息规范<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <h2 id="恢复相关的操作"><a href="#恢复相关的操作" class="header-anchor">#</a> 恢复相关的操作</h2> <ul><li>文件删除相关</li></ul> <div class="language- extra-class"><pre class="language-text"><code>rm *&amp;git rm *
+# 第一个命令移除工作区文件，第二个命令本地已经删除了的文件，通过此命令把暂存区的文件也删除了。
+
+git rm -f *
+# 工作区和暂存区都有文件，运行此命令，会把两个文件都删除
+
+git rm --cached * # 停止追踪指定文件，但该文件会保留在工作区
+
+git mv file_from file_to # 重命名跟踪文件
+</code></pre></div><ul><li>查看历史记录</li></ul> <div class="language- extra-class"><pre class="language-text"><code>git log # 查看最近的提交日志
+# 每次提交都有一个唯一id，可以查看所有提交和他们的id，之后恢复会用到
+
+git log --pretty=oneline #单行显示提交日志 --pretty: 指定默认不同格式展示信息
+
+git log --graph # 显示 ASCII 图形表示的分支合并历史。
+
+git log --graph --oneline   #oneline只是让输出看起来比较舒服,只显示最开始7个字符长度的 SHA-1 校验和。
+
+git log --author=cfangxu #只看某个人的提交记录
+
+git log --abbrev-commit # 显示log id的缩写
+
+git log -num #显示几条log（倒数）
+
+git log --stat # 简略的显示每次提交的内容更改, 如哪些文件变更,多少删除,多少添加等
+
+git log --follow [file] # 显示某个文件的版本历史，包括文件改名
+
+git log -p [file] # 显示指定文件相关的每一次diff
+
+git log -p -x # 仅显示最近x次的提交,包含每一次的diff
+
+</code></pre></div><ul><li>搜索调试</li></ul> <div class="language- extra-class"><pre class="language-text"><code>git reflog 	# 查看已经修改的版本号，即使是已经删除的某个分支
+
+git blame file.name # 快速显示文件的每一行最后一次修改是谁
+
+git log -S&lt;searchword&gt; --oneline # 在Git的整个历史中进行搜索
+
+</code></pre></div><ul><li>对比相关</li></ul> <div class="language- extra-class"><pre class="language-text"><code>git show commitId # 查看某一次提交更新了什么
+
+git diff file #查看指定文件的差异(工作区和暂存区)
+
+git diff --stat #查看简单的diff结果(工作区和暂存区)
+
+git diff #比较工作区和暂存区之间的差异
+
+git diff --cached(--staged) #比较暂存区和版本库之间的差异
+
+git diff HEAD #比较工作区和版本库之间的差异
+
+git diff branch #比较工作区和分支之间的差异
+
+git diff branch1 branch2 #比较两次分支之间的差异
+
+git diff commit commit #比较两次提交之间的差异
+</code></pre></div><ul><li>撤销相关</li></ul> <div class="language- extra-class"><pre class="language-text"><code>git reset HEAD &lt;file.name&gt; # 取消已经暂存的文件
+
+git reset -- &lt;file.name&gt; # 同上,可以用git reset 撤销所有暂存区域文件。
+
+git reset --hard HEAD &lt;file.name&gt; # 恢复到当前版本库的状态，会覆盖工作区和缓存区的文件
+
+git reset --hard commit(id) # 通过提交id来恢复之前的某个版本
+
+git reset --hard  HEAD^ # 跳到之前的一个版本，可以连续使用
+
+git reset --hard  HEAD~&lt;num&gt; # 跳过num个版本，到想要的版本。
+
+checkout命令用于从历史提交（或者暂存区域）中拷贝文件到工作目录，也可用于切换分支。当给定某个文件名（或者打开-p选项，或者文件名和-p选项同时打开）时，git会从指定的提交中拷贝文件到暂存区域和工作目录。如果命令中没有指定提交节点，则会从暂存区域中拷贝内容。注意当前分支不会发生变化。
+
+git checkout -- file # 取消在工作区对文件的修改（从暂存区——覆盖工作区）
+
+git checkout -- . # 从暂存区取出文件覆盖工作区
+
+git checkout branch|tag|commit -- file_name # 从仓库取出file覆盖当前分支
+
+</code></pre></div><h2 id="分支"><a href="#分支" class="header-anchor">#</a> 分支</h2> <ul><li>创建分支</li></ul> <div class="language- extra-class"><pre class="language-text"><code>git branch # 列出本地分支
+
+git branch -r # 列出远端分支
+
+git branch -a # 列出所有分支
+
+git branch -v # 查看各个分支最后一个提交对象的信息
+
+git branch --merged # 查看已经合并到当前分支的分支
+
+git branch --no-merged # 查看未合并到当前分支的分支
+
+git branch test # 新建test分支
+
+git branch branch [branch|commit|tag] # 从指定位置出新建分支
+
+git branch --track branch remote-branch # 新建一个分支，与指定的远程分支建立追踪关系
+
+git branch -m old new # 重命名分支
+
+git branch -d test # 删除test分支
+
+git branch -D test # 强制删除test分支
+
+git branch --set-upstream-to origin/dev dev # 在dev执行，将本地dev分支与远程dev分支之间建立链接
+
+
+git checkout test # 切换到test分支
+
+git checkout -b test # 新建+切换到test分支
+
+git checkout -b test dev # 基于dev新建test分支，并切换
+
+</code></pre></div><ul><li>合并分支</li></ul> <div class="language- extra-class"><pre class="language-text"><code>git merge test # 将test分支合并到当前分支,
+
+git merge –-no-ff test # 强制指定为非快速合并（no-fast-forward）
+
+git merge --squash test ## 合并压缩，将test上的commit压缩为一条,svn的在合并分支时采用的就是这种方式，squash会在当前分支新建一个提交节点
+squash和no-ff非常类似，区别只有一点不会保留对合入分支的引用
+
+
+git cherry-pick commitId # &quot;复制&quot;一个提交节点并在当前分支做一次完全一样的新提交。
+
+git cherry-pick -n commit # 拣选多个提交，合并完后可以继续拣选下一个提交
+
+
+git rebase master # 将master分支上超前的提交，变基到当前分支，本质上，这是线性化的自动的 cherry-pick
+
+git rebase --onto master 169a6 # 限制回滚范围，rebase当前分支从169a6以后的提交
+
+git rebase --interactive # 交互模式
+
+git rebase --continue # 处理完冲突继续合并
+
+git rebase --skip # 跳过
+
+git rebase --abort # 取消合并
+</code></pre></div><ul><li>合并推荐链接：</li></ul> <p><a href="http://yanhaijing.com/git/2017/07/14/four-method-for-git-merge/" target="_blank" rel="noopener noreferrer">图解 4 种 git 合并分支方法<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <h2 id="远程仓库"><a href="#远程仓库" class="header-anchor">#</a> 远程仓库</h2> <ul><li>连接远程仓库</li></ul> <div class="language- extra-class"><pre class="language-text"><code>git remote add origin1 git@github.com:yanhaijing/data.js.git # 添加远程仓库
+
+git remote # 显示全部源
+git remote -v # 显示全部源+详细信息
+
+git remote rename origin1 origin2 # 重命名
+
+git remote rm origin # 删除
+
+git remote show origin # 查看指定源的全部信息
+
+# 远程分支删除后，清除还存在的本地分支
+git remote prune origin --dry-run # prune 是修剪的意思，–dry-run 表示模拟列出将要修剪的 local stale branch ，但不真的执行。
+git remote prune origin # 移除掉远程分支已经被刪除的 local branch
+</code></pre></div><ul><li>操作远程仓库</li></ul> <div class="language- extra-class"><pre class="language-text"><code>git fetch origin remotebranch[:localbranch] # 从远端拉取分支[到本地指定分支]
+
+git merge origin/branch # 合并远端上指定分支
+
+git pull origin remotebranch:localbranch # 拉取远端分支到本地分支
+
+git pull origin master --allow-unrelated-histories # 允许拉取远端无关历史的master分支到本地当前分支
+
+git push origin branch # 将当前分支，推送到远端上指定分支
+
+git push origin localbranch:remotebranch # 推送本地指定分支，到远端上指定分支
+
+git push origin :remotebranch # 删除远端指定分支
+
+git push origin remotebranch --delete # 删除远程分支
+
+git branch -dr branch # 删除本地和远程分支
+
+git checkout -b [--track] test origin/dev#基于远端dev分支，新建本地test分支[同时设置跟踪]
+
+</code></pre></div><ul><li>推荐资源：
+<a href="http://www.ruanyifeng.com/blog/2014/06/git_remote.html" target="_blank" rel="noopener noreferrer">Git 远程操作详解<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul> <h2 id="工作现场"><a href="#工作现场" class="header-anchor">#</a> 工作现场</h2> <div class="language- extra-class"><pre class="language-text"><code>git stash # 将工作区现场（已跟踪文件）储藏起来，等以后恢复后继续工作。
+
+git stash list # 查看保存的工作现场
+
+git stash apply # 恢复工作现场
+
+git stash drop # 删除stash内容
+
+git stash pop # 恢复的同时直接删除stash内容
+
+git stash apply stash@{0} # 恢复指定的工作现场，当你保存了不只一份工作现场时。
+</code></pre></div><ul><li>链接：<a href="http://blog.csdn.net/man_help/article/details/51840722" target="_blank" rel="noopener noreferrer">里面有介绍工作现场<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul> <h2 id="标签"><a href="#标签" class="header-anchor">#</a> 标签</h2> <p>标签作用: 在开发的一些关键时期,使用标签来记录这些关键时刻, 例如发布版本, 有重大修改, 升级的时候, 会使用标签记录这些时刻, 来永久标记项目中的关键历史时刻;</p> <div class="language- extra-class"><pre class="language-text"><code>git tag # 列出现有标签
+
+git tag v0.1 [branch|commit] # [从指定位置]新建标签
+git tag -a v0.1 -m 'my version 1.4'#新建带注释标签
+
+git checkout tagname # 切换到标签
+
+git push origin v1.5 # 推送分支到源上
+
+git push origin --tags # 一次性推送所有分支
+
+git tag -d v0.1 # 删除标签
+
+git push origin :refs/tags/v0.1 # 删除远程标签
+</code></pre></div><p>链接：<a href="http://blog.csdn.net/vipzjyno1/article/details/22098621" target="_blank" rel="noopener noreferrer">里面有关于标签的操作<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <h2 id="推荐资源"><a href="#推荐资源" class="header-anchor">#</a> 推荐资源</h2> <ul><li><a href="https://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener noreferrer">图解 Git<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/git/command.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/29/2021, 10:24:33 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/git/setconfig.html" class="prev">
+        Git 配置和.gitignore
+      </a></span> <span class="next"><a href="/git/commit.html">
+        让你的 commit 更有价值
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cc7effe2.js" defer></script><script src="/assets/js/2.f8f5562f.js" defer></script><script src="/assets/js/93.a652939d.js" defer></script>
+  </body>
+</html>

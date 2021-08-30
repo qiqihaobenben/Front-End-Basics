@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TypeScript 基本语法 | Front-End-Basics</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="陈方旭的个人文档">
+    
+    <link rel="preload" href="/assets/css/0.styles.35bcedcf.css" as="style"><link rel="preload" href="/assets/js/app.cc7effe2.js" as="script"><link rel="preload" href="/assets/js/2.f8f5562f.js" as="script"><link rel="preload" href="/assets/js/115.4c3ff52a.js" as="script"><link rel="prefetch" href="/assets/js/10.d631d72f.js"><link rel="prefetch" href="/assets/js/100.aaf375fa.js"><link rel="prefetch" href="/assets/js/101.4c8f4c78.js"><link rel="prefetch" href="/assets/js/102.eb4a448b.js"><link rel="prefetch" href="/assets/js/103.d08f6620.js"><link rel="prefetch" href="/assets/js/104.20fa3ea0.js"><link rel="prefetch" href="/assets/js/105.464bc1e2.js"><link rel="prefetch" href="/assets/js/106.62c6e0ad.js"><link rel="prefetch" href="/assets/js/107.acb7c117.js"><link rel="prefetch" href="/assets/js/108.6df0a390.js"><link rel="prefetch" href="/assets/js/109.049bb742.js"><link rel="prefetch" href="/assets/js/11.b31aec1a.js"><link rel="prefetch" href="/assets/js/110.2c553059.js"><link rel="prefetch" href="/assets/js/111.7d7e97d8.js"><link rel="prefetch" href="/assets/js/112.97363246.js"><link rel="prefetch" href="/assets/js/113.353033a0.js"><link rel="prefetch" href="/assets/js/114.206c02c5.js"><link rel="prefetch" href="/assets/js/116.2b3ff140.js"><link rel="prefetch" href="/assets/js/117.bd75c390.js"><link rel="prefetch" href="/assets/js/118.43d8a7c9.js"><link rel="prefetch" href="/assets/js/119.b18cae25.js"><link rel="prefetch" href="/assets/js/12.cdf900ed.js"><link rel="prefetch" href="/assets/js/120.e52084bc.js"><link rel="prefetch" href="/assets/js/121.f84789b2.js"><link rel="prefetch" href="/assets/js/122.dd0d0f40.js"><link rel="prefetch" href="/assets/js/123.2a93453b.js"><link rel="prefetch" href="/assets/js/124.5869bbd8.js"><link rel="prefetch" href="/assets/js/125.280a43bd.js"><link rel="prefetch" href="/assets/js/126.3db1f54c.js"><link rel="prefetch" href="/assets/js/127.f2a978d6.js"><link rel="prefetch" href="/assets/js/128.310bb1e1.js"><link rel="prefetch" href="/assets/js/129.fffabf0d.js"><link rel="prefetch" href="/assets/js/13.f1e9c52e.js"><link rel="prefetch" href="/assets/js/130.3864d9c9.js"><link rel="prefetch" href="/assets/js/131.7b624c88.js"><link rel="prefetch" href="/assets/js/132.a16aeb22.js"><link rel="prefetch" href="/assets/js/133.4528cbd4.js"><link rel="prefetch" href="/assets/js/134.e7c7cd7d.js"><link rel="prefetch" href="/assets/js/135.5408a0d4.js"><link rel="prefetch" href="/assets/js/136.166f7bd0.js"><link rel="prefetch" href="/assets/js/137.22d16b9a.js"><link rel="prefetch" href="/assets/js/138.5d7a178a.js"><link rel="prefetch" href="/assets/js/139.aeda3f2f.js"><link rel="prefetch" href="/assets/js/14.4f114a52.js"><link rel="prefetch" href="/assets/js/140.fc4f83e1.js"><link rel="prefetch" href="/assets/js/141.8c037f53.js"><link rel="prefetch" href="/assets/js/142.cfbcaa0c.js"><link rel="prefetch" href="/assets/js/143.3ab0e418.js"><link rel="prefetch" href="/assets/js/144.92d99d4f.js"><link rel="prefetch" href="/assets/js/15.5f8da9da.js"><link rel="prefetch" href="/assets/js/16.7f7805dd.js"><link rel="prefetch" href="/assets/js/17.3b098518.js"><link rel="prefetch" href="/assets/js/18.012f7d49.js"><link rel="prefetch" href="/assets/js/19.89ec6c8c.js"><link rel="prefetch" href="/assets/js/20.a7f04e88.js"><link rel="prefetch" href="/assets/js/21.fde2dafb.js"><link rel="prefetch" href="/assets/js/22.6d54f592.js"><link rel="prefetch" href="/assets/js/23.5fe4ba69.js"><link rel="prefetch" href="/assets/js/24.e37b0dbd.js"><link rel="prefetch" href="/assets/js/25.342cd954.js"><link rel="prefetch" href="/assets/js/26.a0476a75.js"><link rel="prefetch" href="/assets/js/27.abf629f2.js"><link rel="prefetch" href="/assets/js/28.80e83ef9.js"><link rel="prefetch" href="/assets/js/29.6c4447a2.js"><link rel="prefetch" href="/assets/js/3.d0d59f73.js"><link rel="prefetch" href="/assets/js/30.99a7300a.js"><link rel="prefetch" href="/assets/js/31.44e95289.js"><link rel="prefetch" href="/assets/js/32.452c5621.js"><link rel="prefetch" href="/assets/js/33.6e7fe57e.js"><link rel="prefetch" href="/assets/js/34.f2e6cc4e.js"><link rel="prefetch" href="/assets/js/35.796c7d12.js"><link rel="prefetch" href="/assets/js/36.3eef68d3.js"><link rel="prefetch" href="/assets/js/37.db27fc05.js"><link rel="prefetch" href="/assets/js/38.43266de8.js"><link rel="prefetch" href="/assets/js/39.e3b5b464.js"><link rel="prefetch" href="/assets/js/4.0768ab53.js"><link rel="prefetch" href="/assets/js/40.e57210f9.js"><link rel="prefetch" href="/assets/js/41.a2e5f5be.js"><link rel="prefetch" href="/assets/js/42.5823eee1.js"><link rel="prefetch" href="/assets/js/43.210b55e1.js"><link rel="prefetch" href="/assets/js/44.563b08e6.js"><link rel="prefetch" href="/assets/js/45.1fc050b2.js"><link rel="prefetch" href="/assets/js/46.f680d93b.js"><link rel="prefetch" href="/assets/js/47.e19ced39.js"><link rel="prefetch" href="/assets/js/48.29235634.js"><link rel="prefetch" href="/assets/js/49.f76ff105.js"><link rel="prefetch" href="/assets/js/5.a2a39642.js"><link rel="prefetch" href="/assets/js/50.085b2179.js"><link rel="prefetch" href="/assets/js/51.76f2d633.js"><link rel="prefetch" href="/assets/js/52.3150e87e.js"><link rel="prefetch" href="/assets/js/53.7212775e.js"><link rel="prefetch" href="/assets/js/54.2f20355e.js"><link rel="prefetch" href="/assets/js/55.3b69a50e.js"><link rel="prefetch" href="/assets/js/56.1a82e4d0.js"><link rel="prefetch" href="/assets/js/57.49686d87.js"><link rel="prefetch" href="/assets/js/58.b38a99ff.js"><link rel="prefetch" href="/assets/js/59.02aa6721.js"><link rel="prefetch" href="/assets/js/6.02b0eb41.js"><link rel="prefetch" href="/assets/js/60.1b9d1433.js"><link rel="prefetch" href="/assets/js/61.11e06b30.js"><link rel="prefetch" href="/assets/js/62.fb9f4051.js"><link rel="prefetch" href="/assets/js/63.b91e436f.js"><link rel="prefetch" href="/assets/js/64.973a82c0.js"><link rel="prefetch" href="/assets/js/65.e36e3ae1.js"><link rel="prefetch" href="/assets/js/66.9e73f086.js"><link rel="prefetch" href="/assets/js/67.e0a0687a.js"><link rel="prefetch" href="/assets/js/68.25e5aabf.js"><link rel="prefetch" href="/assets/js/69.ae419cb9.js"><link rel="prefetch" href="/assets/js/7.588f1b88.js"><link rel="prefetch" href="/assets/js/70.abd33074.js"><link rel="prefetch" href="/assets/js/71.c3791fa1.js"><link rel="prefetch" href="/assets/js/72.8c1d71e6.js"><link rel="prefetch" href="/assets/js/73.ba931ec3.js"><link rel="prefetch" href="/assets/js/74.4698ee39.js"><link rel="prefetch" href="/assets/js/75.15ca01f2.js"><link rel="prefetch" href="/assets/js/76.8ca4b5b0.js"><link rel="prefetch" href="/assets/js/77.da2c4bd6.js"><link rel="prefetch" href="/assets/js/78.97656ef5.js"><link rel="prefetch" href="/assets/js/79.32879105.js"><link rel="prefetch" href="/assets/js/8.63df1f5c.js"><link rel="prefetch" href="/assets/js/80.603e2d1b.js"><link rel="prefetch" href="/assets/js/81.3f6b8af8.js"><link rel="prefetch" href="/assets/js/82.b11b8937.js"><link rel="prefetch" href="/assets/js/83.b7f2b439.js"><link rel="prefetch" href="/assets/js/84.32b89b03.js"><link rel="prefetch" href="/assets/js/85.294b0bcb.js"><link rel="prefetch" href="/assets/js/86.01b71b92.js"><link rel="prefetch" href="/assets/js/87.048631b2.js"><link rel="prefetch" href="/assets/js/88.054e325b.js"><link rel="prefetch" href="/assets/js/89.381412e3.js"><link rel="prefetch" href="/assets/js/9.143b08ba.js"><link rel="prefetch" href="/assets/js/90.17a9db32.js"><link rel="prefetch" href="/assets/js/91.6e5d060e.js"><link rel="prefetch" href="/assets/js/92.1ea365c8.js"><link rel="prefetch" href="/assets/js/93.a652939d.js"><link rel="prefetch" href="/assets/js/94.dd324120.js"><link rel="prefetch" href="/assets/js/95.ba4131c0.js"><link rel="prefetch" href="/assets/js/96.a56f29c6.js"><link rel="prefetch" href="/assets/js/97.90143192.js"><link rel="prefetch" href="/assets/js/98.d5f45a6f.js"><link rel="prefetch" href="/assets/js/99.d17eb214.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.35bcedcf.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="Front-End-Basics" class="logo"> <span class="site-name can-hide">Front-End-Basics</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>基础篇</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>应用篇</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>数据结构和算法</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>TypeScript</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/javascript/typescript/intro.html" class="sidebar-link">TypeScript 介绍</a></li><li><a href="/javascript/typescript/synax.html" aria-current="page" class="active sidebar-link">TypeScript 基本语法</a></li><li><a href="/javascript/typescript/basic-essence.html" class="sidebar-link">TypeScript 基础精粹</a></li><li><a href="/javascript/typescript/use-typescript-two-years.html" class="sidebar-link">【译】使用 TypeScript 两年后 - 值得吗？</a></li><li><a href="/javascript/typescript/typescript-important.html" class="sidebar-link">【译】TypeScript 为何如此重要？</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="typescript-基本语法"><a href="#typescript-基本语法" class="header-anchor">#</a> TypeScript 基本语法</h1> <h2 id="名词解释"><a href="#名词解释" class="header-anchor">#</a> 名词解释</h2> <h3 id="类型注解"><a href="#类型注解" class="header-anchor">#</a> 类型注解</h3> <p>作用：相当于强类型语言中的类型声明</p> <p>语法：(变量/函数): type</p> <div class="language-typescript extra-class"><pre class="language-typescript"><code><span class="token keyword">let</span> str<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'abc'</span>
+</code></pre></div><h3 id="联合类型"><a href="#联合类型" class="header-anchor">#</a> 联合类型</h3> <p>联合类型（Union Types）表示取值可以为多种类型中的一种。</p> <div class="language-typescript extra-class"><pre class="language-typescript"><code><span class="token keyword">let</span> count<span class="token operator">:</span> <span class="token builtin">number</span> <span class="token operator">|</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token number">10</span>
+</code></pre></div><h3 id="枚举"><a href="#枚举" class="header-anchor">#</a> 枚举</h3> <p>一组有名字的常量集合，可以类比手机里的通讯录。、</p> <h3 id="泛型"><a href="#泛型" class="header-anchor">#</a> 泛型</h3> <p>不预先确定的数据类型，具体的类型在使用的时候才能确定。泛型变量可以类比函数参数，是代表类型的参数。</p> <h2 id="语法"><a href="#语法" class="header-anchor">#</a> 语法</h2> <h3 id="es6-的数据类型"><a href="#es6-的数据类型" class="header-anchor">#</a> ES6 的数据类型</h3> <ul><li>Boolean</li> <li>Number</li> <li>String</li> <li>undefined</li> <li>null</li> <li>Symbol</li> <li>Array</li> <li>Function</li> <li>Object</li></ul> <h3 id="es6-的数据类型-2"><a href="#es6-的数据类型-2" class="header-anchor">#</a> ES6 的数据类型</h3> <ul><li>Boolean</li> <li>Number</li> <li>String</li> <li>undefined</li> <li>null</li> <li>Symbol</li> <li>Array</li> <li>Function</li> <li>Object</li> <li><strong>void</strong></li> <li><strong>any</strong></li> <li><strong>never</strong></li> <li><strong>元组</strong></li> <li><strong>枚举</strong></li> <li><strong>高级类型</strong></li></ul> <h3 id="类型注解-2"><a href="#类型注解-2" class="header-anchor">#</a> 类型注解</h3> <p>作用： 相当于强类型语言中的类型声明</p> <p>语法：(变量/函数):type</p> <div class="language- extra-class"><pre class="language-text"><code>// 原始值
+const isDone: boolean = false;
+const amount: number = 6;
+const address: string = 'beijing';
+const greeting: string = `Hello World`;
+
+// 数组
+const list: number[] = [1, 2, 3];
+const list: Array&lt;number&gt; = [1, 2, 3];
+
+// 元组
+const name: [string, string] = ['Sean', 'Sun'];
+
+// 枚举
+enum Color {
+    Red,
+    Green,
+    Blue
+};
+const c: Color = Color.Green;
+
+// 任意值：可以调用任意方法
+let anyTypes: any = 4;
+anyTypes = 'any';
+anyTypes = false;
+
+// 空值
+function doSomething (): void {
+    return undefined;
+}
+
+// 类型断言
+let someValue: any = &quot;this is a string&quot;;
+let strLength: number = (someValue as string).length;
+</code></pre></div><h3 id="typescript-中的-interface-可以看做是一个集合-这个集合是对对象、类等内部结构的约定"><a href="#typescript-中的-interface-可以看做是一个集合-这个集合是对对象、类等内部结构的约定" class="header-anchor">#</a> TypeScript 中的 Interface 可以看做是一个集合，这个集合是对对象、类等内部结构的约定</h3> <div class="language- extra-class"><pre class="language-text"><code>// 定义接口 Coords
+// 该接口包含 number 类型的 x，string 类型的 y
+// 其中 y 是可选类型，即是否包含该属性无所谓
+interface Coords {
+	x: number;
+	y?: string;
+};
+
+// 定义函数 where
+// 该函数接受一个 Coords 类型的参数 l
+function where (l: Coords) {
+	// doSomething
+}
+
+const a = { x: 100 };
+const b = { x: 100, y1: 'abc' };
+// a 拥有 number 类型的 x，可以传递给 where
+where(a);
+// b 拥有 number 类型的 x 和 string 类型的 y1，可以传递给 where
+where(b);
+
+// 下面这种调用方式将会报错，虽然它和 where(b) 看起来是一致的
+// 区别在于这里传递的是一个对象字面量
+// 对象字面量会被特殊对待并经过额外的属性检查
+// 如果对象字面量中存在目标类型中未声明的属性，则抛出错误
+where({ x: 100, y1: 'abc' });
+
+// 最好的解决方式是为接口添加索引签名
+// 添加如下所示的索引签名后，对象字面量可以有任意数量的属性
+// 只要属性不是 x 和 y，其他属性可以是 any 类型
+interface Coords {
+	x: number;
+	y?: string;
+    [propName: string]: any
+};
+</code></pre></div><h3 id="接口还常用于约束函数的行为"><a href="#接口还常用于约束函数的行为" class="header-anchor">#</a> 接口还常用于约束函数的行为</h3> <div class="language- extra-class"><pre class="language-text"><code>// CheckType 包含一个调用签名
+// 该调用签名声明了 getType 函数需要接收一个 any 类型的参数，并最终返回一个 string 类型的结果
+interface CheckType {
+    (data: any): string;
+};
+const getType: CheckType = (data: any) : string =&gt; {
+    return Object.prototype.toString.call(data);
+}
+getType('abc');
+// =&gt; '[object String]'
+</code></pre></div><h3 id="interface-也可以用于约束类的行为"><a href="#interface-也可以用于约束类的行为" class="header-anchor">#</a> Interface 也可以用于约束类的行为</h3> <div class="language- extra-class"><pre class="language-text"><code>interface ClockConstructor {
+    new (hour: number, minute: number): ClockInterface;
+}
+interface ClockInterface {
+    tick();
+}
+function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface {
+    return new ctor(hour, minute);
+}
+class DigitalClock implements ClockInterface {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log(&quot;beep beep&quot;);
+    }
+}
+class AnalogClock implements ClockInterface {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log(&quot;tick tock&quot;);
+    }
+}
+let digital = createClock(DigitalClock, 12, 17);
+let analog = createClock(AnalogClock, 7, 32);
+</code></pre></div><h3 id="除了-es6-增加的-class-用法-typescript-还增加了-c-、java-中常见的-public-protected-private-限定符-限定变量或函数的使用范围。"><a href="#除了-es6-增加的-class-用法-typescript-还增加了-c-、java-中常见的-public-protected-private-限定符-限定变量或函数的使用范围。" class="header-anchor">#</a> 除了 ES6 增加的 Class 用法，TypeScript 还增加了 C++、Java 中常见的 public / protected / private 限定符，限定变量或函数的使用范围。</h3> <p>TypeScript 使用的是结构性类型系统，只要两种类型的成员类型相同，则认为这两种类型是兼容和一致的，但比较包含 private 和 protected 成员的类型时，只有他们是来自同一处的统一类型成员时才会被认为是兼容的</p> <div class="language- extra-class"><pre class="language-text"><code>class Animal {
+    private name: string;
+    constructor(theName: string) { this.name = theName; }
+}
+class Rhino extends Animal {
+    constructor() { super(&quot;Rhino&quot;); }
+}
+class Employee {
+    private name: string;
+    constructor(theName: string) { this.name = theName; }
+}
+
+let animal = new Animal(&quot;Goat&quot;);
+let rhino = new Rhino();
+let employee = new Employee(&quot;Bob&quot;);
+
+animal = rhino;
+// Error: Animal and Employee are not compatible
+animal = employee;
+</code></pre></div><h3 id="function"><a href="#function" class="header-anchor">#</a> function</h3></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/javascript/typescript/synax.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/29/2021, 10:24:33 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/javascript/typescript/intro.html" class="prev">
+        TypeScript 介绍
+      </a></span> <span class="next"><a href="/javascript/typescript/basic-essence.html">
+        TypeScript 基础精粹
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cc7effe2.js" defer></script><script src="/assets/js/2.f8f5562f.js" defer></script><script src="/assets/js/115.4c3ff52a.js" defer></script>
+  </body>
+</html>

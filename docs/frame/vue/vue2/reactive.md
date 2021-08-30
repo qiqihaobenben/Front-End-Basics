@@ -1449,7 +1449,7 @@ methodsToPatch.forEach(function(method) {
 
 ## 整个页面的渲染流程图
 
-![](./images/render.webp)
+![](./images/render.png)
 
 ## 参考文档
 

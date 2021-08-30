@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Shell 脚本编程详解 | Front-End-Basics</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="陈方旭的个人文档">
+    
+    <link rel="preload" href="/assets/css/0.styles.35bcedcf.css" as="style"><link rel="preload" href="/assets/js/app.cc7effe2.js" as="script"><link rel="preload" href="/assets/js/2.f8f5562f.js" as="script"><link rel="preload" href="/assets/js/14.4f114a52.js" as="script"><link rel="prefetch" href="/assets/js/10.d631d72f.js"><link rel="prefetch" href="/assets/js/100.aaf375fa.js"><link rel="prefetch" href="/assets/js/101.4c8f4c78.js"><link rel="prefetch" href="/assets/js/102.eb4a448b.js"><link rel="prefetch" href="/assets/js/103.d08f6620.js"><link rel="prefetch" href="/assets/js/104.20fa3ea0.js"><link rel="prefetch" href="/assets/js/105.464bc1e2.js"><link rel="prefetch" href="/assets/js/106.62c6e0ad.js"><link rel="prefetch" href="/assets/js/107.acb7c117.js"><link rel="prefetch" href="/assets/js/108.6df0a390.js"><link rel="prefetch" href="/assets/js/109.049bb742.js"><link rel="prefetch" href="/assets/js/11.b31aec1a.js"><link rel="prefetch" href="/assets/js/110.2c553059.js"><link rel="prefetch" href="/assets/js/111.7d7e97d8.js"><link rel="prefetch" href="/assets/js/112.97363246.js"><link rel="prefetch" href="/assets/js/113.353033a0.js"><link rel="prefetch" href="/assets/js/114.206c02c5.js"><link rel="prefetch" href="/assets/js/115.4c3ff52a.js"><link rel="prefetch" href="/assets/js/116.2b3ff140.js"><link rel="prefetch" href="/assets/js/117.bd75c390.js"><link rel="prefetch" href="/assets/js/118.43d8a7c9.js"><link rel="prefetch" href="/assets/js/119.b18cae25.js"><link rel="prefetch" href="/assets/js/12.cdf900ed.js"><link rel="prefetch" href="/assets/js/120.e52084bc.js"><link rel="prefetch" href="/assets/js/121.f84789b2.js"><link rel="prefetch" href="/assets/js/122.dd0d0f40.js"><link rel="prefetch" href="/assets/js/123.2a93453b.js"><link rel="prefetch" href="/assets/js/124.5869bbd8.js"><link rel="prefetch" href="/assets/js/125.280a43bd.js"><link rel="prefetch" href="/assets/js/126.3db1f54c.js"><link rel="prefetch" href="/assets/js/127.f2a978d6.js"><link rel="prefetch" href="/assets/js/128.310bb1e1.js"><link rel="prefetch" href="/assets/js/129.fffabf0d.js"><link rel="prefetch" href="/assets/js/13.f1e9c52e.js"><link rel="prefetch" href="/assets/js/130.3864d9c9.js"><link rel="prefetch" href="/assets/js/131.7b624c88.js"><link rel="prefetch" href="/assets/js/132.a16aeb22.js"><link rel="prefetch" href="/assets/js/133.4528cbd4.js"><link rel="prefetch" href="/assets/js/134.e7c7cd7d.js"><link rel="prefetch" href="/assets/js/135.5408a0d4.js"><link rel="prefetch" href="/assets/js/136.166f7bd0.js"><link rel="prefetch" href="/assets/js/137.22d16b9a.js"><link rel="prefetch" href="/assets/js/138.5d7a178a.js"><link rel="prefetch" href="/assets/js/139.aeda3f2f.js"><link rel="prefetch" href="/assets/js/140.fc4f83e1.js"><link rel="prefetch" href="/assets/js/141.8c037f53.js"><link rel="prefetch" href="/assets/js/142.cfbcaa0c.js"><link rel="prefetch" href="/assets/js/143.3ab0e418.js"><link rel="prefetch" href="/assets/js/144.92d99d4f.js"><link rel="prefetch" href="/assets/js/15.5f8da9da.js"><link rel="prefetch" href="/assets/js/16.7f7805dd.js"><link rel="prefetch" href="/assets/js/17.3b098518.js"><link rel="prefetch" href="/assets/js/18.012f7d49.js"><link rel="prefetch" href="/assets/js/19.89ec6c8c.js"><link rel="prefetch" href="/assets/js/20.a7f04e88.js"><link rel="prefetch" href="/assets/js/21.fde2dafb.js"><link rel="prefetch" href="/assets/js/22.6d54f592.js"><link rel="prefetch" href="/assets/js/23.5fe4ba69.js"><link rel="prefetch" href="/assets/js/24.e37b0dbd.js"><link rel="prefetch" href="/assets/js/25.342cd954.js"><link rel="prefetch" href="/assets/js/26.a0476a75.js"><link rel="prefetch" href="/assets/js/27.abf629f2.js"><link rel="prefetch" href="/assets/js/28.80e83ef9.js"><link rel="prefetch" href="/assets/js/29.6c4447a2.js"><link rel="prefetch" href="/assets/js/3.d0d59f73.js"><link rel="prefetch" href="/assets/js/30.99a7300a.js"><link rel="prefetch" href="/assets/js/31.44e95289.js"><link rel="prefetch" href="/assets/js/32.452c5621.js"><link rel="prefetch" href="/assets/js/33.6e7fe57e.js"><link rel="prefetch" href="/assets/js/34.f2e6cc4e.js"><link rel="prefetch" href="/assets/js/35.796c7d12.js"><link rel="prefetch" href="/assets/js/36.3eef68d3.js"><link rel="prefetch" href="/assets/js/37.db27fc05.js"><link rel="prefetch" href="/assets/js/38.43266de8.js"><link rel="prefetch" href="/assets/js/39.e3b5b464.js"><link rel="prefetch" href="/assets/js/4.0768ab53.js"><link rel="prefetch" href="/assets/js/40.e57210f9.js"><link rel="prefetch" href="/assets/js/41.a2e5f5be.js"><link rel="prefetch" href="/assets/js/42.5823eee1.js"><link rel="prefetch" href="/assets/js/43.210b55e1.js"><link rel="prefetch" href="/assets/js/44.563b08e6.js"><link rel="prefetch" href="/assets/js/45.1fc050b2.js"><link rel="prefetch" href="/assets/js/46.f680d93b.js"><link rel="prefetch" href="/assets/js/47.e19ced39.js"><link rel="prefetch" href="/assets/js/48.29235634.js"><link rel="prefetch" href="/assets/js/49.f76ff105.js"><link rel="prefetch" href="/assets/js/5.a2a39642.js"><link rel="prefetch" href="/assets/js/50.085b2179.js"><link rel="prefetch" href="/assets/js/51.76f2d633.js"><link rel="prefetch" href="/assets/js/52.3150e87e.js"><link rel="prefetch" href="/assets/js/53.7212775e.js"><link rel="prefetch" href="/assets/js/54.2f20355e.js"><link rel="prefetch" href="/assets/js/55.3b69a50e.js"><link rel="prefetch" href="/assets/js/56.1a82e4d0.js"><link rel="prefetch" href="/assets/js/57.49686d87.js"><link rel="prefetch" href="/assets/js/58.b38a99ff.js"><link rel="prefetch" href="/assets/js/59.02aa6721.js"><link rel="prefetch" href="/assets/js/6.02b0eb41.js"><link rel="prefetch" href="/assets/js/60.1b9d1433.js"><link rel="prefetch" href="/assets/js/61.11e06b30.js"><link rel="prefetch" href="/assets/js/62.fb9f4051.js"><link rel="prefetch" href="/assets/js/63.b91e436f.js"><link rel="prefetch" href="/assets/js/64.973a82c0.js"><link rel="prefetch" href="/assets/js/65.e36e3ae1.js"><link rel="prefetch" href="/assets/js/66.9e73f086.js"><link rel="prefetch" href="/assets/js/67.e0a0687a.js"><link rel="prefetch" href="/assets/js/68.25e5aabf.js"><link rel="prefetch" href="/assets/js/69.ae419cb9.js"><link rel="prefetch" href="/assets/js/7.588f1b88.js"><link rel="prefetch" href="/assets/js/70.abd33074.js"><link rel="prefetch" href="/assets/js/71.c3791fa1.js"><link rel="prefetch" href="/assets/js/72.8c1d71e6.js"><link rel="prefetch" href="/assets/js/73.ba931ec3.js"><link rel="prefetch" href="/assets/js/74.4698ee39.js"><link rel="prefetch" href="/assets/js/75.15ca01f2.js"><link rel="prefetch" href="/assets/js/76.8ca4b5b0.js"><link rel="prefetch" href="/assets/js/77.da2c4bd6.js"><link rel="prefetch" href="/assets/js/78.97656ef5.js"><link rel="prefetch" href="/assets/js/79.32879105.js"><link rel="prefetch" href="/assets/js/8.63df1f5c.js"><link rel="prefetch" href="/assets/js/80.603e2d1b.js"><link rel="prefetch" href="/assets/js/81.3f6b8af8.js"><link rel="prefetch" href="/assets/js/82.b11b8937.js"><link rel="prefetch" href="/assets/js/83.b7f2b439.js"><link rel="prefetch" href="/assets/js/84.32b89b03.js"><link rel="prefetch" href="/assets/js/85.294b0bcb.js"><link rel="prefetch" href="/assets/js/86.01b71b92.js"><link rel="prefetch" href="/assets/js/87.048631b2.js"><link rel="prefetch" href="/assets/js/88.054e325b.js"><link rel="prefetch" href="/assets/js/89.381412e3.js"><link rel="prefetch" href="/assets/js/9.143b08ba.js"><link rel="prefetch" href="/assets/js/90.17a9db32.js"><link rel="prefetch" href="/assets/js/91.6e5d060e.js"><link rel="prefetch" href="/assets/js/92.1ea365c8.js"><link rel="prefetch" href="/assets/js/93.a652939d.js"><link rel="prefetch" href="/assets/js/94.dd324120.js"><link rel="prefetch" href="/assets/js/95.ba4131c0.js"><link rel="prefetch" href="/assets/js/96.a56f29c6.js"><link rel="prefetch" href="/assets/js/97.90143192.js"><link rel="prefetch" href="/assets/js/98.d5f45a6f.js"><link rel="prefetch" href="/assets/js/99.d17eb214.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.35bcedcf.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="Front-End-Basics" class="logo"> <span class="site-name can-hide">Front-End-Basics</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Linux</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/linux/basics.html" class="sidebar-link">Linux 基础</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Shell</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/shell/basics.html" class="sidebar-link">Shell 概览</a></li><li><a href="/server/shell/script.html" aria-current="page" class="active sidebar-link">Shell 脚本编程详解</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="shell-脚本编程详解"><a href="#shell-脚本编程详解" class="header-anchor">#</a> Shell 脚本编程详解</h1> <p>Shell 脚本（shell script），是一种为 Shell 编写的脚本程序，一般文件后缀为 <code>.sh</code>。</p> <h2 id="脚本解释器"><a href="#脚本解释器" class="header-anchor">#</a> 脚本解释器</h2> <p><code>#!</code> 是一个约定的标记，它告诉系统这个脚本需要什么解释器来运行，即：使用哪一种 Shell。<code>#!</code>被称为<a href="https://zh.wikipedia.org/wiki/Shebang" target="_blank" rel="noopener noreferrer">shebang（也称为 Hashbang）<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>,例如使用 bash：<code>#! /bin/bash</code></p> <p>新建一个 test.sh 的文件，内容如下：</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+echo &quot;Hello World!&quot;
+</code></pre></div><h2 id="运行-shell-脚本"><a href="#运行-shell-脚本" class="header-anchor">#</a> 运行 Shell 脚本</h2> <h3 id="第一种方式-作为可执行程序"><a href="#第一种方式-作为可执行程序" class="header-anchor">#</a> 第一种方式：作为可执行程序</h3> <p>1、当前 test.sh 是没有可执行权限的，首先使脚本文件具有执行权限。</p> <div class="language- extra-class"><pre class="language-text"><code># 使脚本文件具有执行权限
+chmod +x ./test.sh
+</code></pre></div><p>2、执行脚本</p> <div class="language- extra-class"><pre class="language-text"><code># 执行脚本，需注意要加目录的标识
+./test.sh
+
+# 也可以用 source 来执行脚本，跟上面的写法是等价的，但是不需要脚本具有执行权限
+source ./test.sh
+</code></pre></div><p><strong>注意：一定要写成 ./test.sh ,而不是 test.sh 。运行其他二进制的程序也是一样，直接写 test.sh，Linux 系统会去 PATH 中寻找有没有叫 test.sh 的，而只有 /bin, /sbin, /usr/bin, /usr/sbin 等在 PATH 中。你的当前目录通常不在 PATH 中，所以写成 test.sh 是找不到命令的，要用./test.sh 告诉系统，就在当前目录找。</strong></p> <p>通过这种方式运行 bash 脚本，第一行一定要写对，好让系统（Shell 程序）查找到正确的解释器。如果是使用标准默认的 Shell，可以省去第一行。</p> <h4 id="扩展-source-script-sh-和-script-sh-有什么区别"><a href="#扩展-source-script-sh-和-script-sh-有什么区别" class="header-anchor">#</a> 扩展：<code>source script.sh</code> 和 <code>./script.sh</code> 有什么区别?</h4> <p>这两种情况 script.sh 都会在 bash 会话中被读取和执行，不同点在于哪个会话执行这个命令。</p> <p>对于 source 命令来说，命令是在当前的 bash 会话中执行的，因此当 source 执行完毕，对当前环境的任何更改（例如更改目录或是定义函数）都会留存在当前会话中。</p> <p>单独运行 ./script.sh 时，当前的 bash 会话将启动新的 bash 会话（实例），并在新实例中运行命令 script.sh。因此，如果 script.sh 更改目录，新的 bash 会话（实例）会更改目录，但是一旦退出并将控制权返回给父 bash 会话，父会话仍然留在先前的位置（不会有目录的更改）。</p> <p>同样，如果 script.sh 定义了要在终端中访问的函数，需要用 source 命令在当前 bash 会话中定义这个函数。否则，如果你运行 ./script.sh，只有新的 bash 会话（进程）才能执行定义的函数，而当前的 shell 不能。</p> <h3 id="第二种方式-作为解释器参数"><a href="#第二种方式-作为解释器参数" class="header-anchor">#</a> 第二种方式：作为解释器参数</h3> <p>直接运行解释器，其参数就是 Shell 脚本的文件名。</p> <div class="language- extra-class"><pre class="language-text"><code>/bin/bash test.sh
+</code></pre></div><p>这种方式运行的脚本，不需要在第一行指定解释器信息，写了也没用。</p> <h2 id="语法"><a href="#语法" class="header-anchor">#</a> 语法</h2> <h3 id="_1、注释"><a href="#_1、注释" class="header-anchor">#</a> 1、注释</h3> <ul><li>单行注释：以 <code>#</code> 开头，到行尾结束。</li> <li>多行注释：以 <code>:&lt;&lt;EOF</code> 开头，到 <code>EOF</code> 结束</li></ul> <div class="language- extra-class"><pre class="language-text"><code># 这是单行注释
+
+:&lt;&lt;EOF
+这是多行注释
+这是多行注释
+EOF
+</code></pre></div><p>如果有段代码要频繁的注释和取消注释，可以用花括号括起来，定义成一个函数，没有地方调用这个函数，这块代码就不会执行，达到了和注释一样的效果。</p> <h3 id="_2、变量"><a href="#_2、变量" class="header-anchor">#</a> 2、变量</h3> <h4 id="变量类型"><a href="#变量类型" class="header-anchor">#</a> 变量类型</h4> <ul><li><strong>局部变量</strong>：局部变量是仅在某个脚本内部有效的变量，它们不能被其他的程序和脚本访问。函数中能声明函数内部的局部变量。</li> <li><strong>环境变量</strong>：环境变量是从父进程中继承而来的变量，对当前 Shell 会话内所有的程序和脚本都可见。创建它们跟创建局部变量类似，但使用的是 <code>export</code> 关键字，shell 脚本也可以定义环境变量，但一般自己定义的环境变量关掉当前 Shell 就失效了，后面有介绍怎么让环境变量持久化。</li> <li><strong>shell 变量（系统变量）</strong>：shell 变量是由 shell 程序设置的特殊变量。shell 变量中有一部分是环境变量，有一部分是局部变量，这些变量保证了 shell 的正常运行。</li></ul> <h4 id="变量语法"><a href="#变量语法" class="header-anchor">#</a> 变量语法</h4> <p>1、声明变量</p> <p>可以使用等号操作符为变量赋值：<code>varName=value</code>，varName 是变量名，value 是赋值给变量的值。</p> <p>变量名的命名规则：</p> <ul><li>首字母必须为字母（a-z,A-Z），剩下的部分只能使用英文字母，数字下划线</li> <li>中间不能有空格，可以使用下划线，如果有空格，必须使用单引号或双引号</li> <li>不能使用标点符号</li> <li>不能使用 shell 关键字</li></ul> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+fruit=apple
+count=5
+</code></pre></div><p><strong>注意：<code>varName=value</code>的等号两边没有空格，变量值如果有空格，需要用引号包住。</strong></p> <p>2、访问变量</p> <p>访问变量的语法形式为：<code>${varName}</code> 和 <code>$varName</code>，变量名外面的花括号是可选的，加不加都行，加花括号是为了帮助解释器识别变量的边界（推荐加花括号）。</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+fruit=apple
+count=5
+echo &quot;We have $count ${fruit}s&quot;
+#输出：We have 5 apples
+</code></pre></div><p>因为 Shell 使用空白字符来分隔单词，所以上面的例子中需要加上花括号来告诉 Shell 这里的变量名是 fruit，而不是 fruits</p> <p><strong>注意：使用单引号时，变量不会被扩展(expand)，仍依照原样显示。这意味着 <code>echo '$var'</code>会显示 <code>$var</code>。使用双引号时，如果 <code>$var</code> 已经定义过，那么 <code>echo &quot;$var&quot;</code>会显示出该变量的值，如果没有定义过，则什么都不显示。</strong></p> <p>3、只读变量</p> <p>使用 readonly 命令可以将变量定义为只读变量，只读变量的值不能被改变</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+fruit=apple
+echo $fruit
+readonly fruit
+#fruit=banana  #如果放开注释，执行时会报错
+</code></pre></div><p>4、删除变量</p> <p>使用 unset 命令可以删除变量，变量被删除后不能再次使用。<strong>unset 命令不能删除只读变量</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+fruit=apple
+echo $fruit
+#输出： apple
+
+unset fruit
+echo $fruit
+#输出： (空)
+</code></pre></div><h4 id="shell-特殊变量-系统变量"><a href="#shell-特殊变量-系统变量" class="header-anchor">#</a> Shell 特殊变量（系统变量）</h4> <p>上面讲过变量名的命名规则，但是还有一些包含其他字符的变量有特殊含义，这样的变量被称为特殊变量。</p> <table><thead><tr><th style="text-align:left;">变量</th> <th style="text-align:left;">含义</th></tr></thead> <tbody><tr><td style="text-align:left;"><code>$0</code></td> <td style="text-align:left;">当前脚本的文件名</td></tr> <tr><td style="text-align:left;"><code>$n</code></td> <td style="text-align:left;">传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是<code>$1</code></td></tr> <tr><td style="text-align:left;"><code>$#</code></td> <td style="text-align:left;">传递给脚本或函数的参数个数</td></tr> <tr><td style="text-align:left;"><code>$*</code></td> <td style="text-align:left;">传递给脚本或函数的所有参数</td></tr> <tr><td style="text-align:left;"><code>$@</code></td> <td style="text-align:left;">传递给脚本或函数的所有参数，被双引号（&quot;&quot;）包含时，与<code>$*</code>稍有不同</td></tr> <tr><td style="text-align:left;"><code>$FUNCNAME</code></td> <td style="text-align:left;">函数名称（仅在函数内值）</td></tr> <tr><td style="text-align:left;"><code>$?</code></td> <td style="text-align:left;">上个命令的退出状态，或函数的返值</td></tr> <tr><td style="text-align:left;"><code>$-</code></td> <td style="text-align:left;">显示 shell 使用的当前选项(flag)，后面扩展中检测是否为交互模式时会用到</td></tr> <tr><td style="text-align:left;"><code>$$</code></td> <td style="text-align:left;">当前 Shell 进程 ID。对于 Shell 脚本，就是这些脚本所在的进程 ID</td></tr> <tr><td style="text-align:left;"><code>$!</code></td> <td style="text-align:left;">最后一个后台运行的进程 ID 号</td></tr></tbody></table> <blockquote><p>命令行参数：运行脚本时传递给脚本的参数成为命令行参数，命令行参数用 <code>$n</code> 表示。</p></blockquote> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+# ./test.sh
+
+echo &quot;文件名：$0&quot;
+echo &quot;第一个命令行参数：$1&quot;
+echo &quot;第二个命令行参数：$2&quot;
+echo &quot;传入的全部参数：$@&quot;
+echo &quot;传入的全部参数：$*&quot;
+echo &quot;全部参数的数量：$#&quot;
+</code></pre></div><p>执行命令：<code>./test.sh Linux Shell</code>，结果为：</p> <div class="language- extra-class"><pre class="language-text"><code>文件名：./test.sh
+第一个命令行参数：Linux
+第二个命令行参数：Shell
+传入的全部参数：Linux Shell
+传入的全部参数：Linux Shell
+全部参数的数量：2
+</code></pre></div><p><code>$?</code> 可以获取上一个命令的退出状态。所谓退出状态，就是上一个命令执行后的返回结果。退出状态是一个数字，一般情况下，大部分命令执行成功会返回 0，失败会返回 1。<code>$?</code>也可以表示函数的返回值。</p> <h3 id="_3、字符串"><a href="#_3、字符串" class="header-anchor">#</a> 3、字符串</h3> <h4 id="字符串引号"><a href="#字符串引号" class="header-anchor">#</a> 字符串引号</h4> <p>shell 字符串可以使用单引号 <code>''</code> ，也可以使用双引号<code>&quot;&quot;</code> ， 也可以不用引号。</p> <ul><li>单引号：不识别变量，单引号中间不能出现单独的单引号（使用转义字符转义也不行），可以成对出现实现字符串拼接。</li></ul> <div class="language- extra-class"><pre class="language-text"><code>name='world'
+
+before='hello,'${name}'!' #使用单引号拼接字符串
+after='hello,${name}!'  #单引号中变量不解析
+
+echo ${before}_${after}
+# 输出：hello,world!_hello,${name}!
+</code></pre></div><ul><li>双引号：可以识别变量，双引号中可以出现用转义字符转义的双引号</li></ul> <div class="language- extra-class"><pre class="language-text"><code>name=&quot;\&quot;shell\&quot;&quot;  #双引号内允许出现被转义的双引号
+
+before=&quot;hello,&quot;${name}&quot;!&quot; #使用双引号拼接字符串
+after=&quot;hello,${name}!&quot; #双引号中变量会解析
+
+echo ${before}_${after}
+# 输出：hello,&quot;shell&quot;!_hello,&quot;shell&quot;!
+</code></pre></div><blockquote><p>设置一个字符串变量，下面的都是对这个变量的操作</p></blockquote> <div class="language- extra-class"><pre class="language-text"><code>file=/dir1/dir2/dir3/my.file.txt
+</code></pre></div><h4 id="var-获得变量值的长度"><a href="#var-获得变量值的长度" class="header-anchor">#</a> <code>${#var}</code>：获得变量值的长度</h4> <div class="language- extra-class"><pre class="language-text"><code>echo ${#file}
+# 输出：27
+</code></pre></div><h4 id="var-x-x-通过索引位置截取子字符串"><a href="#var-x-x-通过索引位置截取子字符串" class="header-anchor">#</a> <code>${var:x:x}</code>：通过索引位置截取子字符串</h4> <div class="language- extra-class"><pre class="language-text"><code>echo ${file:0:5} #截取最左侧的5个字符
+# 输出：/dir1
+
+echo ${file:5:5} #从第6个字符开始，截取5个字符
+# 输出：/dir2
+</code></pre></div><h4 id="var-、-var-删除字符串左侧的值"><a href="#var-、-var-删除字符串左侧的值" class="header-anchor">#</a> <code>${var#}</code>、<code>${var##}</code>：删除字符串左侧的值</h4> <div class="language- extra-class"><pre class="language-text"><code>echo ${file#*/} #删除第一个 / 及其左侧的字符串
+# 输出：dir1/dir2/dir3/my.file.txt
+
+echo ${file##*/} #删除最后一个 / 及其左侧的字符串
+# 输出：my.file.txt
+
+echo ${file#*.} #删除第一个 . 及其左侧的字符串
+# 输出：file.txt
+
+echo ${file##*.} #删除最后一个 . 及其左侧的字符串
+# 输出：txt
+</code></pre></div><h4 id="var-、-var-删除字符串右侧的值"><a href="#var-、-var-删除字符串右侧的值" class="header-anchor">#</a> <code>${var%}</code>、<code>${var%%}</code>：删除字符串右侧的值</h4> <div class="language- extra-class"><pre class="language-text"><code>echo ${file%/*} #删除最后一个 / 及其右侧的字符串
+# 输出：/dir1/dir2/dir3
+
+echo ${file%%/*} #删除第一个 / 及其右侧的字符串
+# 输出：(空值)
+
+echo ${file%.*} #删除最后一个 . 及其右侧的字符串
+# 输出：/dir1/dir2/dir3/my.file
+
+echo ${file%%.*} #删除第一个 . 及其右侧的字符串
+#输出：/dir1/dir2/dir3/my
+</code></pre></div><h4 id="var-word-如果变量-var-为空、没有定义或已被删除-unset-那么返回-word-但不改变-var-的值。"><a href="#var-word-如果变量-var-为空、没有定义或已被删除-unset-那么返回-word-但不改变-var-的值。" class="header-anchor">#</a> <code>${var:-word}</code>：如果变量 var 为空、没有定义或已被删除（unset），那么返回 word，但不改变 var 的值。</h4> <div class="language- extra-class"><pre class="language-text"><code>echo ${var:-&quot;var is not set&quot;}
+#输出：var is not set
+
+echo &quot;var is ${var}&quot;
+#此时 var 还是没有定义，所以输出：var is
+</code></pre></div><h4 id="var-word-如果变量-var-为空、没有定义或者已被删除-那么返回-word-并将-var-的值设置为-word。"><a href="#var-word-如果变量-var-为空、没有定义或者已被删除-那么返回-word-并将-var-的值设置为-word。" class="header-anchor">#</a> <code>${var:=word}</code>：如果变量 var 为空、没有定义或者已被删除，那么返回 word，并将 var 的值设置为 word。</h4> <div class="language- extra-class"><pre class="language-text"><code>echo ${var:=&quot;var is not set&quot;}
+#输出：var is not set
+
+echo &quot;var is ${var}&quot;
+#此时 var 已经定义为var is not set 了，所以输出：var is var is not set
+</code></pre></div><h4 id="var-message-如果变量-var-为空、没有定义或者已被删除-那么将消息-message-送到标准错误输出。"><a href="#var-message-如果变量-var-为空、没有定义或者已被删除-那么将消息-message-送到标准错误输出。" class="header-anchor">#</a> <code>${var:?message}</code>：如果变量 var 为空、没有定义或者已被删除，那么将消息 message 送到标准错误输出。</h4> <p>可以用来检测变量 var 是否可以被正常赋值。若此替换出现在 shell 脚本中，那么脚本将停止运行。</p> <h4 id="var-word-如果变量-var-被定义-那么返回-word-但不改变-var-的值。"><a href="#var-word-如果变量-var-被定义-那么返回-word-但不改变-var-的值。" class="header-anchor">#</a> <code>${var:+word}</code>：如果变量 var 被定义，那么返回 word，但不改变 var 的值。</h4> <h3 id="数组"><a href="#数组" class="header-anchor">#</a> 数组</h3> <p>数组是可以存储多个值的变量，这些值可以单独引用，也可以作为整个数组来引用。数组的下标从 0 开始，下标可以是整数或算数表达式，其值应该大于等于 0。</p> <h4 id="创建数组"><a href="#创建数组" class="header-anchor">#</a> 创建数组</h4> <div class="language- extra-class"><pre class="language-text"><code>numbers=(one two three four five)
+
+#创建数组时指明下标
+colors=([1]=red [0]=yello [2]=blue)
+</code></pre></div><h4 id="访问数组"><a href="#访问数组" class="header-anchor">#</a> 访问数组</h4> <p>访问单个元素</p> <div class="language- extra-class"><pre class="language-text"><code>echo ${numbers[2]}
+#输出：three
+</code></pre></div><p>访问数组的所有元素</p> <div class="language- extra-class"><pre class="language-text"><code>echo ${colors[*]}
+#输出：yello red blue
+
+echo ${colors[@]}
+#输出：yello red blue
+</code></pre></div><p><code>${colors[*]}</code>和<code>${colors[@]}</code>有些细微的差别，在将数组中的每个元素单独一行输出的时候，有没有被引号包住会有不同的差别，在引号内，<code>${colors[@]}</code>将数组中的每个元素扩展为一个单独的参数，数组元素中的空格得以保留。</p> <p>访问数组部分元素</p> <div class="language- extra-class"><pre class="language-text"><code># :0:2 去除数组中从0开始，长度为2的数组元素
+echo ${colors[@]:0:2}
+#输出：yello red
+</code></pre></div><h4 id="数组的长度"><a href="#数组的长度" class="header-anchor">#</a> 数组的长度</h4> <div class="language- extra-class"><pre class="language-text"><code>echo ${#colors[@]}
+#输出：3
+</code></pre></div><h4 id="数组中添加元素"><a href="#数组中添加元素" class="header-anchor">#</a> 数组中添加元素</h4> <div class="language- extra-class"><pre class="language-text"><code>colors=(white &quot;${colors[@]}&quot; green black)
+
+echo ${colors[@]}
+#输出：white yello red blue green black
+echo ${#colors[@]}
+#输出：6
+</code></pre></div><h4 id="数组中删除元素"><a href="#数组中删除元素" class="header-anchor">#</a> 数组中删除元素</h4> <div class="language- extra-class"><pre class="language-text"><code>unset colors[2]
+
+echo ${colors[@]}
+#输出：white yello blue green black
+echo ${#colors[@]}
+#输出：5
+</code></pre></div><h4 id="完整的代码示例"><a href="#完整的代码示例" class="header-anchor">#</a> 完整的代码示例：</h4> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+
+numbers=(one two three four five)
+
+colors=([1]=red [0]=yello [2]=blue)
+
+echo ${numbers[2]}
+
+echo ${colors[*]}
+
+echo ${colors[@]}
+
+echo ${colors[@]:0:2}
+
+echo ${#colors[@]}
+
+colors=(white &quot;${colors[@]}&quot; green black)
+
+echo ${colors[@]}
+
+echo ${#colors[@]}
+
+unset colors[2]
+
+echo ${colors[@]}
+
+echo ${#colors[@]}
+</code></pre></div><h3 id="运算符"><a href="#运算符" class="header-anchor">#</a> 运算符</h3> <p>Shell 中有很多运算符，包括算数运算符、关系运算符、布尔运算符、字符串运算符和文件测试符。</p> <h4 id="算数运算符"><a href="#算数运算符" class="header-anchor">#</a> 算数运算符</h4> <p>原生 bash 不支持简单的数学运算，较为常用的是借助 <code>expr</code> 来实现数学运算。</p> <p>算数运算符列表，变量 a 是 10 变量 b 是 50</p> <table><thead><tr><th style="text-align:left;">运算符</th> <th style="text-align:left;">说明</th> <th style="text-align:left;">举例</th></tr></thead> <tbody><tr><td style="text-align:left;"><code>+</code></td> <td style="text-align:left;">加法</td> <td style="text-align:left;"><code>expr ${a} + ${b}</code> 结果为 60</td></tr> <tr><td style="text-align:left;"><code>-</code></td> <td style="text-align:left;">减法</td> <td style="text-align:left;"><code>expr ${b} - ${a}</code> 结果为 40</td></tr> <tr><td style="text-align:left;"><code>*</code></td> <td style="text-align:left;">乘法</td> <td style="text-align:left;"><code>expr ${a} \* ${b}</code> 结果为 500</td></tr> <tr><td style="text-align:left;"><code>/</code></td> <td style="text-align:left;">除法</td> <td style="text-align:left;"><code>expr ${b} / ${a}</code> 结果为 5</td></tr> <tr><td style="text-align:left;"><code>%</code></td> <td style="text-align:left;">取余</td> <td style="text-align:left;"><code>expr ${b} % ${a}</code> 结果为 0</td></tr> <tr><td style="text-align:left;"><code>=</code></td> <td style="text-align:left;">赋值</td> <td style="text-align:left;"><code>a=$b</code> 就是正常的变量赋值</td></tr></tbody></table> <p>示例代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+a=10
+b=50
+
+value=`expr ${a} + ${b}`
+echo &quot;a + b = ${value}&quot;
+
+value=`expr ${b} - ${a}`
+echo &quot;b - a = ${value}&quot;
+
+value=`expr ${a} \* ${b}`
+echo &quot;a * b = ${value}&quot;
+
+value=`expr ${b} / ${a}`
+echo &quot;b / a = ${value}&quot;
+
+value=`expr ${b} % ${a}`
+echo &quot;b % a = ${value}&quot;
+
+#输出
+#a + b = 60
+#b - a = 40
+#a * b = 500
+#b / a = 5
+#b % a = 0
+</code></pre></div><p><strong>注意：</strong></p> <ol><li>表达式和运算符之间要有空格，例如<code>1+1</code>是错误的，必须写成<code>1 + 1</code></li> <li>完整的表达式要用反引号 ` 包住</li> <li>条件表达式要放在方括号之间，并且要有空格，例如 <code>[${a}==${b}]</code>是错误的，必须写成 <code>[ ${a} == ${b} ]</code></li></ol> <h4 id="条件运算符-关系运算符"><a href="#条件运算符-关系运算符" class="header-anchor">#</a> 条件运算符（关系运算符）</h4> <p>关系运算符只支持数字，不支持字符串，除非字符串的值是数字。</p> <p>关系运算符列表，变量 a 是 10 变量 b 是 50</p> <table><thead><tr><th style="text-align:left;">运算符</th> <th style="text-align:left;">说明</th> <th style="text-align:left;">举例</th></tr></thead> <tbody><tr><td style="text-align:left;"><code>-eq</code></td> <td style="text-align:left;">检测两个数是否相等，相等返回 true</td> <td style="text-align:left;">[ <code>${a} -eq ${b} ]</code> 返回 false</td></tr> <tr><td style="text-align:left;"><code>-ne</code></td> <td style="text-align:left;">检测两个数是否不相等，不相等返回 true</td> <td style="text-align:left;"><code>[ ${a} -ne ${b} ]</code> 返回 true</td></tr> <tr><td style="text-align:left;"><code>-gt</code></td> <td style="text-align:left;">检测左边的数是否大于右边的数，如果是，返回 true</td> <td style="text-align:left;"><code>[ ${a} -gt ${b} ]</code> 返回 false</td></tr> <tr><td style="text-align:left;"><code>&gt;</code></td> <td style="text-align:left;">跟 <code>-gt</code> 一样，不过因为兼容性问题，可能要在 <code>[[]]</code> 表达式中使用</td> <td style="text-align:left;"><code>[[ ${a} &gt; ${b} ]]</code> 返回 false</td></tr> <tr><td style="text-align:left;"><code>-lt</code></td> <td style="text-align:left;">检测左边的数是否小于右边的数，如果是，返回 true</td> <td style="text-align:left;"><code>[ ${a} -lt ${b} ]</code> 返回 true</td></tr> <tr><td style="text-align:left;"><code>&lt;</code></td> <td style="text-align:left;">跟 <code>-lt</code> 一样，不过因为兼容性问题，可能要在 <code>[[]]</code> 表达式中使用</td> <td style="text-align:left;"><code>[[ ${a} &lt; ${b} ]]</code> 返回 true</td></tr> <tr><td style="text-align:left;"><code>-ge</code></td> <td style="text-align:left;">检测左边的数是否大于等于右边的数，如果是，返回 true</td> <td style="text-align:left;"><code>[ ${a} -ge ${b} ]</code> 返回 false</td></tr> <tr><td style="text-align:left;"><code>-le</code></td> <td style="text-align:left;">检测左边的数是否小于等于右边的数，如果是，返回 true</td> <td style="text-align:left;"><code>[ ${a} -le ${b} ]</code> 返回 true</td></tr></tbody></table> <p>实例代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>!/bin/bash
+
+a=10
+b=50
+
+if [ ${a} -eq ${b} ]; then
+  echo &quot;${a} -eq ${b} : a 等于 b&quot;
+else
+  echo &quot;${a} -eq ${b} : a 不等于 b&quot;
+fi
+#输出：10 -eq 50 : a 不等于 b
+
+if [ ${a} -ne ${b} ]; then
+  echo &quot;${a} -ne ${b} : a 不等于 b&quot;
+else
+  echo &quot;${a} -ne ${b} : a 等于 b&quot;
+fi
+#输出：10 -ne 50 : a 不等于 b
+
+if [ ${a} -gt ${b} ]; then
+  echo &quot;${a} -gt ${b} : a 大于 b&quot;
+else
+  echo &quot;${a} -gt ${b} : a 小于 b&quot;
+fi
+#输出：10 -gt 50 : a 小于 b
+if [[ ${a} &gt; ${b} ]]; then
+  echo &quot;${a} &gt; ${b} : a 大于 b&quot;
+else
+  echo &quot;${a} &gt; ${b} : a 小于 b&quot;
+fi
+#输出：10 &gt; 50 : a 小于 b
+
+if [ ${a} -lt ${b} ]; then
+  echo &quot;${a} -lt ${b} : a 小于 b&quot;
+else
+  echo &quot;${a} -lt ${b} : a 大于 b&quot;
+fi
+#输出：10 -lt 50 : a 小于 b
+if [[ ${a} &lt; ${b} ]]; then
+  echo &quot;${a} &lt; ${b} : a 小于 b&quot;
+else
+  echo &quot;${a} &lt; ${b} : a 大于 b&quot;
+fi
+#输出：10 &lt; 50 : a 小于 b
+
+if [ ${a} -ge ${b} ]; then
+  echo &quot;${a} -ge ${b} : a 大于等于 b&quot;
+else
+  echo &quot;${a} -ge ${b} : a 小于等于 b&quot;
+fi
+#输出：10 -ge 50 : a 小于等于 b
+
+if [ ${a} -le ${b} ]; then
+  echo &quot;${a} -le ${b} : a 小于等于 b&quot;
+else
+  echo &quot;${a} -le ${b} : a 大于等于 b&quot;
+fi
+#输出：10 -le 50 : a 小于等于 b
+</code></pre></div><h4 id="条件运算符-布尔运算符、逻辑运算符、字符串运算符"><a href="#条件运算符-布尔运算符、逻辑运算符、字符串运算符" class="header-anchor">#</a> 条件运算符（布尔运算符、逻辑运算符、字符串运算符）</h4> <p>条件运算符列表，变量 a 是 10， 变量 b 是 50，变量 x 是 &quot;abc&quot;，变量 y 是 &quot;efg&quot;</p> <table><thead><tr><th style="text-align:left;">运算符</th> <th style="text-align:left;">说明</th> <th style="text-align:left;">举例</th></tr></thead> <tbody><tr><td style="text-align:left;"><code>!</code></td> <td style="text-align:left;">非运算</td> <td style="text-align:left;"><code>[ ! false ]</code> 返回 true</td></tr> <tr><td style="text-align:left;"><code>-o</code></td> <td style="text-align:left;">或运算</td> <td style="text-align:left;">[ ${a} -eq 10 -o ${b} -eq 100 ] 返回 true</td></tr> <tr><td style="text-align:left;"><code>||</code></td> <td style="text-align:left;">跟 <code>-o</code> 类似，逻辑的 OR，不过需要使用 <code>[[]]</code> 表达式</td> <td style="text-align:left;"><code>[[ ${a} -eq 10 || ${b} -eq 100 ]]</code> 返回 true</td></tr> <tr><td style="text-align:left;"><code>-a</code></td> <td style="text-align:left;">与运算</td> <td style="text-align:left;"><code>[ ${a} -eq 10 -a ${b} -eq 50 ]</code> 返回 true</td></tr> <tr><td style="text-align:left;"><code>&amp;&amp;</code></td> <td style="text-align:left;">跟 <code>-a</code> 类似，逻辑的 AND，不过需要使用 <code>[[]]</code> 表达式</td> <td style="text-align:left;"><code>[[ ${a} -eq 10 &amp;&amp; ${b} -eq 50 ]]</code> 返回 true</td></tr> <tr><td style="text-align:left;"><code>=</code></td> <td style="text-align:left;">检测两个数字或字符串是否相等，相等返回 true</td> <td style="text-align:left;"><code>[ ${a} = ${b} ]</code> 返回 false</td></tr> <tr><td style="text-align:left;"><code>!=</code></td> <td style="text-align:left;">检测两个数字或字符串是否相等，不相等返回 true</td> <td style="text-align:left;"><code>[ ${a} != ${b} ]</code>返回 true</td></tr> <tr><td style="text-align:left;"><code>==</code></td> <td style="text-align:left;">相等。比较两个数字或字符串，如果相等返回 true（不推荐使用，有兼容性问题）</td> <td style="text-align:left;"><code>[ ${a} == ${b} ]</code> 返回 false</td></tr> <tr><td style="text-align:left;"><code>-z</code></td> <td style="text-align:left;">检测字符串长度是否为 0，为 0 返回 true</td> <td style="text-align:left;"><code>[ -z ${x} ]</code> 返回 false</td></tr> <tr><td style="text-align:left;"><code>-n</code></td> <td style="text-align:left;">检测字符串长度是否为 0，不为 0 返回 true</td> <td style="text-align:left;"><code>[ -n ${x} ]</code> 返回 true</td></tr> <tr><td style="text-align:left;"><code>var</code></td> <td style="text-align:left;">检测变量是否存在或不为空，存在或不为空返回 true</td> <td style="text-align:left;"><code>[ $s ]</code> 返回 false</td></tr></tbody></table> <p><img src="/assets/img/shell4.afe03856.png" alt=""></p> <p>代码示例如下：</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+a=10
+b=50
+x=&quot;abc&quot;
+y=&quot;edf&quot;
+
+#单 []
+if [ ${a} -eq 10 -a ${b} -eq 50 ]; then
+  echo &quot;${a} -eq 10 -a ${b} -eq 50 : 返回 true&quot;
+else
+  echo &quot;${a} -eq 10 -a ${b} -eq 50 : 返回 false&quot;
+fi
+#输出：10 -eq 10 -a 50 -eq 50 : 返回 true
+
+#双 []
+if [[ ${a} -eq 10 &amp;&amp; ${b} -eq 50 ]]; then
+  echo &quot;${a} -eq 10 &amp;&amp; ${b} -eq 50 : 返回 true&quot;
+else
+  echo &quot;${a} -eq 10 &amp;&amp; ${b} -eq 50 : 返回 false&quot;
+fi
+#输出：10 -eq 10 &amp;&amp; 50 -eq 50 : 返回 true
+
+if [ ${a} = ${b} ]
+then
+  echo &quot;a 和 b 相等&quot;
+fi
+
+if [ ${a} != ${b} ]
+then
+  echo &quot;a 和 b 不相等&quot;
+fi
+#a 和 b 不相等
+
+if [ -z ${x} ]; then
+  echo &quot;-z ${x}：字符串长度为0 &quot;
+else
+  echo &quot;-z ${x}：字符串长度不为0 &quot;
+fi
+#输出：-z abc：字符串长度不为0
+
+if [ -n ${y} ]; then
+  echo &quot;-z ${y}：字符串长度不为0 &quot;
+else
+  echo &quot;-z ${y}：字符串长度为0 &quot;
+fi
+#输出：-z edf：字符串长度不为0
+
+if [ $x ];then
+  echo &quot;${x}：不是空字符串&quot;
+else
+  echo &quot;${x}：是空字符串&quot;
+fi
+#输出：abc：不是空字符串
+
+if [ $s ];then
+  echo '${s}：存在'
+else
+  echo '${s}：不存在'
+fi
+#输出：${s}：不存在
+
+</code></pre></div><h4 id="文件目录判断运算符"><a href="#文件目录判断运算符" class="header-anchor">#</a> 文件目录判断运算符</h4> <p>文件目录判断运算符列表</p> <table><thead><tr><th style="text-align:left;">运算符</th> <th style="text-align:left;">说明</th></tr></thead> <tbody><tr><td style="text-align:left;"><code>-f filename</code></td> <td style="text-align:left;">判断文件是否存在，当 filename 存在且是正规文件时（既不是目录，也不是设备文件）返回 true</td></tr> <tr><td style="text-align:left;"><code>-d pathname</code></td> <td style="text-align:left;">判断目录是否存在，当 pathname 存在且是目录时返回 true</td></tr> <tr><td style="text-align:left;"><code>-e pathname</code></td> <td style="text-align:left;">判断【某个东西】是否存在，当 pathname 指定的文件或目录存在时返回 true</td></tr> <tr><td style="text-align:left;"><code>-a pathname</code></td> <td style="text-align:left;">同上，已经过时，而且使用的时候还有另外一个与的逻辑，容易混淆</td></tr> <tr><td style="text-align:left;"><code>-s filename</code></td> <td style="text-align:left;">判断是否是一个非空文件，当 filename 存在并且文件大小大于 0 时返回 true</td></tr> <tr><td style="text-align:left;"><code>-r pathname</code></td> <td style="text-align:left;">判断是否可读，当 pathname 指定的文件或目录存在并且可读时返回 true</td></tr> <tr><td style="text-align:left;"><code>-x pathname</code></td> <td style="text-align:left;">判断是否可执行，当 pathname 指定的文件或目录存在并且可执行时返回 true</td></tr> <tr><td style="text-align:left;"><code>-w pathname</code></td> <td style="text-align:left;">判断是否可写，当 pathname 指定的文件或目录存在并且可写时返回 true</td></tr> <tr><td style="text-align:left;"><code>-b filename</code></td> <td style="text-align:left;">判断是否是一个块文件，当 filename 存在且是块文件时返回 true</td></tr> <tr><td style="text-align:left;"><code>-c filename</code></td> <td style="text-align:left;">判断是否是一个字符文件，当 filename 存在且是字符文件时返回 true</td></tr> <tr><td style="text-align:left;"><code>-L filename</code></td> <td style="text-align:left;">判断是否是一个符号链接，当 filename 存在且是符号链接时返回 true</td></tr> <tr><td style="text-align:left;"><code>-u filename</code></td> <td style="text-align:left;">判断文件是否设置 SUID 位，SUID 是 Set User ID</td></tr> <tr><td style="text-align:left;"><code>-g filename</code></td> <td style="text-align:left;">判断文件是否设置 SGID 位，SGID 是 Set Group ID</td></tr></tbody></table> <p><img src="/assets/img/shell5.e1109e4e.png" alt=""></p> <p>示例代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+file=&quot;/etc/hosts&quot;
+
+if [ -f ${file} ]; then
+  echo &quot;${file}：是一个普通文件&quot;
+else
+  echo &quot;${file}：不是一个普通文件&quot;
+fi
+#输出：/etc/hosts：是一个普通文件
+
+if [ -d ${file} ]; then
+  echo &quot;${file}：是个目录&quot;
+else
+  echo &quot;${file}：不是目录&quot;
+fi
+#输出：/etc/hosts：不是目录
+
+if [ -e ${file} ]; then
+  echo &quot;${file}：文件存在&quot;
+else
+  echo &quot;${file}：文件不存在&quot;
+fi
+#输出：/etc/hosts：文件存在
+
+if [ -s ${file} ]; then
+  echo &quot;${file}：文件不为空&quot;
+else
+  echo &quot;${file}：文件为空&quot;
+fi
+#输出：/etc/hosts：文件不为空
+
+if [ -r ${file} ]; then
+  echo &quot;${file}：文件可读&quot;
+else
+  echo &quot;${file}：文件不可读&quot;
+fi
+#输出：/etc/hosts：文件可读
+</code></pre></div><h3 id="条件语句"><a href="#条件语句" class="header-anchor">#</a> 条件语句</h3> <p>在条件语句中，由 <code>[]</code> 或 <code>[[]]</code> 包起来的表达式被称为<strong>检测命令</strong>或<strong>基元</strong>。</p> <h4 id="if-fi-语句"><a href="#if-fi-语句" class="header-anchor">#</a> if...fi 语句</h4> <div class="language- extra-class"><pre class="language-text"><code>语法：
+
+if [ expression ]
+then
+  expression 是 true ，这里会被执行
+fi
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+if [ 1 = 1 ]
+then
+  echo &quot;相等&quot;
+fi
+#输出：相等
+
+#也可以写成一行
+if [ &quot;a&quot; = &quot;a&quot; ]; then echo &quot;相等&quot;; fi
+#输出：相等
+</code></pre></div><p>if...else 经常跟 <code>test</code> 命令结合使用，<code>test</code>命令用于检查某个条件是否成立，与方括号<code>[]</code>类似（它们两个在/usr/bin 中是用软连接指向的）。</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+a=10
+b=50
+
+if test ${a} -eq ${b}
+then
+  echo &quot;a 等于 b&quot;
+else
+  echo &quot;a 不等于 b&quot;
+fi
+#输出：a 不等于 b
+</code></pre></div><h4 id="if-else-fi"><a href="#if-else-fi" class="header-anchor">#</a> if...else...fi</h4> <div class="language- extra-class"><pre class="language-text"><code>语法：
+
+if [ expression ]
+then
+  expression 是 true ，这里会被执行
+else
+  expression 是 false , 这里会被执行
+fi
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+if [ 1 = 2 ]
+then
+  echo &quot;相等&quot;
+else
+  echo &quot;不相等&quot;
+fi
+#输出：不相等
+</code></pre></div><h4 id="if-elif-fi"><a href="#if-elif-fi" class="header-anchor">#</a> if...elif...fi</h4> <div class="language- extra-class"><pre class="language-text"><code>语法：
+
+if [ expression1 ]
+then
+  expression 是 true ，这里会被执行
+elif [ expression2 ]
+then
+  expression1 是 true ，这里会被执行
+else
+  上面的 expression 都是 false , 这里会被执行
+fi
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+a=10
+b=50
+
+if [ ${a} -eq ${b} ]
+then
+  echo &quot;a 等于 b&quot;
+elif [ ${a} -gt ${b} ]
+then
+  echo &quot;a 大于 b&quot;
+else
+  echo &quot;a 小于 b&quot;
+fi
+#输出：a 小于 b
+</code></pre></div><h4 id="case-esac"><a href="#case-esac" class="header-anchor">#</a> case...esac</h4> <p>case...esac 与其他语言中的 switch...case 类似，是一种多分支选择结构。</p> <p>case 语句匹配一个值或一个模式，如果匹配成功，执行想匹配的命令。适用于需要面对很多情况，分别要采取不同的措施的情况。</p> <div class="language- extra-class"><pre class="language-text"><code>case 值 in
+模式1)
+  command1
+  command2
+  command3
+  ;;
+模式2)
+  command1
+  command2
+  command3
+  ;;
+*)
+  command1
+  command2
+  command3
+  ;;
+esac
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+echo &quot;输入1-4的一个数字&quot;
+echo &quot;你输入的数字是：&quot;
+
+read number
+
+case $number in
+  1)
+  echo &quot;你输入了1&quot;
+  ;;
+  2)
+  echo &quot;你输入了2&quot;
+  ;;
+  3)
+  echo &quot;你输入了3&quot;
+  ;;
+  4)
+  echo &quot;你输入了4&quot;
+  ;;
+  *)
+  echo &quot;你输入的不是1-4的数字&quot;
+  ;;
+esac
+
+#运行后可以自己输入数字体验
+</code></pre></div><p><strong>注意：可以在 <code>)</code> 前用 <code>|</code> 分割多个模式。</strong></p> <h3 id="循环语句"><a href="#循环语句" class="header-anchor">#</a> 循环语句</h3> <p>bash 中有四种循环：for , while , until , select</p> <h4 id="for-循环"><a href="#for-循环" class="header-anchor">#</a> for 循环</h4> <div class="language- extra-class"><pre class="language-text"><code>语法：
+
+for 变量 in 列表
+do
+  command1
+  command2
+  ...
+  commandN
+done
+</code></pre></div><p>语法中的列表是一组值（数字、字符串）组成的序列，每个值通过空格分隔。这些值还可以是通配符或大括号扩展，例如 <code>*.sh</code> 和 <code>{1..5}</code>。</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+for i in 1 2 3 4 5
+do
+  echo $i
+done
+
+# 写在一行
+for i in {1..5}; do echo $i ; done
+</code></pre></div><h4 id="while-循环"><a href="#while-循环" class="header-anchor">#</a> while 循环</h4> <p>while 循环会不断的检测一个条件，只要这个条件返回 true，就执行一段命令。被检测的条件跟 if 中的一样。while 也可用于从输入文件中读取数据。</p> <div class="language- extra-class"><pre class="language-text"><code>语法：
+
+while [[ condition ]]
+do
+  如果 condition 是 true ，这里的命令会执行
+done
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+x=0
+y=10
+
+while [ ${x} -lt 5 ]
+do
+  echo $x
+  x=`expr ${x} + 1`
+done
+
+# do 也跟条件写在一行，前面需要加分号 ;
+while [ ${y} -gt 5 ]; do echo $y; y=`expr ${y} - 1`; done
+</code></pre></div><h4 id="until-循环"><a href="#until-循环" class="header-anchor">#</a> until 循环</h4> <p>until 循环是检测一个条件，只要条件是 false 就会一直执行循环，直到条件条件为 true 时停止。它跟 while 正好相反。</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+x=0
+
+until [ ${x} -eq 5 ]; do
+  echo ${x}
+  x=`expr ${x} + 1`
+done
+</code></pre></div><h4 id="select-循环"><a href="#select-循环" class="header-anchor">#</a> select 循环</h4> <p>select 循环的语法跟 for 循环基本一致。它帮助我们组织一个用户菜单。</p> <div class="language- extra-class"><pre class="language-text"><code>语法：
+
+select 变量 in 列表
+do
+  执行相应的命令
+done
+</code></pre></div><p>select 会打印列表的值以及他们的序列号到屏幕上，之后会提示用户选择，用户通常看到的提示是 <code>$?</code> ，用户输入相应的信号，选择的结果会被保存到变量中。</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+#PS3——shell脚本中使用select时的提示符
+PS3=&quot;选择你要安装的包管理工具，输入序号：&quot;
+
+select ITEM in bower npm gem pip
+do
+  echo &quot;输入的包名称是：\c&quot; &amp;&amp; read PACKAGE
+  case ${ITEM} in
+    bower) echo &quot;模拟 bower install ${PACKAGE}&quot; ;;
+    npm) echo &quot;模拟 npm install ${PACKAGE}&quot; ;;
+    gem) echo &quot;模拟 gem install ${PACKAGE}&quot; ;;
+    pip) echo &quot;模拟 pip install ${PACKAGE}&quot; ;;
+    *) echo &quot;包管理工具选择错误&quot; ;;
+  esac
+  break #跳出循环
+done
+</code></pre></div><h4 id="break-命令"><a href="#break-命令" class="header-anchor">#</a> break 命令</h4> <p>break 命令允许跳出所有循环（终止执行后面的所有循环）。在嵌套循环中 break 命令后面还可以跟一个整数，表示跳出几层循环。</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+# 当 x 等于 2，并且 y 等于 0，就跳出循环
+for x in 1 2 3
+do
+  for y in 0 5
+  do
+   if [ ${x} -eq 2 -a ${y} -eq 0 ]
+   then
+     echo &quot;x 等于 ${x}，y 等于 ${y}&quot;
+     break 2
+   else
+    echo &quot;${x} ${y}&quot;
+   fi
+  done
+done
+</code></pre></div><h4 id="continue-命令"><a href="#continue-命令" class="header-anchor">#</a> continue 命令</h4> <p>continue 命令跟 break 命令类似，只有一点差别，它不会跳出所有循环，仅仅跳出当前循环。同样，continue 后面也可以跟一个数字，表示跳出第几层循环。</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+# 当 x 等于 2，并且 y 等于 0，就跳出循环
+for x in 1 2 3
+do
+  for y in 0 5
+  do
+   if [ ${x} -eq 2 -a ${y} -eq 0 ]
+   then
+     continue 2
+   else
+    echo &quot;${x} ${y}&quot;
+   fi
+  done
+done
+</code></pre></div><h3 id="函数"><a href="#函数" class="header-anchor">#</a> 函数</h3> <ul><li>shell 函数必须先定义后使用，调用函数仅使用其函数名即可。</li> <li>函数定义时，<code>function</code>关键字可有可无</li> <li>函数返回值：可以显式的使用 return 语句，返回值类型只能为整数（0-255）。如果不加 return 语句，会默认将最后一条命令运行结果作为返回值。</li> <li>函数返回值在调用该函数后，通过 <code>$?</code> 获得。</li></ul> <div class="language- extra-class"><pre class="language-text"><code>语法：中括号内表示可选
+
+[function] function_name () {
+  在这里执行命令
+  [return value]
+}
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+hello () {
+  echo &quot;hello&quot;
+  world #函数嵌套
+}
+
+world () {
+  echo &quot;world&quot;
+}
+
+hello
+</code></pre></div><h4 id="参数"><a href="#参数" class="header-anchor">#</a> 参数</h4> <p>位置参数是在调用一个函数并传给它参数时创建的变量，见上文 Shell 特殊变量。</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+funWithParam () {
+  echo &quot;第1个参数：$1&quot;
+  echo &quot;第2个参数：$2&quot;
+  echo &quot;第3个参数：$3&quot;
+  echo &quot;错误的获取第10个参数：$10&quot;
+  # $10 不能获取第10个参数，需要用 ${10}，当 n&gt;=10 时，需要使用 ${n} 获取参数。(其中有兼容性，某些Shell解释器两种都能获取到)
+  echo &quot;正确的获取第10个参数：${10}&quot;
+  echo &quot;获取第11个参数：${11}&quot;
+  echo &quot;获取传参的个数：$#&quot;
+  echo &quot;获取所有的传参：$*&quot;
+  echo &quot;当前函数的名称是：$FUNCNAME&quot;
+}
+
+funWithParam 1 2 3 4 5 6 7 8 9 34 73
+</code></pre></div><h3 id="输入输出重定向"><a href="#输入输出重定向" class="header-anchor">#</a> 输入输出重定向</h3> <p>Unix 命令默认从标准输入设备（stdin）获取输入，将结果输出到标准输出设备（stdout）显示。一般情况下，标准输入设备就是键盘，标准输出设备就是显示器。</p> <p><img src="http://images.cnblogs.com/cnblogs_com/chengmo/WindowsLiveWriter/linuxshell_EB66/image_2.png" alt=""></p> <h4 id="输入输出流"><a href="#输入输出流" class="header-anchor">#</a> 输入输出流</h4> <p>shell 接收输入，并以字符序列或字符流的形式产生输出。这些流能被重定向到文件或另一个流中。</p> <p>一般情况下，每个 Unix/Linux 命令都会打开三个文件：标准输入文件、标准输出文件、标准错误文件，三个文件描述符：</p> <table><thead><tr><th style="text-align:left;">代码</th> <th style="text-align:left;">描述符</th> <th style="text-align:left;">描述</th></tr></thead> <tbody><tr><td style="text-align:left;">0</td> <td style="text-align:left;">stdin</td> <td style="text-align:left;">标准输入</td></tr> <tr><td style="text-align:left;">1</td> <td style="text-align:left;">stdout</td> <td style="text-align:left;">标准输出</td></tr> <tr><td style="text-align:left;">2</td> <td style="text-align:left;">stderr</td> <td style="text-align:left;">标准错误输出</td></tr></tbody></table> <h4 id="重定向"><a href="#重定向" class="header-anchor">#</a> 重定向</h4> <p>重定向让我们可以控制一个命令的输入来自哪里，输出结果到什么地方。</p> <p>输出重定向：命令的输出不仅可以是显示器，还可以很容的转义到文件，这被称为输出重定向。</p> <div class="language- extra-class"><pre class="language-text"><code>语法：
+
+command &gt; file  此语法会覆盖文件内容
+
+command &gt;&gt; file 如果不希望文件被覆盖，可以使用 &gt;&gt; 追加到文件末尾
+</code></pre></div><p>输入重定向：使 Unix 命令也可以从文件获取输入，这样本来要从键盘获取输入的命令会转移到文件读取内容。</p> <div class="language- extra-class"><pre class="language-text"><code>语法：
+command &lt; file
+</code></pre></div><p>有一个文件是 test.sh，用两种方式输出文件的行数</p> <div class="language- extra-class"><pre class="language-text"><code>wc -l ./test.sh
+#输出：14 ./test.sh
+
+wc -l &lt; ./test.sh
+#输出：14  没有文件名
+</code></pre></div><p>第一个例子会输出文件名，第二个不会，因为它仅仅知道从标准输入读取的内容。</p> <p>以下操作符在控制流的重定向时会被用到：</p> <table><thead><tr><th style="text-align:left;">操作符</th> <th style="text-align:left;">描述</th></tr></thead> <tbody><tr><td style="text-align:left;">&gt;</td> <td style="text-align:left;">重定向输出</td></tr> <tr><td style="text-align:left;">&gt;&gt;</td> <td style="text-align:left;">将输出已追加的方式重定向</td></tr> <tr><td style="text-align:left;">&gt;&amp;</td> <td style="text-align:left;">将两个输出文件合并</td></tr> <tr><td style="text-align:left;">&lt;&amp;</td> <td style="text-align:left;">将两个输入文件合并</td></tr> <tr><td style="text-align:left;">&lt;</td> <td style="text-align:left;">重定向输入</td></tr> <tr><td style="text-align:left;">&lt;&lt;</td> <td style="text-align:left;">Here 文档语法（见下文扩展），将开始标记 tag 和结束标记 tag 之间的内容作为输入</td></tr> <tr><td style="text-align:left;">&lt;&lt;&lt;</td> <td style="text-align:left;">Here 字符串</td></tr></tbody></table> <p>如果希望 stderr 重定向到 file，可以这样写：</p> <div class="language- extra-class"><pre class="language-text"><code>command 2 &gt; file
+</code></pre></div><p>如果希望将 stdout 和 stderr 合并后重定向的 file，可以这样写：</p> <div class="language- extra-class"><pre class="language-text"><code>#&amp;[n] 代表是已经存在的文件描述符，&amp;1 代表输出 &amp;2代表错误输出 &amp;-代表关闭与它绑定的描述符
+command &gt; file 2&gt;&amp;1
+</code></pre></div><p>如果希望 stdin 和 stdout 都重定向，可以这样写：</p> <div class="language- extra-class"><pre class="language-text"><code>command &lt; file1 &gt; file2
+
+#例如：
+cat &lt; test.sh  &gt; catfile
+
+#提一下 &lt;&lt; 这个连续两个小符号， 他代表的是『结束的输入字符』的意思。这样当空行输入eof字符，输入自动结束，不用ctrl+D
+#例如：
+cat &lt;&lt;eof &gt;catfile
+</code></pre></div><p><strong>如果希望执行某个命令，但又不希望在屏幕上显示输出结果，那么可以将输出重定向到 /dev/null。</strong></p> <p>/dev/null 是一个特殊的文件，写入到它的内容都会被丢弃，如果尝试从该文件读取内容，那么什么也读不到。但是 /dev/null 文件非常有用，将命令的输出重定向到它，会起到&quot;禁止输出&quot;的效果。</p> <div class="language- extra-class"><pre class="language-text"><code>#test1.sh 没有的情况下，将错误输出信息关闭掉
+ls test.sh test1.sh 2&gt;/dev/null
+
+ls test.sh test1.sh 2&gt;&amp;-
+
+#关闭所有输出
+ls test.sh test1.sh  1&gt;&amp;- 2&gt;&amp;-
+ls test.sh test1.sh  2&gt;/dev/null 1&gt;/dev/null
+
+#将错误输出2 绑定给 正确输出 1，然后将 正确输出 发送给 /dev/null设备  这种常用
+ls test.sh test1.sh &gt;/dev/null 2&gt;&amp;1
+#&amp; 代表标准输出 ，错误输出 将所有标准输出与错误输出 输入到/dev/null文件
+ls test.sh test1.sh &amp;&gt;/dev/null
+</code></pre></div><h3 id="加载外部脚本"><a href="#加载外部脚本" class="header-anchor">#</a> 加载外部脚本</h3> <p>像其他语言一样，Shell 也可以加载外部脚本，将外部脚本的内容合并到当前脚本。shell 中加载外部脚本有两种写法。</p> <div class="language- extra-class"><pre class="language-text"><code>第一种：. filename
+
+第二种：source filename
+</code></pre></div><p>两种方式效果相同，简单起见，一般使用点号（.），但是！<strong>注意点号（.）和文件名中间有一个空格</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+. ./pre_test.sh
+
+echo $a
+# 输出：100
+</code></pre></div><h3 id="debug"><a href="#debug" class="header-anchor">#</a> Debug</h3> <h4 id="全局-debug"><a href="#全局-debug" class="header-anchor">#</a> 全局 Debug</h4> <p>shell 提供了用于 debug 脚本的工具。如果想采用 debug 模式运行某脚本，可以在其 shebang 中使用一个特殊的选项。（有些 shell 不支持）</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash [options]
+</code></pre></div><p>或者在执行 Bash 脚本的时候，从命令行传入这些参数</p> <div class="language- extra-class"><pre class="language-text"><code>bash -euxo pipefail test.sh
+</code></pre></div><h4 id="局部-debug"><a href="#局部-debug" class="header-anchor">#</a> 局部 Debug</h4> <p>有时我们只需要 debug 脚本的一部分。这种情况下，使用 set 命令会很方便。这个命令可以启用或禁用选项。 使用 <code>-</code> 启用选项，使用 <code>+</code> 禁用选项。</p> <p>1、用来在运行结果之前，先输出执行的那一行命令</p> <div class="language- extra-class"><pre class="language-text"><code>set -x
+#或者
+set -o xtrace
+</code></pre></div><p>2、执行脚本时，如果遇到不存在的变量会报错，并停止执行。（默认是忽略报错的）</p> <div class="language- extra-class"><pre class="language-text"><code>set  -u
+#或者
+set  -o nounset
+</code></pre></div><p><strong>顺便说一下，如果命令行下不带任何参数，直接运行<code>set</code>，会显示所有的环境变量和 Shell 函数。</strong></p> <p>3、执行脚本时，发生错误就终止执行。（默认是继续执行的）</p> <div class="language- extra-class"><pre class="language-text"><code>set  -e
+#或者
+set -o errexit
+
+#可以用下面是方法
+command || exit 1
+#或者
+command1 &amp;&amp; command2
+</code></pre></div><p><code>set -e</code> 根据返回值来判断，一个命令是否运行失败。但是，某些命令的非零返回值可能不表示失败，或者开发者希望在命令失败的情况下，脚本继续执行下去。这时可以暂时关闭 <code>set +e</code>，该命令执行结束后，再重新打开 <code>set -e</code>。</p> <div class="language- extra-class"><pre class="language-text"><code>set +e
+command1
+command2
+set -e
+
+#也可以用下面的方法
+command || true
+</code></pre></div><p>4、管道命令执行失败，脚本终止执行</p> <p>管道命令就是多个子命令通过管道运算符（<code>|</code>）组合成为一个大的命令。Bash 会把最后一个子命令的返回值，作为整个命令的返回值。最后一个子命令不失败，管道命令就总是会执行成功的，因此 <code>set -e</code> 会失效，后面的命令会继续执行。</p> <p><code>set -o pipefail</code> 用来解决这个情况，搭配 <code>-e</code> 只要一个子命令失败，整个管道命令就会失败，脚本就会终止执行。</p> <div class="language- extra-class"><pre class="language-text"><code>set -eo pipefail
+</code></pre></div><p>上面的命令可以放在一起使用：</p> <div class="language- extra-class"><pre class="language-text"><code>set -euxo pipefail
+#或者
+set -eux
+set -o pipefail
+</code></pre></div><h2 id="扩展"><a href="#扩展" class="header-anchor">#</a> 扩展</h2> <h3 id="脚本解释器在环境变量中指定"><a href="#脚本解释器在环境变量中指定" class="header-anchor">#</a> 脚本解释器在环境变量中指定</h3> <p>除了比较常见的用路径指定脚本解释器的方式，还有一种是指定环境变量中的脚本解释器。</p> <div class="language- extra-class"><pre class="language-text"><code>指定脚本解释器的路径
+#!/bin/bash`
+
+指定环境变量中的脚本解释器
+#!/usr/bin/env bash
+</code></pre></div><p>这样做的好处是，系统会自动在 <code>PATH</code> 环境变量中查找指定的程序（如例子中的 bash）。因为程序的路径是不确定的，比如安装完新版本的 bash 后，我们有可能会把这个新的路径添加到<code>PATH</code>中，来“隐藏”老版本的 bash。所以操作系统的<code>PATH</code>变量有可能被配置为指向程序的另一个版本，如果还是直接用 <code>#!/bin/bash</code>，那么系统还是会选择老版本的 bash 来执行脚本，如果用<code>#!/usr/bin/env bash</code>，就会使用新版本了。</p> <h3 id="环境变量"><a href="#环境变量" class="header-anchor">#</a> 环境变量</h3> <p>所有的程序，包括 Shell 启动的程序运行时都可以访问的变量就是环境变量。在 shell 脚本中使用 <code>export</code> 可以定义环境变量，但是只在当前运行的 shell 进程中有效，结束进程就没了。如果想持久化，需要将环境变量定义在一些列配置文件中。</p> <p>配置文件的加载顺序和 shell 进程是否运行在 Interactive 和 Login 模式有关。</p> <h4 id="交互和非交互模式-interactive-non-interactive"><a href="#交互和非交互模式-interactive-non-interactive" class="header-anchor">#</a> 交互和非交互模式（Interactive &amp; Non-Interactive）</h4> <ul><li>Interactive 模式：通常是指读写数据都是从用户的命令行终端（terminal），用户输入命令，并在回车后立即执行的 shell。</li> <li>Non-Interactive 模式：通常是指执行一个 shell 脚本，或 <code>bash -c</code> 执行命令</li></ul> <p>检测当前 shell 运行的环境是不是 Interactive 模式</p> <div class="language- extra-class"><pre class="language-text"><code>[[ $- == *i* ]] &amp;&amp; echo &quot;Interactive&quot; || echo &quot;Non-interactive&quot;
+</code></pre></div><h4 id="登录和非登录模式-login-non-login"><a href="#登录和非登录模式-login-non-login" class="header-anchor">#</a> 登录和非登录模式（Login &amp; Non-Login）</h4> <ul><li>Login 模式：应用在终端登陆时，ssh 连接时，<code>su --login &lt;username&gt;</code> 切换用户时，指的是用户成功登录后开启的 Shell 进程，此时会读取 <code>/etc/passwd</code> 下用户所属的 shell 执行。</li> <li>Non-Login 模式：应用在直接运行 bash 时，su <code>&lt;username&gt;</code> 切换用户时（前面没有加 --login）。指的是非登录用户状态下开启的 shell 进程。</li></ul> <p>检测当前 shell 运行的环境是不是 Login 模式</p> <div class="language- extra-class"><pre class="language-text"><code>shopt -q login_shell &amp;&amp; echo &quot;Login shell&quot; || echo &quot;Not login shell&quot;
+
+#如果是zsh，没有shopt命令
+[[ -o login ]] &amp;&amp; echo &quot;Login shell&quot; || echo &quot;Not login shell&quot;
+</code></pre></div><p>进入 bash 交互模式时也可以用 <code>--login</code> 参数来决定是否是登录模式：</p> <div class="language- extra-class"><pre class="language-text"><code>$&gt; bash
+$&gt; shopt -q login_shell &amp;&amp; echo &quot;Login shell&quot; || echo &quot;Not login shell&quot;
+Not login shell
+$&gt; exit
+$&gt; bash --login
+$&gt; shopt -q login_shell &amp;&amp; echo &quot;Login shell&quot; || echo &quot;Not login shell&quot;
+Login shell
+$&gt; exit
+</code></pre></div><p>Login 模式模式下可以用 logout 和 exit 退出，Non-Login 模式下只能用 exit 退出。</p> <h4 id="配置文件-启动文件-加载顺序"><a href="#配置文件-启动文件-加载顺序" class="header-anchor">#</a> 配置文件（启动文件）加载顺序</h4> <p>bash 支持的配置文件有 /etc/profile、~/.bash.rc 等。</p> <p><img src="/assets/img/shell2.c03c91b8.png" alt="配置文件加载顺序"></p> <p>如上图加载顺序所示</p> <ul><li>Interactive&amp;Login 模式：/etc/profile —&gt;( ~/.bash_profile, ~/.bash_login, ~/.profile)其中之一 —&gt;~/.bash_loginout(退出 shell 时调用)</li> <li>Interactive&amp;Non-Login 模式：/etc/bash.bashrc —&gt;~/.bashrc</li> <li>Non-Interactive 模式：通常就是执行脚本（script）的时候，此时配置项是从环境变量中读取和执行的，也就是 <code>env</code> 或者 <code>printenv</code> 命令输出的配置项。</li></ul> <p><strong>现在的系统一般都没有 ~/.bash_profile 文件了，只保留 ~/.bashrc 文件,所有的系统里，~/.bash_profile 都会有这样的逻辑，避免登陆时 ~/.bashrc 被跳过的情况：</strong></p> <div class="language- extra-class"><pre class="language-text"><code># login shell will execute this
+if [ -n &quot;$BASH_VERSION&quot; ]; then
+	# include .bashrc if it exists
+	if [ -f &quot;$HOME/.bashrc&quot; ]; then
+		. &quot;$HOME/.bashrc&quot;
+	fi
+fi
+</code></pre></div><p>在发行版的 Linux 系统中，Interactive&amp;Login 模式下的 ~/.bash_profile, ~/.bash_login， ~/.profile 并不一定是三选一，看一下这三个脚本的内容会发现他们会继续调用下一个它想调用的配置文件，这样就可以避免配置项可能需要在不同的配置文件多次配置。如 centos7.2 中 ~/.bash_profile 文件中实际调用了 ~/.bashrc 文件。</p> <div class="language- extra-class"><pre class="language-text"><code># .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+export PATH
+</code></pre></div><p><img src="/assets/img/shell3.dcaf959e.png" alt=""></p> <p>如上图所示，开启一个 Shell 进程时，有一些参数的值也会影响到配置文件的加载。如<code>--rcfile</code>，<code>--norc</code> 等。</p> <p>常用的 shell 环境变量：</p> <table><thead><tr><th style="text-align:left;">变量名</th> <th style="text-align:left;">描述</th></tr></thead> <tbody><tr><td style="text-align:left;">PATH</td> <td style="text-align:left;">命令搜索路径，以冒号为分隔符</td></tr> <tr><td style="text-align:left;">HOME</td> <td style="text-align:left;">用户主目录的路径名，是 cd 命令的默认参数</td></tr> <tr><td style="text-align:left;">SHELL</td> <td style="text-align:left;">当前运行的 Shell 的全路径名</td></tr> <tr><td style="text-align:left;">TERM</td> <td style="text-align:left;">终端类型</td></tr> <tr><td style="text-align:left;">LOGNAME</td> <td style="text-align:left;">当前的登录名</td></tr> <tr><td style="text-align:left;">PWD</td> <td style="text-align:left;">当前工作目录</td></tr></tbody></table> <div class="language- extra-class"><pre class="language-text"><code>#输出个别的环境变量值的两种方式
+
+printenv HOME
+
+echo $HOME
+</code></pre></div><p>全局变量是对所有用户都需要使用的变量，可以将新的变量或修改过的变量设置放在<code>/etc/profile</code>文件中，但升级了发行版该文件也会更新，所以这点要注意 （对所有用户）。</p> <p>最好是在<code>/etc/profile.d</code>目录中创建一个以<code>.sh</code>结尾的文件，把所有新的变量或修改过的变量全部放在此文件中（对所有用户）。</p> <p>对于存储个人用户永久性 bash shell 变量的地方是<code>$HOME/.bashrc</code>文件。这一点适用于所有类型的 Shell 进程（仅对当前用户）。</p> <h3 id="和-的区别"><a href="#和-的区别" class="header-anchor">#</a> <code>$*</code> 和 <code>$@</code> 的区别</h3> <p><code>$*</code> 和 <code>$@</code> 都表示传递给函数或脚本的所有参数，不被双引号<code>&quot;&quot;</code>包含时，都是以<code>&quot;$1&quot; &quot;$2&quot; ... &quot;\$n&quot;</code>形式把所有参数一个一个单独输出。</p> <p>但是当他们被双引号包含是，<code>&quot;$*&quot;</code> 会将所有的参数作为一个整体，以<code>&quot;$1 $2 ... $n&quot;</code>的形式输出所有参数。<code>&quot;$@&quot;</code> 还是跟之前一样，把所有参数分开，一个一个的输出。</p> <p>例如：<code>./test.sh a b c d</code></p> <div class="language- extra-class"><pre class="language-text"><code>
+#/bin/bash
+
+echo &quot;打印出没有引号的 $*&quot;
+for var in $*
+do
+echo &quot;$var&quot;
+done
+#输出：打印出没有引号的 $*
+# a
+# b
+# c
+# d
+
+echo &quot;打印出有引号的 \&quot;$*\&quot;&quot;
+for var in &quot;$*&quot;
+do
+echo &quot;$var&quot;
+done
+#输出：打印出有引号的 &quot;$*&quot;
+# a b c d
+
+
+echo &quot;打印出没有引号的 $@&quot;
+for var in $@
+do
+echo &quot;$var&quot;
+done
+#输出：打印出没有引号的 $@
+# a
+# b
+# c
+# d
+
+echo &quot;打印出有引号的 \&quot;$@\&quot;&quot;
+for var in &quot;$@&quot;
+do
+echo &quot;$var&quot;
+done
+#输出：打印出有引号的 &quot;$@&quot;
+# a
+# b
+# c
+# d
+</code></pre></div><h3 id="shell-中的替换"><a href="#shell-中的替换" class="header-anchor">#</a> Shell 中的替换</h3> <h4 id="转义字符替换"><a href="#转义字符替换" class="header-anchor">#</a> 转义字符替换</h4> <p>使用 <code>echo</code> 命令时，使用 <code>-e</code> 可以对转义字符进行替换。使用 <code>-E</code> 可以禁止转义，默认也是不转义的；使用 <code>-n</code> 选项可以禁止插入换行符。</p> <table><thead><tr><th style="text-align:left;">转义字符</th> <th style="text-align:left;">含义</th></tr></thead> <tbody><tr><td style="text-align:left;">\b</td> <td style="text-align:left;">退格（删除键）</td></tr> <tr><td style="text-align:left;">\f</td> <td style="text-align:left;">换页（FF），将当前位置移到下页开头</td></tr> <tr><td style="text-align:left;">\n</td> <td style="text-align:left;">换行</td></tr> <tr><td style="text-align:left;">\c</td> <td style="text-align:left;">显示不换行</td></tr> <tr><td style="text-align:left;">\r</td> <td style="text-align:left;">回车</td></tr> <tr><td style="text-align:left;">\t</td> <td style="text-align:left;">水平制表符（tab 键）</td></tr> <tr><td style="text-align:left;">\v</td> <td style="text-align:left;">垂直制表符</td></tr></tbody></table> <div class="language- extra-class"><pre class="language-text"><code>
+#/bin/bash
+
+a=1
+b=2
+
+echo -e &quot;${a}\n${b}&quot; #输出：1
+
+# 2
+
+</code></pre></div><h4 id="命令替换"><a href="#命令替换" class="header-anchor">#</a> 命令替换</h4> <p>命令替换是指 Shell 可以先执行命令，将输出结果暂时保存，在适当的地方输出。</p> <p>命令替换的语法是：反引号 ``。</p> <div class="language- extra-class"><pre class="language-text"><code>
+#!/bin/bash
+
+DATE=`date`
+echo &quot;日期是：\$DATE&quot; #输出：日期是：Sun Oct 18 16:27:42 CST 2020
+
+</code></pre></div><h3 id="和"><a href="#和" class="header-anchor">#</a> () 和 (())</h3> <h4 id="先说一下"><a href="#先说一下" class="header-anchor">#</a> 先说一下 ()</h4> <p>在 bash 中，<code>$()</code>与 ``（反引号）都是用来作命令替换的。先完成引号里的命令行，然后将其结果替换出来，再重组成新的命令行。</p> <p>相同点：<code>$()</code> 与 `` 在操作上，这两者都是达到相应的效果</p> <p>不同点：</p> <p>`` 很容易与''搞混乱，尤其对初学者来说。</p> <p>而<code>$()</code> 比较直观；不过 <code>$()</code> 有兼容性问题，有些类 Unix 系统不支持。</p> <div class="language- extra-class"><pre class="language-text"><code>echo $(expr 1 + 2)
+</code></pre></div><h4 id="再说"><a href="#再说" class="header-anchor">#</a> 再说 (())</h4> <p>1、(()) 可直接用于整数计算</p> <div class="language- extra-class"><pre class="language-text"><code>echo $((1 + 2))
+</code></pre></div><p>2、(()) 可重新定义变量值，用于判断条件或计算等</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+a=10
+b=50
+
+((a++))
+echo $a
+#输出：11
+
+((a &gt; b)) &amp;&amp; echo &quot;a &gt; b&quot;
+
+((a &lt; b)) &amp;&amp; echo &quot;a &lt; b&quot;
+
+# 输出：a &lt; b
+</code></pre></div><p>3、(()) 可用于进制转换</p> <p>$(())可以将其他进制转成十进制数显示出来。语法：<code>$((N#xx))</code>，其中，N 为进制，xx 为该进制下某个数值，命令执行后可以得到该进制数转成十进制后的值。</p> <div class="language- extra-class"><pre class="language-text"><code>echo $((2#110))
+#输出：6
+echo $((8#11))
+#输出：9
+echo $((16#1a))
+#输出：26
+</code></pre></div><h3 id="test-、-和"><a href="#test-、-和" class="header-anchor">#</a> test 、[] 和 [[]]</h3> <p>type 命令检查</p> <div class="language- extra-class"><pre class="language-text"><code>type &quot;test&quot; &quot;[&quot; &quot;[[&quot;
+#输出：
+#test is a shell builtin
+#[ is a shell builtin
+#[[ is a reserved word
+</code></pre></div><p>从上面可以看出，<code>test</code>和<code>[</code>属于 Shell 的内置命令，<code>[[</code>属于 Shell 的保留关键字。</p> <p>在使用上，<code>test</code>和<code>[</code>是等价的，因为是命令，所以需要跟它的参数使用空格隔开。</p> <div class="language- extra-class"><pre class="language-text"><code>test -f /etc/hosts &amp;&amp; echo True
+#输出：True
+
+[ -f /etc/hosts ] &amp;&amp; echo True
+#输出：True
+</code></pre></div><p>因为 <code>]</code> 作为最后一个参数表示条件结束，而像<code>&lt;</code>、<code>&gt;</code>符号会被理解为重定向，导致错误</p> <div class="language- extra-class"><pre class="language-text"><code>[ 1 &lt; 2 ]
+#输出：line 13: 2: No such file or directory
+</code></pre></div><p><code>[[</code>是关键字，能够按照常规的语义理解其中的内容，双中括号中的表达式看作一个单独的语句，并返回其状态码。</p> <div class="language- extra-class"><pre class="language-text"><code>[[ 1 &lt; 2 ]] &amp;&amp; echo True || echo False
+#输出：True
+</code></pre></div><p>推荐使用<code>[[</code> 来进行各种判断，可以避免很多错误。</p> <p>如下展示单中括号会引发的错误</p> <div class="language- extra-class"><pre class="language-text"><code>[ $a == 1 &amp;&amp; $b == 1 ] &amp;&amp; echo True || echo False
+#输出：[: missing `]'
+
+#例如$a为空，就会报语法错误，因为 [ 命令拿到的实际上只有 ==、1、] 三个参数
+[ $a == 1 ]
+#输出：[: ==: unary operator expected
+</code></pre></div><h3 id="here-document"><a href="#here-document" class="header-anchor">#</a> Here Document</h3> <p><a href="https://tldp.org/LDP/abs/html/here-docs.html" target="_blank" rel="noopener noreferrer">Here Document<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> 可以理解为“嵌入文档”。Here Document 是 Shell 中的一种特殊的重定向方式，它的基本形式如下：</p> <div class="language- extra-class"><pre class="language-text"><code>
+command &lt;&lt;delimiter
+document
+delimiter
+
+</code></pre></div><p>作用是将两个 delimiter 之间的内容(document)作为输入传递给 command。</p> <p><strong>注意：</strong></p> <ul><li>结尾的 delimiter 一定要顶格写，前面不能有任何字符，后面也不能有任何字符，包括空格和 tab 缩进。</li> <li>开始的 delimiter 前后的空格会被忽略掉。</li></ul> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+wc -l &lt;&lt; EOF
+line 1
+line 2
+line 3
+EOF #输出：3
+</code></pre></div><h2 id="参考文档"><a href="#参考文档" class="header-anchor">#</a> 参考文档</h2> <ul><li><a href="https://mp.weixin.qq.com/s/UofKYTb9hp2FXYIKM5Q3Qw" target="_blank" rel="noopener noreferrer">Shell 中傻傻分不清楚的 TOP3<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://zhuanlan.zhihu.com/p/47819029" target="_blank" rel="noopener noreferrer">千万别混淆 Bash/Zsh 的四种运行模式<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://juejin.im/post/6844903784158593038" target="_blank" rel="noopener noreferrer">一篇文章让你彻底掌握 shell 语言<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="http://www.ruanyifeng.com/blog/2017/11/bash-set.html" target="_blank" rel="noopener noreferrer">Bash 脚本 set 命令教程<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://www.cnblogs.com/chengmo/archive/2010/10/20/1855805.html" target="_blank" rel="noopener noreferrer">linux shell 数据重定向（输入重定向与输出重定向）详细分析<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://www.cnblogs.com/chengmo/archive/2010/10/21/1856577.html" target="_blank" rel="noopener noreferrer">linux shell 管道命令(pipe)使用及与 shell 重定向区别<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://www.linuxidc.com/Linux/2018-09/154325.htm" target="_blank" rel="noopener noreferrer">Linux 系统环境变量位置， 环境变量持久化<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/server/shell/script.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/29/2021, 10:24:33 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/server/shell/basics.html" class="prev">
+        Shell 概览
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cc7effe2.js" defer></script><script src="/assets/js/2.f8f5562f.js" defer></script><script src="/assets/js/14.4f114a52.js" defer></script>
+  </body>
+</html>
