@@ -5,40 +5,49 @@
 不同的人可能会使用相同的数据库术语表示不同的事物，会造成一些混乱，下面是一张重要的数据库术语清单。
 
 ### 数据库（database）
+
 **数据库是保存有组织的数据的容器（通常是一个文件或一组文件）。**
 
 > 易混点：人们经常用“数据库”这个词代表他们使用的数据库软件。数据库软件是 DBMS(数据库管理系统)，例如 MySQL 就是一种 DBMS ，而数据库是通过 DBMS 创建和操纵的容器。我们通常不直接访问数据库，而是通过使用 DBMS 来访问数据库。
 
 ### 表（table）
+
 **表是某种特定类型数据的结构化清单。**
 
 数据库中的每个表都有一个名字，用来标识自己，称之为“表名”。此名字是唯一的，在相同的数据库中不能使用重复的表名，但是在不同的数据库中可以使用。
 
 ### 模式（schema）
+
 **模式是关于数据库和表的布局及特性的信息。**
 
 ### 列（column）
+
 **列是表中的一个字段。所有的表都是由一个或多个列组成的。**
 
 ### 数据类型（datatype）
+
 **数据类型是所容许的数据的类型。每个表列都有相应的数据类型，它限制（或容许）该列中存储的数据类型。**
 
 ### 行（row）
+
 **行是表中的一个记录。**
 
 有人会把行（row）称之为数据库记录（record），这两个数据是可以互相代替的，但是从技术上说，行才是正确的术语。
 
 ### 主键（primary key）
+
 **主键是一列（或一组列），其值能够唯一区分表中每个行。**
 
 表中的任何列只要满足以下条件，都可以作为主键：
-* 任意两行都不具有相同的主键值；
-* 每个行都必须具有一个主键值（主键列不允许 NULL 值）
+
+- 任意两行都不具有相同的主键值；
+- 每个行都必须具有一个主键值（主键列不允许 NULL 值）
 
 此外还有几个主键的最佳实践：
-* 不更新主键列中的值；
-* 不重用主键列的值；
-* 不在主键列中使用可能会更改的值。（例如，如果使用一个名字作为主键以标识某个供应商，当该供应商合并和更改其名字时，就得必须更改这个主键。）
+
+- 不更新主键列中的值；
+- 不重用主键列的值；
+- 不在主键列中使用可能会更改的值。（例如，如果使用一个名字作为主键以标识某个供应商，当该供应商合并和更改其名字时，就得必须更改这个主键。）
 
 ### 外键（foreign key）
 
@@ -89,37 +98,42 @@ SQL 语句由子句构成，有些子句是必需的，而有的是可选的。�
 内存中一个特定的位置，用来临时存储数据。所有 MySQL 变量都必须以 `@` 开始。
 
 ### SQL（Structured Query Language）
+
 **SQL 是结构化查询语言（Structured Query Language）的缩写，是一种专门用来与数据库通信的语言。**
 
 SQL 的优点：
-* SQL 不是某个特定数据库供应商专有的语言。即 SQL 不是一种专利语言，而且存在一个标准委员会。几乎所有重要的 DBMS 都支持 SQL。
-* SQL 简单易学。它的语句全都是由描述性很强的英语单词组成，而且这些单词的书目不多。
-* SQL 尽管看上去很简单，但它实际上是一种强有力的语言，灵活使用其语言元素，可以进行非常复杂和高级的数据库操作。
+
+- SQL 不是某个特定数据库供应商专有的语言。即 SQL 不是一种专利语言，而且存在一个标准委员会。几乎所有重要的 DBMS 都支持 SQL。
+- SQL 简单易学。它的语句全都是由描述性很强的英语单词组成，而且这些单词的书目不多。
+- SQL 尽管看上去很简单，但它实际上是一种强有力的语言，灵活使用其语言元素，可以进行非常复杂和高级的数据库操作。
 
 ## MySQL 安装
 
 推荐几个 MySQL 安装和连接的经验文章
 
-* [在Mac下安装MySQL](http://www.scienjus.com/install-mysql-on-mac/)
-* [mac版mysql安装后显示mysql: command not found咋整？](https://www.jianshu.com/p/289d8ad3defa)
-
+- [在 Mac 下安装 MySQL](http://www.scienjus.com/install-mysql-on-mac/)
+- [mac 版 mysql 安装后显示 mysql: command not found 咋整？](https://www.jianshu.com/p/289d8ad3defa)
 
 ## MySQL 应用
 
 ### mysql 命令行
-* 命令输入在 mysql> 之后；
-* 命令用 ; 或 \g 结束，换句话说，仅按 Enter 不执行命令；
-* 输入 help 或 \h 获得帮助，也可以输入更多的文本获得特定命令的帮助（如，输入 help select 获得试用 SELECT 语句的帮助）；
-* 输入 quit 或 exit 退出命令行。
+
+- 命令输入在 mysql> 之后；
+- 命令用 ; 或 \g 结束，换句话说，仅按 Enter 不执行命令；
+- 输入 help 或 \h 获得帮助，也可以输入更多的文本获得特定命令的帮助（如，输入 help select 获得试用 SELECT 语句的帮助）；
+- 输入 quit 或 exit 退出命令行。
 
 ### 连接数据库
+
 连接数据库需要以下信息：
-* 主机名（计算机名）——如果连接到本地 MySQL 服务器，为 localhost ;
-* 端口（如果使用默认端口 3306 之外的端口）；
-* 一个合法的用户名；
-* 用户口令（如果需要）
+
+- 主机名（计算机名）——如果连接到本地 MySQL 服务器，为 localhost ;
+- 端口（如果使用默认端口 3306 之外的端口）；
+- 一个合法的用户名；
+- 用户口令（如果需要）
 
 例如下面的指令：
+
 ```
 mysql -u root -h localhost -P 3306 -p
 ```
@@ -127,6 +141,7 @@ mysql -u root -h localhost -P 3306 -p
 ### 数据库的登录和成员管理
 
 #### 访问控制
+
 MySQL 服务器的安全基础是：用户应该对他们需要的数据具有适当的访问权，既不能多也不能少。
 
 需要给用户提供他们所需的访问权，且仅提供他们所需的访问权。这就是所谓的**访问控制**。访问控制的目的不仅仅是防止用户的恶意企图，访问控制也有助于避免很常见的无意识错误的结果，如错打 MySQL 语句，在不合适的数据库中操作或其他一些用户错误。
@@ -134,7 +149,9 @@ MySQL 服务器的安全基础是：用户应该对他们需要的数据具有�
 #### 管理用户
 
 ##### 查询已有用户
-MySQL 用户账号和信息存储在名为 mysql 的 MySQL数据库中。一般只有在需要获得所有用户账号列表时才会直接访问。
+
+MySQL 用户账号和信息存储在名为 mysql 的 MySQL 数据库中。一般只有在需要获得所有用户账号列表时才会直接访问。
+
 ```sql
 # 输入
 USE mysql;
@@ -153,7 +170,6 @@ SELECT user FROM user;
 
 > 1、使用 CREATE USER 语句（推荐）
 
-
 ```sql
 # 输入
 CREATE USER chenfangxu IDENTIFIED BY '123456';
@@ -169,8 +185,7 @@ SELECT user FROM user;
 +------------------+
 ```
 
-> 2、GRANT 语句也可以创建用户账号。（MySQL 8.0以上的新版本已经将创建账户和赋予权限分开了，所以不能再用这种方法创建用户了）
-
+> 2、GRANT 语句也可以创建用户账号。（MySQL 8.0 以上的新版本已经将创建账户和赋予权限分开了，所以不能再用这种方法创建用户了）
 
 ```sql
 # mysql8.0以下
@@ -199,14 +214,13 @@ SHOW GRANTS FOR chenfangxu;
 +----------------------------------------+
 ```
 
-权限 `USAGE ON *.*` ,USAGE表示根本没有权限，这句话就是说在任意数据库和任意表上对任何东西没有权限。
+权限 `USAGE ON *.*` ,USAGE 表示根本没有权限，这句话就是说在任意数据库和任意表上对任何东西没有权限。
 
-`chenfangxu@%` 因为用户定义为 `user@host`, MySQL的权限用用户名和主机名结合定义，如果不指定主机名，则使用默认的主机名`%`（即授予用户访问权限而不管主机名）。
+`chenfangxu@%` 因为用户定义为 `user@host`, MySQL 的权限用用户名和主机名结合定义，如果不指定主机名，则使用默认的主机名`%`（即授予用户访问权限而不管主机名）。
 
 <br>
 
 > **添加（更新）用户权限** `GRANT privileges ON databasename.tablename TO 'username'@'host';`
-
 
 ```sql
 # 输入
@@ -221,10 +235,10 @@ SHOW GRANTS FOR chenfangxu;
 | GRANT SELECT ON `performance_schema`.* TO `chenfangxu`@`%` |
 +------------------------------------------------------------+
 ```
+
 <br>
 
 > **撤销用户的权限** `REVOKE privileges ON databasename.tablename FROM 'username'@'host';`
-
 
 ```sql
 # 输入
@@ -245,7 +259,6 @@ SHOW GRANTS FOR chenfangxu;
 
 > 重命名：`RENAME USER 'username' TO 'newusername';`
 
-
 ```sql
 # 输入
 RENAME USER test TO test1;
@@ -259,11 +272,12 @@ SELECT user FROM user;
 | root             |
 +------------------+
 ```
+
 <br>
 
-#### 更改用户密码(mysql 8.0.11后)
-> 更改用户密码：`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
+#### 更改用户密码(mysql 8.0.11 后)
 
+> 更改用户密码：`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
 
 ```sql
 SET PASSWORD FOR chenfangxu@'%' = '654321';
@@ -275,6 +289,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpass
 <br>
 
 #### 删除用户
+
 > 删除用户：`DROP USER 'username'@'host';`
 
 ```sql
@@ -294,6 +309,7 @@ SELECT user FROM user;
 MySQL 5 以前， DROP USER 只能用来删除用户账号，不能删除相关的权限。因此，如果使用旧版的 MySQL 需要先用 REVOKE 删除与账号相关的权限，然后再用 DROP USER 删除账号。
 
 ---
+
 <br>
 
 ### 操作数据库
@@ -325,12 +341,14 @@ SHOW COLUMNS FROM customers;
 DESCRIBE customers;
 ```
 
-----
+---
+
 <br>
 
 ## 下面用到的数据库文件可在 [mysql_scripts](https://github.com/qiqihaobenben/Front-End-Basics/tree/master/assistive-tools/database/mysql_scripts) 找到。
 
-----
+---
+
 <br>
 
 ## 检索数据
@@ -360,7 +378,8 @@ SELECT prod_name FROM products LIMIT 5 OFFSET 5;
 SELECT prod_name FROM products LIMIT 1,1;
 ```
 
-----
+---
+
 <br>
 
 ## 排序检索数据 ( ORDER BY )
@@ -392,12 +411,14 @@ SELECT prod_price FROM products ORDER BY prod_price DESC LIMIT 1;
 ```
 
 ### 注意：
-* ORDER BY 子句中使用的列不一定非得是检索的列，用非检索的列排序也是完全合法的。
-* 如果想在多个列上进行降序排序，必须对每个列指定 DESC 关键字。
-* ASC 是升序排序，升序是默认的，不指定 DESC ，那就是按照 ASC 升序排序。
-* ORDER BY 子句必须位于 FROM 子句之后，如果使用 LIMIT ，它必须位于 ORDER BY 之后。
+
+- ORDER BY 子句中使用的列不一定非得是检索的列，用非检索的列排序也是完全合法的。
+- 如果想在多个列上进行降序排序，必须对每个列指定 DESC 关键字。
+- ASC 是升序排序，升序是默认的，不指定 DESC ，那就是按照 ASC 升序排序。
+- ORDER BY 子句必须位于 FROM 子句之后，如果使用 LIMIT ，它必须位于 ORDER BY 之后。
 
 ---
+
 <br>
 
 ## 过滤数据 （ WHERE ）
@@ -429,23 +450,25 @@ SELECT cust_id FROM customers WHERE cust_email IS NULL;
 
 ### WHERE 子句操作符
 
-| 操作符 | 说明 |
-|:---:|:---:|
-| = | 等于 |
-| <> | 不等于 |
-| != | 不等于 |
-| < | 小于 |
-| <= | 小于等于 |
-| > | 大于 |
-| >= | 大于等于 |
+| 操作符  |        说明        |
+| :-----: | :----------------: |
+|    =    |        等于        |
+|   <>    |       不等于       |
+|   !=    |       不等于       |
+|    <    |        小于        |
+|   <=    |      小于等于      |
+|    >    |        大于        |
+|   >=    |      大于等于      |
 | BETWEEN | 在指定的两个值之间 |
 
 ### 注意：
-* WHERE 语句的位置：在同时使用 ORDER BY 和 WHERE 子句时，应该让 ORDER BY 位于 WHERE 之后，否则将会产生错误。
-* WHERE 子句中使用的条件，如果将值与串类型（例如字符串）比较，需要加引号，用来与数值列进行比较的值不用引号。
-* NULL 无值(no value)，它与字段 0 、空字符串或仅仅包含空格不同。
+
+- WHERE 语句的位置：在同时使用 ORDER BY 和 WHERE 子句时，应该让 ORDER BY 位于 WHERE 之后，否则将会产生错误。
+- WHERE 子句中使用的条件，如果将值与串类型（例如字符串）比较，需要加引号，用来与数值列进行比较的值不用引号。
+- NULL 无值(no value)，它与字段 0 、空字符串或仅仅包含空格不同。
 
 ---
+
 <br>
 
 ## 数据过滤（ AND、 OR、 IN ）
@@ -491,22 +514,24 @@ SELECT vend_id, prod_name, prod_price FROM products WHERE vend_id NOT IN (1002, 
 ```
 
 ### 注意
-* WHERE 可包含任意数目的 AND 和 OR 操作符，并且允许两者结合以进行复杂和高效的过滤。不过 SQL 语言在处理 OR 操作符前，会优先处理 AND 操作符。
-* 任何时候使用具有 AND 和 OR 操作符的 WHERE 子句， 都推荐使用圆括号明确地分组，不要过分依赖默认计算次序。
-* IN 和 OR 具有相同的功能，但是 IN 操作符有以下优点
+
+- WHERE 可包含任意数目的 AND 和 OR 操作符，并且允许两者结合以进行复杂和高效的过滤。不过 SQL 语言在处理 OR 操作符前，会优先处理 AND 操作符。
+- 任何时候使用具有 AND 和 OR 操作符的 WHERE 子句， 都推荐使用圆括号明确地分组，不要过分依赖默认计算次序。
+- IN 和 OR 具有相同的功能，但是 IN 操作符有以下优点
   - 过滤的字段太多的时候，IN 操作符的语法更清楚且更直观
   - IN 操作符一般比 OR 操作符执行的更快
   - IN 最大的优点是可以包含其他 SELECT 语句，能更动态地建立 WHERE 子句。
-* MySQL 支持使用 NOT 对 IN、BETWEEN 和 EXISTS 子句取反。
+- MySQL 支持使用 NOT 对 IN、BETWEEN 和 EXISTS 子句取反。
 
 ---
+
 <br>
 
 ## 用通配符过滤
 
 ### 百分号（%）通配符
 
-`%` 表示任何字符出现任意次数，可以使0次，1次，n次
+`%` 表示任何字符出现任意次数，可以使 0 次，1 次，n 次
 
 ```sql
 ### 找出所有以 jet 开头的产品
@@ -532,7 +557,7 @@ SELECT prod_id, prod_name FROM products WHERE prod_name LIKE '%anvil%';
 
 ### 下划线通配符
 
-下划线 _ 只能匹配单个字符，只能匹配一个，不能多也不能少。
+下划线 \_ 只能匹配单个字符，只能匹配一个，不能多也不能少。
 
 ```sql
 ### 对比一下下面两个通配符结果
@@ -557,16 +582,15 @@ SELECT prod_id, prod_name FROM products WHERE prod_name LIKE '% ton anvil';
 ### 下划线通配符比百分号通配符少了一个 .5 的数据
 ```
 
-
 ### 注意
 
-* 注意尾部空格，例如'%anvil' 是匹配不到 'anvil ',因为后面有个空格不容易发现，解决方法就是后面再附加一个 % ，或者用函数去掉首尾空格。
-* % 是不能匹配出 NULL的。
-* 通配符搜索的处理一般要比其他搜索花时间更长，所以不要过度使用通配符，如果其他操作符能达到同样的目的，优先使用其他操作符。在确实需要使用通配符时，除非绝对有必要，否则不要把他们用在搜索模式的开始处。
+- 注意尾部空格，例如'%anvil' 是匹配不到 'anvil ',因为后面有个空格不容易发现，解决方法就是后面再附加一个 % ，或者用函数去掉首尾空格。
+- % 是不能匹配出 NULL 的。
+- 通配符搜索的处理一般要比其他搜索花时间更长，所以不要过度使用通配符，如果其他操作符能达到同样的目的，优先使用其他操作符。在确实需要使用通配符时，除非绝对有必要，否则不要把他们用在搜索模式的开始处。
 
 ---
-<br>
 
+<br>
 
 ## 用正则表达式进行搜索
 
@@ -626,39 +650,42 @@ SELECT prod_name FROM products WHERE prod_name REGEXP '[:digit:]{4}' ORDER BY pr
 ```
 
 ### 列举元字符转义和定位元字符
-|元字符|说明|
-|---|---|
-| \\f | 换页 |
-| \\n | 换行 |
-| \\r | 回车 |
-| \\t | 制表 |
-| \\v | 纵向制表 |
-| \\\ | 反斜杠 |
-| ^ | 文本的开始 |
-| $ | 文本的结束 |
-| [[:<:]](8版本之后改为 \b) | 词的开始 |
-| [[:>:]](8版本之后改为 \b) | 词的结束 |
-多数正则表达式实现使用单个反斜杠转义特殊字符，以便能使用这些字符本身。但 MySQL 要求两个反斜杠（MySQL自己解释一个，正则表达式库解释另一个）。
+
+| 元字符                     | 说明       |
+| -------------------------- | ---------- |
+| \\f                        | 换页       |
+| \\n                        | 换行       |
+| \\r                        | 回车       |
+| \\t                        | 制表       |
+| \\v                        | 纵向制表   |
+| \\\                        | 反斜杠     |
+| ^                          | 文本的开始 |
+| \$                         | 文本的结束 |
+| [[:<:]](8 版本之后改为 \b) | 词的开始   |
+| [[:>:]](8 版本之后改为 \b) | 词的结束   |
+
+多数正则表达式实现使用单个反斜杠转义特殊字符，以便能使用这些字符本身。但 MySQL 要求两个反斜杠（MySQL 自己解释一个，正则表达式库解释另一个）。
 
 ### 列举字符类
-|类|说明|
-|---|---|
-| [:alnum:] | 任意字符和数字（同 [a-zA-Z0-9]） |
-| [:alpha:] | 任意字符（同 [a-zA-Z]） |
-| [:blank:] | 空格和制表 （同 [\\t]）|
-| [:cntrl:] | ASCII控制字符 （ASCII 0 到 31 和 127）|
-| [:digit:] | 任意数字 （同 [0-9]）|
-| [:xdigit:] | 任意十六进制数字（同 [a-fA-F0-9]）|
-| [:lower:] | 任意小写字母 （同 [a-z]）|
-| [:upper:] | 任意大写字母（同 [A-Z]）|
-| [:print:] | 任意可打印字符 |
-| [:graph:] | 与[:print:]相同，但不包含空格 |
-| [:punct:] | 既不在[:alnum:]又不在[:cntrl:]中的任意字符 |
-| [:space:] | 包括空格在内的任意空白字符(同 [\\f\\n\\r\\t\\v]) |
+
+| 类         | 说明                                             |
+| ---------- | ------------------------------------------------ |
+| [:alnum:]  | 任意字符和数字（同 [a-zA-Z0-9]）                 |
+| [:alpha:]  | 任意字符（同 [a-zA-Z]）                          |
+| [:blank:]  | 空格和制表 （同 [\\t]）                          |
+| [:cntrl:]  | ASCII 控制字符 （ASCII 0 到 31 和 127）          |
+| [:digit:]  | 任意数字 （同 [0-9]）                            |
+| [:xdigit:] | 任意十六进制数字（同 [a-fA-F0-9]）               |
+| [:lower:]  | 任意小写字母 （同 [a-z]）                        |
+| [:upper:]  | 任意大写字母（同 [A-Z]）                         |
+| [:print:]  | 任意可打印字符                                   |
+| [:graph:]  | 与[:print:]相同，但不包含空格                    |
+| [:punct:]  | 既不在[:alnum:]又不在[:cntrl:]中的任意字符       |
+| [:space:]  | 包括空格在内的任意空白字符(同 [\\f\\n\\r\\t\\v]) |
 
 ### 简单的正则表达式测试
 
-在不使用数据库表的情况下用 SELECT 来测试正则表达式。 REGEXP 检查总是返回0（没有匹配）或 1（匹配）。
+在不使用数据库表的情况下用 SELECT 来测试正则表达式。 REGEXP 检查总是返回 0（没有匹配）或 1（匹配）。
 
 ```sql
 SELECT 'hello' REGEXP 'hello\\b';
@@ -669,10 +696,9 @@ SELECT 'hello' REGEXP 'hello\\b';
 +---------------------------+
 ```
 
-
 ---
-<br>
 
+<br>
 
 ## 计算字段
 
@@ -725,6 +751,7 @@ SELECT Now();
 ```
 
 ---
+
 <br>
 
 ## 使用数据处理函数
@@ -733,18 +760,18 @@ SELECT Now();
 
 ### 文本处理函数
 
-|函 数|说 明|
-|---|---|
-| Left() | 返回串左边的字符 |
-| Length() | 返回串的长度 |
-| Locate() | 找出串的一个子串 |
-| Lower() | 将串转换为小写 |
-| LTrim() | 去掉串左边的空格 |
-| Right() | 返回串右边的字符 |
-| RTrim() | 去掉串右边的空格 |
-| Soundex() | 返回串的 SOUNDEX 值 |
-| SubString() | 返回子串的字符 |
-| Upper() | 将串转换为大写 |
+| 函 数       | 说 明               |
+| ----------- | ------------------- |
+| Left()      | 返回串左边的字符    |
+| Length()    | 返回串的长度        |
+| Locate()    | 找出串的一个子串    |
+| Lower()     | 将串转换为小写      |
+| LTrim()     | 去掉串左边的空格    |
+| Right()     | 返回串右边的字符    |
+| RTrim()     | 去掉串右边的空格    |
+| Soundex()   | 返回串的 SOUNDEX 值 |
+| SubString() | 返回子串的字符      |
+| Upper()     | 将串转换为大写      |
 
 SOUNDEX 是一个将任何文本串转换为描述其语音表示的字母数字模式的算法。SOUNDEX 考虑了类似的发音字节和音节，使得能对串进行发音比较而不是字母比较。
 
@@ -760,24 +787,24 @@ SELECT cust_name, cust_contact FROM customers WHERE Soundex(cust_contact) = Soun
 
 ### 日期和时间处理函数
 
-|函 数|说 明|
-|---|---|
-| AddDate() | 增加一个日期（天、周等） |
-| AddTime() | 增加一个时间（时、分等） |
-| CurDate() | 返回当前日期 |
-| CurTime() | 返回当前时间 |
-| Date() | 返回日期时间的日期部分 |
-| DateDiff() | 计算两个日期之差 |
-| Date_Add() | 高度灵活的日期运算函数 |
-| Date_Format() | 返回一个格式化的日期或时间串 |
-| Year() | 返回一个日期的年份部分 |
-| Month() | 返回一个日期的月份部分 |
-| Day() | 返回一个日期的天数部分 |
-| DayOfWeek() | 对于一个日期，返回对应的星期几 |
-| Hour() | 返回一个时间的小时部分 |
-| Minute() | 返回一个时间的分钟部分 |
-| Second() | 返回一个时间的秒部分 |
-| Now() | 返回当前日期和时间 |
+| 函 数         | 说 明                          |
+| ------------- | ------------------------------ |
+| AddDate()     | 增加一个日期（天、周等）       |
+| AddTime()     | 增加一个时间（时、分等）       |
+| CurDate()     | 返回当前日期                   |
+| CurTime()     | 返回当前时间                   |
+| Date()        | 返回日期时间的日期部分         |
+| DateDiff()    | 计算两个日期之差               |
+| Date_Add()    | 高度灵活的日期运算函数         |
+| Date_Format() | 返回一个格式化的日期或时间串   |
+| Year()        | 返回一个日期的年份部分         |
+| Month()       | 返回一个日期的月份部分         |
+| Day()         | 返回一个日期的天数部分         |
+| DayOfWeek()   | 对于一个日期，返回对应的星期几 |
+| Hour()        | 返回一个时间的小时部分         |
+| Minute()      | 返回一个时间的分钟部分         |
+| Second()      | 返回一个时间的秒部分           |
+| Now()         | 返回当前日期和时间             |
 
 ```sql
 ### 检索出日期为 2005-09-01 这天的订单记录
@@ -798,38 +825,36 @@ SELECT cust_id, order_num FROM orders WHERE Year(order_date) = 2005 AND Month(or
 ```
 
 #### 注意
-* 使用日期过滤，日期必须为 yyyy-mm-dd ,这样能排除一些歧义，年份也应该使用4位数字，更加可靠。
+
+- 使用日期过滤，日期必须为 yyyy-mm-dd ,这样能排除一些歧义，年份也应该使用 4 位数字，更加可靠。
 
 ### 数值处理函数
 
-|函 数|说 明|
-|---|---|
-| Abs() | 返回一个数的绝对值 |
-| Sin() | 返回一个角度的正弦 |
-| Cos() | 返回一个角度的余弦 |
-| Tan() | 返回一个角度的正切 |
-| Exp() | 返回一个数的指数值 |
-| Mod() | 返回除操作的余数 |
-| Pi() | 返回圆周率 |
-| Rand() | 返回一个随机数 |
+| 函 数  | 说 明              |
+| ------ | ------------------ |
+| Abs()  | 返回一个数的绝对值 |
+| Sin()  | 返回一个角度的正弦 |
+| Cos()  | 返回一个角度的余弦 |
+| Tan()  | 返回一个角度的正切 |
+| Exp()  | 返回一个数的指数值 |
+| Mod()  | 返回除操作的余数   |
+| Pi()   | 返回圆周率         |
+| Rand() | 返回一个随机数     |
 | Sqrt() | 返回一个数的平方根 |
 
-
-
-
 ---
-<br>
 
+<br>
 
 ## 汇总数据
 
-|函 数|说 明|
-|---|---|
-| AVG() | 返回某列的平均值 |
-| COUNT() | 返回某列的行数 |
-| MAX() | 返回某列的最大值 |
-| MIN() | 返回某列的最小值 |
-| SUM() | 返回某列值之和 |
+| 函 数   | 说 明            |
+| ------- | ---------------- |
+| AVG()   | 返回某列的平均值 |
+| COUNT() | 返回某列的行数   |
+| MAX()   | 返回某列的最大值 |
+| MIN()   | 返回某列的最小值 |
+| SUM()   | 返回某列值之和   |
 
 ```sql
 ### 计算出 products 表中所有产品的平均价格
@@ -873,6 +898,7 @@ SELECT COUNT(*) AS num_items, MIN(prod_price) AS price_min, MAX(prod_price) AS p
 ```
 
 ### 参数 ALL 和 DISTINCT
+
 使用 DISTINCT 参数时，只会计算包含不同的值的行，如果指定参数为 ALL 或者不指定参数，默认参数为 ALL ，会计算所有的行。
 
 ```sql
@@ -895,16 +921,17 @@ SELECT COUNT(DISTINCT vend_id) AS vend_count FROM products;
 
 ### 注意
 
-* AVG() 只能用来确定 **单个** 特定数值列的平均值，而且列名必须作为函数参数传入，想获取多个列的平均值，必须使用多个 AVG() 函数。
-* AVG() 函数忽略列值为 NULL 的行。
-* COUNT(*) 对表中行的数目进行计数， 不管列中是空值（NULL）还是非空值。
-* 使用 COUNT(column) 对特定列中具有值的行进行计数，会忽略 NULL 值。
-* MAX() 函数会忽略值为 NULL 的行（MIN()也是）。它一般是用来找出最大的数值和日期值，但是也可以对非数值的数据使用，例如返回文本列中的最大值，MAX() 会返回最后一行（MIN
-() 会返回第一行）。
-* SUM() 函数会忽略值为 NULL 的行
-* 在表示某个聚集函数的结果时，不应该使用表中实际的列明，最好是指定别名，这样便于理解和使用。
+- AVG() 只能用来确定 **单个** 特定数值列的平均值，而且列名必须作为函数参数传入，想获取多个列的平均值，必须使用多个 AVG() 函数。
+- AVG() 函数忽略列值为 NULL 的行。
+- COUNT(\*) 对表中行的数目进行计数， 不管列中是空值（NULL）还是非空值。
+- 使用 COUNT(column) 对特定列中具有值的行进行计数，会忽略 NULL 值。
+- MAX() 函数会忽略值为 NULL 的行（MIN()也是）。它一般是用来找出最大的数值和日期值，但是也可以对非数值的数据使用，例如返回文本列中的最大值，MAX() 会返回最后一行（MIN
+  () 会返回第一行）。
+- SUM() 函数会忽略值为 NULL 的行
+- 在表示某个聚集函数的结果时，不应该使用表中实际的列明，最好是指定别名，这样便于理解和使用。
 
 ---
+
 <br>
 
 ## 分组数据
@@ -914,11 +941,12 @@ SELECT COUNT(DISTINCT vend_id) AS vend_count FROM products;
 ```sql
 SELECT vend_id, prod_price FROM products GROUP BY vend_id, prod_price;
 ```
-* GROUP BY 子句后面可以加多个列。
-* SELECT子句中的列名必须为分组列或列函数（聚集计算语句除外），例如 按照 vend_id, prod_price 分组，SELECT 后面检索的列必须是 vend_id, prod_price。
-* 列函数对于GROUP BY子句定义的每个组各返回一个结果，例如取最大值时，就是每个组的最大值。
-* 如果分组列中有 NULL 值，则 NULL 将作为一个分组返回，如果列中有多行 NULL 值，它们将分为一组。
-* GROUP BY 子句必须在 WHERE 子句之后， ORDER BY 子句之前。
+
+- GROUP BY 子句后面可以加多个列。
+- SELECT 子句中的列名必须为分组列或列函数（聚集计算语句除外），例如 按照 vend_id, prod_price 分组，SELECT 后面检索的列必须是 vend_id, prod_price。
+- 列函数对于 GROUP BY 子句定义的每个组各返回一个结果，例如取最大值时，就是每个组的最大值。
+- 如果分组列中有 NULL 值，则 NULL 将作为一个分组返回，如果列中有多行 NULL 值，它们将分为一组。
+- GROUP BY 子句必须在 WHERE 子句之后， ORDER BY 子句之前。
 
 ### 过滤分组
 
@@ -941,19 +969,20 @@ SELECT order_num, SUM(quantity*item_price) AS ordertotal FROM orderitems GROUP B
 +-----------+------------+
 ```
 
-* HAVING 跟 WHERE 类似，但是 WHERE 在数据分组前进行过滤，HAVING 在数据分组后进行过滤。
+- HAVING 跟 WHERE 类似，但是 WHERE 在数据分组前进行过滤，HAVING 在数据分组后进行过滤。
 
 ### SELECT 子句顺序
 
 SELECT > FROM > WHERE > GROUP BY > HAVING > ORDER BY > LIMIT
 
 ---
-<br>
 
+<br>
 
 ## 使用子查询
 
 假设要列出订购物品 TNT2 的所有客户。我们可以拆分出下面三步。
+
 1. 检索包含物品 TNT2 的所有订单的编号。
 2. 检索具有前一步骤列出的订单编号的所有客户的 ID。
 3. 检索前一步骤返回的所有客户 ID 的客户信息。
@@ -971,6 +1000,7 @@ WHERE order_num IN (SELECT order_num FROM orderitems WHERE prod_id = 'TNT2'));
 ```
 
 假设需要显示 customers 表中每个客户的订单总数，我们可以查分出下面两步。
+
 1. 从 customers 表中检索客户列表。
 2. 对于检索出的每个客户，统计其在 orders 表中的订单数目。
 
@@ -989,8 +1019,8 @@ FROM customers ORDER BY cust_name;
 +----------------+--------------+--------+
 ```
 
-
 ---
+
 <br>
 
 ## 联结表
@@ -1009,11 +1039,12 @@ SELECT cust_name, cust_contact FROM customers, orders, orderitems WHERE customer
 ```
 
 ### 注意
-* 应该保证所有的联结都有 WHERE 子句，否则 MySQL 将返回比想要的数据多得多的数据。
+
+- 应该保证所有的联结都有 WHERE 子句，否则 MySQL 将返回比想要的数据多得多的数据。
 
 ---
-<br>
 
+<br>
 
 ## 创建高级联结
 
@@ -1029,7 +1060,7 @@ SELECT p1.prod_id, p1.prod_name FROM products AS p1, products AS p2 WHERE p1.ven
 
 ### 外部联结
 
-联结包含了那些在相关表中没有关联行的行，外部联结的两种基本形式：左外部联结(LEFT OUTER JOIN 即 LEFT JOIN)和右外部联结。它们之间唯一差别是所关联的表的顺序不同。更具体可以看一下 [JOIN详解](https://segmentfault.com/a/1190000015572505)。
+联结包含了那些在相关表中没有关联行的行，外部联结的两种基本形式：左外部联结(LEFT OUTER JOIN 即 LEFT JOIN)和右外部联结。它们之间唯一差别是所关联的表的顺序不同。更具体可以看一下 [JOIN 详解](https://segmentfault.com/a/1190000015572505)。
 
 ```sql
 ### 列出每个客户下的订单，包括那些至今未下订单的客户
@@ -1059,6 +1090,7 @@ SELECT c.cust_name, c.cust_id, COUNT(o.order_num) AS order_count FROM customers 
 ```
 
 ---
+
 <br>
 
 ### 组合查询
@@ -1066,8 +1098,9 @@ SELECT c.cust_name, c.cust_id, COUNT(o.order_num) AS order_count FROM customers 
 MySQL 允许执行多个查询（多条 SELECT 语句），并将结果作为单个查询结果集返回。这些组合查询称为并（union） 或 复合查询（compound query）。
 
 有两种基本情况，其中需要使用组合查询：
-* 在单个查询中从不同的表返回类似结构的数据；
-* 对单个表执行多个查询，按单个查询返回数据。
+
+- 在单个查询中从不同的表返回类似结构的数据；
+- 对单个表执行多个查询，按单个查询返回数据。
 
 ```sql
 ### 查询价格小于等于5的所有物品并且查出供应商 1001 和 1002 生产的所有物品（不考虑价格）
@@ -1086,19 +1119,20 @@ SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SE
 ```
 
 ### 注意
-* UNION 必须由两条或两条以上的 SELECT 语句组成，语句之间用关键字 UNION 分隔。
-* UNION 中的每个查询必须包含相同的列，表达式或聚集函数（不过各个列不需要以相同的次序列出）。
-* 对组合查询结果排序时，只能使用一条 ORDER BY 子句，它必须出现在最后一条 SELECT 语句之后。
+
+- UNION 必须由两条或两条以上的 SELECT 语句组成，语句之间用关键字 UNION 分隔。
+- UNION 中的每个查询必须包含相同的列，表达式或聚集函数（不过各个列不需要以相同的次序列出）。
+- 对组合查询结果排序时，只能使用一条 ORDER BY 子句，它必须出现在最后一条 SELECT 语句之后。
 
 ---
-<br>
 
+<br>
 
 ## 全文本搜索
 
 并非所有引擎都支持全文本搜索，例如 MyISAM 支持全文本搜索，InnoDB 不支持。
 
-在创建表时启用全文本搜索， CREATE TABLE 语句接受 FULLTEXT 子句，它可以对后面的一个或多个表建立索引，MySQL自动维护该索引，在增加、更新或删除行时，索引随之自动更新。FULLTEXT 也可以在表创建之后再指定。
+在创建表时启用全文本搜索， CREATE TABLE 语句接受 FULLTEXT 子句，它可以对后面的一个或多个表建立索引，MySQL 自动维护该索引，在增加、更新或删除行时，索引随之自动更新。FULLTEXT 也可以在表创建之后再指定。
 
 ```sql
 ### 看一下 productnotes 表的创建描述
@@ -1147,15 +1181,14 @@ SELECT note_text FROM productnotes WHERE Match(note_text) Against('anvils' WITH 
 
 ### 注意
 
-* 传递给 Match() 的值必须与 FULLTEXT() 定义中的相同。如果指定多个列，必须列出他们，而且次序正确。
-* 经过比较可以发现，文本搜索是默认带有排序的，LIKE 搜索出来的结果是随意的，按照查询的先后输出。
-* 文本搜索的等级根据行中词的数目，唯一词的数目，整个索引中词的总数，以及包含该词的行的书目计算出来。
-* 在索引全文本数据时，短词被忽略且从索引中排除。短词的定义时那些具有3个或3个一下字符的词（如果需要，这个数目可以改）
-* 许多词出现的频率很高，搜索他们没用，MySQL 规定了一条 50% 规则，如果一个词出现50%以上的行中，则将它作为一个非用词忽略。50%规则不用于 IN BOOLEAN MODE。
-* 如果表中的行数少于3行，则全文本搜索不返回结果
-* 忽略词中的单引号。例如，don't 索引为 dont
-* 不具有词分隔符（包括日语和汉语）的语言不能恰当地返回全文本搜索结果
-
+- 传递给 Match() 的值必须与 FULLTEXT() 定义中的相同。如果指定多个列，必须列出他们，而且次序正确。
+- 经过比较可以发现，文本搜索是默认带有排序的，LIKE 搜索出来的结果是随意的，按照查询的先后输出。
+- 文本搜索的等级根据行中词的数目，唯一词的数目，整个索引中词的总数，以及包含该词的行的书目计算出来。
+- 在索引全文本数据时，短词被忽略且从索引中排除。短词的定义时那些具有 3 个或 3 个一下字符的词（如果需要，这个数目可以改）
+- 许多词出现的频率很高，搜索他们没用，MySQL 规定了一条 50% 规则，如果一个词出现 50%以上的行中，则将它作为一个非用词忽略。50%规则不用于 IN BOOLEAN MODE。
+- 如果表中的行数少于 3 行，则全文本搜索不返回结果
+- 忽略词中的单引号。例如，don't 索引为 dont
+- 不具有词分隔符（包括日语和汉语）的语言不能恰当地返回全文本搜索结果
 
 ### 布尔文本查询
 
@@ -1171,18 +1204,19 @@ SELECT note_text FROM productnotes WHERE Match(note_text) Against('+safe +(<comb
 
 全文本布尔操作符
 
-| 布尔操作符 | 说 明 |
-|---|---|
-| + | 包含，词必须存在 |
-| - | 排除，词必须不出现 |
-| > | 包含，而且增加等级值 |
-| < | 包含，且减少等级值 |
-| () | 把词组成子表达式（允许这些子表达式作为一个组被包含、排除、 排列等） |
-| ~ | 取消一个词的排序值 |
-| * | 词尾的通配符 |
-| "" | 定义一个短语（与单个词的列表不一样，它匹配整个短语以便包含或排除这个短语） |
+| 布尔操作符 | 说 明                                                                      |
+| ---------- | -------------------------------------------------------------------------- |
+| +          | 包含，词必须存在                                                           |
+| -          | 排除，词必须不出现                                                         |
+| >          | 包含，而且增加等级值                                                       |
+| <          | 包含，且减少等级值                                                         |
+| ()         | 把词组成子表达式（允许这些子表达式作为一个组被包含、排除、 排列等）        |
+| ~          | 取消一个词的排序值                                                         |
+| \*         | 词尾的通配符                                                               |
+| ""         | 定义一个短语（与单个词的列表不一样，它匹配整个短语以便包含或排除这个短语） |
 
 ---
+
 <br>
 
 ## 插入数据
@@ -1194,7 +1228,7 @@ SELECT note_text FROM productnotes WHERE Match(note_text) Against('+safe +(<comb
 INSERT INTO customers VALUES( NULL, 'Pep E. LaPew', '100 Main Street', 'Los Angeles', 'CA', '90046', 'USA', NULL, NULL);
 ```
 
-上面的语法应该避免使用，因为不安全，建议用下面的语句,可以不按照次序填充，只要保证 VALUES中的次序跟前面给出的列名次序一致就行。
+上面的语法应该避免使用，因为不安全，建议用下面的语句,可以不按照次序填充，只要保证 VALUES 中的次序跟前面给出的列名次序一致就行。
 
 ```sql
 INSERT INTO customers(cust_name, cust_contact, cust_email, cust_address, cust_city, cust_state, cust_zip, cust_country) VALUES('Pep E. LaPew', NULL, NULL, '100 Main Street', 'Los ANGELES', 'CA', '90046', 'USA');
@@ -1212,10 +1246,11 @@ INSERT INTO customers(cust_name,cust_address,cust_city,cust_state,cust_zip,cust_
 
 ### 注意
 
-* 在 INSERT 操作中可以省略某些列，省略的列必须满足：该列定义为允许 NULL 值（无值或者空值），或在表定义中给出默认值，这表示如果不给出值，将使用默认值，否则插入时省略会报错。
-* 可以使用 INSERT LOW PRIORITY INTO 来降低插入语句的优先级。
+- 在 INSERT 操作中可以省略某些列，省略的列必须满足：该列定义为允许 NULL 值（无值或者空值），或在表定义中给出默认值，这表示如果不给出值，将使用默认值，否则插入时省略会报错。
+- 可以使用 INSERT LOW PRIORITY INTO 来降低插入语句的优先级。
 
 ---
+
 <br>
 
 ## 更新数据
@@ -1230,16 +1265,16 @@ UPDATE customers SET cust_email = NULL WHERE cust_id = 10009;
 
 ### 注意
 
-* 使用 UPDATE 时，一定不能省略 WHERE 子句，否则就会更新表中的所有行。
-* UPDATE 操作如果报错，则整个UPDATE操作被取消，错误发生前更新的所有行被恢复到它们原来的值，如果想发生错误的时候也继续进行更新，可以使用 IGNORE 关键字 `UPDATE IGNORE customers`
-
+- 使用 UPDATE 时，一定不能省略 WHERE 子句，否则就会更新表中的所有行。
+- UPDATE 操作如果报错，则整个 UPDATE 操作被取消，错误发生前更新的所有行被恢复到它们原来的值，如果想发生错误的时候也继续进行更新，可以使用 IGNORE 关键字 `UPDATE IGNORE customers`
 
 ---
+
 <br>
 
 ## 删除数据
 
-```sal
+```sql
 ### 删除10011这一行
 DELETE FROM customers WHERE cust_id = 10011;
 
@@ -1247,10 +1282,11 @@ DELETE FROM customers WHERE cust_id = 10011;
 
 ### 注意
 
-* 使用 DELETE 时，一定不能省略 WHERE 子句，否则就会删除表中的所有行。即使删除所有行， DELETE 也不会删除表本身。
-* 如果想从表中删除所有行，不要使用 DELETE。可以使用 TRUNCATE TABLE 语句，速度更快（TRUNCATE 实际是删除原来的表并重新创建一个表，而不是逐行删除表中的数据）。
+- 使用 DELETE 时，一定不能省略 WHERE 子句，否则就会删除表中的所有行。即使删除所有行， DELETE 也不会删除表本身。
+- 如果想从表中删除所有行，不要使用 DELETE。可以使用 TRUNCATE TABLE 语句，速度更快（TRUNCATE 实际是删除原来的表并重新创建一个表，而不是逐行删除表中的数据）。
 
 ---
+
 <br>
 
 ## 创建和操纵表
@@ -1279,7 +1315,7 @@ NULL 值就是没有值或缺值。允许 NULL 值的列也允许在插入行时
 
 每个表只能允许一个 AUTO_INCREMENT 列，而且它必须被索引（比如通过使用它成为主键）
 
-在执行 INSERT 时可以给 AUTO_INCREMENT指定一个值，只要它是至今为止唯一的就行，该值将被用来替代自动生成的值。后续的增量将开始使用该手工插入的值。
+在执行 INSERT 时可以给 AUTO_INCREMENT 指定一个值，只要它是至今为止唯一的就行，该值将被用来替代自动生成的值。后续的增量将开始使用该手工插入的值。
 
 last_insert_id() 这个函数能返回最后一个 AUTO_INCREMENT 值
 
@@ -1289,7 +1325,7 @@ last_insert_id() 这个函数能返回最后一个 AUTO_INCREMENT 值
 
 #### 引擎类型
 
-大多数时候， CREATE TABLE 语句全都以 ENGINE=InnoDB 语句结束。MySQL具有多种引擎，这些打包的多个引擎都隐藏在 MySQL 的服务器内，全都能执行 CREATE TABLE 和 SELECT 等命令。这些引擎具有各自不同的功能和特性，为不同的任务选择正确的引擎能获得良好的功能和灵活性。
+大多数时候， CREATE TABLE 语句全都以 ENGINE=InnoDB 语句结束。MySQL 具有多种引擎，这些打包的多个引擎都隐藏在 MySQL 的服务器内，全都能执行 CREATE TABLE 和 SELECT 等命令。这些引擎具有各自不同的功能和特性，为不同的任务选择正确的引擎能获得良好的功能和灵活性。
 
 **InnoDB** 是一个可靠的事务处理引擎，它不支持全文本搜索。
 
@@ -1315,7 +1351,6 @@ CREATE TABLE customers
   PRIMARY KEY (cust_id)
 ) ENGINE=InnoDB;
 ```
-
 
 ### 更新表
 
@@ -1348,12 +1383,13 @@ RENAME TABLE customers2 TO customers;
 RENAME TABLE backup_customers TO customers,backup_vendors TO vendors;
 ```
 
-
 ### 注意
-* 创建新表时，指定的表名必须不存在，否则将出错。如果仅想在一个表不存在时创建它，应该在表名后面给出 IF NOT EXISTS。
-* 使用 ALTER TABLE 要极为小心，应该在进行改动之前做一个完整的备份（模式和数据的备份）
+
+- 创建新表时，指定的表名必须不存在，否则将出错。如果仅想在一个表不存在时创建它，应该在表名后面给出 IF NOT EXISTS。
+- 使用 ALTER TABLE 要极为小心，应该在进行改动之前做一个完整的备份（模式和数据的备份）
 
 ---
+
 <br>
 
 ## 使用视图
@@ -1404,20 +1440,19 @@ SELECT cust_name, cust_contact FROM productcustomers WHERE prod_id = 'TNT2';
 +----------------+--------------+
 ```
 
-
-
 ### 注意
-* 视图必须唯一命名（不能跟别的视图和表重名）
-* 对于可以创建的视图数量没有限制。
-* 视图可以嵌套，即可以利用从其他视图中检索数据的查询来构造一个新的视图。
-* ORDER BY 可以用在视图中，但如果从该视图检索数据的 SELECT 中也含有 ORDER BY ，那么视图中的 ORDER BY 会被覆盖。
-* 视图不能索引，也不能有关联的触发器或默认值。
-* 视图可以和表一起使用。
-* 视图一般用于检索（SELECT）而不用于更新（INSERT, UPDATE, DELETE），因为更新一个视图相当于更新其基表，如果不能正确地确定被更新的基数据，则不允许更新。
+
+- 视图必须唯一命名（不能跟别的视图和表重名）
+- 对于可以创建的视图数量没有限制。
+- 视图可以嵌套，即可以利用从其他视图中检索数据的查询来构造一个新的视图。
+- ORDER BY 可以用在视图中，但如果从该视图检索数据的 SELECT 中也含有 ORDER BY ，那么视图中的 ORDER BY 会被覆盖。
+- 视图不能索引，也不能有关联的触发器或默认值。
+- 视图可以和表一起使用。
+- 视图一般用于检索（SELECT）而不用于更新（INSERT, UPDATE, DELETE），因为更新一个视图相当于更新其基表，如果不能正确地确定被更新的基数据，则不允许更新。
 
 ---
-<br>
 
+<br>
 
 ## 使用存储过程
 
@@ -1452,7 +1487,6 @@ DROP PROCEDURE productpricing;
 ### 检查存储过程
 SHOW CREATE PROCEDURE productpricing;
 ```
-
 
 ### 有参数的例子
 
@@ -1544,25 +1578,23 @@ SELECT @total;
 ```
 
 上面代码中做些必要的解释
-* 添加了两个 IN 类型参数，其中 taxable 为布尔值。
-* `--` 添加注释，在存储过程复杂是，注释很有必要。
-* `DECLARE` 定义局部变量，需要指定变量名和数据类型，支持可选的默认值
-* `COMMENT` 关键字，不是必需的，如果添加了，在 SHOW PROCEDURE STATUS 的结果中显示。
 
-
-
-
+- 添加了两个 IN 类型参数，其中 taxable 为布尔值。
+- `--` 添加注释，在存储过程复杂是，注释很有必要。
+- `DECLARE` 定义局部变量，需要指定变量名和数据类型，支持可选的默认值
+- `COMMENT` 关键字，不是必需的，如果添加了，在 SHOW PROCEDURE STATUS 的结果中显示。
 
 ### 注意
 
-* 如果在 mysql 命令行中创建存储过程的话，需要临时更改命令行实用程序的语句分隔符，因为创建存储过程会使用 ; 作为语句分隔符，这会导致语法报错。除了 \ 符号外，任何字符都可以用作语句分隔符。 可以使用 DELIMITER // 作为新的语句结束分隔符，但是创建完存储过程后，要记得用 DELIMITER ; 恢复为原来的语句分隔符。
-* 存储过程在创建之后，被保存在服务器上以供使用，直至被删除。
-* 如果删除不存在的存储过程时，会报错，可以使用 DROP PROCEDURE IF EXISTS ,只有当过程存在时才删除。
-* MySQL 支持 IN（传递给存储过程）、OUT（从存储过程传出）、INOUT（对存储过程传入和传出）三种类型的参数。SELECT 检索出来的值通过 INTO 保存到相应的变量。特别注意，参数的数据类型不能是一个集合，所以例子中才用了三个参数输出3个数。
-* 如果存储过程要求3个参数，就必须正好传递3个参数。
-* `SHOW PROCEDURE STATUS` 可以列出所有存储过程，也可以使用 LIKE 指定一个过滤模式： `SHOW PROCEDURE STATUS LIKE 'ordertotal';`
+- 如果在 mysql 命令行中创建存储过程的话，需要临时更改命令行实用程序的语句分隔符，因为创建存储过程会使用 ; 作为语句分隔符，这会导致语法报错。除了 \ 符号外，任何字符都可以用作语句分隔符。 可以使用 DELIMITER // 作为新的语句结束分隔符，但是创建完存储过程后，要记得用 DELIMITER ; 恢复为原来的语句分隔符。
+- 存储过程在创建之后，被保存在服务器上以供使用，直至被删除。
+- 如果删除不存在的存储过程时，会报错，可以使用 DROP PROCEDURE IF EXISTS ,只有当过程存在时才删除。
+- MySQL 支持 IN（传递给存储过程）、OUT（从存储过程传出）、INOUT（对存储过程传入和传出）三种类型的参数。SELECT 检索出来的值通过 INTO 保存到相应的变量。特别注意，参数的数据类型不能是一个集合，所以例子中才用了三个参数输出 3 个数。
+- 如果存储过程要求 3 个参数，就必须正好传递 3 个参数。
+- `SHOW PROCEDURE STATUS` 可以列出所有存储过程，也可以使用 LIKE 指定一个过滤模式： `SHOW PROCEDURE STATUS LIKE 'ordertotal';`
 
 ---
+
 <br>
 
 ## 使用游标
@@ -1617,32 +1649,31 @@ SELECT * FROM ordertotals;
 
 `CONTINUE HANDLER` 是在条件出现时被执行的代码。上面 `SQLSTATE '02000'` 出现时 `SET done = 1`。`SQLSTATE '02000'`是一个未找到条件，上面指的是 REPEAT 由于没有更多的行供循环而不能继续时，出现这个条件。
 
-
 ### 注意：
-* 跟其他的 DBMS 不同的是，MySQL 游标只能用于存储过程（和函数）
-* 在使用游标前，必须声明（定义）游标。声明的过程实际上没有检索数据，它只是定义要使用的 SELECT 语句。
-* 声明之后，如果要使用游标，必须打开游标。这个过程是用前面定义的 SELECT 语句把数据实际检索出来。
-* 在结束游标使用时，必须关闭游标。
 
-
+- 跟其他的 DBMS 不同的是，MySQL 游标只能用于存储过程（和函数）
+- 在使用游标前，必须声明（定义）游标。声明的过程实际上没有检索数据，它只是定义要使用的 SELECT 语句。
+- 声明之后，如果要使用游标，必须打开游标。这个过程是用前面定义的 SELECT 语句把数据实际检索出来。
+- 在结束游标使用时，必须关闭游标。
 
 ---
-<br>
 
+<br>
 
 ## 使用触发器
 
 触发器是 MySQL 响应以下任意语句而自动执行的一条 MySQL 语句，（或位于 BEGIN 和 END 语句之间的一组语句）:
-* DELETE;
-* INSERT;
-* UPDATE;
+
+- DELETE;
+- INSERT;
+- UPDATE;
 
 ### 创建触发器遵循以下几点
 
-* 唯一的触发器名；
-* 触发器关联的表；
-* 触发器应该响应的活动（DELETE、INSERT 和 UPDATE）；
-* 触发器何时执行（处理之前或之后）
+- 唯一的触发器名；
+- 触发器关联的表；
+- 触发器应该响应的活动（DELETE、INSERT 和 UPDATE）；
+- 触发器何时执行（处理之前或之后）
 
 `CREATE TRIGGER` 新建触发器
 
@@ -1650,9 +1681,9 @@ SELECT * FROM ordertotals;
 
 ### INSERT 触发器
 
-* 在 INSERT 触发器代码内，可以引用一个名为 NEW 的虚拟表，访问被插入的行；
-* 在 BEFORE INSERT 触发器中，NEW 中的值可以被更新（允许更改被插入的值）
-* 对于 AUTO_INCREMENT 列， NEW 在 INSERT 执行之前包含0，在 INSERT 执行之后包含新的自动生成值。
+- 在 INSERT 触发器代码内，可以引用一个名为 NEW 的虚拟表，访问被插入的行；
+- 在 BEFORE INSERT 触发器中，NEW 中的值可以被更新（允许更改被插入的值）
+- 对于 AUTO_INCREMENT 列， NEW 在 INSERT 执行之前包含 0，在 INSERT 执行之后包含新的自动生成值。
 
 ```sql
 ### 创建一个名为 neworder 的触发器，在插入一个新订单到 orders 表时，返回新的订单号放到变量@number中。
@@ -1670,14 +1701,14 @@ SELECT @number;
 
 ### DELETE 触发器
 
-* 在 DELETE 触发器代码内，可以引用一个名为 OLD 的虚拟表，访问被删除的行；
-* OLD 中的值是只读的，不能更新。
+- 在 DELETE 触发器代码内，可以引用一个名为 OLD 的虚拟表，访问被删除的行；
+- OLD 中的值是只读的，不能更新。
 
 ### UPDATE 触发器
 
-* 在 UPDATE 触发器代码内，可以引用一个名为 OLD 的虚拟表，访问以前（UPDATE语句前）的值，引用一个名为 NEW 的虚拟表访问新更新的值；
-* 在 BEFORE UPDATE 触发器中，NEW 中的值可以被更新（允许更改将要用于 UPDATE 语句中的值）
-* OLD 中的值是只读的，不能更新。
+- 在 UPDATE 触发器代码内，可以引用一个名为 OLD 的虚拟表，访问以前（UPDATE 语句前）的值，引用一个名为 NEW 的虚拟表访问新更新的值；
+- 在 BEFORE UPDATE 触发器中，NEW 中的值可以被更新（允许更改将要用于 UPDATE 语句中的值）
+- OLD 中的值是只读的，不能更新。
 
 ```sql
 ### 创建一个名为 neworder 的触发器，在插入一个新订单到 orders 表时，返回新的订单号放到变量@number中。
@@ -1693,18 +1724,18 @@ SELECT @number;
 
 ```
 
-
 ### 注意
 
-* 只有表才支持触发器，视图不支持（临时表也不支持）。
-* 触发器按每个表每个事件每次地定义，每个表每个事件每次只允许一个触发器。因此，每个表最多支持6个触发器（每条 INSERT、UPDATE 和 DELETE 的之前和之后）
-* 单一触发器不能与多个事件或多个表关联，所以，如果需要一个对 INSERT 和 UPDATE 操作执行的触发器，就应该定义两个触发器。
-* 如果 BEFORE 触发器失败，MySQL 将不执行请求的操作。如果 BEFORE 触发器或语句本身失败， MySQL将不执行 AFTER 触发器（如果有的话）。
-* MySQL 的 TRIGGER 和 FUNCTION 中不能出现 SELECT * FROM table 形式的查询，因为其会返回一个结果集，而这在 MySQL 的 TRIGGER 和 FUNCTION 中是不可接受的，但是在存储过程中可以。在 TRIGGER 和 FUNCTION 中可以使用 SELECT ... INTO ... 形式的查询。
-* 使用 TRIGGER 的时候没有 INTO 的时候会报这样一种错误 `not allowed to return a result set from a trigger`
-* MySQL 触发器中不支持 CALL 语句，这表示不能从触发器内调用存储过程。所需的存储过程代码需要复制到触发器内。
+- 只有表才支持触发器，视图不支持（临时表也不支持）。
+- 触发器按每个表每个事件每次地定义，每个表每个事件每次只允许一个触发器。因此，每个表最多支持 6 个触发器（每条 INSERT、UPDATE 和 DELETE 的之前和之后）
+- 单一触发器不能与多个事件或多个表关联，所以，如果需要一个对 INSERT 和 UPDATE 操作执行的触发器，就应该定义两个触发器。
+- 如果 BEFORE 触发器失败，MySQL 将不执行请求的操作。如果 BEFORE 触发器或语句本身失败， MySQL 将不执行 AFTER 触发器（如果有的话）。
+- MySQL 的 TRIGGER 和 FUNCTION 中不能出现 SELECT \* FROM table 形式的查询，因为其会返回一个结果集，而这在 MySQL 的 TRIGGER 和 FUNCTION 中是不可接受的，但是在存储过程中可以。在 TRIGGER 和 FUNCTION 中可以使用 SELECT ... INTO ... 形式的查询。
+- 使用 TRIGGER 的时候没有 INTO 的时候会报这样一种错误 `not allowed to return a result set from a trigger`
+- MySQL 触发器中不支持 CALL 语句，这表示不能从触发器内调用存储过程。所需的存储过程代码需要复制到触发器内。
 
 ---
+
 <br>
 
 ## 管理事务处理
@@ -1713,33 +1744,33 @@ SELECT @number;
 
 事务处理是一种机制，用来管理必须成批执行的 MySQL 操作，以保证数据库不包含不完整的操作结果。使用事务处理，可以保证一组操作不会中途停止，它们要么整体执行，要么完全不执行（除非明确指示）如果没有错误发生，整租语句提交给（写到）数据库表。如果发生错误，则进行回退（撤销）以恢复数据库到某个已知且安全的状态。
 
-* 事务（transaction）指一组 SQL 语句，语句 `START TRANSACTION`
-* 回退（rollback） 指撤销指定的 SQL 语句的过程，语句 `ROLLBACK TO onename`
-* 提交（commit） 指将未存储的 SQL 语句结果写入数据库表，语句 `COMMIT`
-  - 一般的MySQL语句都是直接针对数据库表执行和编写的，提交（写或保存）操作是自动进行的，这就是所谓的隐含提交（implicit commit）
-  - 在事务处理中，提交不会隐含地进行，为了进行明确的提交，使用COMMIT语句
-* 保留点（savepoint） 指事务处理中设置的临时占位符（place-holder）,你可以对它发布回退（与回退整个事务处理不同）。为了支持回退部分事务处理，必须能在事务处理块中合适的位置放置保留点，这样，如果需要回退，可以回退到某个占位符，即某个保留点。语句： `SAVEPOINT onename`
+- 事务（transaction）指一组 SQL 语句，语句 `START TRANSACTION`
+- 回退（rollback） 指撤销指定的 SQL 语句的过程，语句 `ROLLBACK TO onename`
+- 提交（commit） 指将未存储的 SQL 语句结果写入数据库表，语句 `COMMIT`
+  - 一般的 MySQL 语句都是直接针对数据库表执行和编写的，提交（写或保存）操作是自动进行的，这就是所谓的隐含提交（implicit commit）
+  - 在事务处理中，提交不会隐含地进行，为了进行明确的提交，使用 COMMIT 语句
+- 保留点（savepoint） 指事务处理中设置的临时占位符（place-holder）,你可以对它发布回退（与回退整个事务处理不同）。为了支持回退部分事务处理，必须能在事务处理块中合适的位置放置保留点，这样，如果需要回退，可以回退到某个占位符，即某个保留点。语句： `SAVEPOINT onename`
 
 假设一个场景：系统添加订单的过程
 
-1. 检查数据库中是否存在相应的客户（从customers表查询），如果不存在，添加TA。
-2. 检索客户的ID
-3. 添加一行到orders表，把它与客户ID关联
-4. 检索orders表中赋予的新订单的ID
-5. 对于订购的每个物品在orderitems表中添加一行，通过检索出来的ID把它与orders表关联（以及通过产品ID与products表关联）
+1. 检查数据库中是否存在相应的客户（从 customers 表查询），如果不存在，添加 TA。
+2. 检索客户的 ID
+3. 添加一行到 orders 表，把它与客户 ID 关联
+4. 检索 orders 表中赋予的新订单的 ID
+5. 对于订购的每个物品在 orderitems 表中添加一行，通过检索出来的 ID 把它与 orders 表关联（以及通过产品 ID 与 products 表关联）
 
-现在假如由于某种数据库故障（如超出磁盘空间、安全限制、表锁等）阻止了这个过程的完成，如果发生在添加客户之后，orders表添加之前还好，但是如果故障发生在orders行添加之后，orderitems行添加之前，那么数据库中就会有一个空订单，如果发生在添加orderitems行中出现的故障，那数据库就可能有不完整的订单，而且这个不完整的订单还不会被发现。
+现在假如由于某种数据库故障（如超出磁盘空间、安全限制、表锁等）阻止了这个过程的完成，如果发生在添加客户之后，orders 表添加之前还好，但是如果故障发生在 orders 行添加之后，orderitems 行添加之前，那么数据库中就会有一个空订单，如果发生在添加 orderitems 行中出现的故障，那数据库就可能有不完整的订单，而且这个不完整的订单还不会被发现。
 
 所以我们要把过程改一下：
 
-1. 检查数据库中是否存在相应的客户（从customers表查询），如果不存在，添加TA。
+1. 检查数据库中是否存在相应的客户（从 customers 表查询），如果不存在，添加 TA。
 2. **提交**客户信息
-3. 检索客户的ID
-4. 添加一行到orders表
-5. 如果在添加行到orders表时出现故障，**回退**
-6. 检索orders表中赋予的新订单ID
-7. 对于订购的每项商品，添加新行到orderitems表
-8. 如果在添加新行到orderitems表时出现故障，**回退**所有添加的orderitems行和orders行
+3. 检索客户的 ID
+4. 添加一行到 orders 表
+5. 如果在添加行到 orders 表时出现故障，**回退**
+6. 检索 orders 表中赋予的新订单 ID
+7. 对于订购的每项商品，添加新行到 orderitems 表
+8. 如果在添加新行到 orderitems 表时出现故障，**回退**所有添加的 orderitems 行和 orders 行
 9. 提交订单信息
 
 ```sql
@@ -1747,18 +1778,20 @@ SELECT @number;
 ```
 
 ### 注意
-* 当 COMMIT 和 ROLLBACK 语句执行后，事务会自动关闭（将来的更改会隐含提交）
-* 每个保留点都要取一个唯一的名字，以便回退时，MySQL知道要回退到何处。保留点尽量越多越好，这样就可以更灵活的回退。保留点在事务处理完成（执行一条 ROLLBACK 或 COMMIT）后自动释放。也可以使用 RELEASE SAVEPOINT 明确地释放保留点。
+
+- 当 COMMIT 和 ROLLBACK 语句执行后，事务会自动关闭（将来的更改会隐含提交）
+- 每个保留点都要取一个唯一的名字，以便回退时，MySQL 知道要回退到何处。保留点尽量越多越好，这样就可以更灵活的回退。保留点在事务处理完成（执行一条 ROLLBACK 或 COMMIT）后自动释放。也可以使用 RELEASE SAVEPOINT 明确地释放保留点。
 
 ---
-<br>
 
+<br>
 
 ## 数据库维护
 
 ### 备份数据
 
 #### mysqldump
+
 mysqldump 是一个逻辑备份工具，复制原始的数据库对象定义和表数据产生一组可执行的 SQL 语句。在日常工作中，我们会使用 mysqldump 命令创建 SQL 格式的转存储文件来备份数据库，或者把数据导出后做数据迁移，主备搭建等操作。
 
 ```sql
@@ -1797,13 +1830,12 @@ mysqldump --host=h1 -uroot -proot --databases database1 |mysql --host=h2 -uroot 
 ```
 
 #### 注意
-* 导出指定表只能针对一个数据库进行导出，且导出的内容中和导出数据库也不一样，导出指定表的导出文本中没有创建数据库的判断语句，只有删除表-创建表-导入数据
 
-
+- 导出指定表只能针对一个数据库进行导出，且导出的内容中和导出数据库也不一样，导出指定表的导出文本中没有创建数据库的判断语句，只有删除表-创建表-导入数据
 
 ---
-<br>
 
+<br>
 
 ## 补充
 
@@ -1847,18 +1879,18 @@ mysql> SHOW VARIABLES LIKE 'validate_password%';
 | validate_password.special_char_count | 1      |
 +--------------------------------------+--------+
 ```
+
 要注意 `validate_password_policy：密码强度检查等级`
 
-|级别|描述|
-|--|--|
-|0/LOW|只检查长度。|
-|1/MEDIUM|检查长度、数字、大小写、特殊字符。|
-|2/STRONG|检查长度、数字、大小写、特殊字符字典文件|
+| 级别     | 描述                                     |
+| -------- | ---------------------------------------- |
+| 0/LOW    | 只检查长度。                             |
+| 1/MEDIUM | 检查长度、数字、大小写、特殊字符。       |
+| 2/STRONG | 检查长度、数字、大小写、特殊字符字典文件 |
 
+- [详见 mysql 密码策略设置](https://raydoom.github.io/work/mysql/2018/09/13/mysql-validate-password/)
 
-* [详见mysql密码策略设置](https://raydoom.github.io/work/mysql/2018/09/13/mysql-validate-password/)
-
-* [MySQL8.0 SHOW VARIABLES 为 empty set 可看此文](http://blog.itpub.net/20893244/viewspace-2565368/)
+- [MySQL8.0 SHOW VARIABLES 为 empty set 可看此文](http://blog.itpub.net/20893244/viewspace-2565368/)
 
 ### 其他的 SHOW 命令列表
 
@@ -1881,4 +1913,3 @@ SHOW WARNINGS;
 # 显示所有允许的 SHOW 语句
 HELP SHOW;
 ```
-

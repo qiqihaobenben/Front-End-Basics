@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ThinkPHP 模板中的语法知识 | Front-End-Basics</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="陈方旭的个人文档">
+    
+    <link rel="preload" href="/assets/css/0.styles.35bcedcf.css" as="style"><link rel="preload" href="/assets/js/app.cc7effe2.js" as="script"><link rel="preload" href="/assets/js/2.f8f5562f.js" as="script"><link rel="preload" href="/assets/js/48.29235634.js" as="script"><link rel="prefetch" href="/assets/js/10.d631d72f.js"><link rel="prefetch" href="/assets/js/100.aaf375fa.js"><link rel="prefetch" href="/assets/js/101.4c8f4c78.js"><link rel="prefetch" href="/assets/js/102.eb4a448b.js"><link rel="prefetch" href="/assets/js/103.d08f6620.js"><link rel="prefetch" href="/assets/js/104.20fa3ea0.js"><link rel="prefetch" href="/assets/js/105.464bc1e2.js"><link rel="prefetch" href="/assets/js/106.62c6e0ad.js"><link rel="prefetch" href="/assets/js/107.acb7c117.js"><link rel="prefetch" href="/assets/js/108.6df0a390.js"><link rel="prefetch" href="/assets/js/109.049bb742.js"><link rel="prefetch" href="/assets/js/11.b31aec1a.js"><link rel="prefetch" href="/assets/js/110.2c553059.js"><link rel="prefetch" href="/assets/js/111.7d7e97d8.js"><link rel="prefetch" href="/assets/js/112.97363246.js"><link rel="prefetch" href="/assets/js/113.353033a0.js"><link rel="prefetch" href="/assets/js/114.206c02c5.js"><link rel="prefetch" href="/assets/js/115.4c3ff52a.js"><link rel="prefetch" href="/assets/js/116.2b3ff140.js"><link rel="prefetch" href="/assets/js/117.bd75c390.js"><link rel="prefetch" href="/assets/js/118.43d8a7c9.js"><link rel="prefetch" href="/assets/js/119.b18cae25.js"><link rel="prefetch" href="/assets/js/12.cdf900ed.js"><link rel="prefetch" href="/assets/js/120.e52084bc.js"><link rel="prefetch" href="/assets/js/121.f84789b2.js"><link rel="prefetch" href="/assets/js/122.dd0d0f40.js"><link rel="prefetch" href="/assets/js/123.2a93453b.js"><link rel="prefetch" href="/assets/js/124.5869bbd8.js"><link rel="prefetch" href="/assets/js/125.280a43bd.js"><link rel="prefetch" href="/assets/js/126.3db1f54c.js"><link rel="prefetch" href="/assets/js/127.f2a978d6.js"><link rel="prefetch" href="/assets/js/128.310bb1e1.js"><link rel="prefetch" href="/assets/js/129.fffabf0d.js"><link rel="prefetch" href="/assets/js/13.f1e9c52e.js"><link rel="prefetch" href="/assets/js/130.3864d9c9.js"><link rel="prefetch" href="/assets/js/131.7b624c88.js"><link rel="prefetch" href="/assets/js/132.a16aeb22.js"><link rel="prefetch" href="/assets/js/133.4528cbd4.js"><link rel="prefetch" href="/assets/js/134.e7c7cd7d.js"><link rel="prefetch" href="/assets/js/135.5408a0d4.js"><link rel="prefetch" href="/assets/js/136.166f7bd0.js"><link rel="prefetch" href="/assets/js/137.22d16b9a.js"><link rel="prefetch" href="/assets/js/138.5d7a178a.js"><link rel="prefetch" href="/assets/js/139.aeda3f2f.js"><link rel="prefetch" href="/assets/js/14.4f114a52.js"><link rel="prefetch" href="/assets/js/140.fc4f83e1.js"><link rel="prefetch" href="/assets/js/141.8c037f53.js"><link rel="prefetch" href="/assets/js/142.cfbcaa0c.js"><link rel="prefetch" href="/assets/js/143.3ab0e418.js"><link rel="prefetch" href="/assets/js/144.92d99d4f.js"><link rel="prefetch" href="/assets/js/15.5f8da9da.js"><link rel="prefetch" href="/assets/js/16.7f7805dd.js"><link rel="prefetch" href="/assets/js/17.3b098518.js"><link rel="prefetch" href="/assets/js/18.012f7d49.js"><link rel="prefetch" href="/assets/js/19.89ec6c8c.js"><link rel="prefetch" href="/assets/js/20.a7f04e88.js"><link rel="prefetch" href="/assets/js/21.fde2dafb.js"><link rel="prefetch" href="/assets/js/22.6d54f592.js"><link rel="prefetch" href="/assets/js/23.5fe4ba69.js"><link rel="prefetch" href="/assets/js/24.e37b0dbd.js"><link rel="prefetch" href="/assets/js/25.342cd954.js"><link rel="prefetch" href="/assets/js/26.a0476a75.js"><link rel="prefetch" href="/assets/js/27.abf629f2.js"><link rel="prefetch" href="/assets/js/28.80e83ef9.js"><link rel="prefetch" href="/assets/js/29.6c4447a2.js"><link rel="prefetch" href="/assets/js/3.d0d59f73.js"><link rel="prefetch" href="/assets/js/30.99a7300a.js"><link rel="prefetch" href="/assets/js/31.44e95289.js"><link rel="prefetch" href="/assets/js/32.452c5621.js"><link rel="prefetch" href="/assets/js/33.6e7fe57e.js"><link rel="prefetch" href="/assets/js/34.f2e6cc4e.js"><link rel="prefetch" href="/assets/js/35.796c7d12.js"><link rel="prefetch" href="/assets/js/36.3eef68d3.js"><link rel="prefetch" href="/assets/js/37.db27fc05.js"><link rel="prefetch" href="/assets/js/38.43266de8.js"><link rel="prefetch" href="/assets/js/39.e3b5b464.js"><link rel="prefetch" href="/assets/js/4.0768ab53.js"><link rel="prefetch" href="/assets/js/40.e57210f9.js"><link rel="prefetch" href="/assets/js/41.a2e5f5be.js"><link rel="prefetch" href="/assets/js/42.5823eee1.js"><link rel="prefetch" href="/assets/js/43.210b55e1.js"><link rel="prefetch" href="/assets/js/44.563b08e6.js"><link rel="prefetch" href="/assets/js/45.1fc050b2.js"><link rel="prefetch" href="/assets/js/46.f680d93b.js"><link rel="prefetch" href="/assets/js/47.e19ced39.js"><link rel="prefetch" href="/assets/js/49.f76ff105.js"><link rel="prefetch" href="/assets/js/5.a2a39642.js"><link rel="prefetch" href="/assets/js/50.085b2179.js"><link rel="prefetch" href="/assets/js/51.76f2d633.js"><link rel="prefetch" href="/assets/js/52.3150e87e.js"><link rel="prefetch" href="/assets/js/53.7212775e.js"><link rel="prefetch" href="/assets/js/54.2f20355e.js"><link rel="prefetch" href="/assets/js/55.3b69a50e.js"><link rel="prefetch" href="/assets/js/56.1a82e4d0.js"><link rel="prefetch" href="/assets/js/57.49686d87.js"><link rel="prefetch" href="/assets/js/58.b38a99ff.js"><link rel="prefetch" href="/assets/js/59.02aa6721.js"><link rel="prefetch" href="/assets/js/6.02b0eb41.js"><link rel="prefetch" href="/assets/js/60.1b9d1433.js"><link rel="prefetch" href="/assets/js/61.11e06b30.js"><link rel="prefetch" href="/assets/js/62.fb9f4051.js"><link rel="prefetch" href="/assets/js/63.b91e436f.js"><link rel="prefetch" href="/assets/js/64.973a82c0.js"><link rel="prefetch" href="/assets/js/65.e36e3ae1.js"><link rel="prefetch" href="/assets/js/66.9e73f086.js"><link rel="prefetch" href="/assets/js/67.e0a0687a.js"><link rel="prefetch" href="/assets/js/68.25e5aabf.js"><link rel="prefetch" href="/assets/js/69.ae419cb9.js"><link rel="prefetch" href="/assets/js/7.588f1b88.js"><link rel="prefetch" href="/assets/js/70.abd33074.js"><link rel="prefetch" href="/assets/js/71.c3791fa1.js"><link rel="prefetch" href="/assets/js/72.8c1d71e6.js"><link rel="prefetch" href="/assets/js/73.ba931ec3.js"><link rel="prefetch" href="/assets/js/74.4698ee39.js"><link rel="prefetch" href="/assets/js/75.15ca01f2.js"><link rel="prefetch" href="/assets/js/76.8ca4b5b0.js"><link rel="prefetch" href="/assets/js/77.da2c4bd6.js"><link rel="prefetch" href="/assets/js/78.97656ef5.js"><link rel="prefetch" href="/assets/js/79.32879105.js"><link rel="prefetch" href="/assets/js/8.63df1f5c.js"><link rel="prefetch" href="/assets/js/80.603e2d1b.js"><link rel="prefetch" href="/assets/js/81.3f6b8af8.js"><link rel="prefetch" href="/assets/js/82.b11b8937.js"><link rel="prefetch" href="/assets/js/83.b7f2b439.js"><link rel="prefetch" href="/assets/js/84.32b89b03.js"><link rel="prefetch" href="/assets/js/85.294b0bcb.js"><link rel="prefetch" href="/assets/js/86.01b71b92.js"><link rel="prefetch" href="/assets/js/87.048631b2.js"><link rel="prefetch" href="/assets/js/88.054e325b.js"><link rel="prefetch" href="/assets/js/89.381412e3.js"><link rel="prefetch" href="/assets/js/9.143b08ba.js"><link rel="prefetch" href="/assets/js/90.17a9db32.js"><link rel="prefetch" href="/assets/js/91.6e5d060e.js"><link rel="prefetch" href="/assets/js/92.1ea365c8.js"><link rel="prefetch" href="/assets/js/93.a652939d.js"><link rel="prefetch" href="/assets/js/94.dd324120.js"><link rel="prefetch" href="/assets/js/95.ba4131c0.js"><link rel="prefetch" href="/assets/js/96.a56f29c6.js"><link rel="prefetch" href="/assets/js/97.90143192.js"><link rel="prefetch" href="/assets/js/98.d5f45a6f.js"><link rel="prefetch" href="/assets/js/99.d17eb214.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.35bcedcf.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="Front-End-Basics" class="logo"> <span class="site-name can-hide">Front-End-Basics</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link router-link-active">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link router-link-active">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>有趣的文章</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>有趣的人</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>读书笔记</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>老技术文章备份</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/article/oldTechnologyArticle/ThinkPHP_template.html" aria-current="page" class="active sidebar-link">ThinkPHP 模板中的语法知识</a></li><li><a href="/article/oldTechnologyArticle/zifubianma.html" class="sidebar-link">字符编码趣闻</a></li><li><a href="/article/oldTechnologyArticle/email.html" class="sidebar-link">邮件模板采坑</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="thinkphp-模板中的语法知识"><a href="#thinkphp-模板中的语法知识" class="header-anchor">#</a> ThinkPHP 模板中的语法知识</h1> <h4 id="原文链接"><a href="#原文链接" class="header-anchor">#</a> <a href="https://blog.csdn.net/leyangjun/article/details/42079905" target="_blank" rel="noopener noreferrer">原文链接<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></h4> <h3 id="一、导入css和js文件-记住常量的是大写"><a href="#一、导入css和js文件-记住常量的是大写" class="header-anchor">#</a> 一、导入CSS和JS文件（记住常量的是大写）</h3> <ol><li>css=&gt;link 、js=&gt;script</li></ol> <div class="language- extra-class"><pre class="language-text"><code>&lt;link rel='stylesheet' type='text/css' href='__PUBLIC__/Css/test.css'/&gt;
+&lt;script src='__PUBLIC__/Js/test.js'&gt;&lt;/script&gt;
+</code></pre></div><ol start="2"><li>import（默认是在Public文件夹下）</li></ol> <div class="language- extra-class"><pre class="language-text"><code>//导入Public文件夹下面的Js目录中的test.js文件，import标签可以省略type属性，默认就是js的
+&lt;import type='js' file='Js.test' /&gt; 
+&lt;import type='css' file='Css.test' /&gt;
+
+//可以更改默认文件夹 设置basepath属性
+//就会在 根目录下找到 Other/Js/my.js,就不是默认的Public目录
+&lt;import type='js' file='Js.my' basepath='./Other'/&gt;
+</code></pre></div><ol start="3"><li>load</li></ol> <div class="language- extra-class"><pre class="language-text"><code>//方法可以自动检测导入的文件类型
+&lt;load href='__PUBLIC__/Js/test.js' /&gt;
+&lt;load href='__PUBLIC__/Css/test.css' /&gt;
+</code></pre></div><h3 id="二、分支结构"><a href="#二、分支结构" class="header-anchor">#</a> 二、分支结构</h3> <ol><li><code>if</code> (一定要注意 <code>else</code> 或 <code>elseif</code> 后面的 <code>/</code>)</li></ol> <div class="language- extra-class"><pre class="language-text"><code>&lt;if condition='$sex eq &quot;男&quot;'&gt;
+男人哭吧哭吧不是罪！
+&lt;else /&gt;
+做女人挺好的！
+&lt;/if&gt;
+
+
+&lt;if condition='$age lt 18'&gt;
+未成年
+&lt;elseif  condition='$age eq 18'/&gt;
+奋斗吧少年！
+&lt;else /&gt;
+成年
+&lt;/if&gt;
+
+// 下面是判断语法
+&gt;  gt
+&lt;  lt
+== eq
+&lt;= elt
+&gt;= egt
+!= neq
+=== heq
+!== nheq
+
+&lt;switch name='myAge'&gt; //变量不要加 $  直接名字myAge 默认会加$
+  &lt;case value='1'&gt;太小啦你&lt;/case&gt;
+  &lt;case value='2'&gt;你也太小&lt;/case&gt;
+  &lt;case value='30'&gt;你还差不多&lt;/case&gt;
+  &lt;default/&gt; 这里是默认值
+&lt;/switch&gt;
+</code></pre></div><h3 id="三、循环结构"><a href="#三、循环结构" class="header-anchor">#</a> 三、循环结构</h3> <ol><li><code>for</code></li></ol> <div class="language- extra-class"><pre class="language-text"><code>/*
+  start（必须）：循环变量开始值
+  end（必须）：循环变量结束值
+  name（可选）：循环变量名，默认值为i
+  step（可选）：步进值，默认值为1,自加！
+  comparison（可选）：判断条件，默认为lt
+*/
+&lt;table border='1' width='500'&gt;
+&lt;for start='0' end='10' name='j' step='2'&gt;
+  &lt;tr&gt;&lt;td&gt;{$j}&lt;/td&gt;&lt;td&gt;abc&lt;/td&gt;&lt;/tr&gt;
+&lt;/for&gt;
+
+//倒序
+&lt;for start='10' end='00' name='j' step='-2' comparison='gt'&gt;
+  &lt;tr&gt;&lt;td&gt;{$j}&lt;/td&gt;&lt;td&gt;abc&lt;/td&gt;&lt;/tr&gt;
+&lt;/for&gt;
+&lt;/table&gt;
+</code></pre></div><ol start="2"><li><code>volist</code>（数组遍历）</li></ol> <div class="language- extra-class"><pre class="language-text"><code>&lt;volist name='list' id='v'&gt;
+  {$v.username}&lt;br/&gt;
+&lt;/volist&gt;
+
+//从下表=1的开始取2条
+&lt;volist name='list' id='v' offset='1' length='2'&gt;
+  &lt;{$v}&gt;&lt;br&gt;
+&lt;/volist&gt;
+
+//遍历多维数组
+&lt;volist name='arrd' id='v'&gt;
+  &lt;{$v.id}&gt;--&lt;{$v.username}&gt;&lt;br&gt;
+&lt;/volist&gt;
+</code></pre></div><ol start="3"><li><code>foreach</code></li></ol> <div class="language- extra-class"><pre class="language-text"><code>&lt;foreach name='list' item='v' key='k'&gt;
+  {$k}-------{$v}&lt;br/&gt;
+&lt;/foreach&gt;
+</code></pre></div><h3 id="四、特殊标签"><a href="#四、特殊标签" class="header-anchor">#</a> 四、特殊标签</h3> <ol><li>比较标签</li></ol> <div class="language- extra-class"><pre class="language-text"><code>eq或者 equal 等于 
+模板中等同于if else的使用  number传的变量
+
+&lt;eq name='number' value='10'&gt;
+  如果传的name=10我就输出这里也！
+&lt;else/&gt;
+  不等于10我就输出这里哦！
+&lt;/eq&gt;
+
+neq 或者notequal 不等于 
+gt 大于 
+egt 大于等于 
+lt 小于 
+elt 小于等于 
+heq 恒等于 
+nheq 不恒等于 
+</code></pre></div><ol start="2"><li>范围标签(类似if else逻辑和书写方式)</li></ol> <p><code>in</code> 标签</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;in name='number' value='9,10,11,12'&gt;
+  在这些数字里面
+&lt;else/&gt;
+  不在这些数字的范围内
+&lt;/in&gt;
+</code></pre></div><p><code>notin</code> 标签</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;notin name='number' value='9,10,11,12'&gt;
+  在这些数字里面
+&lt;else/&gt;
+  不在这些数字的范围内
+&lt;/notin&gt;
+</code></pre></div><p><code>between</code> 标签</p> <div class="language- extra-class"><pre class="language-text"><code>//1-10之间
+&lt;notbetween name='number' value='1,10'&gt;
+{$number}在1-10之间
+&lt;else/&gt;
+{$number}不在1到10之间
+&lt;/between&gt;
+</code></pre></div><p><code>notbetween</code> 标签 来判断变量不在某个范围内</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;notbetween name=&quot;id&quot;value=&quot;1,10&quot;&gt;输出内容1&lt;/notbetween&gt;
+</code></pre></div><ol start="3"><li><code>present</code> 标签</li></ol> <p>标签来判断模板变量是否已经赋值</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;present name='m'&gt;m有赋值&lt;else/&gt;m没有赋值&lt;/present&gt;
+</code></pre></div><ol start="4"><li><code>Empty</code> 标签</li></ol> <p>empty标签判断模板变量是否为空</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;empty name='number'&gt;number为空赋值&lt;else/&gt;number有值&lt;/empty&gt;
+</code></pre></div><ol start="5"><li><p><code>Defined</code> 判断常量是否已经定义</p></li> <li><p><code>Define</code> 在模板中定义常量</p></li> <li><p><code>Assing</code> 在模板中给变量赋值</p></li></ol> <h3 id="五、其他标签使用"><a href="#五、其他标签使用" class="header-anchor">#</a> 五、其他标签使用</h3> <ol><li>在模板中直接使用PHP代码</li></ol> <div class="language- extra-class"><pre class="language-text"><code>&lt;php&gt; echo &quot;Hello World&quot; &lt;/php&gt;  //注意里面只能写php的代码，嵌入tp的标签是不能用的
+</code></pre></div><ol start="2"><li>建议更改左右定界符</li></ol> <div class="language- extra-class"><pre class="language-text"><code>在配置文件中改变
+'TMPL_L_DELIM'=&gt;'&lt;{', //修改左定界符
+'TMPL_R_DELIM'=&gt;'}&gt;', //修改右定界符
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/article/oldTechnologyArticle/ThinkPHP_template.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/29/2021, 10:24:33 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/article/book/ganfa.html" class="prev">
+        《干法》—稻盛和夫的劳动观
+      </a></span> <span class="next"><a href="/article/oldTechnologyArticle/zifubianma.html">
+        字符编码趣闻
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cc7effe2.js" defer></script><script src="/assets/js/2.f8f5562f.js" defer></script><script src="/assets/js/48.29235634.js" defer></script>
+  </body>
+</html>

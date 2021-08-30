@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>前端请求跨域 | Front-End-Basics</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="陈方旭的个人文档">
+    
+    <link rel="preload" href="/assets/css/0.styles.35bcedcf.css" as="style"><link rel="preload" href="/assets/js/app.cc7effe2.js" as="script"><link rel="preload" href="/assets/js/2.f8f5562f.js" as="script"><link rel="preload" href="/assets/js/31.44e95289.js" as="script"><link rel="prefetch" href="/assets/js/10.d631d72f.js"><link rel="prefetch" href="/assets/js/100.aaf375fa.js"><link rel="prefetch" href="/assets/js/101.4c8f4c78.js"><link rel="prefetch" href="/assets/js/102.eb4a448b.js"><link rel="prefetch" href="/assets/js/103.d08f6620.js"><link rel="prefetch" href="/assets/js/104.20fa3ea0.js"><link rel="prefetch" href="/assets/js/105.464bc1e2.js"><link rel="prefetch" href="/assets/js/106.62c6e0ad.js"><link rel="prefetch" href="/assets/js/107.acb7c117.js"><link rel="prefetch" href="/assets/js/108.6df0a390.js"><link rel="prefetch" href="/assets/js/109.049bb742.js"><link rel="prefetch" href="/assets/js/11.b31aec1a.js"><link rel="prefetch" href="/assets/js/110.2c553059.js"><link rel="prefetch" href="/assets/js/111.7d7e97d8.js"><link rel="prefetch" href="/assets/js/112.97363246.js"><link rel="prefetch" href="/assets/js/113.353033a0.js"><link rel="prefetch" href="/assets/js/114.206c02c5.js"><link rel="prefetch" href="/assets/js/115.4c3ff52a.js"><link rel="prefetch" href="/assets/js/116.2b3ff140.js"><link rel="prefetch" href="/assets/js/117.bd75c390.js"><link rel="prefetch" href="/assets/js/118.43d8a7c9.js"><link rel="prefetch" href="/assets/js/119.b18cae25.js"><link rel="prefetch" href="/assets/js/12.cdf900ed.js"><link rel="prefetch" href="/assets/js/120.e52084bc.js"><link rel="prefetch" href="/assets/js/121.f84789b2.js"><link rel="prefetch" href="/assets/js/122.dd0d0f40.js"><link rel="prefetch" href="/assets/js/123.2a93453b.js"><link rel="prefetch" href="/assets/js/124.5869bbd8.js"><link rel="prefetch" href="/assets/js/125.280a43bd.js"><link rel="prefetch" href="/assets/js/126.3db1f54c.js"><link rel="prefetch" href="/assets/js/127.f2a978d6.js"><link rel="prefetch" href="/assets/js/128.310bb1e1.js"><link rel="prefetch" href="/assets/js/129.fffabf0d.js"><link rel="prefetch" href="/assets/js/13.f1e9c52e.js"><link rel="prefetch" href="/assets/js/130.3864d9c9.js"><link rel="prefetch" href="/assets/js/131.7b624c88.js"><link rel="prefetch" href="/assets/js/132.a16aeb22.js"><link rel="prefetch" href="/assets/js/133.4528cbd4.js"><link rel="prefetch" href="/assets/js/134.e7c7cd7d.js"><link rel="prefetch" href="/assets/js/135.5408a0d4.js"><link rel="prefetch" href="/assets/js/136.166f7bd0.js"><link rel="prefetch" href="/assets/js/137.22d16b9a.js"><link rel="prefetch" href="/assets/js/138.5d7a178a.js"><link rel="prefetch" href="/assets/js/139.aeda3f2f.js"><link rel="prefetch" href="/assets/js/14.4f114a52.js"><link rel="prefetch" href="/assets/js/140.fc4f83e1.js"><link rel="prefetch" href="/assets/js/141.8c037f53.js"><link rel="prefetch" href="/assets/js/142.cfbcaa0c.js"><link rel="prefetch" href="/assets/js/143.3ab0e418.js"><link rel="prefetch" href="/assets/js/144.92d99d4f.js"><link rel="prefetch" href="/assets/js/15.5f8da9da.js"><link rel="prefetch" href="/assets/js/16.7f7805dd.js"><link rel="prefetch" href="/assets/js/17.3b098518.js"><link rel="prefetch" href="/assets/js/18.012f7d49.js"><link rel="prefetch" href="/assets/js/19.89ec6c8c.js"><link rel="prefetch" href="/assets/js/20.a7f04e88.js"><link rel="prefetch" href="/assets/js/21.fde2dafb.js"><link rel="prefetch" href="/assets/js/22.6d54f592.js"><link rel="prefetch" href="/assets/js/23.5fe4ba69.js"><link rel="prefetch" href="/assets/js/24.e37b0dbd.js"><link rel="prefetch" href="/assets/js/25.342cd954.js"><link rel="prefetch" href="/assets/js/26.a0476a75.js"><link rel="prefetch" href="/assets/js/27.abf629f2.js"><link rel="prefetch" href="/assets/js/28.80e83ef9.js"><link rel="prefetch" href="/assets/js/29.6c4447a2.js"><link rel="prefetch" href="/assets/js/3.d0d59f73.js"><link rel="prefetch" href="/assets/js/30.99a7300a.js"><link rel="prefetch" href="/assets/js/32.452c5621.js"><link rel="prefetch" href="/assets/js/33.6e7fe57e.js"><link rel="prefetch" href="/assets/js/34.f2e6cc4e.js"><link rel="prefetch" href="/assets/js/35.796c7d12.js"><link rel="prefetch" href="/assets/js/36.3eef68d3.js"><link rel="prefetch" href="/assets/js/37.db27fc05.js"><link rel="prefetch" href="/assets/js/38.43266de8.js"><link rel="prefetch" href="/assets/js/39.e3b5b464.js"><link rel="prefetch" href="/assets/js/4.0768ab53.js"><link rel="prefetch" href="/assets/js/40.e57210f9.js"><link rel="prefetch" href="/assets/js/41.a2e5f5be.js"><link rel="prefetch" href="/assets/js/42.5823eee1.js"><link rel="prefetch" href="/assets/js/43.210b55e1.js"><link rel="prefetch" href="/assets/js/44.563b08e6.js"><link rel="prefetch" href="/assets/js/45.1fc050b2.js"><link rel="prefetch" href="/assets/js/46.f680d93b.js"><link rel="prefetch" href="/assets/js/47.e19ced39.js"><link rel="prefetch" href="/assets/js/48.29235634.js"><link rel="prefetch" href="/assets/js/49.f76ff105.js"><link rel="prefetch" href="/assets/js/5.a2a39642.js"><link rel="prefetch" href="/assets/js/50.085b2179.js"><link rel="prefetch" href="/assets/js/51.76f2d633.js"><link rel="prefetch" href="/assets/js/52.3150e87e.js"><link rel="prefetch" href="/assets/js/53.7212775e.js"><link rel="prefetch" href="/assets/js/54.2f20355e.js"><link rel="prefetch" href="/assets/js/55.3b69a50e.js"><link rel="prefetch" href="/assets/js/56.1a82e4d0.js"><link rel="prefetch" href="/assets/js/57.49686d87.js"><link rel="prefetch" href="/assets/js/58.b38a99ff.js"><link rel="prefetch" href="/assets/js/59.02aa6721.js"><link rel="prefetch" href="/assets/js/6.02b0eb41.js"><link rel="prefetch" href="/assets/js/60.1b9d1433.js"><link rel="prefetch" href="/assets/js/61.11e06b30.js"><link rel="prefetch" href="/assets/js/62.fb9f4051.js"><link rel="prefetch" href="/assets/js/63.b91e436f.js"><link rel="prefetch" href="/assets/js/64.973a82c0.js"><link rel="prefetch" href="/assets/js/65.e36e3ae1.js"><link rel="prefetch" href="/assets/js/66.9e73f086.js"><link rel="prefetch" href="/assets/js/67.e0a0687a.js"><link rel="prefetch" href="/assets/js/68.25e5aabf.js"><link rel="prefetch" href="/assets/js/69.ae419cb9.js"><link rel="prefetch" href="/assets/js/7.588f1b88.js"><link rel="prefetch" href="/assets/js/70.abd33074.js"><link rel="prefetch" href="/assets/js/71.c3791fa1.js"><link rel="prefetch" href="/assets/js/72.8c1d71e6.js"><link rel="prefetch" href="/assets/js/73.ba931ec3.js"><link rel="prefetch" href="/assets/js/74.4698ee39.js"><link rel="prefetch" href="/assets/js/75.15ca01f2.js"><link rel="prefetch" href="/assets/js/76.8ca4b5b0.js"><link rel="prefetch" href="/assets/js/77.da2c4bd6.js"><link rel="prefetch" href="/assets/js/78.97656ef5.js"><link rel="prefetch" href="/assets/js/79.32879105.js"><link rel="prefetch" href="/assets/js/8.63df1f5c.js"><link rel="prefetch" href="/assets/js/80.603e2d1b.js"><link rel="prefetch" href="/assets/js/81.3f6b8af8.js"><link rel="prefetch" href="/assets/js/82.b11b8937.js"><link rel="prefetch" href="/assets/js/83.b7f2b439.js"><link rel="prefetch" href="/assets/js/84.32b89b03.js"><link rel="prefetch" href="/assets/js/85.294b0bcb.js"><link rel="prefetch" href="/assets/js/86.01b71b92.js"><link rel="prefetch" href="/assets/js/87.048631b2.js"><link rel="prefetch" href="/assets/js/88.054e325b.js"><link rel="prefetch" href="/assets/js/89.381412e3.js"><link rel="prefetch" href="/assets/js/9.143b08ba.js"><link rel="prefetch" href="/assets/js/90.17a9db32.js"><link rel="prefetch" href="/assets/js/91.6e5d060e.js"><link rel="prefetch" href="/assets/js/92.1ea365c8.js"><link rel="prefetch" href="/assets/js/93.a652939d.js"><link rel="prefetch" href="/assets/js/94.dd324120.js"><link rel="prefetch" href="/assets/js/95.ba4131c0.js"><link rel="prefetch" href="/assets/js/96.a56f29c6.js"><link rel="prefetch" href="/assets/js/97.90143192.js"><link rel="prefetch" href="/assets/js/98.d5f45a6f.js"><link rel="prefetch" href="/assets/js/99.d17eb214.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.35bcedcf.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="Front-End-Basics" class="logo"> <span class="site-name can-hide">Front-End-Basics</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>基础篇</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/javascript/utility/lexical-grammar.html" class="sidebar-link">JavaScript 词法</a></li><li><a href="/javascript/utility/syntax.html" class="sidebar-link">JavaScript 语法</a></li><li><a href="/javascript/utility/javascript-type.html" class="sidebar-link">JavaScript 数据类型（运行时）</a></li><li><a href="/javascript/utility/javascript-function.html" class="sidebar-link">JavaScript 函数</a></li><li><a href="/javascript/utility/javascript-object.html" class="sidebar-link">JavaScript 对象相关</a></li><li><a href="/javascript/utility/javascript-asynchronous.html" class="sidebar-link">JavaScript 异步</a></li><li><a href="/javascript/ES6/promise.html" class="sidebar-link">JavaScript Promise 详解</a></li><li><a href="/javascript/utility/javascript-runing.html" class="sidebar-link">JavaScript 引擎的执行原理</a></li><li><a href="/javascript/ES6/block.html" class="sidebar-link">【ES6】由块级作用域引出的一场变革</a></li><li><a href="/javascript/ES6/string.html" class="sidebar-link">【ES6】字符到底发生了什么变化</a></li><li><a href="/javascript/ES6/async.html" class="sidebar-link">【译】async 的异步操作模式</a></li><li><a href="/javascript/utility/data-interaction/ajax.html" class="sidebar-link">Ajax</a></li><li><a href="/javascript/utility/data-interaction/cross-origin.html" aria-current="page" class="active sidebar-link">前端请求跨域</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>应用篇</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>数据结构和算法</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>TypeScript</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="前端请求跨域"><a href="#前端请求跨域" class="header-anchor">#</a> 前端请求跨域</h1> <h2 id="一些定义"><a href="#一些定义" class="header-anchor">#</a> 一些定义</h2> <ul><li><p><strong>同源：</strong> 相同来源	同域名、同端口、同协议</p></li> <li><p><strong>同源策略：</strong> 是一种约定，最核心也最基本的安全功能，Web是构建在同源策略基础之上的。</p></li> <li><p><strong>跨域：</strong> 访问/请求某个接口/某个地址：必须遵循同域名、同端口、同协议才能正常使用。只要有一个不统一，那么就为跨域。如果不同源，就会产生跨域问题。</p></li> <li><p>如果非同源，共有三种行为受到限制。</p> <ul><li>Cookie、LocalStorage 和 indexedDB 无法读取。</li> <li>DOM 无法获得。</li> <li>AJAX 请求不能发送。</li></ul></li></ul> <br> <h2 id="ajax跨域解决"><a href="#ajax跨域解决" class="header-anchor">#</a> Ajax跨域解决</h2> <h3 id="jsonp"><a href="#jsonp" class="header-anchor">#</a> JSONP</h3> <p>JSONP是之前服务器与客户端跨源通信的常用方法。最大特点就是简单适用，老式浏览器全部支持，服务器改造非常小。</p> <h4 id="基本思想"><a href="#基本思想" class="header-anchor">#</a> 基本思想</h4> <p>网页通过添加一个<code>&lt;script&gt;</code>元素，向服务器请求JSON数据，这种做法不受同源政策限制(因为<code>script</code>、<code>img</code>这些带src请求资源的都能请求网络的任意位置资源)；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。</p> <h4 id="具体方法"><a href="#具体方法" class="header-anchor">#</a> 具体方法</h4> <p>1、首先，网页动态插入<code>&lt;script&gt;</code>元素，由它向跨源网址发出请求。</p> <div class="language- extra-class"><pre class="language-text"><code>function addScriptTag(src) {
+  var script = document.createElement('script');
+  script.setAttribute(&quot;type&quot;,&quot;text/javascript&quot;);
+  script.src = src;
+  document.body.appendChild(script);
+}
+
+window.onload = function () {
+  addScriptTag('http://example.com/ip?callback=foo');
+}
+
+function foo(data) {
+  console.log('Your public IP address is: ' + data.ip);
+};
+</code></pre></div><p>上面代码通过动态添加<code>&lt;script&gt;</code>元素，向服务器<code>example.com</code>发出请求。注意，该请求的查询字符串有一个<strong>callback参数</strong>，用来指定回调函数的名字，这对于JSONP是<strong>必需</strong>的。</p> <p>2、服务器收到这个请求以后，会将数据放在回调函数的参数位置返回。</p> <div class="language- extra-class"><pre class="language-text"><code>foo({
+  &quot;ip&quot;: &quot;8.8.8.8&quot;
+});
+</code></pre></div><p>由于<code>&lt;script&gt;</code>元素请求的脚本，直接作为代码运行。这时，只要浏览器定义了<code>foo函数</code>，该函数就会立即调用。作为参数的JSON数据被视为JavaScript对象，而不是字符串，因此避免了使用<code>JSON.parse</code>的步骤。</p> <p>图解流程：</p> <p><img src="/assets/img/1.2b9abb4c.png" alt="JSONP图解流程"></p> <p>基于JSONP的实现原理,所以<strong>JSONP只能是“GET”请求</strong>,不能进行较为复杂的POST和其它请求,所以遇到那种情况,就得参考下面的CORS解决跨域了。</p> <h3 id="cors"><a href="#cors" class="header-anchor">#</a> CORS</h3> <p>CORS是一个W3C标准，全称是&quot;跨域资源共享&quot;（Cross-origin resource sharing）。<br>
+它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</p> <h4 id="简介"><a href="#简介" class="header-anchor">#</a> 简介</h4> <p><strong>CORS需要浏览器和服务器同时支持。</strong> 目前，所有浏览器都支持该功能，IE浏览器<strong>不能低于IE10</strong>。</p> <p>整个CORS通信过程，都是<strong>浏览器自动完成</strong>，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p> <p>因此，实现CORS通信的关键是服务器。<strong>只要服务器实现了CORS接口，就可以跨源通信。</strong></p> <h4 id="两种请求"><a href="#两种请求" class="header-anchor">#</a> 两种请求</h4> <p>浏览器将CORS请求分成两类：<strong>简单请求（simple request）</strong> 和 <strong>非简单请求（not-so-simple request）</strong>。</p> <blockquote><p>简单请求</p></blockquote> <p>只要同时满足以下两大条件，就属于简单请求。</p> <div class="language- extra-class"><pre class="language-text"><code>(1) 请求方法是以下三种方法之一：
+HEAD
+GET
+POST
+
+(2)HTTP的头信息不超出以下几种字段：
+Accept
+Accept-Language
+Content-Language
+Last-Event-ID
+Content-Type：只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain
+</code></pre></div><h4 id="处理简单请求基本流程"><a href="#处理简单请求基本流程" class="header-anchor">#</a> 处理简单请求基本流程</h4> <p>对于简单请求，浏览器直接发出CORS请求。具体来说，浏览器如果发现这次跨源AJAX请求是简单请求，就自动在头信息之中，添加一个Origin字段。</p> <div class="language- extra-class"><pre class="language-text"><code>GET /cors HTTP/1.1
+Origin: http://api.bob.com
+Host: api.alice.com
+Accept-Language: en-US
+Connection: keep-alive
+User-Agent: Mozilla/5.0...
+
+Origin字段用来说明，本次请求来自哪个源（协议 + 域名 + 端口）。服务器根据这个值，决定是否同意这次请求。
+</code></pre></div><p>如果Origin指定的域名在许可范围内，服务器返回的响应，会多出几个头信息字段。</p> <div class="language- extra-class"><pre class="language-text"><code>Access-Control-Allow-Origin: http://api.bob.com
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: FooBar
+Content-Type: text/html; charset=utf-8
+
+(1)Access-Control-Allow-Origin
+该字段是必须的。它的值要么是请求时Origin字段的值，要么是一个*，表示接受任意域名的请求。
+
+(2)Access-Control-Allow-Credentials
+该字段可选。它的值是一个布尔值，表示是否允许发送Cookie。默认情况下，Cookie不包括在CORS请求之中。设为true，即表示服务器明确许可，Cookie可以包含在请求中，一起发给服务器。这个值也只能设为true，如果服务器不要浏览器发送Cookie，删除该字段即可。
+
+(3)Access-Control-Expose-Headers
+该字段可选。CORS请求时，XMLHttpRequest对象的getResponseHeader()方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果想拿到其他字段，就必须在Access-Control-Expose-Headers里面指定。上面的例子指定，getResponseHeader('FooBar')可以返回FooBar字段的值。
+</code></pre></div><h4 id="扩展-withcredentials"><a href="#扩展-withcredentials" class="header-anchor">#</a> 扩展——withCredentials</h4> <p>CORS请求默认不发送Cookie和HTTP认证信息。如果要把Cookie发到服务器，一方面要服务器同意，指定<code>Access-Control-Allow-Credentials</code>字段。另一方面，开发者必须在AJAX请求中打开<code>withCredentials</code>属性。否则，即使服务器同意发送Cookie，浏览器也不会发送。或者，服务器要求设置Cookie，浏览器也不会处理。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>//服务器端设置
+Access-Control-Allow-Credentials: true
+
+//客户端设置
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+</code></pre></div><p><em>注意：</em><br>
+1、如果省略withCredentials设置，有的浏览器还是会一起发送Cookie。这时，可以显式关闭withCredentials。</p> <div class="language- extra-class"><pre class="language-text"><code>xhr.withCredentials = false;
+</code></pre></div><p>2、如果要发送Cookie，<code>Access-Control-Allow-Origin</code>就不能设为星号，必须指定明确的、与请求网页一致的域名。同时，Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。</p> <blockquote><p>非简单请求</p></blockquote> <p>非简单请求是那种对服务器有特殊要求的请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。即不同时满足简单请求两个条件的就是非简单请求。</p> <h4 id="预检请求"><a href="#预检请求" class="header-anchor">#</a> 预检请求</h4> <p>非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为&quot;预检&quot;请求（preflight）。</p> <p>浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错。如下：</p> <div class="language- extra-class"><pre class="language-text"><code>var url = 'http://api.alice.com/cors';
+var xhr = new XMLHttpRequest();
+xhr.open('PUT', url, true);
+xhr.setRequestHeader('X-Custom-Header', 'value');
+xhr.send();
+
+上面代码中，HTTP请求的方法是PUT，并且发送一个自定义头信息X-Custom-Header。
+</code></pre></div><p>浏览器发现，这是一个非简单请求，就自动发出一个&quot;预检&quot;请求，要求服务器确认可以这样请求。下面是这个&quot;预检&quot;请求的HTTP头信息。</p> <div class="language- extra-class"><pre class="language-text"><code>OPTIONS /cors HTTP/1.1
+Origin: http://api.bob.com
+Access-Control-Request-Method: PUT
+Access-Control-Request-Headers: X-Custom-Header
+Host: api.alice.com
+Accept-Language: en-US
+Connection: keep-alive
+User-Agent: Mozilla/5.0...
+
+&quot;预检&quot;请求用的请求方法是OPTIONS，表示这个请求是用来询问的。头信息里面，关键字段是Origin，表示请求来自哪个源。
+除了Origin字段，&quot;预检&quot;请求的头信息包括两个特殊字段。
+
+(1)Access-Control-Request-Method
+该字段是必须的，用来列出浏览器的CORS请求会用到哪些HTTP方法，上例是PUT。
+
+(2)Access-Control-Request-Headers
+该字段是一个逗号分隔的字符串，指定浏览器CORS请求会额外发送的头信息字段，上例是X-Custom-Header。
+</code></pre></div><h4 id="预检请求回应"><a href="#预检请求回应" class="header-anchor">#</a> 预检请求回应</h4> <p>服务器收到&quot;预检&quot;请求以后，检查了<code>Origin</code>、<code>Access-Control-Request-Method</code>和<code>Access-Control-Request-Headers</code>字段以后，确认允许跨源请求，就可以做出回应。</p> <div class="language- extra-class"><pre class="language-text"><code>HTTP/1.1 200 OK
+Date: Mon, 01 Dec 2008 01:15:39 GMT
+Server: Apache/2.0.61 (Unix)
+Access-Control-Allow-Origin: http://api.bob.com
+Access-Control-Allow-Methods: GET, POST, PUT
+Access-Control-Allow-Headers: X-Custom-Header
+Content-Type: text/html; charset=utf-8
+Content-Encoding: gzip
+Content-Length: 0
+Keep-Alive: timeout=2, max=100
+Connection: Keep-Alive
+Content-Type: text/plain
+</code></pre></div><h4 id="预检请求失败"><a href="#预检请求失败" class="header-anchor">#</a> 预检请求失败</h4> <p>浏览器否定了&quot;预检&quot;请求，会返回一个正常的HTTP回应，但是没有任何CORS相关的头信息字段。这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被XMLHttpRequest对象的onerror回调函数捕获。控制台会打印出如下的报错信息。</p> <div class="language- extra-class"><pre class="language-text"><code>XMLHttpRequest cannot load http://api.alice.com.
+Origin http://api.bob.com is not allowed by Access-Control-Allow-Origin.
+</code></pre></div><p>服务器回应的其他CORS相关字段如下:</p> <div class="language- extra-class"><pre class="language-text"><code>Access-Control-Allow-Methods: GET, POST, PUT
+Access-Control-Allow-Headers: X-Custom-Header
+Access-Control-Allow-Credentials: true
+Access-Control-Max-Age: 1728000
+
+(1)Access-Control-Allow-Methods
+该字段必需，它的值是逗号分隔的一个字符串，表明服务器支持的所有跨域请求的方法。注意，返回的是所有支持的方法，而不单是浏览器请求的那个方法。这是为了避免多次&quot;预检&quot;请求。
+
+(2)Access-Control-Allow-Headers
+如果浏览器请求包括Access-Control-Request-Headers字段，则Access-Control-Allow-Headers字段是必需的。它也是一个逗号分隔的字符串，表明服务器支持的所有头信息字段，不限于浏览器在&quot;预检&quot;中请求的字段。
+
+(3)Access-Control-Allow-Credentials
+该字段与简单请求时的含义相同。
+
+(4)Access-Control-Max-Age
+该字段可选，用来指定本次预检请求的有效期，单位为秒。上面结果中，有效期是20天（1728000秒），即允许缓存该条回应1728000秒（即20天），在此期间，不用发出另一条预检请求。
+</code></pre></div><h4 id="预检请求成功"><a href="#预检请求成功" class="header-anchor">#</a> 预检请求成功</h4> <p>一旦服务器通过了&quot;预检&quot;请求，以后每次浏览器正常的CORS请求，就都跟简单请求一样，会有一个Origin头信息字段。服务器的回应，也都会有一个Access-Control-Allow-Origin头信息字段。</p> <p>下面是&quot;预检&quot;请求之后，<strong>浏览器</strong>的正常CORS请求：</p> <div class="language- extra-class"><pre class="language-text"><code>PUT /cors HTTP/1.1
+Origin: http://api.bob.com
+Host: api.alice.com
+X-Custom-Header: value
+Accept-Language: en-US
+Connection: keep-alive
+User-Agent: Mozilla/5.0...
+
+上面头信息的Origin字段是浏览器自动添加的。
+</code></pre></div><p>下面是<strong>服务器</strong>正常的回应:</p> <div class="language- extra-class"><pre class="language-text"><code>Access-Control-Allow-Origin: http://api.bob.com
+Content-Type: text/html; charset=utf-8
+</code></pre></div><h4 id="与jsonp比较"><a href="#与jsonp比较" class="header-anchor">#</a> 与JSONP比较</h4> <p>CORS与JSONP的使用目的相同，但是比JSONP更强大。</p> <p>JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。</p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/javascript/utility/data-interaction/cross-origin.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/29/2021, 10:24:33 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/javascript/utility/data-interaction/ajax.html" class="prev">
+        Ajax
+      </a></span> <span class="next"><a href="/javascript/utility/fp.html">
+        函数式编程
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cc7effe2.js" defer></script><script src="/assets/js/2.f8f5562f.js" defer></script><script src="/assets/js/31.44e95289.js" defer></script>
+  </body>
+</html>
