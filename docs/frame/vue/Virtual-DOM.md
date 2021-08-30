@@ -681,3 +681,7 @@ function patchVnode(
   hook?.postpatch?.(oldVnode, vnode)
 }
 ```
+
+### 推荐阅读
+
+[diff 算法深入一下？](https://mp.weixin.qq.com/s/HwowUwWA4pkSIQ1J4fwr9w)

@@ -128,11 +128,18 @@ Vue 使用 `mergeOptions` 来处理我们实例化 Vue 时传入的参数选项�
 #### resolveConstructorOptions(vm.constructor)
 
 ```js
+/**
+ * @param {*} Ctor: vm.constructor
+ * 这个方法要分成两种情况来说明
+ * 第一种是 Ctor 是基础 Vue 构造器的情况
+ * 另一种是 Ctor 是通过 Vue.extend 方法扩展的情况。
+ */
 export function resolveConstructorOptions(Ctor: Class<Component>) {
   let options = Ctor.options
+  // 有 super 属性，说明 Ctor 是 Vue.extend 构建的子类
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)
-    const cachedSuperOptions = Ctor.superOptions
+    const cachedSuperOptions = Ctor.superOptions // Vue 构造函数上的 options
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
       // need to resolve new options.
@@ -143,6 +150,7 @@ export function resolveConstructorOptions(Ctor: Class<Component>) {
       if (modifiedOptions) {
         extend(Ctor.extendOptions, modifiedOptions)
       }
+      // 将传入的选项以及父级 Vue 构造器上的选项进行合并返回 options
       options = Ctor.options = mergeOptions(superOptions, Ctor.extendOptions)
       if (options.name) {
         options.components[options.name] = Ctor
@@ -265,9 +273,9 @@ const defaultStrat = function(parentVal: any, childVal: any): any {
  */
 /** 4、mergeOptions 中根据参数选项调用同名的策略方法进行合并处理 */
 export function mergeOptions(
-  parent: Object,
-  child: Object,
-  vm?: Component
+  parent: Object, // 实例构造器上的 options
+  child: Object, // 实例化时传入的 options
+  vm?: Component // 当前实例
 ): Object {
   // …… 其他代码
 
@@ -1610,3 +1618,6 @@ function insert(parent, elm, ref) {
 
 - [Vue2.1.7 源码学习](http://hcysun.me/2017/03/03/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/#%E5%9B%9B%E3%80%81%E4%B8%80%E4%B8%AA%E8%B4%AF%E7%A9%BF%E5%A7%8B%E7%BB%88%E7%9A%84%E4%BE%8B%E5%AD%90)
 - [Vue.js 源码数据驱动](https://ustbhuangyi.github.io/vue-analysis/v2/data-driven/)
+- [ 打开 Vue 神秘礼盒之合并选项一](https://mp.weixin.qq.com/s/PNeYJtOuwBPgN08TeGi1vg)
+- [ 打开 Vue 神秘礼盒之合并选项二](https://mp.weixin.qq.com/s/ULtSk0kTZHkkXio-7Vy_0g)
+- [ 打开 Vue 神秘礼盒之合并选项三](https://mp.weixin.qq.com/s/Etmcj_ZxP-gNt9LJPXFbCw)
