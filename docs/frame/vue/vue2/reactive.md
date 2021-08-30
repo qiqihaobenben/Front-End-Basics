@@ -1,8 +1,10 @@
 # Vue.js 源码 — 深入响应式原理
 
+> Vue.js 版本为 v2.6.14
+
 上一篇主要讲的是初始化的过程，把原始数据最终映射到 DOM 中，但并没有涉及从数据变化到 DOM 变化的部分。而 Vue 的数据驱动除了数据渲染 DOM 之外，另一个很重要的体现就是数据的变更会触发 DOM 的变化。
 
-前端开发最重要的 2 个工作：一个是把数据渲染到页面，另一个是处理用户交互。Vue 把数据渲染到页面的能力我们已经通过源码分析出原理了，但是由一些用户交互或者其他方面导致数据发生变化后，重新对页面渲染的原理我们还未分析。
+前端开发最重要的两个工作：一个是把数据渲染到页面，另一个是处理用户交互。Vue 把数据渲染到页面的能力我们已经通过源码分析出原理了，但是由一些用户交互或者其他方面导致数据发生变化后，重新对页面渲染的原理我们还未分析。
 
 本篇要用到的示例：
 
@@ -200,7 +202,7 @@ export function defineReactive(
 }
 ```
 
-`defineReactive` 函数最开始先初始化 `Dep` 对象的实例，接着获取传参 `obj` 中传参 `key` 的属性描述符，对于 `val` 是对象的情况会调用 `observe` 方法，这样就保证了无论 `obj` 的结构多复杂，它的所有子属性也能变成响应式的对象，这样我们访问或修改 `obj` 中一个嵌套较深的属性，也能触发 getter 和 setter。最后利用 `Object.defineProperty` 给 `obj` 的属性 `key` 添加 getter 和 setter。
+`defineReactive` 函数最开始先初始化 `Dep` 对象的实例，接着获取传参 `obj` 中传参 `key` 的属性描述符，对于 `val` 是对象的情况会调用 `observe` 方法，这样就保证了无论 `obj` 的结构多复杂，它的所有子属性也能变成响应式的对象，我们访问或修改 `obj` 中一个嵌套较深的属性，也能触发 getter 和 setter。最后利用 `Object.defineProperty` 给 `obj` 的属性 `key` 添加 getter 和 setter。
 
 #### proxy
 
@@ -1444,3 +1446,12 @@ methodsToPatch.forEach(function(method) {
 ```
 
 可以看到，`arrayMethods` 首先继承了 `Array`，然后对数组中所有能改变数组自身的方法，如 `push`、`pop` 等这些方法进行重写。重写后的方法会先执行原生方法本身原有的逻辑，并对能增加数组元素的 3 个方法 `push`、`unshift`、`splice` 做了判断，获取到插入的值，然后把新添加的值变成一个响应式对象。最后调用 `ob.dep.notify` 手动触发依赖通知。这就很好地解释了之前的示例中调用 `vm.items.splice(newLength)` 方法可以检测到变化。
+
+## 整个页面的渲染流程图
+
+![](./images/render.webp)
+
+## 参考文档
+
+- [Vue.js 源码数据驱动](https://ustbhuangyi.github.io/vue-analysis/v2/data-driven/)
+- [Vue2.0 源码解读系列 - 来自 Vue 的神秘礼盒](https://mp.weixin.qq.com/s/hZE474iSQkiVrGsfr91WRQ)

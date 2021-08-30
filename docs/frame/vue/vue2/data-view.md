@@ -1,6 +1,6 @@
 # Vue.js 源码—数据驱动视图（模板和数据如何渲染成最终 DOM）
 
-> Vue.js 版本为 v2.5.20
+> Vue.js 版本为 v2.6.14
 
 Vue.js 的核心思想之一是数据驱动视图。所谓数据驱动视图，是指视图是由数据驱动生成的，我们要对视图进行修改，不是直接操作 DOM，而是通过修改数据触发视图变更。
 
@@ -11,7 +11,9 @@ Vue.js 的核心思想之一是数据驱动视图。所谓数据驱动视图，�
 
 我们从一个很简单的例子出发，从源码角度来分析 Vue 是如何实现通过简洁的模板语法，声明式的将数据渲染为 DOM 的。分析过程会以主线代码为主，重要的分支逻辑放在之后单独分析。
 
-> 强调一点：看大多数源码的时候，技巧是**注重大体框架，从宏观到微观**，当看一个项目代码的时候，最好是能找到一条主线，先把大体流程结构摸清楚，在深入到细节，逐项击破。
+> 强调一点：看大多数源码的时候，技巧是**注重大体框架，从宏观到微观**，当看一个项目代码的时候，最好是能找到一条主线，先把大体流程结构摸清楚，再深入到细节，逐项击破。
+
+示例代码：
 
 ```html
 <div id="app">
@@ -68,6 +70,7 @@ Vue.prototype._init = function(options?: Object) {
     // optimize internal component instantiation
     // since dynamic options merging is pretty slow, and none of the
     // internal component options needs special treatment.
+    // 就是动态合并options很慢，而内部组件不需要特殊处理，所以进行了此处优化
     initInternalComponent(vm, options)
   } else {
     vm.$options = mergeOptions(
@@ -125,11 +128,18 @@ Vue 使用 `mergeOptions` 来处理我们实例化 Vue 时传入的参数选项�
 #### resolveConstructorOptions(vm.constructor)
 
 ```js
+/**
+ * @param {*} Ctor: vm.constructor
+ * 这个方法要分成两种情况来说明
+ * 第一种是 Ctor 是基础 Vue 构造器的情况
+ * 另一种是 Ctor 是通过 Vue.extend 方法扩展的情况。
+ */
 export function resolveConstructorOptions(Ctor: Class<Component>) {
   let options = Ctor.options
+  // 有 super 属性，说明 Ctor 是 Vue.extend 构建的子类
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)
-    const cachedSuperOptions = Ctor.superOptions
+    const cachedSuperOptions = Ctor.superOptions // Vue 构造函数上的 options
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
       // need to resolve new options.
@@ -140,6 +150,7 @@ export function resolveConstructorOptions(Ctor: Class<Component>) {
       if (modifiedOptions) {
         extend(Ctor.extendOptions, modifiedOptions)
       }
+      // 将传入的选项以及父级 Vue 构造器上的选项进行合并返回 options
       options = Ctor.options = mergeOptions(superOptions, Ctor.extendOptions)
       if (options.name) {
         options.components[options.name] = Ctor
@@ -217,7 +228,8 @@ import { ASSET_TYPES, LIFECYCLE_HOOKS } from 'shared/constants'
 /**
  * Vue源码注释：选项覆盖策略指的是一些函数，这些函数用于处理如何将父选项值和子选项值合并成最终值
  */
-/** 1、合并父子选项值为最终值的策略对象，此时 strats 是一个空对象，因为 config.optionMergeStrategies = Object.create(null) */
+/** 1、合并父子选项值为最终值的策略对象，此时 strats 是一个空对象，
+因为 config.optionMergeStrategies = Object.create(null) */
 const strats = config.optionMergeStrategies
 
 /** 2、在 strats 对象上定义与参数选项名称相同的方法 */
@@ -261,9 +273,9 @@ const defaultStrat = function(parentVal: any, childVal: any): any {
  */
 /** 4、mergeOptions 中根据参数选项调用同名的策略方法进行合并处理 */
 export function mergeOptions(
-  parent: Object,
-  child: Object,
-  vm?: Component
+  parent: Object, // 实例构造器上的 options
+  child: Object, // 实例化时传入的 options
+  vm?: Component // 当前实例
 ): Object {
   // …… 其他代码
 
@@ -427,7 +439,7 @@ Vue 中我们是通过 `$mount` 实例方法去挂载 `vm` 的，因为 `$mount`
 先来看一下 `src/platforms/web/entry-runtime-with-compiler.js` 中定义的 `$mount`，具体的解析直接在代码中注释：
 
 ```js
-// 首先缓存了原型上的 `$mount` 方法，再重新定义改方法。
+// 首先缓存了原型上的 `$mount` 方法，再重新定义该方法。
 const mount = Vue.prototype.$mount
 Vue.prototype.$mount = function(
   el?: string | Element,
@@ -479,7 +491,8 @@ Vue.prototype.$mount = function(
         mark('compile')
       }
 
-      // 无论我们是用单文件 .vue 方式开发组件，还是写了 el 或者 template 属性，最终都会转换成 render 方法，这个过程是 Vue 的一个“在线编译”的过程，它是调用 `compileToFuntions` 方式实现的
+      // 无论我们是用单文件 .vue 方式开发组件，还是写了 el 或者 template 属性，最终都会转换成 render 方法，
+      // 这个过程是 Vue 的一个“在线编译”的过程，它是调用 `compileToFuntions` 方式实现的
       const { render, staticRenderFns } = compileToFunctions(
         template,
         {
@@ -1127,7 +1140,7 @@ createComponent 创建组件类型的 VNode 的过程，后续会介绍，本质
 
 回到 `mountComponent` 函数中，我们已经知道 `vm._render` 是如何创建了一个 VNode，接下来就要把这个 VNode 生成一个真实的 DOM 并渲染出来，这个过程是通过 `vm._update` 完成的。
 
-`vm._update` 是实例的一个私有方法，它被调用的时机有 2 个：一个是首次渲染，一个是数据更新的时候。本节我们值分析首次渲染部分，数据更新部分会在之后分析响应式原理的时候涉及。
+`vm._update` 是实例的一个私有方法，它被调用的时机有 2 个：一个是首次渲染，一个是数据更新的时候。本节我们只分析首次渲染部分，数据更新部分会在之后分析响应式原理的时候涉及。
 
 `_update` 方法的作用是把 VNode 渲染成真实的 DOM，它定义在 `src/core/instance/lifecycle.js` 文件中：
 
@@ -1589,7 +1602,7 @@ function insert(parent, elm, ref) {
 
 通过上面的分析，我们从主线上把模板和数据如何渲染成最终的 DOM 的过程分析完毕了，通过下图可以更直观的看到从初始化 Vue 到最终渲染的整个过程。
 
-![](../../images/new-vue.png)
+![](./images/new-vue.png)
 
 ## 扩展
 
@@ -1605,3 +1618,6 @@ function insert(parent, elm, ref) {
 
 - [Vue2.1.7 源码学习](http://hcysun.me/2017/03/03/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/#%E5%9B%9B%E3%80%81%E4%B8%80%E4%B8%AA%E8%B4%AF%E7%A9%BF%E5%A7%8B%E7%BB%88%E7%9A%84%E4%BE%8B%E5%AD%90)
 - [Vue.js 源码数据驱动](https://ustbhuangyi.github.io/vue-analysis/v2/data-driven/)
+- [ 打开 Vue 神秘礼盒之合并选项一](https://mp.weixin.qq.com/s/PNeYJtOuwBPgN08TeGi1vg)
+- [ 打开 Vue 神秘礼盒之合并选项二](https://mp.weixin.qq.com/s/ULtSk0kTZHkkXio-7Vy_0g)
+- [ 打开 Vue 神秘礼盒之合并选项三](https://mp.weixin.qq.com/s/Etmcj_ZxP-gNt9LJPXFbCw)

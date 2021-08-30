@@ -9,7 +9,6 @@
 在上一节 [Vue.js 源码-项目基础和项目构建](./directory-build.html) 提到 Vue.js 构建过程，在 web 应用下，我们构建完整版的 CommonJS 版本的代码，构建后的 `dist/vue.common.js` 的打包入口路径是 `src/platforms/web/entry-runtime-with-compiler.js`。在这个入口文件中我们可以看到：
 
 ```js
-/** src/platforms/web/entry-runtime-with-compiler.js */
 // ……省略代码
 
 import Vue from './runtime/index'
@@ -24,7 +23,6 @@ export default Vue
 通过上面的代码我们可以看到 `import Vue from './runtime/index'`，入口 JS 的 Vue 又是从 `src/platforms/web/runtime/index.js` 导入的。`src/platforms/web/runtime/index.js` 代码如下：
 
 ```js
-/** src/platforms/web/runtime/index.js */
 import Vue from 'core/index'
 
 // ……省略代码
@@ -37,7 +35,6 @@ export default Vue
 通过 `import Vue from 'core/index'` 可以知道，真正初始化 Vue 的地方是在 `src/core/index.js` 中：
 
 ```js
-/** src/core/index.js */
 import Vue from './instance/index'
 
 // ……省略代码
@@ -48,7 +45,6 @@ export default Vue
 从代码中我们可以看到 `import Vue from './instance/index'`，从 `./instance/index` 导出 Vue，代码在 `src/core/instance/index.js` 中：
 
 ```js
-/** src/core/instance/index.js */
 import { initMixin } from './init'
 import { stateMixin } from './state'
 import { renderMixin } from './render'
@@ -130,7 +126,6 @@ Vue.prototype._g = bindObjectListeners
 看完了 `src/core/instance/index.js` 文件后，我们再往上找到引入 `src/core/instance/index.js` 的 `src/core/index.js` 文件。
 
 ```js
-/** src/core/index.js */
 import Vue from './instance/index'
 import { initGlobalAPI } from './global-api/index'
 import { isServerRendering } from 'core/util/env'
@@ -213,8 +208,6 @@ Vue.version = '__VERSION__'
 经过 `src/platforms/web/runtime/index.js` 文件后， Vue 变成了下面这个样子：
 
 ```js
-/** src/platforms/web/runtime/index.js */
-
 // 安装平台特有的 uitls
 Vue.config.mustUseProp = mustUseProp
 Vue.config.isReservedTag = isReservedTag
@@ -259,7 +252,9 @@ Vue.prototype.$mount = function(
 
 ```js
 const mount = Vue.prototype.$mount
-Vue.prototype.$mount = function() {}
+Vue.prototype.$mount = function() {
+  // ……
+}
 Vue.compile = compileToFunctions
 ```
 
@@ -271,7 +266,7 @@ compileToFunctions 函数的作用就是将模板 template 编译成 render 函�
 
 1. `Vue.prototype` 下的属性和方法的挂载主要是 `src/core/instance` 目录下的代码处理的
 2. `Vue` 下的静态属性和方法的挂载主要是 `src/core/global-api` 目录下的代码处理的
-3. `src/platforms/web/runtime/index.js` 主要是添加 web 平台特有的配置、组件和指令，还有在`Vue.prototype` 上挂载 `$mount` ，`src/platforms/web/entry-runtime-with-compiler.js` 主要是重写了 `Vue.prototype.$mount` 方法，添加了 compiler 编译器，支持 template 选项。
+3. `src/platforms/web/runtime/index.js` 主要是添加 web 平台特有的配置、组件和指令，还有在 `Vue.prototype` 上挂载 `__patch__` 和 `$mount` 。`src/platforms/web/entry-runtime-with-compiler.js` 主要是重写了 `Vue.prototype.$mount` 方法，添加了 compiler 编译器，支持 template 选项。
 
 具体每一个挂载到 `Vue` 上的全局 API 和 `Vue.prototype` 上的实例方法的实现原理，在最后会单独拿出一节来介绍。
 

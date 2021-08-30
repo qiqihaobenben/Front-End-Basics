@@ -82,6 +82,18 @@ module.exports = {
           ]
         },
       ],
+      '/frame/vue/': [
+        {
+          title: 'Vue2源码',
+          children: [
+            'vue2/directory-build',
+            'vue2/constructor',
+            'vue2/data-view',
+            'vue2/reactive',
+            'vue2/computed&watch',
+          ]
+        },
+      ],
       '/project/' : [
         {
           title: '规范',
@@ -256,6 +268,16 @@ module.exports = {
               collapsable: false,
               path: '/project/el-scrollbar'
             },
+          ]
+        },
+        {
+          title: '框架',
+          children: [
+            {
+              title: 'Vue',
+              collapsable: false,
+              path: '/frame/vue/vue2/directory-build'
+            }
           ]
         },
         /** 移动端部分 */

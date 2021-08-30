@@ -29,6 +29,7 @@ Vue.js 的目录结构如下：
         ├── instance           # Vue.js实例的构造函数和原型方法
         ├── global-api         # 包含给Vue构造函数挂载全局方法（静态方法）或属性的代码
         ├── components         # 通用的抽象组件
+        ├── util               # 通用的工具方法
     ├── server                 # 包含服务端渲染（server-side rendering）的相关代码
     ├── platforms              # 特定平台代码
     ├── sfc                    # 单文件组件（*.vue文件）解析逻辑，用于vue-template-compiler包
@@ -279,9 +280,10 @@ dist 文件夹存放构建后的文件，在这个目录下你会找到很多不
 
 我们在使用 Runtime Only 版本时，通常需要借助如 webpack 的 vue-loader 工具把.vue 文件编译成 JavaScript，因为是在编译阶段做的，所以只包含运行时的 Vue.js 代码，因此代码体积也会更轻量。
 
-如果没有对代码做预编译，但是又使用了 template 属性并传入一个字符串，就需要用完整版在客户端编译模板。最终 template 属性会被编译成 render 函数。很显然，编译过程对性能会有一定损耗，所以通常更推荐使用 Runtime Only 的 Vue.js。
+如果没有对代码做预编译，而且又使用了 template 属性并传入一个字符串，就需要用完整版在客户端编译模板。最终 template 属性会被编译成 render 函数。很显然，编译过程对性能会有一定损耗，所以通常更推荐使用 Runtime Only 的 Vue.js。
 
 ## 参考文档
 
 - [Vue2.1.7 源码学习](http://hcysun.me/2017/03/03/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/#%E4%B8%80%E3%80%81%E4%BB%8E%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%AA%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%85%A5%E6%89%8B)
 - [Vue.js 源码目录设计](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/directory.html)
+- [《深入浅出 Vue.js》](https://item.jd.com/12573168.html)

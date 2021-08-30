@@ -1,5 +1,7 @@
 # Vue.js 源码 — 计算属性&侦听属性
 
+> Vue.js 版本为 v2.6.14
+
 Vue 的组件对象支持了计算属性 `computed` 和侦听属性 `watch` 2 个选项，那么究竟什么时候该用 `computed` 什么时候该用 `watch`？我们可以从源码实现的角度来分析他们两者有什么区别，然后再看怎么用。
 
 ## computed
@@ -476,3 +478,7 @@ export function stateMixin(Vue: Class<Component>) {
 ## 总结
 
 计算属性本质上是 `lazy watcher`，而侦听属性本质上是 `user watcher`。就应用场景而言，计算属性适合用在模板渲染中，某个值是依赖了其他的响应式对象甚至是计算属性计算而来；而侦听属性适用于观测某个值的变化去完成一段复杂的业务逻辑。
+
+## 参考文档
+
+- [Vue.js 源码](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/)

@@ -1,5 +1,7 @@
 # Vue.js 源码 — 组件详解
 
+> Vue.js 版本为 v2.6.14
+
 Vue.js 另一个核心思想是组件化。所谓组件化，就是把页面拆分成多个组件（component），每个组件依赖的 CSS、JavaScript、模板、图片等资源放在一起维护。组件是资源独立的，组件在系统内部可复用，组件和组件之间可以嵌套。
 
 这一章，将从源码的角度分析 Vue 组件内部是如何工作的，接下来我们分析一下 Vue 组件初始化的过程。
@@ -834,7 +836,7 @@ function createElm(
 }
 ```
 
-注意，这里我们传入的 `vnode` 是组件渲染的 `vnode`，也就是我们之前说的 `vm._vnode`，如果组件的根元素是个普通元素，那么 `vm._vnode` 也是普通的 `vnode`，这里 `createComponent(vnode, insertedVnodeQueue, parentElm, refElm)` 的返回值是 `false`。那么接下来的过程就跟之前说过的一样，先创建一个父节点占位符，然后再遍历所有子 VNode 递归调用 `createElm`，在遍历的过程中，如果遇到子 VNode 是一个组件的 VNode，，则重复本节开始的过程，这样通过一个递归的方式就可以完整地构建了整个组件树。
+注意，这里我们传入的 `vnode` 是组件渲染的 `vnode`，也就是我们之前说的 `vm._vnode`，如果组件的根元素是个普通元素，那么 `vm._vnode` 也是普通的 `vnode`，这里 `createComponent(vnode, insertedVnodeQueue, parentElm, refElm)` 的返回值是 `false`。那么接下来的过程就跟之前说过的一样，先创建一个父节点占位符，然后再遍历所有子 VNode 递归调用 `createElm`，在遍历的过程中，如果遇到子 VNode 是一个组件的 VNode，则重复本节开始的过程，这样通过一个递归的方式就可以完整地构建了整个组件树。
 
 由于我们这个时候传入的 `parentElm` 是空，所以对组件的插入，在 `createComponent` 有这么一段逻辑：
 
@@ -866,7 +868,7 @@ function createComponent(vnode, insertedVnodeQueue, parentElm, refElm) {
 
 ## 合并配置
 
-通过之前的源码分析我们知道， `new Vue` 的过程通常由 2 种场景，一种是外部用户主动调用 `new Vue(options)` 的方式实例化一个 Vue 对象；另一种是我们上面分析的组件穿件过程中内部通过 `new Vue(options)` 实例化子组件。
+通过之前的源码分析我们知道， `new Vue` 的过程通常由 2 种场景，一种是外部用户主动调用 `new Vue(options)` 的方式实例化一个 Vue 对象；另一种是我们上面分析的组件创建过程中内部通过 `new Vue(options)` 实例化子组件。
 
 无论哪种场景，都会执行实例的 `_init(options)` 方法，它首先会先执行一个 `merge options` 的逻辑，相关代码在 `src/core/instance/init.js` 中：
 
