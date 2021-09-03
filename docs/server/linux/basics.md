@@ -16,7 +16,11 @@
 
 [Android ，在争议中逃离 Linux 内核的 GPL 约束](https://linux.cn/article-8691-1.html)
 
+> tips: Linux 是一个操作系统，操作系统是一套软件，控制着对计算机系统的操作和资源。
+
 ## 不同的发行版本
+
+Linux 通常被封装成不同的封包形式发布，不同的封包往往封装有不同的工具套件和应用程序，在软件组织方式也存在差异，这些不同的封装的系统，一般称为发行版（distributions）。不过，这些不同的发行版只是基于 OS 封装有各自的工具套件而已，不应该被认为是不同类型的操作系统。
 
 ### Redhat 系列
 
@@ -110,3 +114,4 @@ Debian 是社区类 Linux 的典范，是迄今为止最遵循 GNU 规范的 Lin
 - [Linux 各大发行版有什么特色？](https://www.zhihu.com/question/24261540)
 - [Linux 各个版本介绍](https://blog.csdn.net/lixingshi/article/details/60890593)
 - [常见 Linux 的发行版及不同发行版之间的联系与区别](https://zhuanlan.zhihu.com/p/59867621)
+- [简单认识计算机系统](https://zhuanlan.zhihu.com/p/403919173)
