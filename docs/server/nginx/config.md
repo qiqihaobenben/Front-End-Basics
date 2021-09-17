@@ -45,7 +45,7 @@ main        # Nginx 的全局配置，对全局生效
 
 ## Nginx 配置文件的语法规则
 
-Nginx 是由一些模块组成，一般在配置文件中使用一些具体的指令来控制。指令被分为简单指令和块级指令。
+**Nginx 是由一些模块组成，一般在配置文件中使用一些具体的指令来控制。** 指令被分为简单指令（简称指令）和块级指令（简称指令块）。
 
 ### 简单指令
 
@@ -58,7 +58,7 @@ root /data/www;
 
 ### 块级指令
 
-块级指令跟简单指令有类似的结构，但是末尾不是分号而是用 `{}` 大括号包裹的额外指令集。如果一个块级指令的大括号中有其他指令，则它被叫做一个上下文（比如: events、http、server 和 location）。
+块级指令跟简单指令有类似的结构，但是末尾不是分号而是用大括号（ `{}` ）包裹的额外指令集。如果一个块级指令的大括号中有其他指令，则它被叫做一个上下文（比如: events、http、server 和 location）。
 
 在配置文件中，没有放在任何上下文中的指令都处在主上下文中。`events` 和 `http` 的指令是放在主上下文中，`server` 放在 `http` 中，`location` 放在 `server` 中。
 
@@ -103,10 +103,10 @@ location [ = | ~ | ~* | ^~ | 空] uri {
 指令后面：
 
 - `=`：精确匹配，用于不含正则表达式的 uri 前，如果匹配成功，不再进行后续的查找
-- `^~`：前缀匹配，用于不含正则表达式的 uri 前，表示如果该符号后面的字符是最佳匹配。采用该规则，不再进行后续的查找。跟 `=` 的区别是，不需要 uri 一模一样，只需要开头前缀和 uri 匹配即可。
+- `^~`：前缀匹配，用于不含正则表达式的 uri 前，表示如果该符号后面的字符是最佳匹配。采用该规则，不再进行后续的查找。跟 `=` 的区别是，不需要 uri 一模一样，只需要开头和 uri 匹配即可。
 - `~`：正则匹配，表示用该符号后面的正则 uri 去匹配路径，区分大小写
-- `~*`：正则匹配，表示用该符号后面的正则 uri 去匹配路径，不匹配大小写。如有多个 location 的正则能匹配的话，则使用正则表达式最长的那个
-- `空`：普通匹配（最长字符匹配），匹配以 uri 开头的字符串，只能是普通字符串。例如，`location /` 是通用匹配，如果没有其他匹配，任何请求都会匹配到。另外普通匹配与 location 顺序无关，是按照匹配的长短来确定匹配结果。若完全匹配，就不再进行后续查找
+- `~*`：正则匹配，表示用该符号后面的正则 uri 去匹配路径，不区分大小写。
+- `空`：普通匹配（最长字符匹配），匹配以 uri 开头的字符串，只能是普通字符串。例如，`location /` 是通用匹配，任何请求都会匹配到。另外普通匹配与 location 顺序无关，是按照匹配的长短来确定匹配结果。
 
 ### 优先级
 
@@ -159,11 +159,14 @@ location ^~ /ab {
 
 ## 典型配置
 
-```nginx
-#user  nobody;  # 运行用户，可以不进行设置
-worker_processes  1;  # Nginx 进程树，一般设置为和 CPU 核数一样
+### 源码编译安装到 `/usr/local/nginx` 的 Nginx 典型配置
 
-# Nginx 的错误日志存放目录
+```nginx
+#user  nobody;  # 定义 Nginx 运行的用户和用户组，默认由 nobody 账号运行，可以不进行设置
+worker_processes  1;  # Nginx 进程数，一般设置为同 CPU 核数一样
+
+# Nginx 的错误日志存放目录，后面可以跟日志类型
+# 全局错误日志定义类型包括：[ debug | info | notice | warn | error | crit ]
 #error_log  logs/error.log;
 #error_log  logs/error.log  notice;
 #error_log  logs/error.log  info;
@@ -172,48 +175,54 @@ worker_processes  1;  # Nginx 进程树，一般设置为和 CPU 核数一样
 
 
 events {
+    # 参考事件模型，use [ kqueue | rtsig | epoll | /dev/poll | select | poll ];
+    # epoll模型是Linux 2.6以上版本内核中的高性能网络I/O模型，如果跑在FreeBSD上面，就用kqueue模型。
+    #use epoll;
     worker_connections  1024; # 每个进程允许最大并发数
 }
 
 
 http {  # 配置使用最频繁的部分，代理，缓存，日志定义等绝大多数功能和第三方模块的配置都在这里设置
-    include       mime.types;
-    default_type  application/octet-stream;
+    # include 是个主模块指令，可以将配置文件拆分并引用，减少主配置文件的复杂度
+    include       mime.types; # 文件扩展名与类型映射表
+    default_type  application/octet-stream; # 默认文件类型
 
+    # 设置日志格式
     #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
     #                  '$status $body_bytes_sent "$http_referer" '
     #                  '"$http_user_agent" "$http_x_forwarded_for"';
 
-    #access_log  logs/access.log  main;
+    #access_log  logs/access.log  main; # Nginx 访问日志存放位置
 
-    sendfile        on;
-    #tcp_nopush     on;
+    sendfile        on; # 开启高效传输模式
+    #tcp_nopush     on; # 减少网络报文段的数量，防止网络阻塞
+    #autoindex on;  # 开启目录列表访问，适合下载服务器
 
     #keepalive_timeout  0;
-    keepalive_timeout  65;
+    keepalive_timeout  65;  # 保持连接的时间，也叫超时时间，单位秒，默认为0
 
     #gzip  on;
 
-    include	/usr/local/nginx/conf/conf.d/*.conf;
+    include	/usr/local/nginx/conf/conf.d/*.conf; # 加载子配置项
 
-    server {
-        listen       80;
-        server_name  localhost;
+    server {  # 配置虚拟主机的相关参数，如域名、IP、端口等
+        listen       80;  # 配置监听的端口
+        server_name  localhost; # 配置的域名，可以由多个，用空格隔开
 
-        #charset koi8-r;
+        #charset koi8-r;  # 默认编码
 
-        #access_log  logs/host.access.log  main;
+        #access_log  logs/host.access.log  main;  # 定义本虚拟机的访问日志
 
         location / {
-            root   html;
-            index  index.html index.htm;
+            root   html;  # 网站根目录
+            index  index.html index.htm;  # 默认首页文件
         }
 
         #error_page  404              /404.html;
 
         # redirect server error pages to the static page /50x.html
         #
-        error_page   500 502 503 504  /50x.html;
+        error_page   500 502 503 504  /50x.html;  # 默认50x对应的访问页面
         location = /50x.html {
             root   html;
         }
@@ -281,21 +290,190 @@ http {  # 配置使用最频繁的部分，代理，缓存，日志定义等绝�
 }
 ```
 
-## 反向代理配置
+### yum 安装的 Nginx 典型配置
 
-## 跨域 CORS 配置
+```nginx
+user  nginx;                        # 运行用户
+worker_processes  1;                # Nginx 进程数，一般设置为同 CPU 核数一样
+error_log  /var/log/nginx/error.log warn;   # Nginx 的错误日志存放目录
+pid        /var/run/nginx.pid;      # Nginx 服务启动时的 pid 存放位置
 
-## 开启 gzip 压缩
+events {
+    use epoll;     # 使用epoll的I/O模型(如果你不知道Nginx该使用哪种轮询方法，会自动选择一个最适合你操作系统的)
+    worker_connections 1024;   # 每个进程允许最大并发数
+}
 
-## 负载均衡配置
+http {   # 配置使用最频繁的部分，代理、缓存、日志定义等绝大多数功能和第三方模块的配置都在这里设置
+    # 设置日志模式
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
 
-## 动静分离配置
+    access_log  /var/log/nginx/access.log  main;   # Nginx访问日志存放位置
 
-## 配置高可用集群（双机热备）
+    sendfile            on;   # 开启高效传输模式
+    tcp_nopush          on;   # 减少网络报文段的数量
+    tcp_nodelay         on;
+    keepalive_timeout   65;   # 保持连接的时间，也叫超时时间，单位秒
+    types_hash_max_size 2048;
 
-## 适配 PC 或移动设备
+    include             /etc/nginx/mime.types;      # 文件扩展名与类型映射表
+    default_type        application/octet-stream;   # 默认文件类型
 
-## 配置 HTTPS
+    include /etc/nginx/conf.d/*.conf;   # 加载子配置项
+
+    server {
+    	listen       80;       # 配置监听的端口
+    	server_name  localhost;    # 配置的域名
+
+    	location / {
+    		root   /usr/share/nginx/html;  # 网站根目录
+    		index  index.html index.htm;   # 默认首页文件
+    		deny 172.168.22.11;   # 禁止访问的ip地址，可以为all
+    		allow 172.168.33.44；# 允许访问的ip地址，可以为all
+    	}
+
+    	error_page 500 502 503 504 /50x.html;  # 默认50x对应的访问页面
+    	error_page 400 404 error.html;   # 同上
+    }
+}
+```
+
+## 配置中常用指令详细说明
+
+### main 全局配置
+
+- `worker_processes 1;`
+
+定义在配置文件顶级 main 部分，worker 角色的工作进程个数。master 进程是接受并分配请求给 worker 处理。这个数值可以简单设置为 CPU 的核数 `grep ^processor /proc/cpuinfo | wc -l`，也是 auto 值。如果开启了 ssl 和 gzip，更应该设置成与逻辑 CPU 数量一样甚至为 2 倍，可以减少 I/O 操作。如果 Nginx 服务器还有其它服务，可以考虑适当减少。
+
+- `worker_cpu_affinity 0001 0010 0100 1000;`
+
+定义在 main 部分。在高并发情况下，通过设置 cpu 粘性来降低由于多 CPU 核切换造成的寄存器等现场重建带来的性能损耗。如 worker_cpu_affinity 0001 0010 0100 1000; （四核）。
+
+- `use epoll;`
+  写在 events 部分。在 Linux 操作系统下，nginx 默认使用 epoll 事件模型，得益于此，nginx 在 Linux 操作系统下效率相当高。同时 Nginx 在 OpenBSD 或 FreeBSD 操作系统上采用类似于 epoll 的高效事件模型 kqueue。在操作系统不支持这些高效模型时才使用 select。
+
+### http 配置
+
+- `sendfile on;`
+
+  开启高效传输模式，sendfile 指令指定 nginx 是否调用 sendfile 函数来输出文件，减少用户空间到内核空间的上下文切换。对于普通应用设为 on，如果用来进行下载等应用磁盘 IO 重负载应用，可设置为 off，以平衡磁盘与网络 I/O 处理速度，降低系统的负载。注意：如果图片显示不正常把这个改成 off。
+
+- `client_max_body_size 10m;`
+
+  允许客户端请求的最大单文件字节数。如果有上传较大文件，请设置它的限制值。
+
+### server 虚拟主机
+
+http 服务上支持若干虚拟主机。每个虚拟主机对应一个 server 配置项，配置项里面包含该虚拟主机相关的配置。在提供 mail 服务的代理时，也可以建立若干 server，每个 server 通过监听地址或端口来区分。
+
+- `listen 80;`
+
+  监听端口，默认 80，小于 1024 的要以 root 启动，可以有其他的形式：`listen *:80;`、`listen 127.0.0.1:80`
+
+- `server_name localhost;`
+
+  服务器名，可以设置多个，第一个名字将成为主服务器名称，服务器名称可以使用 `*` 代替名称的第一部分或者最后一部分；也可以通过正则匹配，还可以使用正则表达式进行捕获，目前不常用。
+
+  ```nginx
+  server {
+    server_name example.com *.example.com www.example.*;
+  }
+
+  #使用正则
+  server {
+    server_name ~^(www\.)?(.+)$;
+
+    location / {
+        root /sites/$2;
+    }
+
+  }
+  ```
+
+### localtion
+
+#### 访问控制 allow/deny
+
+Nginx 的访问控制模块默认就会安装，而且写法简单，可以分别有多个 allow/deny ，允许或禁止某个 ip 或 ip 段访问，依次满足任何一个规则就停止往下匹配。
+
+```nginx
+location /nginx-status {
+stub_status on;
+access_log off;
+#  auth_basic   "NginxStatus";
+#  auth_basic_user_file   /usr/local/nginx-1.6/htpasswd;
+
+allow 192.168.10.100;
+allow 172.29.73.0/24;
+deny all;
+}
+```
+
+我们也常用 httpd-devel 工具的 htpasswd 来为访问的路径设置登录密码：（_此处笔者没有验证_）
+
+```nginx
+# htpasswd -c htpasswd admin
+New passwd:
+Re-type new password:
+Adding password for user admin
+
+# htpasswd htpasswd admin    //修改admin密码
+# htpasswd htpasswd sean    //多添加一个认证用户
+```
+
+这样就生成了默认使用 CRYPT 加密的密码文件。打开上面 nginx-status 的两行注释，重启 Nginx 生效。
+
+#### 列出目录 autoindex
+
+Nginx 默认是不允许列出整个目录的。如果需要此功能，打开 nginx.conf 文件，在 location、server 或 http 部分加入 `autoindex on;`，另外两个参数最好也加进去：
+
+- `autoindex_exact_size off;`
+
+  默认为 on，显示出文件的确切大小，单位是 bytes。改为 off 后，显示出文件的大概大小，单位是 KB、MB 或者 GB。
+
+- `autoindex_localtime on;`
+
+  默认为 off，显示的文件时间为 GMT 时间。改为 on 后，显示的文件时间为违建的服务器时间。
+
+```nginx
+location /images {
+  root   /var/www/nginx-default/images;
+  autoindex on;
+  autoindex_exact_size off;
+  autoindex_localtime on;
+}
+```
+
+## Nginx 中的配置单位
+
+### 时间单位
+
+- ms：毫秒（milliseconds）
+- s：秒（seconds）
+- m：分钟（minutes）
+- h：小时（hours）
+- d：天（days）
+- w：周（weeks）
+- M：月（months，30 days）
+- y：年（years，365 days）
+
+```nginx
+expires 3m;
+```
+
+### 空间单位
+
+默认为字节（bytes）
+
+- k/K：kilobytes
+- m/M：megabytes
+- g/G：gigabytes
+
+```nginx
+client_max_body_size 10m;
+```
 
 ## 参考文档
 
