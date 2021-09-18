@@ -370,7 +370,7 @@ http 服务上支持若干虚拟主机。每个虚拟主机对应一个 server �
 
 - `listen 80;`
 
-  监听端口，默认 80，小于 1024 的要以 root 启动，可以有其他的形式：`listen *:80;`、`listen 127.0.0.1:80`
+  监听端口和地址，默认 80，小于 1024 的要以 root 启动，可以只指定端口或者指定地址和端口，例如`listen *:80;`、`listen 127.0.0.1:80`
 
 - `server_name localhost;`
 
@@ -435,7 +435,7 @@ Nginx 默认是不允许列出整个目录的。如果需要此功能，打开 n
 
 - `autoindex_localtime on;`
 
-  默认为 off，显示的文件时间为 GMT 时间。改为 on 后，显示的文件时间为违建的服务器时间。
+  默认为 off，显示的文件时间为 GMT 时间。改为 on 后，显示的文件时间为文件的服务器时间。
 
 ```nginx
 location /images {
