@@ -7,13 +7,21 @@
 Nginx 可以作为静态资源服务器，当只有静态资源的时候，就可以使用 Nginx 来做服务器，例如，如果一个网站只是静态页面的话，就可以通过类似以下的配置来实现部署一个静态的网站。
 
 ```nginx
-server {
-  listen       80;
-  server_name  docs.chenfangxu.com;
+http {
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
 
-  location / {
-      root   /usr/local/app;
-      index  index.html;
+  server {
+    listen       80;
+    server_name  docs.chenfangxu.com;
+
+    access_log logs/docs.chenfangxu.com.access.log main;
+
+    location / {
+        root   /usr/local/app;
+        index  index.html;
+    }
   }
 }
 ```
@@ -39,3 +47,38 @@ server {
 ```
 
 访问 [http://static.chenfangxu.com](http://static.chenfangxu.com)，就可以看到一个简单的目录。
+
+### gzip 压缩
+
+使用 gzip 不仅需要 Nginx 配置，浏览器端也需要配合，需要在请求消息头中包含 Accept-Encoding: gzip（IE5 之后所有的浏览器都支持了，是现代浏览器的默认设置）。一般在请求 html 和 css 等静态资源的时候，支持的浏览器在 request 请求静态资源的时候，会加上 Accept-Encoding: gzip 这个 header，表示自己支持 gzip 的压缩方式，Nginx 在拿到这个请求的时候，如果有相应配置，就会返回经过 gzip 压缩过的文件给浏览器，并在 response 相应的时候加上 content-encoding: gzip 来告诉浏览器自己采用的压缩方式（因为浏览器在传给服务器的时候一般还告诉服务器自己支持好几种压缩方式），浏览器拿到压缩的文件后，根据自己的解压方式进行解析。
+
+这个配置可以插入到 http 上下文里，也可以插入到需要使用的虚拟主机的 server 或者下面的 location 上下文中。
+
+```nginx
+#在 docs.chenfangxu.com 上增加配置
+
+gzip on;  #默认 off，是否开启gzip
+gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+gzip_static on;
+gzip_proxied any;
+gzip_vary on;
+gzip_comp_level 6;
+gzip_buffers 16 8k;
+gzip_min_length 1k;
+gzip_http_version 1.1;
+
+```
+
+- gzip_typs：要采用 gzip 压缩的 MIME 文件类型，其中 `text/html` 被系统强制启用。
+- gzip_static：默认为 off，该模块启用后，Nginx 首先检查请求的静态文件是否有 gz 结尾的文件，如果有，直接返回该 `.gz` 文件内容。
+- gzip_proxied：默认为 off，Nginx 作为反向代理时启用，用于设置启用或禁用从代理服务器收到相应内容 gzip 压缩。
+- gzip_vary：用于在相应消息头中添加 `Vary: Accept-Encoding`，使代理服务器根据请求头中的 `Accept-Encoding`识别是否启用 gzip 压缩。
+- gzip_comp_level：gzip 压缩比，压缩级别是 1-9，1 压缩级别最低，9 压缩级别最高，级别越高压缩率越高，压缩时间也越长，建议 4 - 6。
+- gzip_buffers：获取多少内存用于缓存压缩结果， 16 8k 表示以 `8k * 16` 为单位获得。
+- gzip_min_length：允许压缩的页面最小字节数，页面字节数从 header 头中的 `Content-Length` 中获取。默认值是 0，不管页面多大都压缩。建议设置成大于 1k 的字节数，小于 1k，可能会越压越大。
+- gzip_http_version：默认 1.1，启用 gzip 所需的 HTTP 最低版本。
+
+可以通过网页 GZIP 压缩检测，看一下 `docs.chenfangxu.com` 的相关数据。
+
+![](./images/nginx1.png)

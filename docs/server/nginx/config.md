@@ -25,6 +25,12 @@ Nginx 有一些常用的全局变量，可以在配置的任何位置使用他�
 | `$server_port`     | 服务器端口                                                                 |
 | `$status`          | 响应状态                                                                   |
 
+可以用 `set` 动态指定变量的值。
+
+```nginx
+set $limit_rate 1K; #限制对客户端的响应传输速率。
+```
+
 ## Nginx 配置文件的基本结构
 
 拿我们之前编译安装的 Nginx 主配置文件 `/usr/local/nginx/conf/nginx.conf` 来看，`nginx.conf`的结构图大体如下：
