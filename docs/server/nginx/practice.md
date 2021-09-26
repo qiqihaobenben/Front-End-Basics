@@ -55,18 +55,28 @@ server {
 这个配置可以插入到 http 上下文里，也可以插入到需要使用的虚拟主机的 server 或者下面的 location 上下文中。
 
 ```nginx
-#在 docs.chenfangxu.com 上增加配置
+server {
+  listen 80;
+  server_name docs.chenfangxu.com;
 
-gzip on;  #默认 off，是否开启gzip
-gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+  access_log logs/docs.chenfangxu.com.access.log main;
 
-gzip_static on;
-gzip_proxied any;
-gzip_vary on;
-gzip_comp_level 6;
-gzip_buffers 16 8k;
-gzip_min_length 1k;
-gzip_http_version 1.1;
+  gzip on;  #默认 off，是否开启gzip
+  gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+  gzip_static on;
+  gzip_proxied any;
+  gzip_vary on;
+  gzip_comp_level 6;
+  gzip_buffers 16 8k;
+  gzip_min_length 1k;
+  gzip_http_version 1.1;
+
+  location / {
+    root /home/www/docs.chenfangxu.com/dist;
+    index index.html;
+  }
+}
 
 ```
 
@@ -82,3 +92,13 @@ gzip_http_version 1.1;
 可以通过网页 GZIP 压缩检测，看一下 `docs.chenfangxu.com` 的相关数据。
 
 ![](./images/nginx1.png)
+
+#### 前端项目 gzip 压缩
+
+当前端项目使用 Webpack 等打包工具进行打包时，一般都有配置可以开启 gzip 压缩，打包出来的文件会有经过 `gzip` 压缩之后的 `.gz` 文件。
+
+为什么在 Nginx 已经有了 gzip 压缩，打包工具还需要整个 gzip 呢？
+
+因为如果全都是使用 Nginx 来压缩文件，会耗费服务器的计算资源，如果 `gzip_comp_level` 配置的比较高，就更增加了服务器的开销，相应也会增加客户端的请求时间，得不偿失。
+
+如果压缩在前端打包的时候就做了，把打包之后的高压缩等级文件作为静态资源放在服务器上，Nginx 会优先查找这些压缩之后的文件返回给客户端，相当于把压缩文件的动作从 Nginx 提前到了打包的时候完成， 节约了服务器资源，所以一般推荐在生产环境使用打包工具配置 gizp 压缩。
