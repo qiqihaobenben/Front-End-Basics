@@ -105,7 +105,7 @@ server {
 
 ### 配置 HTTPS
 
-Nginx 配置 HTTPS 主要两个步骤：**签署第三方可信任的 SSL 证书**和**配置 HTTPS**。
+HTTPS 是在应用层 HTTP 之下加入了表示层 SSL(Secure Socket Layer)/TLS(Transport Layer Security)。 Nginx 配置 HTTPS 主要两个步骤：**签署第三方可信任的 SSL 证书**和**配置 HTTPS**。
 
 例如腾讯云申请的免费证书，下载证书压缩文件，解压后把 Nginx 文件夹下的 `xxx.crt` 和 `xxx.key` 文件拷贝到服务器目录 `/usr/local/nginx/conf/ssl`。在编译安装的时候添加了 ssl 和 http2 相关的模块，可以直接如下配置：
 
@@ -120,7 +120,7 @@ server {
   ssl_certificate_key /usr/local/nginx/conf/ssl/2_docs.chenfangxu.com.key;
 
   # 服务器优化，减少 CPU 的运算量
-  # 配置共享会话缓存大小
+  # 配置共享会话缓存大小，1m 大概可以支持 4000 个连接
   ssl_session_cache shared:SSL:10m;
   # 配置会话超时时间
   ssl_session_timeout 10m;
@@ -132,7 +132,7 @@ server {
   ssl_dhparam /etc/ssl/certs/dhparam.pem;
   # 协议版本，限制连接只包含 SSL/TLS 的加强版本
   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-  # 定义算法
+  # 定义算法，选择要使用的安全套件
   ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4";
   # 启用 HSTS。允许 https 网站要求浏览器总是通过 https 来访问
   add_header Strict-Transport-Security "max-age=31536000; includeSubDomains;preload" always;
@@ -182,7 +182,7 @@ ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4";
 ```
 
-#### HTTP 重定向到 HTTP3
+#### HTTP 重定向到 HTTP2
 
 之前配置过 [http://docs.chenfangxu.com](http://docs.chenfangxu.com)，我们可以修改配置，当访问 http 时重定向到 https：
 
@@ -236,7 +236,7 @@ gzip 也可以同样优化一下
   gzip_http_version 1.1;
 ```
 
-之后在 `/usr/local/nginx/conf/conf.d` 中新建 `ssl.docs.chenfangxu.com.conf`：
+之后在 `/usr/local/nginx/conf/nginx.conf` 中新增配置：
 
 ```nginx
 server {
