@@ -1,8 +1,6 @@
-# Nginx 实践操作
+# Nginx实操-静态资源服务器
 
-## 静态资源服务器
-
-### 静态网站
+## 静态网站
 
 Nginx 可以作为静态资源服务器，当只有静态资源的时候，就可以使用 Nginx 来做服务器，例如，如果一个网站只是静态页面的话，就可以通过类似以下的配置来实现部署一个静态的网站。
 
@@ -28,7 +26,7 @@ http {
 
 这样如果访问 [http://docs.chenfangxu.com](http://docs.chenfangxu.com) 就会默认访问到 `usr/local/app` 目录下面的 `index.html`。
 
-### 静态目录服务
+## 静态目录服务
 
 ```nginx
 server {
@@ -48,7 +46,7 @@ server {
 
 访问 [http://static.chenfangxu.com](http://static.chenfangxu.com)，就可以看到一个简单的目录。
 
-### gzip 压缩
+## gzip 压缩
 
 使用 gzip 不仅需要 Nginx 配置，浏览器端也需要配合，需要在请求消息头中包含 Accept-Encoding: gzip（IE5 之后所有的浏览器都支持了，是现代浏览器的默认设置）。一般在请求 html 和 css 等静态资源的时候，支持的浏览器在 request 请求静态资源的时候，会加上 Accept-Encoding: gzip 这个 header，表示自己支持 gzip 的压缩方式，Nginx 在拿到这个请求的时候，如果有相应配置，就会返回经过 gzip 压缩过的文件给浏览器，并在 response 相应的时候加上 content-encoding: gzip 来告诉浏览器自己采用的压缩方式（因为浏览器在传给服务器的时候一般还告诉服务器自己支持好几种压缩方式），浏览器拿到压缩的文件后，根据自己的解压方式进行解析。
 
@@ -93,7 +91,7 @@ server {
 
 ![](./images/nginx1.png)
 
-#### 前端项目 gzip 压缩
+### 前端项目 gzip 压缩
 
 当前端项目使用 Webpack 等打包工具进行打包时，一般都有配置可以开启 gzip 压缩，打包出来的文件会有经过 `gzip` 压缩之后的 `.gz` 文件。
 
@@ -103,7 +101,7 @@ server {
 
 如果压缩在前端打包的时候就做了，把打包之后的高压缩等级文件作为静态资源放在服务器上，Nginx 会优先查找这些压缩之后的文件返回给客户端，相当于把压缩文件的动作从 Nginx 提前到了打包的时候完成， 节约了服务器资源，所以一般推荐在生产环境使用打包工具配置 gizp 压缩。
 
-### 配置 HTTPS
+## 配置 HTTPS
 
 HTTPS 是在应用层 HTTP 之下加入了表示层 SSL(Secure Socket Layer)/TLS(Transport Layer Security)。 Nginx 配置 HTTPS 主要两个步骤：**签署第三方可信任的 SSL 证书**和**配置 HTTPS**。
 
@@ -182,7 +180,7 @@ ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4";
 ```
 
-#### HTTP 重定向到 HTTP2
+### HTTP 重定向到 HTTP2
 
 之前配置过 [http://docs.chenfangxu.com](http://docs.chenfangxu.com)，我们可以修改配置，当访问 http 时重定向到 https：
 
