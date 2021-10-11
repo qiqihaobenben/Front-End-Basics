@@ -6,30 +6,87 @@ Nginx 有一些常用的全局变量，可以在配置的任何位置使用他�
 
 | 变量               | 描述                                                                       |
 | ------------------ | -------------------------------------------------------------------------- |
-| `$host`            | 请求信息中的 Host，如果请求中没有 Host 行，则等于请求匹配的服务器名        |
+| `$host`            | 请求信息中的 Host，如果请求中没有 Host 行，则等于请求匹配的 server 名称（处理请求 server 的 server_name 指令的值），值为小写，不包含端口        |
+|`$uri`|请求中的当前 URI（不带请求参数，参数位于 `$args`），不同于浏览器传递 `$request_uri` 的值，它可以通过内部重定向，或者使用 index 指令进行修改，不包括协议和主机名，例如 /abc/ef.html |
 | `$request_method`  | 客户端请求类型，如 GET、POST                                               |
-| `$request_uri`     | 完整的原始请求 URI（带参数）                                               |
+| `$request_uri`     | 完整的原始请求 URI（带参数），它无法修改，请查看 $uri 更改或重写 URL                                               |
+| `$request_body`     | 这个变量包含请求的主要信息。在使用 proxy_pass 或 fastcgi_pass 指令的 location 中比较有意义                                               |
 | `$remote_addr`     | 客户端的 IP 地址                                                           |
 | `$remote_port`     | 客户端的端口                                                               |
-| `$args`            | 请求中的参数                                                               |
-| `$args_PARAMETER`  | GET 请求中变量名 PARAMETER 参数的值，`/test?name=abc`，`$args_name` 为 abc |
-| `$is_args`         | 如果请求有参数则为 ?,否则为字符串                                          |
+| `$args`            | 请求中的参数，这个变量可以被修改                                                               |
+| `$arg_PARAMETER`  | GET 请求中变量名 PARAMETER 参数的值，`/test?name=abc`，`$arg_name` 为 abc |
+| `$is_args`         | 如果请求有参数则为 "?"，否则为空字符串""                                          |
+| `$query_string`         | 与 `$args` 相同                                          |
+| `$cookie_COOKIE`         |跟 `$arg_PARAMETER` 类似，获取某个 cookie 值                                          |
 | `$scheme`          | 请求模式，http 或 https                                                    |
-| `$content-length`  | 请求头中的 Content-Length 字段                                             |
-| `$content-type`    | 请求头中的 Content-Type 字段                                               |
+| `$content_length`  | 请求头中的 Content-Length 字段                                             |
+| `$content_type`    | 请求头中的 Content-Type 字段                                               |
+| `$http_HEADER` | HTTP 请求头中的内容，HEADER 为 HTTP 请求中的内容转为小写，- 改为 _ （破折号变为下划线），例如 `$http_user_agent`                                                          |
 | `$http_user_agent` | 客户端 agent 信息                                                          |
+| `$sent_http_HEADER` | HTTP 响应头中的内容，HEADER 为 HTTP 响应中的内容转为小写，- 改为 _ （破折号变为下划线），例如 `$sent_http_cache_control` 、 `sent_http_content_type` 等                                                         |
 | `$http_cookie`     | 客户端 cookie 信息                                                         |
 | `$server_protocol` | 请求使用的协议，如 HTTP/1.1                                                |
 | `$server_addr`     | 服务器地址                                                                 |
 | `$server_name`     | 服务器名称                                                                 |
 | `$server_port`     | 服务器端口                                                                 |
 | `$status`          | 响应状态                                                                   |
+| `$body_bytes_sent`          | 传送页面的字节数                                                                   |
+| `$limit_rate`          | 限制连接速率                                                                   |
+| `$nginx_version`          | 当前运行的 Nginx 版本号                                                                   |
+| `$document_root`          | 当前请求在 root 指令中指定的值                                                                   |
+| `$document_uri`          | 当前请求在 root 指令中指定的值                                                                   |
 
-可以用 `set` 动态指定变量的值。
+### Nginx 如何设置变量
+
+Nginx 的配置文件使用的是一门微型的编程语言。既然是编程语言，一般也就少不了 “变量” 这种东西，但是在 Nginx 配置中，变量只能存放一种类型的值，那就是字符串。
+
+可以用 `set` 配置指令动态指定变量的值，Nginx 变量名前面有一个 `$` 符号，并且所有的Nginx 变量在 Nginx配置文件中引用时都必须带上 `$` 前缀
 
 ```nginx
 set $limit_rate 1K; #限制对客户端的响应传输速率。
 ```
+
+在引用变量时，需要注意引用的变量名之后紧跟着字符时（比如后跟字母、数以及下划线），就需要使用特别的语法来消除歧义：
+
+```nginx
+server {
+  listen 80;
+  server_name test.com;
+
+  set $temp hello;
+
+  location / {
+    default_type text/html;
+    return 200 "$temp world";
+  }
+
+  location /close {
+    default_type text/html;
+    return 200 "${hello}world"; # 紧跟字符时的用法
+  }
+}
+```
+
+另外需要注意的是，如果想输出 `$` 符号本身，可以这样做：
+
+```nginx
+geo $dollar {
+  default "$";
+}
+
+server {
+  listen 80;
+  server_name test.com;
+
+  location {
+    set $temp "hello ";
+    default_type text/html;
+    return 200 "${temp}world：$dollar";
+  }
+}
+```
+
+上面用到了标准模块 ngx_geo 提供的配置指令 geo 来为变量 `${dollar}` 赋予字符串 "$"，这样，这里返回的就是 "hello world：$"
 
 ## Nginx 配置文件的基本结构
 
