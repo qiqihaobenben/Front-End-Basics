@@ -10,7 +10,7 @@ tsconfig.json 是 TypeScript 项目的配置文件。如果一个目录下存在
 tsc --outFile demo.js --target es3 --module amd index.ts
 ```
 
-但是如果实际开发的项目，就需要使用 tsconfig.json，将需要用到的配置都写进 tsconfig.json，这样就不用每次编译都手动输入配置，也方便团队协作开发。
+但是如果实际开发的项目，就需要使用 tsconfig.json，把用到的配置都写进 tsconfig.json，这样就不用每次编译都手动输入配置，也方便团队协作开发。
 
 ## 初始化 tsconfig.json
 
@@ -19,7 +19,7 @@ tsc --outFile demo.js --target es3 --module amd index.ts
 
 ## 指定需要编译的目录
 
-在不指定输入文件的情况下执行 `tsc` 命令，默认从当前目录开始编译，编译所有 `.ts` 文件，并且从当前目录开始查找 tsconfig.json 文件，并逐级向上级目录搜索。
+在不指定输入文件的情况下执行 `tsc` 命令，默认从当前目录开始编译，编译所有 `.ts` 文件，并且从当前目录开始逐级向上级目录搜索查找 tsconfig.json 文件。
 
 另外，`tsc` 命令可以通过参数 `--project` 或 `-p` 指定需要编译的目录，该目录需要包含一个 tsconfig.json 文件（或者包含有效配置的 `.json` 文件）。
 
@@ -44,13 +44,13 @@ $ tsc --project src
 
 ### compilerOptions
 
-`compilerOptions` ：配置编译选项
+`compilerOptions` ：类型 `Object`，配置编译选项
 
-若 `compilerOptions` 属性被忽略，则编译器会使用默认值。可以查看[编译选项文档](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
+若 `compilerOptions` 属性被忽略，则编译器会使用默认值。可以查看 [编译选项文档](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
 
 #### 项目选项
 
-这些选项用于配置项目的运行时期望、转译 JavaScript的输出方式和位置，以及与现有 JavaScript 代码的集成级别。
+这些选项用于配置项目的运行时期望、编译后的 JavaScript 的输出方式和位置，以及与现有 JavaScript 代码的集成级别。
 
 - target：类型 `String`，指定编译代码的目标，不同的目标将影响代码中使用的特性是否会被降级，可用的值有 ► "ES3"（默认值） ► "ES5" ► "ES6"/ "ES2015" ► "ES2016" ► "ES2017" ► "ES2018" ► "ES2019" ► "ES2020" ► "ESNext"
 - module：类型 `String`，指定生成哪个模块系统代码，可以为 `"None"`、`"CommonJS"`、`"AMD"`、`"System"`、`"UMD"`、`"ES6"`/`"ES2015"`、`ES2020`、`ES2022`、`ESNext`、`Node12` 或者 `Nodenext`。默认值为 `target === "ES3" or "ES5" ? "CommonJS" : "ES6/ES2015"`
@@ -58,7 +58,7 @@ $ tsc --project src
 - jsxFactory：类型 `String`，指定 `"jsx": "react"`时，使用的 JSX 工厂函数，比如 `React.createElement` 或 `h`，配合 `jsx` 属性一起用。默认值为 `React.createElement`
 - incremental：类型 `Boolean`，TS编译器在第一次编译之后会生成一个储存编译信息的文件，第二次编译会在第一次的基础上进行增量编译，可以提高编译的速度。默认值分为两种情况，当 `composite` 为 `true` 时，默认值为 `true`，否则为 `false`
 - tsBuildInfoFile：类型 `String`，增量编译文件的存储位置，配合 `--incremental` 一起使用
-- declaration：类型 `Boolean`，构建 ts 文件时是否生成相应的 `.d.ts` 声明文件，开启后会自动生成声明文件，这些 `.d.ts`文件描述了模块导出的API类型，具体行为可以在[playground](https://www.typescriptlang.org/play?#code/C4TwDgpgBAtghmAKuCAGAPIgfFAvFAbwCgooBtAaygEsA7KCiEAewDMpEBdALg8s6IBfIkQDGzWgGdgUZnkIlSUOLwCMAGkWkARrwDkAJj1CxEycwA2EAHQXmAcwAUoSG1kBKIi+jwwq+b7IkBjebsxYlExuoezMAqRAA)中编写代码，并在右侧的 .D.TS 观察输出。默认值分为两种情况，当 `composite` 为 `true` 时，默认值为 `true`，否则为 `false`
+- declaration：类型 `Boolean`，构建 ts 文件时是否生成相应的 `.d.ts` 声明文件，开启后会自动生成声明文件，这些 `.d.ts`文件描述了模块导出的API类型，具体行为可以在 [playground](https://www.typescriptlang.org/play?#code/C4TwDgpgBAtghmAKuCAGAPIgfFAvFAbwCgooBtAaygEsA7KCiEAewDMpEBdALg8s6IBfIkQDGzWgGdgUZnkIlSUOLwCMAGkWkARrwDkAJj1CxEycwA2EAHQXmAcwAUoSG1kBKIi+jwwq+b7IkBjebsxYlExuoezMAqRAA) 中编写代码，并在右侧的 .D.TS 观察输出。默认值分为两种情况，当 `composite` 为 `true` 时，默认值为 `true`，否则为 `false`
 - declarationDir：类型 `String`，指定生成的声明文件存放目录，默认输出路径为生成的目标文件相同位置
 - declarationMap：类型 `Boolean`，为声明文件生成 sourceMap，默认值为 `false`
 - emitDeclarationOnly：类型 `Boolean`，只生成声明文件，而不会生成js文件，默认值为 `false`
@@ -68,6 +68,8 @@ $ tsc --project src
 - composite：类型 `Boolean`，确保 TypeScript 可以确定在哪里可以找到引用项目的输出以编译项目。默认为 `true` TODO
 - outDir：类型 `String`，指定输出目录，默认值为目标文件当前位置
 - outFile：类型 `String`，将多个相互依赖的文件生成一个文件，可以用在 AMD 模块中，即开启时应设置 `"module": "AMD"`
+- allowJs：类型 `Boolean` ，允许编译器编译 JS 或 JSX 文件，默认值 `false`
+- checkJs：类型 `Boolean`，允许在 JS 文件中报错，通常与 allowJS 一起使用，默认值为 `false`
 
 #### 严格模式
 
@@ -104,7 +106,7 @@ TypeScript 支持一些额外的代码检查，在某种程度上介于编译器
 - rootDir：类型 `String`，仅用来控制 `--outDir` 输出的目录结构，默认值为基于 input 传入的文件列表计算来的公共根路径
 - rootDirs：类型 `Array<String>`，根（root）文件夹列表，可以指定多个目录作为根目录，这个选项允许编译器在这些“虚拟”目录中解析相对应的模块导入，就像他们被合并到同一个目录中一样，查看 [模块解析文档](https://www.tslang.cn/docs/handbook/module-resolution.html#virtual-directories-with-rootdirs) 了解详情
  - typeRoots：类型 `Array<String>`，声明文件包根目录，默认是 node_modules/@types，如果 typeRoots 指定，则仅包括 typeRoots 下面的包。
- - types：类型 `Array<String>`，加载的声明文件包，默认情况下，所有的 typeRoots 包都将被包含在编译过程中。如果指定 types 属性，将仅检索指定名称的 @types 包。当 types 是 `[]` 时，表示禁止自动包含任何 @types 包。
+ - types：类型 `Array<String>`，加载的声明文件包，默认情况下，所有的 typeRoots 包都将被包含在编译过程中。如果指定 types 属性，将仅检索指定名称的 @types 包。当 types 是 `[]` 时，表示禁止自动包含任何 @types 包。可以[查看详情](https://www.tslang.cn/docs/handbook/tsconfig-json.html#types-typeroots-and-types)了解。
  - allowSyntheticDefaultImports：类型 `Boolean` ，允许从没有设置默认导出的模块中默认导入，即使一个模块没有默认导出（`export default`），也可以在其他模块中像导入包含默认导出模块一样的方式导入这个模块。这并不影响代码的输出，仅为了类型检查。默认值有两种情况：1、 `module === "system"` 或设置了 `esModuleInterop` 且 `module` 不为 `es2015`/`esnext` 时，默认值为 `true`；2、其他情况下默认值为 `false`。具体含义可以查看[TypeScript 中的多种 import 解义](https://tasaid.com/blog/2019022017450863.html)
  - esModuleInterop：类型 `Boolean`，指的是 ES 模块的互操作性。在默认情况下，TypeScript 像 ES6 模块一样对待 CommonJS/AMD/UMD，但是此时的 TypeScript 代码转译会导致不符合 ES6 模块规范，不过，开启 esModuleInterop 后，这些问题都将得到修复。一般情况下，在启用 esModuleInterop 时，会同时启用 allowSyntheticDefaultImports。
 
@@ -123,8 +125,6 @@ TypeScript 支持一些额外的代码检查，在某种程度上介于编译器
 - skipLibChcek：类型 `Boolean`，表示可以跳过检查声明文件，如果开启了这个选项，可以节省编译期的时间，但可能会牺牲类型系统的准确性，不过还是推荐设置为 `true`
 - diagnostics：类型 `Boolean`，打印诊断信息，默认值为 `false`
 - extendedDiagnostics：类型 `Boolean`，显示详细的诊断信息，默认值为 `false`
-- allowJs：类型 `Boolean` ，允许编译器编译 JS 或 JSX 文件，默认值 `false`
-- checkJs：类型 `Boolean`，允许在 JS 文件中报错，通常与 allowJS 一起使用，默认值为 `false`
 - isolatedModules：类型 `Boolean`，将每个文件作为单独的模块（与 "ts.transpileModule" 类似），默认值为 `false`
 - forceConsistentCasingFileNames：类型 `Boolean`，禁止对同一文件使用大小写不一致的引用，TypeScript 对文件的大小写是敏感的，如果有一部分的开发人员在大小写敏感的系统开发，而另一部分的开发人员在大小写不敏感的系统开发，就可能出现问题。默认值为 `false`
 - removeComments：类型 `Boolean`，删除注释，除了以 `/!*`开头的版权信息，默认值为 `false`
@@ -186,7 +186,7 @@ TypeScript 支持一些额外的代码检查，在某种程度上介于编译器
 
 ## 注意
 
-### 命令函参数优先级
+### 命令行参数优先级
 
 `tsc` 的命令行上指定的编译选项具有更高的优先级，会覆盖 tsconfig.json 中的相应选项。
 
@@ -194,17 +194,17 @@ TypeScript 支持一些额外的代码检查，在某种程度上介于编译器
 
 如果一个 glob 模式里的某部分只包含 `*` 或 `.*`，那么仅有支持的文件扩展名类型被包含在内（比如默认 `ts`、`tsx` 和 `.d.ts`，如果 `"allowJs": true`，那么，还包含 `.js` 和 `.jsx`）。
 
-如果 `files` 和 `include` 都没有被指定，编译器默认包含当前目录和子目录下所有的 TypeScript 文件（`.ts`、`.tsx` 和 `.d.ts`，如果`"allowJs": true`，那么，还包含 `.js` 和 `.jsx`），排除在 `exclude` 里指定的文件。
+如果 `files` 和 `include` 都没有被指定，编译器默认包含当前目录和子目录下所有的 TypeScript 文件（`.ts`、`.tsx` 和 `.d.ts`，如果`"allowJs": true`，那么，还包含 `.js` 和 `.jsx`），但是排除 `exclude` 中指定的文件。
 
 如果指定了 `files` 和 `include`，编译器会将它们包含的文件取并集。不过使用 `outDir` 指定的目录下的文件永远会被编译器排除，除非明确地使用 `files` 将其包含进来（这时就算用 `exclude` 排除也没用）。
 
 使用 `include` 引入的文件可以使用 `exclude` 属性过滤，但是通过 `files` 属性明确指定的文件始终会被包含在内，不管 `exclude` 如何设置。如果没有特殊指定，`exclude` 默认情况下会排除 `node_modules`、`bower_components`、`jspm_packages` 和 `<outDir>` 目录。
 
-编译器不会去引入那些可能做为输出的文件；比如，假设我们包含了 `index.ts`，那么 `index.d.ts` 和 `index.js` 会被排除在外。通常来讲，不推荐只用扩展名的不同来区分同目录下的文件。
+编译器不会去引入那些可能作为输出的文件；比如，假设我们包含了 `index.ts`，那么 `index.d.ts` 和 `index.js` 会被排除在外。通常来讲，不推荐只用扩展名的不同来区分同目录下的文件。
 
 ### types
 
-只有当你使用了全局环境声明的时候，自动包含才重要，如果没有用到全局声明的时候，就可以不需要自动包含，使用 import "module" 的时候，ts 会自动去 node_modules & node_modules/@types 文件夹查找对应声明文件包。
+只有当你使用了全局环境声明的时候，自动包含才显得重要，如果没有用到全局声明的时候，就可以不需要自动包含，使用 import "module" 的时候，ts 会自动去 node_modules & node_modules/@types 文件夹查找对应声明文件包。
 
 ### jsx
 
@@ -247,7 +247,7 @@ lib 配置项允许更细粒度地控制代码运行时的库定义文件，比�
 yarn add typescript@3.9.10
 ```
 
-### 切换 VS Code 使用 TypeScript 版本
+### 切换 VS Code 使用的 TypeScript 版本
 
 点击 VS Code 底部工具栏的版本号信息，从而实现 “use VS Code's Version” 和 “use WorkSapce version” 两者的切换。
 
