@@ -310,7 +310,81 @@ whereis nginx #查看nginx的相关目录
 
 - ngx_http
 - ngx_http_core: 配置端口、URI分析，服务器响应错误处理，别名控制（alias）等
+- ngx_http_log: 自定义 access 日志
+- ngx_http_upstream: 定义一组服务器，可以接收来自 proxy、fastcgi、memcache 的重定向，主要用作负载均衡
+- ngx_http_status
+- ngx_http_autoindex: 自动生成目录列表
+- ngx_http_index: 处理以 `/` 结尾的请求，如果没有找到 index 页，则看是否开启了 random_index，如果开启了，就用它，否则用 autoindex
+- ngx_http_auth_basic: 基于 http 的身份认证（auth_basic）
+- ngx_http_access: 基于 IP 地址的访问控制（deny、allow）
+- ngx_http_limit_conn: 限制来自客户端的连接的响应和处理速率
+- ngx_http_geo: 根据客户端 IP 地址创建变量
+- ngx_http_map: 创建任意的键值对变量
+- ngx_http_split_clients
+- ngx_http_referer: 过滤 HTTP 头中 Referer 为空的对象
+- ngx_http_rewrite: 通过正则表达式重定向请求
+- ngx_http_proxy
+- ngx_http_fastcgi: 支持 fastcgi
+- ngx_http_uwsgi
+- ngx_http_memcached
+- ngx_http_empty_gif: 从内存创建一个 1x1 的透明 gif 图片，可以快速调用
+- ngx_http_browser: 解析 http 请求头部的 User-Agent 值
+- ngx_http_charset: 指定网页编码
+- ngx_http_headers_filter: 设置 http 响应头
+- ngx_http_upstream_ip_hash
+- ngx_http_upstream_least_conn
+- ngx_http_upstream_keepalive
+- ngx_http_write_filter
+- ngx_http_header_filter
+- ngx_http_chunked_filter
+- ngx_http_range_header
+- ngx_http_gzip_filter
+- ngx_http_postpone_filter
+- ngx_http_ssi_filter
+- ngx_http_charset_filter
+- ngx_http_userid_filter
+- ngx_http_copy_filter
+- ngx_http_range_body_filter
+- ngx_http_not_modified_filter
+
+#### 可选 HTTP 模块
+
+- ngx_http_addition: 在请求的响应页面开始或者结尾添加文本信息
+- ngx_http_degradation: 在低内存的情况下允许服务器放回 444 或者 204 错误
+- ngx_http_perl
+- ngx_http_flv: 支持将 Flash 多媒体信息按照流文件传输，可以根据客户端指定的开始位置返回 Flash
+- ngx_http_geoip: 支持解析基于 GeoIP 数据库的客户端请求
+- ngx_http_perftools
+- ngx_http_gzip: 压缩请求的响应
+- ngx_http_gzip_static: 搜索并使用预压缩的以 `.gz` 为后缀的文件代替一般文件响应客户端请求
+- ngx_http_image_filter: 支持改变 png、jpeg、gif 图片的尺寸和旋转方向
+- ngx_http_mp4: 支持 .mp4、.m4v、.m4a 等多媒体信息按照流文件传输，常与 ngx_http_flv 一起使用
+- ngx_http_random_index: 当收到 `/` 结尾的请求时，在指定目录下随机选择一个文件作为 index
+- ngx_http_secure_link: 支持对请求链接的有效性检查
+- ngx_http_ssl: 支持 https
+- ngx_http_stub_status
+- ngx_http_sub_module: 使用指定的字符串替换响应中的信息
+- ngx_http_dav: 支持 HTTP 和 WebDAV 协议中的 PUT、DELETE、MKCOL、COPY、MOVE 方法
+- ngx_http_xslt: 将 XML 响应信息使用 XSLT 进行转换
+
+#### 邮件服务
+
+- ngx_mail_core
+- ngx_mail_pop3
+- ngx_mail_imap
+- ngx_mail_smtp
+- ngx_mail_auth_http
+- ngx_mail_proxy
+- ngx_mail_ssl
+
+#### 第三方模块
+
+- echo-nginx-module: 支持在 Nginx 配置文件中使用 `echo`、`sleep`、`time`、`exec` 等类 Shell 命令
+- memc-nginx-module
+- rds-json-nginx-module: 使 Nginx 支持 json 数据的处理
+- lua-nginx-module
 
 ## 推荐阅读
 
 - [Nginx 源码安装和 yum 安装对比](https://blog.csdn.net/qq_34556414/article/details/104777892)
+- [nginx服务器安装及配置文件详解](https://segmentfault.com/a/1190000002797601)
