@@ -286,6 +286,16 @@ whereis nginx #查看nginx的相关目录
 
 ## Nginx 模块
 
+[官方模块文档链接](https://nginx.org/en/docs/)
+
+Nginx 的模块使用的前提是编译进了 Nginx，了解一个模块可以从以下三个方面入手：
+
+- 模块提供哪些配置项
+- 模块合适被使用
+- 模块提供哪些变量
+
+上面说的三个方面，如果是官方模块可以直接在官方文档中找到相关的信息，如果是第三方模块，在文档不全的情况下也可以通过查看模块源码的方式来找到相关信息，例如上面编译安装步骤中，在 `/usr/local/src/nginx-1.20.1/` 的 `objs` 目录中的 `ngx_modules.c`，可以看到编译进 Nginx 的所有模块；然后在 `/usr/local/src/nginx-1.20.1/` 的 `src` 目录下能找到相应的模块源码，像是 `ngx_http_gzip_filter_module` 的源码就在 `/usr/local/src/nginx-1.20.1/src/http/modules/ngx_http_gzip_filter_module.c`。
+
 ### Nginx 模块分类
 
 - 核心模块：nginx 最基本最核心的服务，如进程管理、权限控制、日志记录；
@@ -302,8 +312,9 @@ whereis nginx #查看nginx的相关目录
 - ngx_errlog
 - ngx_conf
 - ngx_events
-- ngx_event_core
-- ngx_epoll
+- ngx_http
+- ngx_mail
+- ngx_stream
 - ngx_regex
 
 #### 标准 HTTP 模块

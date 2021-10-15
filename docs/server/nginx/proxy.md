@@ -43,6 +43,8 @@ server {
 - proxy_busy_buffers_size：不是独立的空间，是 proxy_buffers 和 proxy_buffer_size 的一部分
 - proxy_temp_file_write_size：缓存区临时文件大小
 
+其他更多的指令查看 [ngx_http_proxy_module](https://nginx.org/en/docs/http/ngx_http_proxy_module.html)
+
 ### 反向代理配置
 
 ```nginx
@@ -268,6 +270,29 @@ server {
   }
 }
 ```
+
+## 代理缓存
+
+Nginx 的 http_proxy 模块，提供类似 Squid 的缓存功能，使用 `proxy_cache_path` 配置。
+
+Nginx 可以对访问过的内容在 Nginx 代理服务器本地建立副本，这样在一段时间内再次访问该数据，就不需要通过 Nginx 代理服务器再次向后端服务器发出请求，减小数据传输延迟，提高访问速度。
+
+```nginx
+proxy_cache_path usr/local/cache levels=1:2 keys_zone=my_cache:10m;
+
+server {
+  listen       80;
+  server_name  test.com;
+
+  location / {
+      proxy_cache my_cache;
+      proxy_pass http://127.0.0.1:8888;
+      proxy_set_header Host $host;
+  }
+}
+```
+
+上面的配置表示： Nginx 提供一块 10M 的内存用于缓存，名字为 my_cache，levels 等级为 1:2，缓存存放的路径未 `usr/local/cache`。
 
 ## 推荐阅读
 
