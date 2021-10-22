@@ -109,7 +109,7 @@ HTTPS 是在应用层 HTTP 之下加入了表示层 SSL(Secure Socket Layer)/TLS
 
 ```nginx
 server {
-  listen 443 ssl http2; # ssl 访问端口号为 442，还开启了 http/2.0
+  listen 443 ssl http2; # ssl 访问端口号为 443，还开启了 http/2.0
   server_name docs.chenfangxu.com;
 
   # 证书文件地址
@@ -180,7 +180,7 @@ ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4";
 ```
 
-### HTTP 重定向到 HTTP2
+### HTTP 重定向到 HTTPS
 
 之前配置过 [http://docs.chenfangxu.com](http://docs.chenfangxu.com)，我们可以修改配置，当访问 http 时重定向到 https：
 

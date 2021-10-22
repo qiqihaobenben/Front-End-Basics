@@ -182,7 +182,7 @@ last 和 break 的区别：
 
 - last 一般写在 server 和 if 中，而 break 一般使用在 location 中
 - last 不终止重写后的 url 匹配，即新的 url 会再从 server 走一遍匹配流程，而 break 终止重写后的匹配
-- break 和 last 都能阻止继续执行后面的 rewrite 指令。
+- break 和 last 都能阻止继续执行后面的 rewrite 指令，但是 break 不能阻止后面的其他指令生效。
 
 ## 负载均衡
 
@@ -200,37 +200,63 @@ upstream 是 Nginx 的 HTTP Upstream 模块，这个模块通过一个简单的�
 
 Nginx 的负载均衡目前支持 4 种调度算法：
 
-- 轮询（默认）：每个请求按时间顺序逐一分配到不同的后端服务器，如果后端某台服务器宕机会被自动剔除，使用户访问不受影响。 Weight 指定轮询权值，Weight 越大，分配到的访问几率越高，主要用于后端每个服务器性能不均的情况。
-- ip_hash：每个请求按访问 IP 的 hash 结果分配，这样来自同一个 IP 的访客固定访问一个后端服务器，有效解决了动态网页存在的 session 共享的问题。
+- 轮询（默认）：正式的名称叫做**加权 Round-Robin 负载均衡算法**，是所有算法的基础，以加权轮询的方式访问 server 指令指定的上游服务，集成在 Nginx 的 upstream 框架中，每个请求按时间顺序逐一分配到不同的后端服务器，如果后端某台服务器宕机会被自动剔除，使用户访问不受影响。 Weight 指定轮询权值，Weight 越大，分配到的访问几率越高，主要用于后端每个服务器性能不均的情况。
+- ip_hash：每个请求按访问 IP 的 hash 结果分配，这样来自同一个 IP 的访客固定访问一个后端服务器，有效解决了动态网页存在的 session 共享的问题。基于客户端 IP 地址的 Hash 算法实现负载均衡，是依靠 ngx_http_upstream_id_hash 模块，以客户端的 IP 地址作为 hash 算法的关键字，映射到特定的上有服务器中，对于IPv4地址使用前3个字节作为关键字，对于IPv6则使用完整地址，并且可以基于 realip 模块修改用于执行算法的IP地址。
+- hash：基于任意关键字实现 hash 算法的负载均衡，依靠默认包含的 ngx_http_upstream_hash_module 模块，通过指定关键字作为 hash key，基于 hash 算法映射到特定的上游服务器中，关键字可以含有变量、字符串。可以开启一致性 hash 算法来解决扩容后的缓存失效问题。
 - fair：更加智能的负载均衡算法，可以依据页面大小和加载时间长短智能地进行负载均衡，也就是根据后端服务器的响应时间来分配请求，响应时间短的优先分配。Nginx 本身是不支持 fair 的，如果需要使用这种调度算法，必须下载 Nginx 的 upstream-fair 模块。
 - url_hash：按访问 url 的 hash 结果来分配请求，使每个 url 定向到同一个后端服务器，可以进一步提高后端缓存服务器的效率。Nginx 本身是不支持 url_hash 的，如果需要使用这种调度算法，必须安装 Nginx 的 hash 软件包。
+- 最少连接算法：优先选择连接最少的上有服务器，依赖 ngx_http_upstream_least_conn 模块，从所有上游服务器中，找出当前并发连接数最少的一个，将请求转发到它。如果出现多个最少连接服务器的连接数都是一样的，使用 round-robin 算法。
 
-upstream 可以设定每个后端服务器在负载均衡调度中的状态，支持状态参数：
+upstream 指定一组上有服务器地址，其中，地址可以是域名、IP地址、或者 unix socket 地址。可以在域名或者IP地址后加端口，如果不加端口，那么默认使用 80 端口，此外也可以设定每个后端服务器在负载均衡调度中的状态，支持状态参数：
 
-- down：表示当前的 server 暂时不参与负载均衡
+- down：表示当前的 server 已经下线，暂时不参与负载均衡
 - backup：预留的备份机器。当其他所有的非 backup 机器出现故障或者忙的时候，才会请求 backup 机器，因此这台机器的压力最轻
-- max_fails：允许请求失败的次数，默认为 1.当超过最大次数时，返回 proxy_next_upstream 模块定义的错误
-- fail_timeout：在经历了 max_fails 次失败后，暂定服务的时间。max_fails 可以和 fail_timeout 一起使用。
+- max_fails：在 fail_timeout 时间段内，允许请求失败的次数，默认为 1.当超过最大次数时，返回 proxy_next_upstream 模块定义的错误，并且会在 fail_timeout 秒内这台 server 不允许再次被选择
+- fail_timeout：在经历了 max_fails 次失败后，暂停服务的时间。max_fails 可以和 fail_timeout 一起使用，指定一段时间内，最大的失败次数 max_fails。
 
 **注意：当负载均衡调度算法为 ip_hash 时，后端服务器在负载均衡调度中的状态不能是 weight 和 backup**
+
+我们还可以对上游服务使用 keepalive 长链接，使用到的模块是 ngx_http_upstream_keepalive_module，默认是编译进 Nginx 的。功能是通过复用连接，降低 Nginx 与上游服务器建立、关闭连接的小号，提升吞吐量的同时降低时延。
 
 ```nginx
 http {
   upstream myserver {
-    ip_hash;
+    ip_hash
+    #hash user_$arg_username # 任意关键字的 hash 算法，此处就是获取url上的query 是 username 字段拼成的关键字
     server 127.0.0.1:8080;
     server 127.0.0.1:8081 down;
     server 127.0.0.1:8082 weight=10; # weight 不写默认为 1
     server 127.0.0.1:8083 max_fails=3 fail_timeout=20s;
+    keepalive 32; # 最多保持 32 个请求
   }
 
   server {
+    set_real_ip_from 116.62.160.192;
+    real_ip_recursive on;
+    real_ip_header X-Forwarded-For;
     location / {
       proxy_pass http://myserver;
+      proxy_http_version 1.1; # http 1.1 版本开始才支持长链接，防止用户发送的http版本太低
+      proxy_set_header Connection ""; # 防止用户设置 Connection "close
     }
   }
 }
 ```
+
+最后再说一下 upstream_zone 模块，使用共享内存使负载均衡策略对所有 worker 进程生效，它会分配出共享内存，将其他 upstream 模块定义的负载均衡策略数据、运行时每个上游服务的状态数据存放在共享内存上，以对所有 Nginx worker 进程生效。
+
+### upstream 模块提供的变量（不含 cache）
+
+- $upstream_addr 上游服务器的IP地址，格式为可读的字符串，例如 127.0.0.1:8012
+- $upstream_connect_time 与上游服务建立连接消耗的时间，单位为秒，精确到毫秒
+- $upstream_header_time 接收上有服务发回响应中 http 头部所消耗的时间，单位为秒，精确到毫秒
+- $upstream_response_time 接收完整的上游服务响应所消耗的时间，单位为秒，精确到毫秒
+- $upstream_http_名称 从上游服务返回的响应的头部的值
+- $upstream_bytes_received 从上游服务接收到的响应长度，单位为字节
+- $upstream_response_length 从上游服务返回的响应包体长度，单位为字节
+- $upstream_status 上游服务返回的 HTTP 响应中的状态码。如果未连接上，该变量值为502
+- $upstream_cookie_名称 从上游服务发回的响应头 Set-Cookie 中取出的 cookie 值
+- $upstream_trailer_名称 从上游服务的响应尾部取到的值
 
 ## 配置动静分离
 
