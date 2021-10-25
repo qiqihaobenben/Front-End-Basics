@@ -201,13 +201,13 @@ upstream 是 Nginx 的 HTTP Upstream 模块，这个模块通过一个简单的�
 Nginx 的负载均衡目前支持 4 种调度算法：
 
 - 轮询（默认）：正式的名称叫做**加权 Round-Robin 负载均衡算法**，是所有算法的基础，以加权轮询的方式访问 server 指令指定的上游服务，集成在 Nginx 的 upstream 框架中，每个请求按时间顺序逐一分配到不同的后端服务器，如果后端某台服务器宕机会被自动剔除，使用户访问不受影响。 Weight 指定轮询权值，Weight 越大，分配到的访问几率越高，主要用于后端每个服务器性能不均的情况。
-- ip_hash：每个请求按访问 IP 的 hash 结果分配，这样来自同一个 IP 的访客固定访问一个后端服务器，有效解决了动态网页存在的 session 共享的问题。基于客户端 IP 地址的 Hash 算法实现负载均衡，是依靠 ngx_http_upstream_id_hash 模块，以客户端的 IP 地址作为 hash 算法的关键字，映射到特定的上有服务器中，对于IPv4地址使用前3个字节作为关键字，对于IPv6则使用完整地址，并且可以基于 realip 模块修改用于执行算法的IP地址。
+- ip_hash：每个请求按访问 IP 的 hash 结果分配，这样来自同一个 IP 的访客固定访问一个后端服务器，有效解决了动态网页存在的 session 共享的问题。基于客户端 IP 地址的 Hash 算法实现负载均衡，是依靠 ngx_http_upstream_id_hash 模块，以客户端的 IP 地址作为 hash 算法的关键字，映射到特定的上有服务器中，对于 IPv4 地址使用前 3 个字节作为关键字，对于 IPv6 则使用完整地址，并且可以基于 realip 模块修改用于执行算法的 IP 地址。
 - hash：基于任意关键字实现 hash 算法的负载均衡，依靠默认包含的 ngx_http_upstream_hash_module 模块，通过指定关键字作为 hash key，基于 hash 算法映射到特定的上游服务器中，关键字可以含有变量、字符串。可以开启一致性 hash 算法来解决扩容后的缓存失效问题。
 - fair：更加智能的负载均衡算法，可以依据页面大小和加载时间长短智能地进行负载均衡，也就是根据后端服务器的响应时间来分配请求，响应时间短的优先分配。Nginx 本身是不支持 fair 的，如果需要使用这种调度算法，必须下载 Nginx 的 upstream-fair 模块。
 - url_hash：按访问 url 的 hash 结果来分配请求，使每个 url 定向到同一个后端服务器，可以进一步提高后端缓存服务器的效率。Nginx 本身是不支持 url_hash 的，如果需要使用这种调度算法，必须安装 Nginx 的 hash 软件包。
 - 最少连接算法：优先选择连接最少的上有服务器，依赖 ngx_http_upstream_least_conn 模块，从所有上游服务器中，找出当前并发连接数最少的一个，将请求转发到它。如果出现多个最少连接服务器的连接数都是一样的，使用 round-robin 算法。
 
-upstream 指定一组上有服务器地址，其中，地址可以是域名、IP地址、或者 unix socket 地址。可以在域名或者IP地址后加端口，如果不加端口，那么默认使用 80 端口，此外也可以设定每个后端服务器在负载均衡调度中的状态，支持状态参数：
+upstream 指定一组上有服务器地址，其中，地址可以是域名、IP 地址、或者 unix socket 地址。可以在域名或者 IP 地址后加端口，如果不加端口，那么默认使用 80 端口，此外也可以设定每个后端服务器在负载均衡调度中的状态，支持状态参数：
 
 - down：表示当前的 server 已经下线，暂时不参与负载均衡
 - backup：预留的备份机器。当其他所有的非 backup 机器出现故障或者忙的时候，才会请求 backup 机器，因此这台机器的压力最轻
@@ -247,16 +247,16 @@ http {
 
 ### upstream 模块提供的变量（不含 cache）
 
-- $upstream_addr 上游服务器的IP地址，格式为可读的字符串，例如 127.0.0.1:8012
-- $upstream_connect_time 与上游服务建立连接消耗的时间，单位为秒，精确到毫秒
-- $upstream_header_time 接收上有服务发回响应中 http 头部所消耗的时间，单位为秒，精确到毫秒
-- $upstream_response_time 接收完整的上游服务响应所消耗的时间，单位为秒，精确到毫秒
-- $upstream_http_名称 从上游服务返回的响应的头部的值
-- $upstream_bytes_received 从上游服务接收到的响应长度，单位为字节
-- $upstream_response_length 从上游服务返回的响应包体长度，单位为字节
-- $upstream_status 上游服务返回的 HTTP 响应中的状态码。如果未连接上，该变量值为502
-- $upstream_cookie_名称 从上游服务发回的响应头 Set-Cookie 中取出的 cookie 值
-- $upstream_trailer_名称 从上游服务的响应尾部取到的值
+- \$upstream_addr 上游服务器的 IP 地址，格式为可读的字符串，例如 127.0.0.1:8012
+- \$upstream_connect_time 与上游服务建立连接消耗的时间，单位为秒，精确到毫秒
+- \$upstream_header_time 接收上有服务发回响应中 http 头部所消耗的时间，单位为秒，精确到毫秒
+- \$upstream_response_time 接收完整的上游服务响应所消耗的时间，单位为秒，精确到毫秒
+- \$upstream*http*名称 从上游服务返回的响应的头部的值
+- \$upstream_bytes_received 从上游服务接收到的响应长度，单位为字节
+- \$upstream_response_length 从上游服务返回的响应包体长度，单位为字节
+- \$upstream_status 上游服务返回的 HTTP 响应中的状态码。如果未连接上，该变量值为 502
+- \$upstream*cookie*名称 从上游服务发回的响应头 Set-Cookie 中取出的 cookie 值
+- \$upstream*trailer*名称 从上游服务的响应尾部取到的值
 
 ## 配置动静分离
 
