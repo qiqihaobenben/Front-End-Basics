@@ -4,74 +4,73 @@
 
 Nginx 有一些常用的全局变量，可以在配置的任何位置使用他们。列举一些比较常见的：
 
-| 变量               | 描述                                                                       |
-| ------------------ | -------------------------------------------------------------------------- |
-| **HTTP 相关的变量** ||
-| `$host`            | 请求行中的 Host，如果有 Host 请求头，则用其值替换掉请求行中的主机名，如果请求中没有 Host 行和 Host 请求头，则等于请求匹配的 server 名称（处理请求 server 的 server_name 指令的值），值为小写，不包含端口        |
-|`$uri`|请求中的当前 URI（不同于 URL ，不包括 `?` 后面的请求参数，参数位于 `$args`），不同于浏览器传递 `$request_uri` 的值，它可以通过内部重定向，或者使用 index 指令进行修改，不包括协议和主机名，例如 /abc/ef.html |
-| `$document_uri`     | 当前请求在 root 指令中指定的值，与 `$uri` 完全相同，历史问题存在                                               |
-| `$request_uri`     | 完整的原始请求 URL（包括 URI 和完整的参数），它无法修改，请查看 `$uri` 更改或重写 URL                                               |
-| `$scheme`          | 请求模式，http 或 https                                                    |
-| `$request`  |原始的 url 请求，含有方法与协议版本，例如 GET /?a=1&b=22 HTTP/1.1                                                |
-| `$request_method`  | 客户端请求类型，如 GET、POST                                               |
-| `$request_length`  | 所有请求内容的大小，包括请求行、头部、包体等                                               |
-| `$request_body`     | 请求中的包体，这个变量当且仅当使用反向代理，且设定用内存暂存包体时才有效                                               |
-| `$request_body_file`     |临时存放请求包体的文件，如果包体非常小则不会存文件，可以通过 client_body_in_file_only 强制所有包体存入文件，且可决定是否删除                                                |
-| `$remote_user`     | 由 HTTP Basic Authentication 协议传入的用户名                                                               |
-| `$args`            | 请求中的参数，这个变量可以被修改                                                               |
-| `$arg_PARAMETER`  | GET 请求中变量名 PARAMETER 参数的值，`/test?name=abc`，`$arg_name` 为 abc |
-| `$is_args`         | 如果请求有参数则为 "?"，否则为空字符串""                                          |
-| `$query_string`         | 与 `$args` 相同                                          |
-| `$content_length`  | 请求头中标识包体长度的 Content-Length 字段                                             |
-| `$content_type`    | 请求头中标识包体类型的 Content-Type 字段                                               |
-| `$http_HEADER` | HTTP 请求头中的内容，HEADER 为 HTTP 请求中的内容转为小写，- 改为 _ （破折号变为下划线），例如 `$http_user_agent`                                                          |
-| `$http_user_agent` | 客户端 agent 信息                                                          |
-| `$http_cookie`     | 客户端 cookie 信息                                                         |
-| `$cookie_COOKIE`         |跟 `$arg_PARAMETER` 类似，获取某个 cookie 值                                          |
-| **TCP 连接相关的变量** ||
-| `$binary_remote_addr`     | 客户端地址的整型格式，对于 IPv4是4字节，对于 IPv6是16字节                                                           |
-| `$remote_addr`     | 客户端的 IP 地址                                                           |
-| `$remote_port`     | 客户端的端口                                                               |
-| `$connection`     | 递增的连接序号                                                               |
-| `$connection_requests`     | 当前连接上执行过的请求数，对 keepalive 连接有意义                                                               |
-| `$proxy_protocol_addr`     | 若使用了 proxy_protocol 协议则返回协议中的地址（原始用户的地址），否则返回空                                                               |
-| `$proxy_protocol_port`     | 若使用了 proxy_protocol 协议则返回协议中的端口（原始用户的端口），否则返回空                                                               |
-| `$server_addr`     | 服务器端地址                                                               |
-| `$server_port`     | 服务器端端口                                                               |
-| `$server_protocol`     | 服务器端协议，例如 HTTP/1.1                                                               |
-| `$server_protocol`     | 服务器端协议，例如 HTTP/1.1                                                               |
-| `$TCP_INFO`     | tcp 内核层参数，包括 `$tcpinfo_rtt`、`$tcpinfo_rttvar`、`$tcpinfo_snd_cwnd`、`$tcpinfo_rcv_space`                                                               |
-| **Nginx 处理请求过程中产生的变量** ||
-| `$request_time`          | 请求处理到现在的耗时，单位为秒，精确到毫秒                                                                   |
-| `$server_name`          | 匹配上请求的 server_name 值                                                                   |
-| `$https`          | 如果开启了 TLS/SSL，则返回 on，否则返回空                                                                   |
-| `$request_completion`          | 若请求处理完则返回 OK，否则返回空                                                                   |
-| `$request_id`          | 以 16 进制输出的请求标识 id，该 id 共含有 16 个字节，是随机生成的                                                                   |
-| `$request_filename`          | 待访问文件的完整路径                                                                   |
-| `$document_root`          | 由 URI 和 root/alias 规则生成的文件夹路径                                                                   |
-| `$realpath_root`          | 将 document_root 中的软链接等换成真实路径                                                                   |
-| `$limit_rate`          | 返回客户端响应时的速度上线，单位为每秒字节数。可以通过 `set` 指令修改对请求产生效果                                                                   |
-| **发送 HTTP 响应时相关的变量** ||
-| `$sent_http_HEADER` | HTTP 响应头中的内容，HEADER 为 HTTP 响应中的内容转为小写，- 改为 _ （破折号变为下划线），例如 `$sent_http_cache_control` 、 `sent_http_content_type` 等                                                         |
-| `$status`          | HTTP 响应状态                                                                   |
-| `$body_bytes_sent`          | 传送页面的字节数，即响应中 body 包体的长度                                                                   |
-| `$bytes_sent`          | 全部 http 响应的长度                                                                   |
-| `$sent_trailer_名字`          | 把响应结尾内容里的值返回                                                                   |
-| **Nginx 系统变量** ||
-| `$time_local`          | 以本地时间标准输出的当前时间                                                                   |
-| `$time_iso8601`          | 使用 ISO 8601 标准输出的当前时间                                                                   |
-| `$nginx_version`          | 当前运行的 Nginx 版本号                                                                   |
-| `$pid`          | 所属 worker 进程的 id                                                                   |
-| `$pipe`          | 使用了管道则返回 p，否则返回 `.`                                                                   |
-| `$hostname`          | 所在服务器的主机名，与 hostname 命令输出一致                                                                   |
-| `$msec`          | 1970年1月1日到现在的时间，单位为秒，小数点后精确到毫秒                                                                   |
-
+| 变量                               | 描述                                                                                                                                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **HTTP 相关的变量**                |                                                                                                                                                                                                              |
+| `$host`                            | 请求行中的 Host，如果有 Host 请求头，则用其值替换掉请求行中的主机名，如果请求中没有 Host 行和 Host 请求头，则等于请求匹配的 server 名称（处理请求 server 的 server_name 指令的值），值为小写，不包含端口     |
+| `$uri`                             | 请求中的当前 URI（不同于 URL ，不包括 `?` 后面的请求参数，参数位于 `$args`），不同于浏览器传递 `$request_uri` 的值，它可以通过内部重定向，或者使用 index 指令进行修改，不包括协议和主机名，例如 /abc/ef.html |
+| `$document_uri`                    | 当前请求在 root 指令中指定的值，与 `$uri` 完全相同，历史问题存在                                                                                                                                             |
+| `$request_uri`                     | 完整的原始请求 URL（包括 URI 和完整的参数），它无法修改，请查看 `$uri` 更改或重写 URL                                                                                                                        |
+| `$scheme`                          | 请求模式，http 或 https                                                                                                                                                                                      |
+| `$request`                         | 原始的 url 请求，含有方法与协议版本，例如 GET /?a=1&b=22 HTTP/1.1                                                                                                                                            |
+| `$request_method`                  | 客户端请求类型，如 GET、POST                                                                                                                                                                                 |
+| `$request_length`                  | 所有请求内容的大小，包括请求行、头部、包体等                                                                                                                                                                 |
+| `$request_body`                    | 请求中的包体，这个变量当且仅当使用反向代理，且设定用内存暂存包体时才有效                                                                                                                                     |
+| `$request_body_file`               | 临时存放请求包体的文件，如果包体非常小则不会存文件，可以通过 client_body_in_file_only 强制所有包体存入文件，且可决定是否删除                                                                                 |
+| `$remote_user`                     | 由 HTTP Basic Authentication 协议传入的用户名                                                                                                                                                                |
+| `$args`                            | 请求中的参数，这个变量可以被修改                                                                                                                                                                             |
+| `$arg_PARAMETER`                   | GET 请求中变量名 PARAMETER 参数的值，`/test?name=abc`，`$arg_name` 为 abc                                                                                                                                    |
+| `$is_args`                         | 如果请求有参数则为 "?"，否则为空字符串""                                                                                                                                                                     |
+| `$query_string`                    | 与 `$args` 相同                                                                                                                                                                                              |
+| `$content_length`                  | 请求头中标识包体长度的 Content-Length 字段                                                                                                                                                                   |
+| `$content_type`                    | 请求头中标识包体类型的 Content-Type 字段                                                                                                                                                                     |
+| `$http_HEADER`                     | HTTP 请求头中的内容，HEADER 为 HTTP 请求中的内容转为小写，- 改为 \_ （破折号变为下划线），例如 `$http_user_agent`                                                                                            |
+| `$http_user_agent`                 | 客户端 agent 信息                                                                                                                                                                                            |
+| `$http_cookie`                     | 客户端 cookie 信息                                                                                                                                                                                           |
+| `$cookie_COOKIE`                   | 跟 `$arg_PARAMETER` 类似，获取某个 cookie 值                                                                                                                                                                 |
+| **TCP 连接相关的变量**             |                                                                                                                                                                                                              |
+| `$binary_remote_addr`              | 客户端地址的整型格式，对于 IPv4 是 4 字节，对于 IPv6 是 16 字节                                                                                                                                              |
+| `$remote_addr`                     | 客户端的 IP 地址                                                                                                                                                                                             |
+| `$remote_port`                     | 客户端的端口                                                                                                                                                                                                 |
+| `$connection`                      | 递增的连接序号                                                                                                                                                                                               |
+| `$connection_requests`             | 当前连接上执行过的请求数，对 keepalive 连接有意义                                                                                                                                                            |
+| `$proxy_protocol_addr`             | 若使用了 proxy_protocol 协议则返回协议中的地址（原始用户的地址），否则返回空                                                                                                                                 |
+| `$proxy_protocol_port`             | 若使用了 proxy_protocol 协议则返回协议中的端口（原始用户的端口），否则返回空                                                                                                                                 |
+| `$server_addr`                     | 服务器端地址                                                                                                                                                                                                 |
+| `$server_port`                     | 服务器端端口                                                                                                                                                                                                 |
+| `$server_protocol`                 | 服务器端协议，例如 HTTP/1.1                                                                                                                                                                                  |
+| `$server_protocol`                 | 服务器端协议，例如 HTTP/1.1                                                                                                                                                                                  |
+| `$TCP_INFO`                        | tcp 内核层参数，包括 `$tcpinfo_rtt`、`$tcpinfo_rttvar`、`$tcpinfo_snd_cwnd`、`$tcpinfo_rcv_space`                                                                                                            |
+| **Nginx 处理请求过程中产生的变量** |                                                                                                                                                                                                              |
+| `$request_time`                    | 请求处理到现在的耗时，单位为秒，精确到毫秒                                                                                                                                                                   |
+| `$server_name`                     | 匹配上请求的 server_name 值                                                                                                                                                                                  |
+| `$https`                           | 如果开启了 TLS/SSL，则返回 on，否则返回空                                                                                                                                                                    |
+| `$request_completion`              | 若请求处理完则返回 OK，否则返回空                                                                                                                                                                            |
+| `$request_id`                      | 以 16 进制输出的请求标识 id，该 id 共含有 16 个字节，是随机生成的                                                                                                                                            |
+| `$request_filename`                | 待访问文件的完整路径                                                                                                                                                                                         |
+| `$document_root`                   | 由 URI 和 root/alias 规则生成的文件夹路径                                                                                                                                                                    |
+| `$realpath_root`                   | 将 document_root 中的软链接等换成真实路径                                                                                                                                                                    |
+| `$limit_rate`                      | 返回客户端响应时的速度上线，单位为每秒字节数。可以通过 `set` 指令修改对请求产生效果                                                                                                                          |
+| **发送 HTTP 响应时相关的变量**     |                                                                                                                                                                                                              |
+| `$sent_http_HEADER`                | HTTP 响应头中的内容，HEADER 为 HTTP 响应中的内容转为小写，- 改为 \_ （破折号变为下划线），例如 `$sent_http_cache_control` 、 `sent_http_content_type` 等                                                     |
+| `$status`                          | HTTP 响应状态                                                                                                                                                                                                |
+| `$body_bytes_sent`                 | 传送页面的字节数，即响应中 body 包体的长度                                                                                                                                                                   |
+| `$bytes_sent`                      | 全部 http 响应的长度                                                                                                                                                                                         |
+| `$sent_trailer_名字`               | 把响应结尾内容里的值返回                                                                                                                                                                                     |
+| **Nginx 系统变量**                 |                                                                                                                                                                                                              |
+| `$time_local`                      | 以本地时间标准输出的当前时间                                                                                                                                                                                 |
+| `$time_iso8601`                    | 使用 ISO 8601 标准输出的当前时间                                                                                                                                                                             |
+| `$nginx_version`                   | 当前运行的 Nginx 版本号                                                                                                                                                                                      |
+| `$pid`                             | 所属 worker 进程的 id                                                                                                                                                                                        |
+| `$pipe`                            | 使用了管道则返回 p，否则返回 `.`                                                                                                                                                                             |
+| `$hostname`                        | 所在服务器的主机名，与 hostname 命令输出一致                                                                                                                                                                 |
+| `$msec`                            | 1970 年 1 月 1 日到现在的时间，单位为秒，小数点后精确到毫秒                                                                                                                                                  |
 
 ### Nginx 如何设置变量
 
 Nginx 的配置文件使用的是一门微型的编程语言。既然是编程语言，一般也就少不了 “变量” 这种东西，但是在 Nginx 配置中，变量只能存放一种类型的值，那就是字符串。
 
-可以用 `set` 配置指令动态指定变量的值，Nginx 变量名前面有一个 `$` 符号，并且所有的Nginx 变量在 Nginx配置文件中引用时都必须带上 `$` 前缀
+可以用 `set` 配置指令动态指定变量的值，Nginx 变量名前面有一个 `$` 符号，并且所有的 Nginx 变量在 Nginx 配置文件中引用时都必须带上 `$` 前缀
 
 ```nginx
 set $limit_rate 1K; #限制对客户端的响应传输速率。
@@ -124,7 +123,7 @@ server {
 Nginx 的变量对应的模块可以分为：变量的提供模块和变量的使用模块
 
 - Nginx 启动时，提供变量的模块可以在 preconfiguration 中定义新的变量，包括定义好**变量名**和**解析出变量的方法**
-- HTTP头部读取完毕后，使用变量的模块，比如 http 的 access 日志，解析 nginx.conf 时定义变量使用方式，处理请求时，会通过变量名去对应的解析出变量的方法中求得变量值
+- HTTP 头部读取完毕后，使用变量的模块，比如 http 的 access 日志，解析 nginx.conf 时定义变量使用方式，处理请求时，会通过变量名去对应的解析出变量的方法中求得变量值
 
 ## Nginx 配置文件的基本结构
 
@@ -496,27 +495,27 @@ http 服务上支持若干虚拟主机。每个虚拟主机对应一个 server �
 
 2、 `serve_name` 可以使用正则表达式的小括号 `()` 创建变量，并且可以使用尖括号 `?<>` 来命名变量。
 
-  ```nginx
-  # 使用正则，并且创建变量
-  server {
-    server_name ~^(www\.)?(.+)$;
+```nginx
+# 使用正则，并且创建变量
+server {
+  server_name ~^(www\.)?(.+)$;
 
-    location / {
-        root /sites/$2;
-    }
+  location / {
+      root /sites/$2;
   }
+}
 
-  # 创建命名变量
-  server {
-    server_name ~^(www\.)?(?<domain>.+)$;
+# 创建命名变量
+server {
+  server_name ~^(www\.)?(?<domain>.+)$;
 
-    location / {
-        root /sites/$domain;
-    }
+  location / {
+      root /sites/$domain;
   }
-  ```
+}
+```
 
-3、 `.example.com` 可以匹配到 example.com *.example.com
+3、 `.example.com` 可以匹配到 `example.com` `*.example.com`
 
 4、 `_` 匹配所有域名
 
@@ -529,9 +528,6 @@ http 服务上支持若干虚拟主机。每个虚拟主机对应一个 server �
 3. 其次优先匹配 `*` 在后的泛域名
 4. 其次匹配到正则表达式，匹配顺序是按 nginx.conf 文件中的出现顺序匹配正则表达式域名
 5. 最后会匹配到 default server，default server 又分为两种情况，第一种是匹配第一个 server 块，另一种情况是如果 `listen` 指令后面有 `default` 时，所在的 server 块就是 default server。
-
-
-
 
 ### localtion
 
@@ -586,6 +582,92 @@ location /images {
   autoindex_localtime on;
 }
 ```
+
+## Nginx 的 if 判断
+
+```
+if (表达式) {
+  ……
+}
+```
+
+### 括号中的表达式语法
+
+#### 普通语法
+
+- 当表达式只是一个变量时，如果值为空或任何以 0 开头的字符串都会当做 `false`
+- 直接比较变量和内容时，使用 = 或 !=
+
+```nginx
+if ($request_method != POST) {
+  return 405;
+}
+```
+
+#### 正则语法
+
+- `~` 和 `!~` 判断是否匹配正则表达式，区分大小写
+- `~*` 和 `!~*` 判断是否匹配正则表达式，不区分大小写
+
+```nginx
+# 如果参数中有 id=1 则 301 到指定域名
+if ($args ~ id=1) {
+  rewrite ^ http://example.com permanent;
+}
+```
+
+```nginx
+location = /test.html {
+  set $name aaa;
+  # 如果参数中有 name=xxx 则使用该值
+  if($args ~* name=(\w+?)(&|$)) {
+    set $name $1;
+  }
+
+  # 301 跳转
+  rewrite ^ /$name.html permanent;
+  # /test.html => /aaa.html
+  # /test.html?name=bbb => /bbb.html
+}
+```
+
+#### 文件及目录
+
+- `-f` 和 `!-f` 判断是否存在文件
+- `-d` 和 `!-d` 判断是否存在目录
+- `-e` 和 `!-e` 判断是否存在文件或目录
+- `-x` 和 `!-x` 判断文件是否可执行
+
+```nginx
+if (!-f $request_filename) {
+  return 400;
+}
+```
+
+#### 多重判断
+
+Nginx 的 if 多重判断，“或”可以使用正则，“与”可以使用多个单个的 if 判断中字符串拼接。
+
+```nginx
+# 或
+if ($letter ~ (A|B|C|D)) {
+  set $name abcd;
+}
+
+# 与
+set $number "";
+if ($letter = A) {
+  set $number "${number}1";
+}
+if ($letter = B) {
+  set $number "${number}1";
+}
+if ($number ~* 11) {
+  return 200;
+}
+```
+
+注意：if 是有 else 的，只不过没有展示
 
 ## Nginx 中的配置单位
 

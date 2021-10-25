@@ -1,4 +1,4 @@
-# Nginx实操-静态资源服务器
+# Nginx 实操-静态资源服务器
 
 ## 静态网站
 
@@ -179,6 +179,24 @@ ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 #定义算法
 ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4";
 ```
+
+#### 创建证书
+
+- 创建根证书
+  - 创建 CA 私钥
+    - openssl genrsa -out ca.key 2048
+  - 制作 CA 公钥
+    - openssl req -new -x509 -days 3650 -key ca.key -out ca.crt
+- 签发证书
+  - 创建私钥
+    - openssl genrsa -out a.pem 1024
+    - openssl rsa -in a.pem -out a.key
+  - 生成签发请求
+    - openssl req -new -key a.pem -out a.csr
+  - 使用 CA 证书进行签发
+    - openssl x509 -req -sha256 -in a.csr -CA ca.crt -CAkey ca.key -CAcreateserial -days 3650 -out a.crt
+  - 验证签发证书是否正确
+    - openssl verify -CAfile ca.crt a.crt
 
 ### HTTP 重定向到 HTTPS
 

@@ -26,22 +26,34 @@ server {
 
 ### 反向代理指令
 
-- proxy_pass：设置要代理的 uri，可以对应 `upstream` 负载均衡器，可以是 `http://ip:port`，可以是 Unix 域套接字路径，也可以是正则表达式。
+- proxy_pass：设置要代理的 URL，URL 具体要求看下面的详解，proxy_pass 在处理 content 阶段生效，优先级在 content 阶段中时最高的。
+  - URL 必须以 http:// 或者 https:// 开头，接下来是域名、IP、unix socket 地址或者 upstream 负载均衡器的名字，域名或者 IP 后可以加端口，最后是可选的 URI。
+  - URL 中是否携带 URI，会导致发向上游请求的 URI 不同：
+    - 举例说明 http://upstream1 就是不携带 URI，http://upstream1/abc 就是携带 URI
+    - 不携带 URI，则将客户端请求中的 URL 直接转发给上游。location 后使用正则表达式、@ 名字时，应采用这种方式
+    - 携带 URI，则对用户请求中的 URL 做如下操作：将 location 参数中匹配上的一段替换为该 URI
+  - 该 URL 中可以携带变量
+  - 更复杂的 URL 替换，可以在 location 内的配置添加 rewrite break 语句
 - proxy_redirect：用于修改后端服务器返回的响应头中的 Location 和 Refresh
+- proxy_method: 代理的请求方式，可以修改
+- proxy_http_version: 代理的 http 版本，可以修改，如果要开启 keepalive ，最低版本就需要 1.1
 - proxy_set_header：在将客户端请求发送给后端服务器之前，更改来自客户端的请求头信息
   - `proxy_set_hedaer X-Real-IP $remote_addr;` 获取用户的真实 IP 地址
   - `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;` 多个 Nginx 反向代理的情况下，例如 CND，后端的 Web 服务器可以通过 X-Forwarded-For 获取用户真实 IP
   - `proxy_set_header Host $host;` 允许重新定义或者添加发往后端服务器的 host
-- proxy_connect_timeout：配置 Nginx 与后端服务器尝试建立连接的超时时间
-- proxy_read_timeout: 配置 Nginx 向后端服务器组发出 read 请求后的超时时间
+- proxy_connect_timeout：配置 Nginx 与后端服务器尝试建立连接的超时时间，即握手时间，超时后，会向客户端生成 http 响应，响应码为 502
 - proxy_send_timeout：配置 Nginx 向后端服务器组发出 write 请求后的超时时间
-- client_max_body_size：客户端允许请求的最大单个文件字节数
-- client_body_buffer_size：缓冲区代理缓冲客户端请求的最大字节数
-- proxy_buffering：是否打开后端响应内容的缓冲区
-- proxy_buffer_size：后端服务器的响应头的缓冲区大小
+- client_max_body_size：客户端允许请求的最大单个文件字节数，仅对请求头部中含有 Content-Length 有效超出最大长度后，返回 413 错误
+- client_body_buffer_size：缓冲区代理缓冲客户端请求的最大字节数，分配规则是：若接收头部时已经接收了完全的包体，则不分配；若剩余待接收包体的长度小于 client_body_buffer_size，则仅分配所需大小；其他情况下，就分配 client_body_buffer_size 大小内存接收包体（默认为 8k 或 16k）。关闭包体缓存时，该内存上内容及时发送给上游；打开包体缓存时，该段大小内存用完时，写入临时文件，释放内存
+- client_body_temp_path: 客户端包体的临时文件存放路径，默认为 client_body_temp 文件夹，开启 Nginx 后悔自动创建
+- client_body_timeout: 读取包体时最大的间隔时间，读取包体时超时，则返回 408 错误
+- proxy_request_buffering: 接收客户端请求包体的方式：设置为 on，收完再转发，适用的场景是客户端网速较慢、上游服务并发处理能力低、高吞吐量场景等；设置为 off，边收边发，适用的场景是更及时的响应、降低 Nginx 读写磁盘的消耗，不过一旦开始发送内容，proxy_next_upstream 功能会失效。
+- proxy_buffering：是否打开上有服务响应内容的缓冲区，默认打开，即接收完整的响应包体后再进行后续的 Nginx 响应
+- proxy_buffer_size：接收上游服务器的响应头的缓冲区大小，超过大小后会在 error.log 中记录 upstream sent too big header。
 - proxy_buffers：缓冲区，一般设置的比较大，以应付大网页
-- proxy_busy_buffers_size：不是独立的空间，是 proxy_buffers 和 proxy_buffer_size 的一部分
-- proxy_temp_file_write_size：缓存区临时文件大小
+- proxy_temp_file_write_size：缓存区临时文件每次的写入大小
+- proxy_busy_buffers_size：不是独立的空间，是 proxy_buffers 和 proxy_buffer_size 的一部分，及时转发包体
+- proxy_read_timeout: 配置 Nginx 向后端服务器组发出 read 请求后的超时时间
 
 其他更多的指令查看 [ngx_http_proxy_module](https://nginx.org/en/docs/http/ngx_http_proxy_module.html)
 
@@ -122,7 +134,7 @@ server {
   location ^~/apis/ {
     proxy_pass be.chenfangxu.com;
     # 重写请求，将正则匹配中的第一个分组的 path 拼接到真正的请求后面，并用 break 停止后续匹配
-    rewrite ^/apis/(.*)$ /$1break;
+    rewrite ^/apis/(.*)$ /$1 break;
 
     # 两个域名之间 cookie 的传递与回写
     proxy_cookie_domain be.chenfangxu.com fe.chenfangxu.com;
@@ -167,7 +179,7 @@ server {
 
 使用反向代理解决跨域时，用到了 rewrite 指令。
 
-rewrite 就是集合正则表达式和标志位实现 url 重写和重定向。rewrite 只能放在 server、location 上下文和 if 判断中，并且只能对域名后边的除去传参外的字符串起作用。如果想对域名或参数字符串起作用，可以使用全局变量匹配，也可以使用 proxy_pass 反向代理。
+rewrite 就是集合正则表达式和标志位实现 uri 重写和重定向。rewrite 只能放在 server、location 上下文和 if 判断中，并且只能对域名后边的除去传参外的字符串起作用。如果想对域名或参数字符串起作用，可以使用全局变量匹配，也可以使用 proxy_pass 反向代理。
 
 例如 `http://microloan-sms-platform.yxapp.xyz/proxy/sms/task/querydeleted?page=1&pagesize=10` 只能对 /proxy/sms/task/querydeleted 进行重写。
 
@@ -247,16 +259,16 @@ http {
 
 ### upstream 模块提供的变量（不含 cache）
 
-- \$upstream_addr 上游服务器的 IP 地址，格式为可读的字符串，例如 127.0.0.1:8012
-- \$upstream_connect_time 与上游服务建立连接消耗的时间，单位为秒，精确到毫秒
-- \$upstream_header_time 接收上有服务发回响应中 http 头部所消耗的时间，单位为秒，精确到毫秒
-- \$upstream_response_time 接收完整的上游服务响应所消耗的时间，单位为秒，精确到毫秒
-- \$upstream*http*名称 从上游服务返回的响应的头部的值
-- \$upstream_bytes_received 从上游服务接收到的响应长度，单位为字节
-- \$upstream_response_length 从上游服务返回的响应包体长度，单位为字节
-- \$upstream_status 上游服务返回的 HTTP 响应中的状态码。如果未连接上，该变量值为 502
-- \$upstream*cookie*名称 从上游服务发回的响应头 Set-Cookie 中取出的 cookie 值
-- \$upstream*trailer*名称 从上游服务的响应尾部取到的值
+- `$upstream_addr` 上游服务器的 IP 地址，格式为可读的字符串，例如 127.0.0.1:8012
+- `$upstream_connect_time` 与上游服务建立连接消耗的时间，单位为秒，精确到毫秒
+- `$upstream_header_time` 接收上有服务发回响应中 http 头部所消耗的时间，单位为秒，精确到毫秒
+- `$upstream_response_time` 接收完整的上游服务响应所消耗的时间，单位为秒，精确到毫秒
+- `$upstream_http_名称` 从上游服务返回的响应的头部的值
+- `$upstream_bytes_received` 从上游服务接收到的响应长度，单位为字节
+- `$upstream_response_length` 从上游服务返回的响应包体长度，单位为字节
+- `$upstream_status` 上游服务返回的 HTTP 响应中的状态码。如果未连接上，该变量值为 502
+- `$upstream_cookie_名称` 从上游服务发回的响应头 Set-Cookie 中取出的 cookie 值
+- `$upstream_trailer_名称` 从上游服务的响应尾部取到的值
 
 ## 配置动静分离
 
