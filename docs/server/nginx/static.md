@@ -79,7 +79,7 @@ server {
 ```
 
 - gzip_typs：要采用 gzip 压缩的 MIME 文件类型，其中 `text/html` 被系统强制启用。
-- gzip_static：默认为 off，该模块启用后，Nginx 首先检查请求的静态文件是否有 gz 结尾的文件，如果有，直接返回该 `.gz` 文件内容。
+- gzip_static：默认为 off，该模块启用后，Nginx 首先检查请求的静态文件是否有 .gz 结尾的文件，如果有，直接返回该 `.gz` 文件内容。
 - gzip_proxied：默认为 off，Nginx 作为反向代理时启用，用于设置启用或禁用从代理服务器收到相应内容 gzip 压缩。
 - gzip_vary：用于在相应消息头中添加 `Vary: Accept-Encoding`，使代理服务器根据请求头中的 `Accept-Encoding`识别是否启用 gzip 压缩。
 - gzip_comp_level：gzip 压缩比，压缩级别是 1-9，1 压缩级别最低，9 压缩级别最高，级别越高压缩率越高，压缩时间也越长，建议 4 - 6。
@@ -184,19 +184,19 @@ ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA
 
 - 创建根证书
   - 创建 CA 私钥
-    - openssl genrsa -out ca.key 2048
+    - `openssl genrsa -out ca.key 2048`
   - 制作 CA 公钥
-    - openssl req -new -x509 -days 3650 -key ca.key -out ca.crt
+    - `openssl req -new -x509 -days 3650 -key ca.key -out ca.crt`
 - 签发证书
   - 创建私钥
-    - openssl genrsa -out a.pem 1024
-    - openssl rsa -in a.pem -out a.key
+    - `openssl genrsa -out a.pem 1024`
+    - `openssl rsa -in a.pem -out a.key`
   - 生成签发请求
-    - openssl req -new -key a.pem -out a.csr
+    - `openssl req -new -key a.pem -out a.csr -subj "/C=CN/ST=BJ/L=BJ/O=a/OU=a/CN=*.a.com"`
   - 使用 CA 证书进行签发
-    - openssl x509 -req -sha256 -in a.csr -CA ca.crt -CAkey ca.key -CAcreateserial -days 3650 -out a.crt
+    - `openssl x509 -req -sha256 -in a.csr -CA ca.crt -CAkey ca.key -CAcreateserial -days 3650 -out a.crt`
   - 验证签发证书是否正确
-    - openssl verify -CAfile ca.crt a.crt
+    - `openssl verify -CAfile ca.crt a.crt`
 
 ### HTTP 重定向到 HTTPS
 

@@ -177,7 +177,7 @@ server {
 
 ### rewrite 配置
 
-使用反向代理解决跨域时，用到了 rewrite 指令。
+使用反向代理解决跨域时，用到了 rewrite 指令。rewrite 模块提供出来的指令还包括 set、if、break、return。rewrite 是脚本类型的指令。
 
 rewrite 就是集合正则表达式和标志位实现 uri 重写和重定向。rewrite 只能放在 server、location 上下文和 if 判断中，并且只能对域名后边的除去传参外的字符串起作用。如果想对域名或参数字符串起作用，可以使用全局变量匹配，也可以使用 proxy_pass 反向代理。
 
