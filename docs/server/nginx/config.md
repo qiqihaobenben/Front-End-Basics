@@ -190,7 +190,7 @@ http {
 
 ## location 指令规则
 
-location 指令用于匹配 uri，可以使用合法的字符串或者正则表达式
+location 指令用于仅匹配 uri，忽略参数，可以使用合法的字符串或者正则表达式
 
 语法：
 
@@ -203,7 +203,7 @@ location [ = | ~ | ~* | ^~ | 空] uri {
 指令后面：
 
 - `=`：精确匹配，用于不含正则表达式的 uri 前，如果匹配成功，不再进行后续的查找
-- `^~`：前缀匹配，用于不含正则表达式的 uri 前，表示如果该符号后面的字符是最佳匹配。采用该规则，不再进行后续的查找。跟 `=` 的区别是，不需要 uri 一模一样，只需要开头和 uri 匹配即可。
+- `^~`：前缀匹配，用于不含正则表达式的 uri 前，表示如果该符号后面的字符是最佳匹配。采用该规则，不再进行后续的正则查找。跟 `=` 的区别是，不需要 uri 一模一样，只需要开头和 uri 匹配即可。
 - `~`：正则匹配，表示用该符号后面的正则 uri 去匹配路径，区分大小写
 - `~*`：正则匹配，表示用该符号后面的正则 uri 去匹配路径，不区分大小写。
 - `空`：普通匹配（最长字符匹配），匹配以 uri 开头的字符串，只能是普通字符串。例如，`location /` 是通用匹配，任何请求都会匹配到。另外普通匹配与 location 顺序无关，是按照匹配的长短来确定匹配结果。
@@ -256,6 +256,11 @@ location ^~ /ab {
 
 - 如果有任何正则表达式匹配成功，则**立即响应**
 - 如果没有任何正则匹配成功，则响应第 2 步中**存储的 `空` 修饰符匹配结果**。
+
+### loaction 其他
+
+1. `@` 开头的是用于内部跳转的命名 location。
+2. merge_slashes 可以合并 url 中的重复斜杠，除了 base64 编码的格式，其他情况都需要打开
 
 ## 典型配置
 
@@ -586,10 +591,12 @@ location /images {
 ## Nginx 的 if 判断
 
 ```
-if (表达式) {
+if (condition) {
   ……
 }
 ```
+
+rewrite 模块提供的，可以用在 server,location 上下文中，如果条件 condition 为真，则执行大括号内的指令；遵循值指令的继承规则
 
 ### 括号中的表达式语法
 
@@ -635,7 +642,7 @@ location = /test.html {
 
 - `-f` 和 `!-f` 判断是否存在文件
 - `-d` 和 `!-d` 判断是否存在目录
-- `-e` 和 `!-e` 判断是否存在文件或目录
+- `-e` 和 `!-e` 判断是否存在文件、目录、软连接
 - `-x` 和 `!-x` 判断文件是否可执行
 
 ```nginx
@@ -651,6 +658,29 @@ if (!-f $request_filename) {
   - if {} 同样向上继承父配置
   - 当在 rewrite 阶段顺序执行时，每次 if 为真都会替换当前请求的配置（连续的 if 后面的会覆盖前面的）
 - if {} 中的配置，会影响 rewrite 阶段之后的阶段执行
+
+## error_page 配置
+
+error_page 指令的语法是 `error_page code... [=[response]] uri;`，可以使用的上下文是 `http,server,location,if in location`。
+
+例子：
+
+1. `error_page 404 /404.html;`
+2. `error_page 500 502 503 504 /50x.html;`
+3. `error_page 404 =200 /empty.gif` 把状态码 404 替换成 200 返回给客户端
+4. `error_page 404 = /404.php;`
+5. `error_page 403 http://example.com/forbidden.html`
+6. `error_page 404 =301 http://example.com/notfound.html`
+7. 根据 @ 符号进行内部跳转
+
+```nginx
+location / {
+  error_page 404 = @fallback;
+}
+location @fallback {
+  proxy_pass http://backend;
+}
+```
 
 ## Nginx 中的配置单位
 

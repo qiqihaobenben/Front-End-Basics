@@ -320,7 +320,7 @@ Nginx 的模块使用的前提是编译进了 Nginx，了解一个模块可以�
 #### 标准 HTTP 模块
 
 - ngx_http
-- ngx_http_core: 配置端口、URI分析，服务器响应错误处理，别名控制（alias）等
+- ngx_http_core: 配置端口、URI 分析，服务器响应错误处理，别名控制（alias）等
 - ngx_http_log: 自定义 access 日志
 - ngx_http_upstream: 定义一组服务器，可以接收来自 proxy、fastcgi、memcache 的重定向，主要用作负载均衡
 - ngx_http_status
@@ -398,4 +398,4 @@ Nginx 的模块使用的前提是编译进了 Nginx，了解一个模块可以�
 ## 推荐阅读
 
 - [Nginx 源码安装和 yum 安装对比](https://blog.csdn.net/qq_34556414/article/details/104777892)
-- [nginx服务器安装及配置文件详解](https://segmentfault.com/a/1190000002797601)
+- [nginx 服务器安装及配置文件详解](https://segmentfault.com/a/1190000002797601)

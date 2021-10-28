@@ -180,7 +180,7 @@ ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4";
 ```
 
-#### 创建证书
+#### 创建证书（自签名 Chrome 会不允许访问）
 
 - 创建根证书
   - 创建 CA 私钥

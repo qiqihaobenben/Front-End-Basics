@@ -175,27 +175,6 @@ server {
 }
 ```
 
-### rewrite 配置
-
-使用反向代理解决跨域时，用到了 rewrite 指令。rewrite 模块提供出来的指令还包括 set、if、break、return。rewrite 是脚本类型的指令。
-
-rewrite 就是集合正则表达式和标志位实现 uri 重写和重定向。rewrite 只能放在 server、location 上下文和 if 判断中，并且只能对域名后边的除去传参外的字符串起作用。如果想对域名或参数字符串起作用，可以使用全局变量匹配，也可以使用 proxy_pass 反向代理。
-
-例如 `http://microloan-sms-platform.yxapp.xyz/proxy/sms/task/querydeleted?page=1&pagesize=10` 只能对 /proxy/sms/task/querydeleted 进行重写。
-
-rewrite 规则后边，通常会带有 flag 标志位：
-
-- last：表示完成 rewrite
-- break：停止执行当前虚拟机的后续 rewrite 指令集
-- redirect：返回 302 临时重定向，地址栏会显示跳转后的地址
-- permanent：返回 301 永久重定向，地址栏会显示跳转后的地址
-
-last 和 break 的区别：
-
-- last 一般写在 server 和 if 中，而 break 一般使用在 location 中
-- last 不终止重写后的 url 匹配，即新的 url 会再从 server 走一遍匹配流程，而 break 终止重写后的匹配
-- break 和 last 都能阻止继续执行后面的 rewrite 指令，但是 break 不能阻止后面的其他指令生效。
-
 ## 负载均衡
 
 ### 概念
