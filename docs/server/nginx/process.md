@@ -396,3 +396,23 @@ log 模块就是把 HTTP 请求相关信息记录到日志中，并且 ngx_http_
   - 功能 批量压缩内存中的日志，在写入磁盘
   - buffer 大小默认为 64KB
   - 压缩级别默认为 1（1 最快压缩率最低，9 最慢压缩率最高）
+
+## HTTP 过滤相关的模块处理过程
+
+Nginx 的过滤模块就是对 HTTP 请求进行加工处理的。
+
+- 接收 HTTP 头部后
+- 会先经过 preaccess 阶段的处理
+
+  - 首先是 limit_req 模块
+  - 其次是 limit_conn 模块
+
+- 然后经过 access 阶段，access 相关模块会进行处理
+- 然后经过 content 阶段，access pass 后的内容，会先经过 concat 模块处理，然后是 static 模块处理
+- static 模块处理后的内容，就进入了响应阶段，会经过 header 过滤模块，先经过 image_filter 模块，然后经过 gzip 模块，此时会发送 HTTP 头部
+- 然后就进入到响应 body 的处理中，同样的 image_filter 先处理，然后 gzip 后处理，处理完成后就可以发送 HTTP 响应包体了。
+- 响应的包体会通过以下模块加工响应内容
+  - copy_filter 赋值包体内容，必须在 gzip 之前
+  - postpone_filter 处理子请求
+  - header_filter 构造响应头部，例如会添加 server，Nginx 版本号等等
+  - write_filter 发送响应

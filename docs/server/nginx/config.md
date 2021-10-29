@@ -125,6 +125,93 @@ Nginx 的变量对应的模块可以分为：变量的提供模块和变量的�
 - Nginx 启动时，提供变量的模块可以在 preconfiguration 中定义新的变量，包括定义好**变量名**和**解析出变量的方法**
 - HTTP 头部读取完毕后，使用变量的模块，比如 http 的 access 日志，解析 nginx.conf 时定义变量使用方式，处理请求时，会通过变量名去对应的解析出变量的方法中求得变量值
 
+### map 模块通过映射新变量提供更多的可能性
+
+map 模块可以基于已有变量，使用类似`·switch {case: ... default ...}` 的语法创建新变量，为其他基于变量值实现功能的模块提供更多的可能性。ngx_http_map_module 是默认编译进项目的。
+
+#### map 指令
+
+语法 `map string $variable {...}`，只能在 http 上下文中使用。
+
+- `$variable` 已有变量，可以是字符串、一个或者多个变量、变量和字符串的组合。
+- case 规则（优先级从高到低）
+  - 字符串严格匹配
+  - 使用 hostnames 指令，可以对域名使用前缀 `*` 泛域名匹配
+  - 使用 hostnames 指令，可以对域名使用后缀 `*` 泛域名匹配
+  - `~` 和 `~*` 正则表达式匹配，后者忽略大小写
+- default 规则
+  - 没有匹配到任何规则时，使用 default
+  - 缺失 default 时，返回空字符串给新变量，即新变量为 false
+- 其他情况
+  - 使用 include 语法提升可读性
+  - 使用 volatile 禁止变量值缓存
+
+```nginx
+map $http_host $name {
+  hostnames;
+
+  default 0;
+
+  ~map\.x\w+\.org.cn 1;
+  *.xu.org.cn 2;
+  map.xu.tech 3;
+  map.xu.* 4;
+}
+```
+
+例如请求头 `Host: map.xu.org.cn` `$name` 返回的是 2。
+
+### split_client 模块对少量用户指定变量（可以实现 AB 测试）
+
+模块默认编译进 Nginx，基于已有变量（已有变量，可以是字符串、一个或者多个变量、变量和字符串的组合）创建新变量。
+
+过程：
+
+- 对已有变量的值执行 MurmurHash2 算法得到 32 位整型哈希数字，记为 hash
+- 32 位无符号整型的最大数字 2^32-1，记为 max
+- hash/max 可以得到百分比 percent
+- 配置指令中指示了各个百分比构成的范围，如 0-1%,1%-5%等，及范围对应的值
+- 当 percent 落在哪个范围里，新变量的值就对应着其后的参数。
+
+case 规则
+
+- xx.xx% 支持小数点后 2 位，所有项的百分比相加不能超过 100%
+- `*` 由它匹配剩余的百分比（100%减去以上所有项相加的百分比）
+
+```nginx
+split_clients "${http_testcli}" $variant {
+  0.51% .one;
+  20.0% .tow;
+  * "";
+}
+```
+
+### geo 模块根据 IP 地址范围生成新变量
+
+语法 `geo [$address] $variable {...}`，根据 IP 地址创建新变量，默认编译进 Nginx。只能在 HTTP 上下文中使用。
+
+- 如果 geo 指令后不输入 $address，那么默认使用 $remote_addr 变量作为 IP 地址
+- {} 内的指令匹配：优先最长匹配
+  - 通过 IP 地址及子网掩码的方式，定义 IP 范围，当 IP 地址在范围内时新变量使用其后的参数值
+  - default 指定了当以上范围都为匹配上时，新变量的默认值
+  - proxy 指定可新地址，此时 remote_addr 的值为 X-Forwarded-For 头部值中最后一个 IP 地址
+  - include 优化可读性
+  - delete 删除指定网络
+
+```nginx
+geo $country {
+  default ZZ;
+
+  #include conf/geo.conf;
+  proxy 116.62.160.193;
+
+  127.0.0.0/24 US;
+  127.0.0.1/32 RU;
+  10.1.0.0/16 RU;
+  192.168.1.0 UK;
+}
+```
+
 ## Nginx 配置文件的基本结构
 
 拿我们之前编译安装的 Nginx 主配置文件 `/usr/local/nginx/conf/nginx.conf` 来看，`nginx.conf`的结构图大体如下：

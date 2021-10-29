@@ -305,6 +305,10 @@ git push origin :refs/tags/v0.1 # 删除远程标签
 
 链接：[里面有关于标签的操作](http://blog.csdn.net/vipzjyno1/article/details/22098621)
 
+## git 的特定场景问题解决
+
+[Git 飞行规则(Flight Rules)](https://github.com/k88hudson/git-flight-rules/blob/master/README_zh-CN.md)
+
 ## 推荐资源
 
 - [图解 Git](https://marklodato.github.io/visual-git-guide/index-zh-cn.html)

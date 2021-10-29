@@ -2,7 +2,7 @@
 
 ## 适配 PC 与 移动环境
 
-现在很多网站都同时存在 PC 站和 H5 站，因此根据用户的浏览环境自动切换站点是很常见的需求。Nginx 可以通过内置变量 `$http_user_agent`，获取到请求客户端的 userAgent，从而知道用户处于移动端还是 PC 端，进而控制重定向到 PC站 还是 H5 站，例如 PC 端站点为 `example.com`，H5 端站点为 `h5.example.com`，就可以在 PC 端配置 Nginx ：
+现在很多网站都同时存在 PC 站和 H5 站，因此根据用户的浏览环境自动切换站点是很常见的需求。Nginx 可以通过内置变量 `$http_user_agent`，获取到请求客户端的 userAgent，从而知道用户处于移动端还是 PC 端，进而控制重定向到 PC 站 还是 H5 站，例如 PC 端站点为 `example.com`，H5 端站点为 `h5.example.com`，就可以在 PC 端配置 Nginx ：
 
 ```nginx
 server {
@@ -118,6 +118,21 @@ server {
 
 ## 图片防盗链
 
+### 简单有效的防盗链手段：referer 模块
+
+使用场景例如某网站通过 url 引用了你的页面，当用户在浏览器上点击 url 时，http 请求的头部中会通过 referer 头部将该网站当前页面的 url 带上，告诉服务器本次请求是由这个页面发起的。通过 referer 模块，用 invalid_referer 变量根据配置判断 referer 头部是否合法。从而拒绝正常的网站访问我们站点的资源。referer 模块默认编译进 Nginx。
+
+#### valid_referers 指令
+
+语法 `valid_referers none | blocked | server_names | string...`
+
+- none 允许缺失 referer 头部的请求访问
+- block 允许 referer 头部没有对应的值的请求访问
+- server_names 若 referer 中站点域名与 server_name 中本机域名某个匹配，则允许该请求访问。
+- string 域名及 URL 如果是字符串，域名可在前缀或者后缀中含有 `*` 通配符，若 referer 头部的值匹配字符串后，则允许请求访问；域名如果是正则表达式，若 referer 头部的值匹配正则表达式后，则允许请求访问
+
+**valid_referers 指令后面可以同时携带多个参数，表示多个 referer 头部都生效。模块还会提供出一个 `$invalid_referer` 变量，允许访问时变量值为空，不允许访问时变量值为 1。**
+
 ```nginx
 server {
   listen 80;
@@ -125,13 +140,57 @@ server {
 
   # 图片防盗链
   location ~* \.(gif|jpg|jpeg|png|bmp|swf)$ {
-    valid_referers none blocked server_names ~\.google\. ~\.baidu\. *.qq.com; # 只允许本机 IP 外链引用，将百度和谷歌也加入白名单有利于 SEO
+    valid_referers none blocked server_names ~\.google\. ~\.baidu\. *.qq.com; # 允许没有 referer 头或者值为空，或者google、baidu、qq.com。
     if ($invalid_referer) {
       return 403;
     }
   }
 }
 ```
+
+### secure_link 模块防盗链
+
+通过验证 URL 中哈希值的方式防盗链，该模块默认未编译进 Nginx。
+
+实现的功能过程是由某服务器（也可以是 Nginx）生成加密后的安全链接 url，返回给客户端。客户端使用安全 url 访问 Nginx，由 Nginx 的 secure_link 变量判断判断是否验证通过。
+
+实现的原理是：
+
+- 哈希算法是不可逆的
+- 客户端只能拿到执行过哈希算法的 URL
+- 仅生成 URL 的服务器、验证 URL 是否安全的 Nginx 这二者，才保存执行哈希算法钱的原始字符串
+- 原始字符串通常由以下部分有序组成：
+  - 资源位置，例如 HTTP 中指定资源的 URI，防止攻击者拿到一个安全 URI 后可以访问任意资源
+  - 用户信息，例如用户 IP 地址，限制其他用户盗用安全 URI
+  - 时间戳，使安全 URI 及时过期
+  - 密钥，仅服务器端拥有，增加攻击者猜测出原始字符串的难度
+
+模块提供了两个变量：
+
+- `$secure_link` 值为空字符串，表示验证不通过，值为 0，表示 URL 过期，值为 1，表示验证通过
+- `$secure_link_expires` 时间戳的值
+
+#### secure_link 指令
+
+有两个参数，第一个参数是哈希值，第二个参数是时间戳
+
+- 首先使用命令行生成安全链接
+  - 生成 MD5 `echo -n '时间戳URL客户端IP密钥' | openssl md5 -binary | openssl base64 | tr +/ -_ | tr -d =` 例如 `echo -n '2147483647/test1.txt116.62.160.193 secret' | openssl md5 -binary | openssl base64 | tr +/ -_ | tr -d =`
+  - 原请求 `/test1.txt?md5=md5生成值&expires=时间戳（如 2147483647）`
+- Nginx 配置
+  - `secure_link $arg_md5,$arg_expires;`
+  - `secure_link_md5 "$secure_link_expires$uri$remote_addr secret";`
+
+#### secure_link_secret 指令
+
+采用仅对 URI 进行哈希的简单办法。就是将请求 URL 分为三个部分：/prefix/hash/link，Hash 生成方式是对 "link 密钥" 做 md5 哈希求值，在 Nginx 中使用 secure_link_secret secret; 配置密钥。
+
+- 命令行生成安全连接
+  - 原请求 `link`
+  - 生成的安全请求 `/prefix/md5/link`
+  - 生成 md5 `echo -n 'linksecret' | openssl -md5 -hex` 例如 `echo -n 'test1.txtsecret2'` | openssl md5 -hex
+- Nginx 配置
+  - secure_link_secret secret2;
 
 ## 单页面项目 history 路由配置
 
