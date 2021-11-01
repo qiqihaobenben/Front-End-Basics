@@ -39,7 +39,6 @@ Nginx 有一些常用的全局变量，可以在配置的任何位置使用他�
 | `$server_addr`                     | 服务器端地址                                                                                                                                                                                                 |
 | `$server_port`                     | 服务器端端口                                                                                                                                                                                                 |
 | `$server_protocol`                 | 服务器端协议，例如 HTTP/1.1                                                                                                                                                                                  |
-| `$server_protocol`                 | 服务器端协议，例如 HTTP/1.1                                                                                                                                                                                  |
 | `$TCP_INFO`                        | tcp 内核层参数，包括 `$tcpinfo_rtt`、`$tcpinfo_rttvar`、`$tcpinfo_snd_cwnd`、`$tcpinfo_rcv_space`                                                                                                            |
 | **Nginx 处理请求过程中产生的变量** |                                                                                                                                                                                                              |
 | `$request_time`                    | 请求处理到现在的耗时，单位为秒，精确到毫秒                                                                                                                                                                   |
@@ -127,13 +126,14 @@ Nginx 的变量对应的模块可以分为：变量的提供模块和变量的�
 
 ### map 模块通过映射新变量提供更多的可能性
 
-map 模块可以基于已有变量，使用类似`·switch {case: ... default ...}` 的语法创建新变量，为其他基于变量值实现功能的模块提供更多的可能性。ngx_http_map_module 是默认编译进项目的。
+map 模块可以基于已有变量，使用类似`switch {case: ... default ...}` 的语法创建新变量，为其他基于变量值实现功能的模块提供更多的可能性。ngx_http_map_module 是默认编译进项目的。
 
 #### map 指令
 
 语法 `map string $variable {...}`，只能在 http 上下文中使用。
 
-- `$variable` 已有变量，可以是字符串、一个或者多个变量、变量和字符串的组合。
+- `string` 已有变量，可以是字符串、一个或者多个变量、变量和字符串的组合
+- `$variable` 生成的新的变量
 - case 规则（优先级从高到低）
   - 字符串严格匹配
   - 使用 hostnames 指令，可以对域名使用前缀 `*` 泛域名匹配
@@ -159,7 +159,7 @@ map $http_host $name {
 }
 ```
 
-例如请求头 `Host: map.xu.org.cn` `$name` 返回的是 2。
+例如请求头 `Host: map.xu.org.cn` 泛域名匹配优先于正则匹配，所以 `$name` 是 2。
 
 ### split_client 模块对少量用户指定变量（可以实现 AB 测试）
 
@@ -193,8 +193,8 @@ split_clients "${http_testcli}" $variant {
 - 如果 geo 指令后不输入 $address，那么默认使用 $remote_addr 变量作为 IP 地址
 - {} 内的指令匹配：优先最长匹配
   - 通过 IP 地址及子网掩码的方式，定义 IP 范围，当 IP 地址在范围内时新变量使用其后的参数值
-  - default 指定了当以上范围都为匹配上时，新变量的默认值
-  - proxy 指定可新地址，此时 remote_addr 的值为 X-Forwarded-For 头部值中最后一个 IP 地址
+  - default 指定了当以上范围都未匹配上时，新变量的默认值
+  - proxy 指定新地址，此时 remote_addr 的值为 X-Forwarded-For 头部值中最后一个 IP 地址
   - include 优化可读性
   - delete 删除指定网络
 
@@ -307,7 +307,8 @@ location [ = | ~ | ~* | ^~ | 空] uri {
 - 正则匹配成功之后停止匹配，普通匹配成功后还会接着匹配正则。举个例子：
 
 ```nginx
-# `location 完整路径` 虽然比 `location ^~ 路径` 优先级高，但还是会去匹配正则，如果正则匹配成功，采用正则匹配结果。如果没有匹配到 `location 完整路径`，`location ^~ 路径` 就比 `location ~,~* 正则顺序` 优先级高了
+# `location 完整路径` 虽然比 `location ^~ 路径` 优先级高，但还是会去匹配正则
+# 如果正则匹配成功，采用正则匹配结果。如果没有匹配到 `location 完整路径`，`location ^~ 路径` 就比 `location ~,~* 正则顺序` 优先级高了
 location ~ /ab {
   rewrite ^ http://baidu.com/s?word=A;
 }
@@ -399,7 +400,7 @@ http {  # 配置使用最频繁的部分，代理，缓存，日志定义等绝�
 
     server {  # 配置虚拟主机的相关参数，如域名、IP、端口等
         listen       80;  # 配置监听的端口
-        server_name  localhost; # 配置的域名，可以由多个，用空格隔开
+        server_name  localhost; # 配置的域名，可以有多个，用空格隔开
 
         #charset koi8-r;  # 默认编码
 
@@ -522,7 +523,7 @@ http {   # 配置使用最频繁的部分，代理、缓存、日志定义等绝
     		root   /usr/share/nginx/html;  # 网站根目录
     		index  index.html index.htm;   # 默认首页文件
     		deny 172.168.22.11;   # 禁止访问的ip地址，可以为all
-    		allow 172.168.33.44；# 允许访问的ip地址，可以为all
+    		allow 172.168.33.44； # 允许访问的ip地址，可以为all
     	}
 
     	error_page 500 502 503 504 /50x.html;  # 默认50x对应的访问页面
@@ -544,7 +545,7 @@ http {   # 配置使用最频繁的部分，代理、缓存、日志定义等绝
 
 - `worker_processes 1;`
 
-定义在配置文件顶级 main 部分，worker 角色的工作进程个数。master 进程是接受并分配请求给 worker 处理。这个数值可以简单设置为 CPU 的核数 `grep ^processor /proc/cpuinfo | wc -l`，也是 auto 值。如果开启了 ssl 和 gzip，更应该设置成与逻辑 CPU 数量一样甚至为 2 倍，可以减少 I/O 操作。如果 Nginx 服务器还有其它服务，可以考虑适当减少。
+定义在配置文件顶级 main 部分，worker 角色的工作进程个数。master 进程是接受并分配请求给 worker 处理。这个数值可以简单设置为 CPU 的核数 `grep ^processor /proc/cpuinfo | wc -l`，也可以是 auto 值。如果开启了 ssl 和 gzip，更应该设置成与逻辑 CPU 数量一样甚至为 2 倍，可以减少 I/O 操作。如果 Nginx 服务器还有其它服务，可以考虑适当减少。
 
 - `worker_cpu_affinity 0001 0010 0100 1000;`
 
@@ -629,27 +630,34 @@ Nginx 的访问控制模块默认就会安装，而且写法简单，可以分�
 
 ```nginx
 location /nginx-status {
-stub_status on;
-access_log off;
-#  auth_basic   "NginxStatus";
-#  auth_basic_user_file   /usr/local/nginx-1.6/htpasswd;
 
-allow 192.168.10.100;
-allow 172.29.73.0/24;
-deny all;
+  allow 192.168.10.100;
+  allow 172.29.73.0/24;
+  deny all;
 }
 ```
 
 我们也常用 httpd-devel 工具的 htpasswd 来为访问的路径设置登录密码：（_此处笔者没有验证_）
 
-```nginx
-# htpasswd -c htpasswd admin
+```
+htpasswd -c htpasswd admin
 New passwd:
 Re-type new password:
 Adding password for user admin
 
-# htpasswd htpasswd admin    //修改admin密码
-# htpasswd htpasswd sean    //多添加一个认证用户
+htpasswd htpasswd admin    //修改admin密码
+htpasswd htpasswd sean    //多添加一个认证用户
+```
+
+```nginx
+location /nginx-status {
+  #  auth_basic   "NginxStatus";
+  #  auth_basic_user_file   /usr/local/nginx-1.6/htpasswd;
+
+  allow 192.168.10.100;
+  allow 172.29.73.0/24;
+  deny all;
+}
 ```
 
 这样就生成了默认使用 CRYPT 加密的密码文件。打开上面 nginx-status 的两行注释，重启 Nginx 生效。
