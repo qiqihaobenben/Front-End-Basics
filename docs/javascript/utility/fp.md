@@ -132,7 +132,7 @@ const forEach = (array,fn) => {
 // 用户不需要理解forEach是如何实现遍历的，如此问题就被抽象出来了。
 //例如，想要打印出数组的每一项
 let array = [1,2,3]
-forEach(array,(data) => console.log(data)) 
+forEach(array,(data) => console.log(data))
 ```
 
 ### 闭包和高阶函数
@@ -156,7 +156,7 @@ const tap = (value) => {
     typeof fn === 'function' && fn(value)
     console.log(value)
   }
-} 
+}
 
 // 没有调试之前
 forEach(array, data => {
@@ -545,6 +545,8 @@ joinExample3.chain((insideMayBe) => {
 
 函数式编程主张函数必须接受至少一个参数并返回一个值，但是JavaScript允许我们创建一个不接受参数并且实际上什么也不返回的函数。所以JavaScript不是一种纯函数语言，更像是一种多范式的语言，不过它非常适合函数式编程范式。
 
+JavaScript是一门多范型语言，或者也称为混合范型语言。JavaScript 的简单来自于此，复杂也来自于此；生存能力来自于此，抨击诟病也来自于此。
+
 
 
 
@@ -556,8 +558,8 @@ joinExample3.chain((insideMayBe) => {
 function generateGetNumber() {
   let numberKeeper = {}
   return function (number) {
-    return numberKeeper.hasOwnProperty(number) ? 
-    number : 
+    return numberKeeper.hasOwnProperty(number) ?
+    number :
     numberKeeper[number] = number + number
   }
 }

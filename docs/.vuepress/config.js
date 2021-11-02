@@ -159,6 +159,21 @@ module.exports = {
             'shell/script'
           ]
         },
+        {
+          title: 'Nginx',
+          collapsable: false,
+          children: [
+            'nginx/introduction',
+            'nginx/install',
+            'nginx/command',
+            'nginx/config',
+            'nginx/static',
+            'nginx/proxy',
+            'nginx/tips',
+            'nginx/advance',
+            'nginx/process',
+          ]
+        }
       ],
       /** Git */
       '/git/': [
