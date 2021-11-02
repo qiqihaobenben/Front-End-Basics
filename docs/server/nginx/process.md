@@ -44,7 +44,7 @@ HTTP 请求处理的阶段为：POST_READ、SERVER_REWRITE、FIND_CONFIG、REWRI
 
 模块有三个指令：
 
-- set_real_ip_from：决定什么 ip 地址才是可信的，才能替换 `$remote_addr` 变量
+- set_real_ip_from：决定什么 ip 地址才是可信的，能替换 `$remote_addr` 变量
 - real_ip_header：从哪个头字段中获取替换的 ip
 - real_ip_recursive：环回地址，如果 X-Forwarded-For 中的最后一个 ip 是本地 ip，就获取上一个 ip。
 
@@ -86,7 +86,7 @@ return 指令后面可以是 `code [text]`、`code URL`、`URL`。要特别注�
 
   如果是 `return URL;` ，此时状态码默认是 302。
 
-##### server 与 location 块下的 return 指令关系
+#### server 与 location 块下的 return 指令关系?
 
 ```nginx
 server {
@@ -105,7 +105,7 @@ server {
 
 `return 403;` 是在 server_rewrite 阶段，`return 404 "find nothing!";` 是在 rewrite 阶段，server_rewrite 阶段先处理，return 指令生效后，后面的指令都不会再执行，并且 return 指令是动作类指令，不会发生继承合并，所以上面的配置会返回 403。
 
-##### return 与 error_page 指令的关系
+#### return 与 error_page 指令的关系?
 
 ```nginx
 server {
@@ -147,13 +147,13 @@ last 和 break 的区别：
 - last 不终止重写后的 uri 匹配，即新的 uri 会再从 server 走一遍匹配流程，而 break 终止重写后的匹配
 - break 和 last 都能阻止继续执行当前上下文后面的 rewrite 指令。
 
-##### rewrite 和 return 的关系
+#### rewrite 和 return 的关系?
 
 不带 flag 的 rewrite，会跟 return 顺序执行，并以 return 结果为准。如果带了 last 会跳过后面的 return 执行，如果带了 break ，会阻止后面的 return 执行。
 
 ### 3、find_config 阶段
 
-此阶段主要是 location 匹配，可以查看 [location 配置](./config)
+此阶段主要是 location 匹配，可以查看 [location 配置](./config.html#location-指令规则)
 
 ### 4、preaccess 阶段
 
@@ -165,23 +165,23 @@ last 和 break 的区别：
 - 进入 preaccess 阶段前不生效
 - 并发连接数限制的有效性取决于 key 的设计：一般使用客户端的 ip，所以就需要依赖 postread 阶段的 realip 模块取到真实的 ip
 
-##### limit_conn_zone 指令
+#### limit_conn_zone 指令
 
 定义共享内存（包括大小），以及 key 关键字。
 
 语法 `limit_conn_zone key zone=name:size;` 只能在 http 上下文中使用
 
-##### limit_conn 指令
+#### limit_conn 指令
 
 限制并发连接数。
 
 语法 `limit_conn zone number;` 可以用在 http,server,location 上下文中。
 
-##### limit_conn_log_level 指令
+#### limit_conn_log_level 指令
 
 限制发生时的日志级别，可选的值是 info|notice|warn|error，默认是 error。
 
-##### limit_conn_status 指令
+#### limit_conn_status 指令
 
 限制发生时向客户端返回的错误码，默认是 503。
 
@@ -205,23 +205,23 @@ server {
 
 功能是限制每个客户端的每秒处理请求数，默认编译进 Nginx，生效算法是 leaky bucket 算法（漏桶接水把不同的流量转换成均匀的流量），生效范围也是全部 worker 进程（基于共享内存），进入 preaccess 阶段前不生效。
 
-##### limit_req_zone 指令
+#### limit_req_zone 指令
 
 定义共享内存（包括大小），以及 key 关键字和限制速率，语法 `limit_req_zone key zone=name:size rate=rate;`，只能在 http 上下文中使用。rate 的单位为 r/s（每秒请求）或者 r/m（每分钟请求）。
 
-##### limit_req 指令
+#### limit_req 指令
 
 限制并发连接数，语法 `limit_req zone=name [burst=number] [nodelay];`，burst 默认为 0（即漏桶的容量），nodelay，对 burst 中的请求不再采用延时处理的做法，而是立即处理。
 
-##### limit_req_log_level 指令
+#### limit_req_log_level 指令
 
 限制发生时的日志级别
 
-##### limit_req_status 指令
+#### limit_req_status 指令
 
 限制发生时向客户端返回的错误码，默认为 503。
 
-##### limit_req 与 limit_conn 配置同时生效时，哪个有效？
+#### limit_req 与 limit_conn 配置同时生效时，哪个有效？
 
 limit_req 生效时间在 limit_conn 之前，所以只会看到 limit_req 的配置结果。
 
@@ -231,11 +231,11 @@ limit_req 生效时间在 limit_conn 之前，所以只会看到 limit_req 的�
 
 限制某些 IP 地址的访问，默认编译进 Nginx，生效范围是：进入 access 之前不生效。
 
-##### allow 指令
+#### allow 指令
 
 允许哪些地址访问，语法 `allow address|CIDR|unix:|all;`，可以用在 http,server,location,limit_except 上下文中
 
-##### deny 指令
+#### deny 指令
 
 禁止哪些地址访问，语法 `deny address|CIDR|unix:|all;`，可以用在 http,server,location,limit_except 上下文中
 
@@ -252,11 +252,11 @@ location / {
 
 基于 HTTP Basic Authutication 协议进行用户名密码的认证，模块默认编译进 Nginx。
 
-##### auth_basic 指令
+#### auth_basic 指令
 
 可以设置 string|off，默认为 off
 
-##### auth_basic_user_file
+#### auth_basic_user_file
 
 用户名和密码配置在哪个文件中。
 
@@ -266,11 +266,11 @@ location / {
 
 原理是收到请求后，先把请求 hold，然后生成子请求，通过反向代理技术把请求传递给上游服务。向上游的服务转发请求，若上游服务返回的响应码是 2xx，则继续执行，若上游服务返回的是 401 或 403，则将响应返回给客户端。默认没有编译进 Nginx。
 
-##### auth_request 指令
+#### auth_request 指令
 
 语法 `auth_request uri | off;`，默认为 off。
 
-##### auth_request_set 指令
+#### auth_request_set 指令
 
 语法 `auth_request_set $variable value;` 可以根据上游返回的变量来设置新的变量。
 
@@ -293,11 +293,11 @@ try_files 的作用是依次试图访问多个 url 对应的文件（由 root �
 
 处理请求时，生成子请求访问其他服务（copy 一份流量），对子请求的返回值不做处理。模块默认编译进 Nginx。
 
-##### mirror 指令
+#### mirror 指令
 
 可以设置 uri | off ，默认为 off。
 
-##### mirror_request_body
+#### mirror_request_body
 
 指定是否需要把请求中的 body 转发给上游服务，默认为 on。
 
@@ -307,7 +307,7 @@ try_files 的作用是依次试图访问多个 url 对应的文件（由 root �
 
 将 url 映射为文件路径，以返回静态文件内容。默认值为 `root html`，可以用在 http,server,location,if in location 上下文中。
 
-root 会将完整 url 映射进文件路径中。
+**root 会将完整 url 映射进文件路径中。**
 
 ```nginx
 location /root {
@@ -315,13 +315,13 @@ location /root {
 }
 ```
 
-访问：example/root/1.txt 文件路径为：html/root/1.txt
+访问：example.com/root/1.txt 文件路径为：html/root/1.txt
 
 #### alias 指令
 
 将 url 映射为文件路径，以返回静态文件内容。没有默认值，只能用在 location 上下文中。
 
-alias 只会将 location 后的 url 映射到文件路径
+**alias 只会将 location 匹配后的 url 映射到文件路径**
 
 ```nginx
 location /alias {
@@ -329,7 +329,7 @@ location /alias {
 }
 ```
 
-访问：example/alias/1.txt 文件路径为：html/1.txt
+访问：example.com/alias/1.txt 文件路径为：html/1.txt
 
 #### root 或 alias 配置中，访问目录时 URL 最后没有带 `/`?
 
@@ -412,7 +412,7 @@ Nginx 的过滤模块就是对 HTTP 请求进行加工处理的。
 - static 模块处理后的内容，就进入了响应阶段，会经过 header 过滤模块，先经过 image_filter 模块，然后经过 gzip 模块，此时会发送 HTTP 头部
 - 然后就进入到响应 body 的处理中，同样的 image_filter 先处理，然后 gzip 后处理，处理完成后就可以发送 HTTP 响应包体了。
 - 响应的包体会通过以下模块加工响应内容
-  - copy_filter 赋值包体内容，必须在 gzip 之前
+  - copy_filter 复制包体内容，必须在 gzip 之前
   - postpone_filter 处理子请求
   - header_filter 构造响应头部，例如会添加 server，Nginx 版本号等等
   - write_filter 发送响应

@@ -40,14 +40,14 @@ location ~* /image/(.+)$ {
 
   image_filter resize $width $height; # 设置图片宽高
   image_filter_buffer 10M; # 设置 Nginx 读取图片的最大 buffer
-  image_filter_interlace on; 是否开启图片图像隔行扫描
+  image_filter_interlace on; # 是否开启图片图像隔行扫描
   error_page 500 = 500.png; # 图片处理错误提示图，例如缩放参数不是数字
 }
 ```
 
 ## 页面内容修改
 
-Nginx 可以通过向页面底部或者顶部插入而外的 css 和 js 文件，从而实现修改页面内容。这个功能需要额外模块支持，例如 [`nginx-http-footer-filter`](https://github.com/alibaba/nginx-http-footer-filter) 或者 [`ngx_http_addition_module`](http://nginx.org/en/docs/http/ngx_http_addition_module.html)。工作中，经常需要切换各种测试环境，而通过 switchhosts 等工具切换后，有时还需要清理浏览器 dns 缓存。可以通过页面内容修改 + Nginx 反向代理来实现轻松快捷的环境切换。这里首先在本地编写一段 js 代码（switchhost.js）里面的逻辑是：在页面插入 hosts 切换菜单以及点击具体某个环境时，将该 host 的 ip 和 hostname 存储在 cookie 中，最后刷新页面；接着编写一段 css 代码（switchhost.css）用来设置该 hosts 切换菜单的样式。最后 Nginx 脚本配置：
+Nginx 可以通过向页面底部或者顶部插入额外的 css 和 js 文件，从而实现修改页面内容。这个功能需要额外模块支持，例如 [`nginx-http-footer-filter`](https://github.com/alibaba/nginx-http-footer-filter) 或者 [`ngx_http_addition_module`](http://nginx.org/en/docs/http/ngx_http_addition_module.html)。工作中，经常需要切换各种测试环境，而通过 switchhosts 等工具切换后，有时还需要清理浏览器 dns 缓存。可以通过页面内容修改 + Nginx 反向代理来实现轻松快捷的环境切换。这里首先在本地编写一段 js 代码（switchhost.js）里面的逻辑是：在页面插入 hosts 切换菜单以及点击具体某个环境时，将该 host 的 ip 和 hostname 存储在 cookie 中，最后刷新页面；接着编写一段 css 代码（switchhost.css）用来设置该 hosts 切换菜单的样式。最后 Nginx 脚本配置：
 
 ```nginx
 server {
@@ -120,7 +120,7 @@ server {
 
 ### 简单有效的防盗链手段：referer 模块
 
-使用场景例如某网站通过 url 引用了你的页面，当用户在浏览器上点击 url 时，http 请求的头部中会通过 referer 头部将该网站当前页面的 url 带上，告诉服务器本次请求是由这个页面发起的。通过 referer 模块，用 invalid_referer 变量根据配置判断 referer 头部是否合法。从而拒绝正常的网站访问我们站点的资源。referer 模块默认编译进 Nginx。
+使用场景例如某网站通过 url 引用了你的页面，当用户在浏览器上点击 url 时，http 请求的头部中会通过 referer 头部将该网站当前页面的 url 带上，告诉服务器本次请求是由这个页面发起的。通过 referer 模块，用 invalid_referer 变量根据配置判断 referer 头部是否合法。从而拒绝第三方网站访问我们站点的资源。referer 模块默认编译进 Nginx。
 
 #### valid_referers 指令
 
@@ -152,13 +152,13 @@ server {
 
 通过验证 URL 中哈希值的方式防盗链，该模块默认未编译进 Nginx。
 
-实现的功能过程是由某服务器（也可以是 Nginx）生成加密后的安全链接 url，返回给客户端。客户端使用安全 url 访问 Nginx，由 Nginx 的 secure_link 变量判断判断是否验证通过。
+实现的功能过程是由某服务器（也可以是 Nginx）生成加密后的安全链接 url，返回给客户端。客户端使用安全 url 访问 Nginx，由 Nginx 的 `$secure_link` 变量判断判断是否验证通过。
 
 实现的原理是：
 
 - 哈希算法是不可逆的
 - 客户端只能拿到执行过哈希算法的 URL
-- 仅生成 URL 的服务器、验证 URL 是否安全的 Nginx 这二者，才保存执行哈希算法钱的原始字符串
+- 仅生成 URL 的服务器、验证 URL 是否安全的 Nginx 这二者，才保存执行哈希算法前的原始字符串
 - 原始字符串通常由以下部分有序组成：
   - 资源位置，例如 HTTP 中指定资源的 URI，防止攻击者拿到一个安全 URI 后可以访问任意资源
   - 用户信息，例如用户 IP 地址，限制其他用户盗用安全 URI
@@ -188,9 +188,9 @@ server {
 - 命令行生成安全连接
   - 原请求 `link`
   - 生成的安全请求 `/prefix/md5/link`
-  - 生成 md5 `echo -n 'linksecret' | openssl -md5 -hex` 例如 `echo -n 'test1.txtsecret2'` | openssl md5 -hex
+  - 生成 md5 `echo -n 'linksecret' | openssl -md5 -hex` 例如 `echo -n 'test1.txtsecret2' | openssl md5 -hex`
 - Nginx 配置
-  - secure_link_secret secret2;
+  - `secure_link_secret secret2`;
 
 ## 单页面项目 history 路由配置
 
