@@ -2,7 +2,7 @@
 
 tsconfig.json 是 TypeScript 项目的配置文件。如果一个目录下存在一个 tsconfig.json，则说明该目录是 TypeScript 项目的根目录。
 
-通常 tsconfig.json 文件主要包含两部分内容：**指定待编译文件**和**定义编译选项**。
+通常 tsconfig.json 文件主要包含两部分内容：**指定待编译文件**和**配置编译选项**。
 
 在简单的练手时，我们可以使用 `tsc` 命令编译少量的 TypeScript 文件，例如
 
@@ -14,7 +14,7 @@ tsc --outFile demo.js --target es3 --module amd index.ts
 
 ## 初始化 tsconfig.json
 
-1. 手动在项目根目录（或其他）创建 tsconfig.json 文件并填写配置；
+1. 手动在项目根目录（或其他目录）创建 tsconfig.json 文件并填写配置；
 2. 通过 `tsc --init` 初始化 tsconfig.json 文件。
 
 ## 指定需要编译的目录
@@ -56,14 +56,14 @@ $ tsc --project src
 - module：类型 `String`，指定生成哪个模块系统代码，可以为 `"None"`、`"CommonJS"`、`"AMD"`、`"System"`、`"UMD"`、`"ES6"`/`"ES2015"`、`ES2020`、`ES2022`、`ESNext`、`Node12` 或者 `Nodenext`。默认值为 `target === "ES3" or "ES5" ? "CommonJS" : "ES6/ES2015"`
 - jsx：类型 `"react"|preserve|"react-native"|"react-jsx"|"react-jsxdev"`，在 .tsx 文件里支持 JSX，没有默认值
 - jsxFactory：类型 `String`，指定 `"jsx": "react"`时，使用的 JSX 工厂函数，比如 `React.createElement` 或 `h`，配合 `jsx` 属性一起用。默认值为 `React.createElement`
-- incremental：类型 `Boolean`，TS编译器在第一次编译之后会生成一个储存编译信息的文件，第二次编译会在第一次的基础上进行增量编译，可以提高编译的速度。默认值分为两种情况，当 `composite` 为 `true` 时，默认值为 `true`，否则为 `false`
+- incremental：类型 `Boolean`，TS 编译器在第一次编译之后会生成一个储存编译信息的文件，第二次编译会在第一次的基础上进行增量编译，可以提高编译的速度。默认值分为两种情况，当 `composite` 为 `true` 时，默认值为 `true`，否则为 `false`
 - tsBuildInfoFile：类型 `String`，增量编译文件的存储位置，配合 `--incremental` 一起使用
-- declaration：类型 `Boolean`，构建 ts 文件时是否生成相应的 `.d.ts` 声明文件，开启后会自动生成声明文件，这些 `.d.ts`文件描述了模块导出的API类型，具体行为可以在 [playground](https://www.typescriptlang.org/play?#code/C4TwDgpgBAtghmAKuCAGAPIgfFAvFAbwCgooBtAaygEsA7KCiEAewDMpEBdALg8s6IBfIkQDGzWgGdgUZnkIlSUOLwCMAGkWkARrwDkAJj1CxEycwA2EAHQXmAcwAUoSG1kBKIi+jwwq+b7IkBjebsxYlExuoezMAqRAA) 中编写代码，并在右侧的 .D.TS 观察输出。默认值分为两种情况，当 `composite` 为 `true` 时，默认值为 `true`，否则为 `false`
+- declaration：类型 `Boolean`，构建 ts 文件时是否生成相应的 `.d.ts` 声明文件，开启后会自动生成声明文件，这些 `.d.ts`文件描述了模块导出的 API 类型，具体行为可以在 [playground](https://www.typescriptlang.org/play?#code/C4TwDgpgBAtghmAKuCAGAPIgfFAvFAbwCgooBtAaygEsA7KCiEAewDMpEBdALg8s6IBfIkQDGzWgGdgUZnkIlSUOLwCMAGkWkARrwDkAJj1CxEycwA2EAHQXmAcwAUoSG1kBKIi+jwwq+b7IkBjebsxYlExuoezMAqRAA) 中编写代码，并在右侧的 .D.TS 观察输出。默认值分为两种情况，当 `composite` 为 `true` 时，默认值为 `true`，否则为 `false`
 - declarationDir：类型 `String`，指定生成的声明文件存放目录，默认输出路径为生成的目标文件相同位置
 - declarationMap：类型 `Boolean`，为声明文件生成 sourceMap，默认值为 `false`
-- emitDeclarationOnly：类型 `Boolean`，只生成声明文件，而不会生成js文件，默认值为 `false`
-- sourceMap：类型 `Boolean`，生成目标文件的 [sourceMap 文件](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map)（.map文件），这些文件允许调试器和其他工具在使用实际生成的 JavaScript 文件时，显示原始的 TypeScript 代码，默认值 `false`
-- lib：TS需要引用的库，即声明文件包，es5 默认引用 DOM、ES5、ScriptHost，es6 默认引用DOM、ES6、DOM.Iterable、ScriptHost。 如果需要使用 es 的高级版本特性，通常都需要配置，可能的值有： ► ES5 ► ES6 ► ES2015 ► ES7 ► ES2016 ► ES2017 ► ES2018 ► ESNext ► DOM ► DOM.Iterable ► WebWorker ► ScriptHost ► ES2015.Core ► ES2015.Collection ► ES2015.Generator ► ES2015.Iterable ► ES2015.Promise ► ES2015.Proxy ► ES2015.Reflect ► ES2015.Symbol ► ES2015.Symbol.WellKnown ► ES2016.Array.Include ► ES2017.object ► ES2017.Intl ► ES2017.SharedMemory ► ES2017.String ► ES2017.TypedArrays ► ES2018.Intl ► ES2018.Promise ► ES2018.RegExp ► ESNext.AsyncIterable ► ESNext.Array ► ESNext.Intl ► ESNext.Symbol，具体详情可在 [TypeScript 源码](https://github.com/microsoft/TypeScript/tree/master/lib)中查看完成列表。
+- emitDeclarationOnly：类型 `Boolean`，只生成声明文件，而不会生成 js 文件，默认值为 `false`
+- sourceMap：类型 `Boolean`，生成目标文件的 [sourceMap 文件](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map)（.map 文件），这些文件允许调试器和其他工具在使用实际生成的 JavaScript 文件时，显示原始的 TypeScript 代码，默认值 `false`
+- lib：TS 需要引用的库，即声明文件包，es5 默认引用 DOM、ES5、ScriptHost，es6 默认引用 DOM、ES6、DOM.Iterable、ScriptHost。 如果需要使用 es 的高级版本特性，通常都需要配置，可能的值有： ► ES5 ► ES6 ► ES2015 ► ES7 ► ES2016 ► ES2017 ► ES2018 ► ESNext ► DOM ► DOM.Iterable ► WebWorker ► ScriptHost ► ES2015.Core ► ES2015.Collection ► ES2015.Generator ► ES2015.Iterable ► ES2015.Promise ► ES2015.Proxy ► ES2015.Reflect ► ES2015.Symbol ► ES2015.Symbol.WellKnown ► ES2016.Array.Include ► ES2017.object ► ES2017.Intl ► ES2017.SharedMemory ► ES2017.String ► ES2017.TypedArrays ► ES2018.Intl ► ES2018.Promise ► ES2018.RegExp ► ESNext.AsyncIterable ► ESNext.Array ► ESNext.Intl ► ESNext.Symbol，具体详情可在 [TypeScript 源码](https://github.com/microsoft/TypeScript/tree/master/lib)中查看完成列表。
 - project：类型 `String`，编译指定目录下的项目，这个目录应该包含一个 tsconfig.json 文件
 - composite：类型 `Boolean`，确保 TypeScript 可以确定在哪里可以找到引用项目的输出以编译项目。默认为 `true` TODO
 - outDir：类型 `String`，指定输出目录，默认值为目标文件当前位置
@@ -105,18 +105,17 @@ TypeScript 支持一些额外的代码检查，在某种程度上介于编译器
 - paths：类型 `Object`，基于 baseUrl 的路径映射列表，用来将模块路径重新映射到相对于 baseUrl 定位的其他路径配置。这里我们可以将 paths 理解为 webpack 的 alias 别名配置。默认值为 `{}`，查看[模块解析文档](https://www.tslang.cn/docs/handbook/module-resolution.html#path-mapping)了解详情
 - rootDir：类型 `String`，仅用来控制 `--outDir` 输出的目录结构，默认值为基于 input 传入的文件列表计算来的公共根路径
 - rootDirs：类型 `Array<String>`，根（root）文件夹列表，可以指定多个目录作为根目录，这个选项允许编译器在这些“虚拟”目录中解析相对应的模块导入，就像他们被合并到同一个目录中一样，查看 [模块解析文档](https://www.tslang.cn/docs/handbook/module-resolution.html#virtual-directories-with-rootdirs) 了解详情
- - typeRoots：类型 `Array<String>`，声明文件包根目录，默认是 node_modules/@types，如果 typeRoots 指定，则仅包括 typeRoots 下面的包。
- - types：类型 `Array<String>`，加载的声明文件包，默认情况下，所有的 typeRoots 包都将被包含在编译过程中。如果指定 types 属性，将仅检索指定名称的 @types 包。当 types 是 `[]` 时，表示禁止自动包含任何 @types 包。可以[查看详情](https://www.tslang.cn/docs/handbook/tsconfig-json.html#types-typeroots-and-types)了解。
- - allowSyntheticDefaultImports：类型 `Boolean` ，允许从没有设置默认导出的模块中默认导入，即使一个模块没有默认导出（`export default`），也可以在其他模块中像导入包含默认导出模块一样的方式导入这个模块。这并不影响代码的输出，仅为了类型检查。默认值有两种情况：1、 `module === "system"` 或设置了 `esModuleInterop` 且 `module` 不为 `es2015`/`esnext` 时，默认值为 `true`；2、其他情况下默认值为 `false`。具体含义可以查看[TypeScript 中的多种 import 解义](https://tasaid.com/blog/2019022017450863.html)
- - esModuleInterop：类型 `Boolean`，指的是 ES 模块的互操作性。在默认情况下，TypeScript 像 ES6 模块一样对待 CommonJS/AMD/UMD，但是此时的 TypeScript 代码转译会导致不符合 ES6 模块规范，不过，开启 esModuleInterop 后，这些问题都将得到修复。一般情况下，在启用 esModuleInterop 时，会同时启用 allowSyntheticDefaultImports。
+- typeRoots：类型 `Array<String>`，声明文件包根目录，默认是 node_modules/@types，如果 typeRoots 指定，则仅包括 typeRoots 下面的包。
+- types：类型 `Array<String>`，加载的声明文件包，默认情况下，所有的 typeRoots 包都将被包含在编译过程中。如果指定 types 属性，将仅检索指定名称的 @types 包。当 types 是 `[]` 时，表示禁止自动包含任何 @types 包。可以[查看详情](https://www.tslang.cn/docs/handbook/tsconfig-json.html#types-typeroots-and-types)了解。
+- allowSyntheticDefaultImports：类型 `Boolean` ，允许从没有设置默认导出的模块中默认导入，即使一个模块没有默认导出（`export default`），也可以在其他模块中像导入包含默认导出模块一样的方式导入这个模块。这并不影响代码的输出，仅为了类型检查。默认值有两种情况：1、 `module === "system"` 或设置了 `esModuleInterop` 且 `module` 不为 `es2015`/`esnext` 时，默认值为 `true`；2、其他情况下默认值为 `false`。具体含义可以查看[TypeScript 中的多种 import 解义](https://tasaid.com/blog/2019022017450863.html)
+- esModuleInterop：类型 `Boolean`，指的是 ES 模块的互操作性。在默认情况下，TypeScript 像 ES6 模块一样对待 CommonJS/AMD/UMD，但是此时的 TypeScript 代码转译会导致不符合 ES6 模块规范，不过，开启 esModuleInterop 后，这些问题都将得到修复。一般情况下，在启用 esModuleInterop 时，会同时启用 allowSyntheticDefaultImports。
 
+#### Source Maps
 
- #### Source Maps
+为了支持丰富的调试工具并未开发人员提供有意义的崩溃报告，TypeScript 支持生成符合 JavaScript Source Map 标准的附加文件（即 .map 文件）
 
- 为了支持丰富的调试工具并未开发人员提供有意义的崩溃报告，TypeScript 支持生成符合 JavaScript Source Map 标准的附加文件（即 .map 文件）
-
- - sourceRoot：类型 `String`，指定 TypeScript 源文件的路径，以便调试器定位。当 TypeScript 文件的位置是在运行时指定时使用此标记，路径信息会被加到 `sourceMap`里。默认值为 `false`
- - mapRoot：类型 `String`，为调试器指定 sourcemap 文件的路径，而不是使用生成的文件位置。当 .map 文件是在运行时指定的，并且不同于生成的目标文件地址时使用这个选项，指定的路径会嵌入到 sourceMap 里告诉调试器到哪里去找它们。
+- sourceRoot：类型 `String`，指定 TypeScript 源文件的路径，以便调试器定位。当 TypeScript 文件的位置是在运行时指定时使用此标记，路径信息会被加到 `sourceMap`里。默认值为 `false`
+- mapRoot：类型 `String`，为调试器指定 sourcemap 文件的路径，而不是使用生成的文件位置。当 .map 文件是在运行时指定的，并且不同于生成的目标文件地址时使用这个选项，指定的路径会嵌入到 sourceMap 里告诉调试器到哪里去找它们。
 - inlineSourceMap：类型 `Boolean`，生成单个 sourcemaps 文件，而不是将 sourcemaps 生成不同的文件。默认值为 `false`
 - inlineSources：类型 `Boolean`，生成目标文件的 inlineSource，inlineSource 会包含在生成的 js 文件中，默认为 `false`，设置为 `true` 时要求同时设置 --inlineSourceMap 或 --sourceMap 属性
 
@@ -131,14 +130,13 @@ TypeScript 支持一些额外的代码检查，在某种程度上介于编译器
 - noEmit：类型 `Boolean`，不输出文件，即编译后不会生成任何 JS 文件，默认为 false
 - noEmitOnError：类型 `Boolean`，发生错误时不输出任何文件，默认为 false
 - noEmitHelpers：类型 `Boolean`，不在输出文件中生成用户自定义的帮助函数，如 `__extends`，减小体积，需要额外安装，常配合 importHelpers 一起使用
-- importHelper：类型 `Boolean`，通过 tslib 引入 helper 函数（比如 extends,rest等），文件必须是模块。tslib是TypeScript运行时库，其中包含所有 TypeScript 辅助函数，需要安装 tslib 依赖。
+- importHelper：类型 `Boolean`，通过 tslib 引入 helper 函数（比如 extends,rest 等），文件必须是模块。tslib 是 TypeScript 运行时库，其中包含所有 TypeScript 辅助函数，需要安装 tslib 依赖。
 - disableSizeLimit：类型 `Boolean`，取消 JavaScript 代码体积大小不能超过 20M 的限制，默认为 `false`
 - downlevelIteration：类型 `Boolean`，降级遍历器实现，如果 `target` 是 es3/5，那么遍历器会有降级的实现
 - listEmittedFiles：类型 `Boolean`，打印编译后生成的文件名称，默认值为 `false`
 - listFiles：类型 `Boolean`，在编译过程中打印文件名称（包括引用的声明文件），默认值为 `false`
 - locale：类型 `String` 用于显示错误消息的语言环境，例如 zh-CN，默认值根据环境确定。
 - keyofStringOnly：类型 `Boolean`，设置 ts 的 keyof 关键字仅解析字符串值的属性名称（不解析数字或 symbol 属性），默认值为 `false`
-
 
 ### exclude
 
@@ -216,9 +214,9 @@ react：会生成 `React.createElement`（`React` 标识符是写死的硬编码
 
 react-native 模式相当于 preserve 它也保留了所有的 JSX，但是输出文件的扩展名是 `.js`
 
-react-jsx：改为 __jsx 调用，输出文件的扩展名是 `.js`
+react-jsx：改为 \_\_jsx 调用，输出文件的扩展名是 `.js`
 
-react-jsxdev：改为 __jsxDEV 调用，输出文件的扩展名是 `.js`
+react-jsxdev：改为 \_\_jsxDEV 调用，输出文件的扩展名是 `.js`
 
 ### module
 
@@ -239,7 +237,7 @@ lib 配置项允许更细粒度地控制代码运行时的库定义文件，比�
 
 因为 VS Code 中内置了特定版本 TypeScript 语言服务，所以它天然支持 TypeScript 语法解析和类型检测，且这个内置的服务与手动安装的 TypeScript 完全隔离。因此， VS Code 支持在内置和手动安装版本之间动态切换语言服务，从而实现对不同版本的 TypeScript 的支持。
 
-例如 VS Code 的 TypeScript 的版本是4.4.3，但是我们需要用到 TypeScript 的版本是 3.9.10。
+例如 VS Code 的 TypeScript 的版本是 4.4.3，但是我们需要用到 TypeScript 的版本是 3.9.10。
 
 ### 安装 3.9.10 版本的 TypeScript
 
@@ -260,7 +258,6 @@ yarn add typescript@3.9.10
 ```
 
 **推荐使用工作区（WorkSpace）的 TypeScript 版本**
-
 
 ## 推荐阅读
 

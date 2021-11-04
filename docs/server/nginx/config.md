@@ -806,6 +806,6 @@ expires 3m;
 client_max_body_size 10m;
 ```
 
-## 参考文档
+## 推荐文档
 
 - [Nginx Location 匹配规则](https://lmjben.github.io/blog/operation-nginx-match.html#nginx-location-%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99)

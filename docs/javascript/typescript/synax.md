@@ -6,9 +6,9 @@
 
 作用：相当于强类型语言中的类型声明
 
-语法：(变量/函数): type
+语法：`(变量/函数): type`，这种语法也叫做类型后置语法
 
-```typescript
+```ts
 let str: string = 'abc'
 ```
 
@@ -16,7 +16,7 @@ let str: string = 'abc'
 
 联合类型（Union Types）表示取值可以为多种类型中的一种。
 
-```typescript
+```ts
 let count: number | string = 10
 ```
 
@@ -38,21 +38,21 @@ let count: number | string = 10
 - undefined
 - null
 - Symbol
-- Array
 - Function
 - Object
 
-### ES6 的数据类型
+### TS 的数据类型
 
-- Boolean
-- Number
-- String
+- boolean
+- number
+- bigint (target 低于 ES2020 时不可用)
+- string
 - undefined
 - null
-- Symbol
-- Array
-- Function
-- Object
+- symbol
+- array
+- function
+- object
 - **void**
 - **any**
 - **never**
@@ -60,156 +60,176 @@ let count: number | string = 10
 - **枚举**
 - **高级类型**
 
-### 类型注解
+### 常规类型注解
 
-作用： 相当于强类型语言中的类型声明
+```ts
+/*******原始值*******/
+const isDone: boolean = false
+// 可以使用 number 类型表示 JavaScript 已经支持或者即将支持的十进制证书、浮点数，以及二进制数、八进制数、十六进制数
+const amount: number = 6
+const integer: number = Number(2)
+const binary: number = 0b1010 // 二进制整数
+const octal: number = 0o27 // 八进制整数
+const hex: number = 0xff // 十六进制整数
+const big: bigint = 100n // 大整数，需要 target es2020 及以上
+// 所有 JavaScript 支持的定义字符串的方法，我们都可以直接在 TypeScript 中使用
+const letter: string = String('S') // 显示类型转换
+const address: string = 'beijing' // 字符串字面量
+const greeting: string = `Hello World` // 模板字符串
+const sym: symbol = Symbol(1)
 
-语法：(变量/函数):type
+/*******数组*******/
+const list: string[] = ['x', 'y', 'z']
+const numList: Array<number> = [1, 2, 3] // 使用 Array 泛型定义数组类型
 
-```
-// 原始值
-const isDone: boolean = false;
-const amount: number = 6;
-const address: string = 'beijing';
-const greeting: string = `Hello World`;
+/*******元组*******/
+const name: [string, string] = ['Sean', 'Sun']
 
-// 数组
-const list: number[] = [1, 2, 3];
-const list: Array<number> = [1, 2, 3];
-
-// 元组
-const name: [string, string] = ['Sean', 'Sun'];
-
-// 枚举
+/*******枚举*******/
 enum Color {
-    Red,
-    Green,
-    Blue
-};
-const c: Color = Color.Green;
+  Red,
+  Green,
+  Blue,
+}
+const c: Color = Color.Green
 
-// 任意值：可以调用任意方法
-let anyTypes: any = 4;
-anyTypes = 'any';
-anyTypes = false;
+// any 任意类型
+let anyTypes: any = 4
+anyTypes = 'any'
+anyTypes = false
 
 // 空值
-function doSomething (): void {
-    return undefined;
+function doSomething(): void {
+  return undefined
 }
 
 // 类型断言
-let someValue: any = "this is a string";
-let strLength: number = (someValue as string).length;
+let someValue: any = 'this is a string'
+let strLength: number = (someValue as string).length
 ```
+
+#### 注意：
+
+1. 虽然 `number` 和 `bigint` 都表示数字，但是这两个类型不兼容。
+2. TypeScript 还包含 Number、String、Boolean、Symbol 等类型（注意这些都是首字母大写的），千万别将它们和小写格式对应的 number、string、boolean、symbol 进行等价。基本上我们不会使用到 Number、String、Boolean、Symbol 类型，因为它们并没有什么特殊的用途。这就像我们一般不用 JavaScript 的 Number、String、Boolean 等构造函数 new 一个相应的实例一样。
+3. TS 报错的状态码 2322 是比较常见的，这是静态类型检查的错误码，在注解的类型和赋值的类型不同时会抛出这个错误。
+4. 除了 never 类型，可以把 any 类型的值赋值给任意类型的变量。
 
 ### TypeScript 中的 Interface 可以看做是一个集合，这个集合是对对象、类等内部结构的约定
 
-```
+```ts
 // 定义接口 Coords
 // 该接口包含 number 类型的 x，string 类型的 y
 // 其中 y 是可选类型，即是否包含该属性无所谓
 interface Coords {
-	x: number;
-	y?: string;
-};
+  x: number
+  y?: string
+}
 
 // 定义函数 where
 // 该函数接受一个 Coords 类型的参数 l
-function where (l: Coords) {
-	// doSomething
+function where(l: Coords) {
+  // doSomething
 }
 
-const a = { x: 100 };
-const b = { x: 100, y1: 'abc' };
+const a = { x: 100 }
+const b = { x: 100, y1: 'abc' }
 // a 拥有 number 类型的 x，可以传递给 where
-where(a);
+where(a)
 // b 拥有 number 类型的 x 和 string 类型的 y1，可以传递给 where
-where(b);
+where(b)
 
 // 下面这种调用方式将会报错，虽然它和 where(b) 看起来是一致的
 // 区别在于这里传递的是一个对象字面量
 // 对象字面量会被特殊对待并经过额外的属性检查
 // 如果对象字面量中存在目标类型中未声明的属性，则抛出错误
-where({ x: 100, y1: 'abc' });
+where({ x: 100, y1: 'abc' })
 
 // 最好的解决方式是为接口添加索引签名
 // 添加如下所示的索引签名后，对象字面量可以有任意数量的属性
 // 只要属性不是 x 和 y，其他属性可以是 any 类型
 interface Coords {
-	x: number;
-	y?: string;
-    [propName: string]: any
-};
+  x: number
+  y?: string
+  [propName: string]: any
+}
 ```
 
 ### 接口还常用于约束函数的行为
 
-```
+```ts
 // CheckType 包含一个调用签名
 // 该调用签名声明了 getType 函数需要接收一个 any 类型的参数，并最终返回一个 string 类型的结果
 interface CheckType {
-    (data: any): string;
-};
-const getType: CheckType = (data: any) : string => {
-    return Object.prototype.toString.call(data);
+  (data: any): string
 }
-getType('abc');
+const getType: CheckType = (data: any): string => {
+  return Object.prototype.toString.call(data)
+}
+getType('abc')
 // => '[object String]'
 ```
 
 ### Interface 也可以用于约束类的行为
 
-```
+```ts
 interface ClockConstructor {
-    new (hour: number, minute: number): ClockInterface;
+  new (hour: number, minute: number): ClockInterface
 }
 interface ClockInterface {
-    tick();
+  tick()
 }
-function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface {
-    return new ctor(hour, minute);
+function createClock(
+  ctor: ClockConstructor,
+  hour: number,
+  minute: number
+): ClockInterface {
+  return new ctor(hour, minute)
 }
 class DigitalClock implements ClockInterface {
-    constructor(h: number, m: number) { }
-    tick() {
-        console.log("beep beep");
-    }
+  constructor(h: number, m: number) {}
+  tick() {
+    console.log('beep beep')
+  }
 }
 class AnalogClock implements ClockInterface {
-    constructor(h: number, m: number) { }
-    tick() {
-        console.log("tick tock");
-    }
+  constructor(h: number, m: number) {}
+  tick() {
+    console.log('tick tock')
+  }
 }
-let digital = createClock(DigitalClock, 12, 17);
-let analog = createClock(AnalogClock, 7, 32);
+let digital = createClock(DigitalClock, 12, 17)
+let analog = createClock(AnalogClock, 7, 32)
 ```
 
 ### 除了 ES6 增加的 Class 用法，TypeScript 还增加了 C++、Java 中常见的 public / protected / private 限定符，限定变量或函数的使用范围。
 
 TypeScript 使用的是结构性类型系统，只要两种类型的成员类型相同，则认为这两种类型是兼容和一致的，但比较包含 private 和 protected 成员的类型时，只有他们是来自同一处的统一类型成员时才会被认为是兼容的
 
-```
+```ts
 class Animal {
-    private name: string;
-    constructor(theName: string) { this.name = theName; }
+  private name: string
+  constructor(theName: string) {
+    this.name = theName
+  }
 }
 class Rhino extends Animal {
-    constructor() { super("Rhino"); }
+  constructor() {
+    super('Rhino')
+  }
 }
 class Employee {
-    private name: string;
-    constructor(theName: string) { this.name = theName; }
+  private name: string
+  constructor(theName: string) {
+    this.name = theName
+  }
 }
 
-let animal = new Animal("Goat");
-let rhino = new Rhino();
-let employee = new Employee("Bob");
+let animal = new Animal('Goat')
+let rhino = new Rhino()
+let employee = new Employee('Bob')
 
-animal = rhino;
+animal = rhino
 // Error: Animal and Employee are not compatible
-animal = employee;
+animal = employee
 ```
-
-### function

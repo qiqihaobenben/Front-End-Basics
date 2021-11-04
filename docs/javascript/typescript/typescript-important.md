@@ -87,7 +87,7 @@ function add(num1, num2) {
 
 不过，有更简单的方式。最简单的一种是在你 JS 根目录创建一个 tsconfig.json 的文件，让编译器通过此配置执行。
 
-```
+```json
 {
   "compilerOptions": {
     "target": "es6",

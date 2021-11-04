@@ -77,8 +77,8 @@ module.exports = {
             'typescript/intro',
             'typescript/synax',
             'typescript/basic-essence',
+            'typescript/typescript-important',
             'typescript/use-typescript-two-years',
-            'typescript/typescript-important'
           ]
         },
       ],
