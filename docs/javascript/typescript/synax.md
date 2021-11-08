@@ -115,7 +115,9 @@ let strLength: number = (someValue as string).length
 3. TS 报错的状态码 2322 是比较常见的，这是静态类型检查的错误码，在注解的类型和赋值的类型不同时会抛出这个错误。
 4. 除了 never 类型，可以把 any 类型的值赋值给任意类型的变量。
 
-### TypeScript 中的 Interface 可以看做是一个集合，这个集合是对对象、类等内部结构的约定
+### Interface
+
+#### TypeScript 中的 Interface 可以看做是一个集合，这个集合是对对象、类等内部结构的约定
 
 ```ts
 // 定义接口 Coords
@@ -155,7 +157,7 @@ interface Coords {
 }
 ```
 
-### 接口还常用于约束函数的行为
+#### 接口还常用于约束函数的行为
 
 ```ts
 // CheckType 包含一个调用签名
@@ -170,7 +172,7 @@ getType('abc')
 // => '[object String]'
 ```
 
-### Interface 也可以用于约束类的行为
+#### Interface 也可以用于约束类的行为
 
 ```ts
 interface ClockConstructor {
@@ -202,7 +204,7 @@ let digital = createClock(DigitalClock, 12, 17)
 let analog = createClock(AnalogClock, 7, 32)
 ```
 
-### 除了 ES6 增加的 Class 用法，TypeScript 还增加了 C++、Java 中常见的 public / protected / private 限定符，限定变量或函数的使用范围。
+#### 除了 ES6 增加的 Class 用法，TypeScript 还增加了 C++、Java 中常见的 public / protected / private 限定符，限定变量或函数的使用范围。
 
 TypeScript 使用的是结构性类型系统，只要两种类型的成员类型相同，则认为这两种类型是兼容和一致的，但比较包含 private 和 protected 成员的类型时，只有他们是来自同一处的统一类型成员时才会被认为是兼容的
 
@@ -232,4 +234,35 @@ let employee = new Employee('Bob')
 animal = rhino
 // Error: Animal and Employee are not compatible
 animal = employee
+```
+
+### 函数类型
+
+函数类型可以先定义再使用，具体实现时就可以不用注明参数和返回值类型了,而且**参数名称**也不用必须跟定义时相同。
+
+```typescript
+let compute: (x: number, y: number) => number
+compute = (a, b) => a + b
+```
+
+#### 类型谓词
+
+在 TypeScript 中，函数支持一种特殊的类型描述。就是在添加返回值类型的地方，通过 “参数名 + is + 类型”的格式明确了参数的类型，进而引起类型缩小，所以类型谓词函数的一个重要的应用场景是实现自定义类型守卫。
+
+```ts
+function isString(s: any): s is string {
+  return typeof s === 'string'
+}
+function isNumber(n: any) {
+  return typeof n === 'number'
+}
+function operator(x: unknown) {
+  if (isString(x)) {
+    x.toUpperCase() // x 的类型缩小为 string，可以使用 toUpperCase 方法
+  }
+  if (isNumber(x)) {
+    console.log(x) // x 的类型还是 unknown
+    x.toFixed() // 报错，
+  }
+}
 ```
