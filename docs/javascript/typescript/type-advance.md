@@ -1,8 +1,12 @@
 # TypeScript 高级类型
 
-## 交叉类型
+## 交叉类型（Intersection Type）
+
+交叉类型可以把多个类型合并成一个类型，合并后的类型将拥有所有成员类型。
 
 用 `&` 符号。虽然叫交叉类型，但是是取的所有类型的**并集**。
+
+很显然，如果仅仅把原始类型、字面量类型、函数类型等原子类型合并成交叉类型，是没有任何用处的，因为任何类型都不能满足同时属于多种原子类型，比如即使 string 类型又是 number 类型。举个例子 `type Useless = string & number` 中 Useless 的类型就是 never。
 
 ```typescript
 interface DogInterface {
@@ -20,7 +24,9 @@ let pet: DogInterface & CatInterface = {
 }
 ```
 
-## 联合类型
+## 联合类型（Unions）
+
+联合类型用来表示变量、参数的类型不是单一原子类型，而可能是多种不同的类型的组合。
 
 声明的类型并不确定，可以为多个类型中的一个,除了可以是 TS 中规定的类型外，还有字符串字面量联合类型、数字字面量联合类型
 
@@ -58,9 +64,20 @@ function getPet(master: Master) {
   let pet = master === Master.Boy ? new Dog() : new Cat()
   pet.eat()
   // pet.run() // 不能访问，会报错
+  // if(typeof pet.run === 'function') { // 报错 类型“Dog | Cat”上不存在属性“run”。
+  //   pet.run()
+  // }
+  /**
+   * 只能使用 in
+   */
+  if ('run' in pet) {
+    pet.run()
+  }
   return pet
 }
 ```
+
+上面代码中，使用 `typeof pet.run === 'function'` 这个类型守卫会报错的原因是因为 pet 的类型可能 Dog，也有可能是 Cat，这就意味着可能会通过 Cat 类型获取 run 属性，但是 Cat 类型没有 run 属性定义，所以这种情况下，需要使用基于 in 操作符判断的类型守卫。
 
 ### 可区分的联合类型
 

@@ -307,159 +307,6 @@ let g2: G = G.a // g2能赋值G.a或者G.b
 let g3: G.a = G.a // g2 只能赋值G.a
 ```
 
-## 接口类型
-
-**接口约束对象、函数、类的结构**
-
-### 对象类型接口
-
-TypeScript 对对象的类型检测遵循一种被称之为“鸭子类型”（duck typing）或者“结构化类型”（structural subtyping）的准则，即只要两个对象的结构一致，属性和方法的类型一致，则它们的类型就是一致的。
-
-#### 对象冗余字段
-
-对象类型接口直接验证有冗余字段的**对象字面量**时会报错，这种冗余字段有时是不可避免的存在的。
-
-```typescript
-interface List {
-  id: number
-  name: string
-}
-interface Result {
-  data: List[]
-}
-
-function render(result: Result) {
-  result.data.forEach((value) => {
-    console.log(value.id, value.name)
-  })
-}
-
-render({
-  data: [
-    { id: 1, name: 'A', sex: 'male' },
-    { id: 2, name: 'B' },
-  ],
-})
-// 这就是对象类型接口直接验证有冗余字段的“对象字面量”，上面render中会有报错，说对象只能指定已知属性，并且"sex"不在类型"List"中
-```
-
-> 解决方法一：在外面声明变量 result ,然后把 result 传入 render 函数，避免传入对象字面量。
-
-```typescript
-// 把字面量先赋值给一个变量这样就能绕过检测
-let result = {
-  data: [
-    { id: 1, name: 'A', sex: 'male' },
-    { id: 2, name: 'B' },
-  ],
-}
-render(result)
-```
-
-> 解决方法二： 用类型断言（两种 as 和尖括号），但是如果对象字面中都没有符合的，还是会报错，可以用 as unknown as xxx
-
-```typescript
-render({
-  data: [
-    { id: 1, name: 'A', sex: 'male' },
-    { id: 2, name: 'B' },
-  ],
-} as Result)
-
-// 但是如果传入的对象字面量中没有一项是符合的，那用类型断言还是会报错
-render({
-  data: [{ id: 1, name: 'A', sex: 'male' }],
-} as Result) // 还是会报错属性"data"的类型不兼容
-
-// 现在就需要这么写，用 as unknown as xxx
-render(({
-  data: [{ id: 1, name: 'A', sex: 'male' }],
-} as unknown) as Result)
-```
-
-> 解决方法三：用字符串索引签名
-
-```typescript
-interface List {
-  id: number
-  name: string
-  [x: string]: any
-}
-// 这样对象字面量就可以包含任意多个字符串属性了。
-```
-
-#### 接口属性可定义为只读属性和可选属性
-
-```typescript
-interface List {
-  readonly id: number // 只读属性
-  name: string
-  age?: number // 可选属性
-}
-```
-
-#### 可索引类型
-
-不确定一个接口中有多少属性时，可以使用可索引类型。分为数字索引签名和字符串索引签名，如果接口定义了某一种索引签名的值的类型，之后再定义的属性的值必须是签名值的类型的子类型。可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型。
-
-```typescript
-interface Names {
-  [x: string]: number | string
-  // y: boolean; // 会报错 boolean 不会赋值给字符串索引类型，因为字符串索引签名的类型是 number | string，所以之后再定义的属性必须是签名值类型的子类型
-  [z: number]: number // 字符串索引签名后也能定义数字索引签名，数字索引的返回值必须是字符串索引返回值类型的子类型
-}
-```
-
-### 函数类型接口
-
-```typescript
-interface Add {
-  (x: number, y: number): number
-}
-// 跟变量声明是等价的：let Add: (a: number, b: number) => number
-let add4: Add = (a, b) => a + b
-```
-
-### 混合接口
-
-混合接口，需要注意看一下，接口中的属性没有顺序之分，混合接口不需要第一个属性是匿名函数。
-
-```typescript
-interface Lib {
-  version: string
-  (): void
-  doSomething(): void
-}
-// 需要用到类型断言
-let lib: Lib = (() => {}) as Lib
-lib.version = '1.0'
-lib.doSomething = () => {}
-```
-
-### 接口继承
-
-```typescript
-// 以下是接口继承的例子
-interface Human {
-  name: string
-  eat(): void
-}
-interface Man extends Human {
-  run(): void
-}
-interface Child {
-  cry(): void
-}
-
-interface Boy extends Man, Child {}
-let boy: Boy = {
-  name: '',
-  run() {},
-  eat() {},
-  cry() {},
-}
-```
-
 ## 函数类型相关
 
 ### 定义 TS 函数的四种方式，第一种方式可以直接调用，但是后三种就需要先实现定义的函数再调用
@@ -484,7 +331,7 @@ type Add3 = (x: number, y: number) => number
 let add3: Add3 = (a, b) => a + b
 add3(3, 2)
 
-// 第四种 接口实现
+// 第四种 接口实现，接口类型中只定义一个函数类型的匿名成员，通过这样的格式定义的接口类型又被称为可执行类型，也就是一个函数类型
 interface Add4 {
   (x: number, y: number): number
 }
@@ -495,7 +342,9 @@ add4(4, 2)
 
 ### 可选参数
 
-可选参数必须位于必选参数之后，即可选参数后面不能再有必选参数
+可选参数必须位于必选参数之后，即可选参数后面不能再有必选参数。
+
+可选参数，即可缺省的参数，它最后推断出来的是原类型跟 undefined 类型的联合类型，但是跟直接注解一个 undefined 的联合类型有本质区别，后者不能不传参，即使是 undefined，也需要传如 undefined。
 
 ```typescript
 // y后面不能再有必选参数，所以d会报错
@@ -747,6 +596,236 @@ class Bus extends Auto implements AutoInterface {
   // 不用设置 state ，Bus 的父类已经有了。
 }
 ```
+
+## 接口类型
+
+**接口约束对象、函数、类的结构**
+
+### 对象类型接口
+
+TypeScript 对对象的类型检测遵循一种被称之为“鸭子类型”（duck typing）或者“结构化类型”（structural subtyping）的准则，即只要两个对象的结构一致，属性和方法的类型一致，则它们的类型就是一致的。
+
+#### 对象冗余字段
+
+对象类型接口直接验证有冗余字段的**对象字面量**时会报错，这种冗余字段有时是不可避免的存在的。
+
+```typescript
+interface List {
+  id: number
+  name: string
+}
+interface Result {
+  data: List[]
+}
+
+function render(result: Result) {
+  result.data.forEach((value) => {
+    console.log(value.id, value.name)
+  })
+}
+
+render({
+  data: [
+    { id: 1, name: 'A', sex: 'male' },
+    { id: 2, name: 'B' },
+  ],
+})
+// 这就是对象类型接口直接验证有冗余字段的“对象字面量”，上面render中会有报错，说对象只能指定已知属性，并且"sex"不在类型"List"中
+```
+
+> 解决方法一：在外面声明变量 result ,然后把 result 传入 render 函数，避免传入对象字面量。
+
+```typescript
+// 把字面量先赋值给一个变量这样就能绕过检测
+let result = {
+  data: [
+    { id: 1, name: 'A', sex: 'male' },
+    { id: 2, name: 'B' },
+  ],
+}
+render(result)
+```
+
+这种有意将对象字面量和变量进行区别对待的情况称为对象字面量的 freshness。
+
+> 解决方法二： 用类型断言（两种 as 和尖括号），但是如果对象字面中都没有符合的，还是会报错，可以用 as unknown as xxx
+
+```typescript
+render({
+  data: [
+    { id: 1, name: 'A', sex: 'male' },
+    { id: 2, name: 'B' },
+  ],
+} as Result)
+
+// 但是如果传入的对象字面量中没有一项是符合的，那用类型断言还是会报错
+render({
+  data: [{ id: 1, name: 'A', sex: 'male' }],
+} as Result) // 还是会报错属性"data"的类型不兼容
+
+// 现在就需要这么写，用 as unknown as xxx
+render(({
+  data: [{ id: 1, name: 'A', sex: 'male' }],
+} as unknown) as Result)
+```
+
+> 解决方法三：用字符串索引签名
+
+```typescript
+interface List {
+  id: number
+  name: string
+  [x: string]: any
+}
+// 这样对象字面量就可以包含任意多个字符串属性了。
+```
+
+#### 接口属性可定义为只读属性和可选属性
+
+```typescript
+interface List {
+  readonly id: number // 只读属性
+  name: string
+  age?: number // 可选属性，跟直接注解 number | undefined 联合类型有本质区别，后者需要必须传值，即使是 undefined。
+}
+```
+
+#### 可索引类型
+
+不确定一个接口中有多少属性时，可以使用可索引类型。分为数字索引签名和字符串索引签名，如果接口定义了某一种索引签名的值的类型，之后再定义的属性的值必须是签名值的类型的子类型。可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型。
+
+```typescript
+interface Names {
+  [x: string]: number | string
+  // y: boolean; // 会报错 boolean 不会赋值给字符串索引类型，因为字符串索引签名的类型是 number | string，所以之后再定义的属性必须是签名值类型的子类型
+  [z: number]: number // 字符串索引签名后也能定义数字索引签名，数字索引的返回值必须是字符串索引返回值类型的子类型
+}
+```
+
+**注意：在上述示例中，数字作为对象索引时（即对象的 key 值），它的类型既可以与数字兼容，也可以与字符串兼容，这与 JavaScript 的行为一致，因此，使用 0 或 '0' 索引对象时（作为 key 值），这两者等价。**
+
+### 函数类型接口
+
+接口类型可以用来定义函数的类型（仅仅是定义函数的类型，而不包括函数的实现），具体操作是，定义一个接口类型，它有一个函数类型的匿名成员，通过这样的格式定义的接口类型又被称为可执行类型，也就是函数类型。
+
+```typescript
+interface Add {
+  (x: number, y: number): number
+}
+// 跟变量声明是等价的：let Add: (a: number, b: number) => number
+let add4: Add = (a, b) => a + b
+```
+
+实际上，很少使用接口类型来定义函数的类型，更多使用内联类型或类型别名配合箭头函数语法来定义函数类型。
+
+### 混合接口
+
+混合接口，需要注意看一下，接口中的属性没有顺序之分，混合接口不需要第一个属性是匿名函数。
+
+```typescript
+interface Lib {
+  version: string
+  (): void
+  doSomething(): void
+}
+// 需要用到类型断言
+let lib: Lib = (() => {}) as Lib
+lib.version = '1.0'
+lib.doSomething = () => {}
+```
+
+### 接口继承
+
+在 TypeScript 中，接口类型可以继承和被继承
+
+```typescript
+// 以下是接口继承的例子
+interface Human {
+  name: string
+  eat(): void
+}
+interface Man extends Human {
+  run(): void
+}
+interface Child {
+  cry(): void
+}
+// 继承多个，必须用原属性类型的兼容的类型（比如子集）重新定义属性
+interface Boy extends Man, Child {}
+let boy: Boy = {
+  name: '',
+  run() {},
+  eat() {},
+  cry() {},
+}
+```
+
+**注意：我们仅能使用兼容的类型覆盖继承的属性**
+
+在实际使用中，我们既可以使用接口类型来约束类，反过来也可以使用类实现接口。类实现接口，使用 implements 关键字。
+
+```ts
+interface programLanguageName {
+  name: string
+}
+interface programLanguageAge {
+  age: () => number
+}
+
+interface programLanguage extends programLanguageName, programLanguageAge {}
+class language implements programLanguage {
+  name = ''
+  age = () => new Date().getFullYear() - 2012
+}
+```
+
+### Type 类型别名
+
+接口类型的一个作用是将内联类型抽离出来，从而实现类型的复用。其实也可以使用类型别名接收抽离出来的内联类型实现复用。
+
+定义类型别名的格式是 `type 别名名字 = 类型定义`
+
+针对接口类型无法覆盖的场景，比如联合类型、交叉类型，我们只能使用类型别名接收。
+
+```ts
+type languageType = {
+  name: string
+  age: () => number
+}
+/** 联合 */
+type MixedType = string | number
+/** 交叉 */
+type IntersectionType = { id: number; name: string } & {
+  age: number
+  name: string
+}
+/**
+ * 提取接口属性类型
+ */
+interface programLanguageName {
+  name: string
+}
+type AgeType = programLanguageName['name']
+```
+
+**注意：类型别名，就是字面意思，即我们仅仅是给类型取了一个新的名字，并不是创建了一个新的类型。**
+
+#### Interface 与 Type 的区别
+
+在大多数情况下使用接口类型和类型别名的效果等价，但是在某些特定的场景下这两者还是存在很大区别，比如：
+
+- Type: 类型别名可以声明基本类型、联合类型、交叉类型、元组等类型。
+- Type: 类型别名可以使用 typeof 获取实例的类型进行赋值
+- Type: 类型别名可以在索引签名里使用 in，即一个索引签名可以通过映射类型来是索引字符串为联合类型中的一员
+
+```ts
+type Index = 'a' | 'b' | 'c'
+type FromIndex = { [key in Index]?: number }
+
+let example: FromIndex = { a: 1 }
+```
+
+- Interface: **重复定义的接口类型，它的属性会叠加**，这个特性使得我们可以极其方便地对全局变量、第三方库的类型做扩展。
 
 ## 泛型
 
