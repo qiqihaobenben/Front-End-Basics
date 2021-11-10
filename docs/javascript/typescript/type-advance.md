@@ -1,29 +1,5 @@
 # TypeScript 高级类型
 
-## 交叉类型（Intersection Type）
-
-交叉类型可以把多个类型合并成一个类型，合并后的类型将拥有所有成员类型。
-
-用 `&` 符号。虽然叫交叉类型，但是是取的所有类型的**并集**。
-
-很显然，如果仅仅把原始类型、字面量类型、函数类型等原子类型合并成交叉类型，是没有任何用处的，因为任何类型都不能满足同时属于多种原子类型，比如即使 string 类型又是 number 类型。举个例子 `type Useless = string & number` 中 Useless 的类型就是 never。
-
-```typescript
-interface DogInterface {
-  run(): void
-}
-
-interface CatInterface {
-  jump(): void
-}
-
-// 交叉类型 用 & 符号。虽然叫交叉类型，但是是取的所有类型的并集。
-let pet: DogInterface & CatInterface = {
-  run() {},
-  jump() {},
-}
-```
-
 ## 联合类型（Unions）
 
 联合类型用来表示变量、参数的类型不是单一原子类型，而可能是多种不同的类型的组合。
@@ -159,6 +135,103 @@ function area(s: Shape) {
   }
 }
 ```
+
+### 联合类型的类型缩减
+
+将 `string` 原始类型和“string 字面量”类型组合成联合类型，效果就是类型缩减成 `string` 原始类型，同样，对于 number、boolean、枚举也是一样的缩减逻辑。
+
+```ts
+type URStr = 'abc' | string // 类型是 string
+type URNum = 2 | number // 类型是 number
+type URBoolen = true | boolean // 类型是 boolean
+enum EnumUR {
+  ONE,
+  TWO,
+}
+type URE = EnumUR.ONE | EnumUR // 类型是 EnumUR
+```
+
+TypeScript 对这样的场景做了缩减，它把字面量类型、枚举成员类型所减掉，只保留原始类型、枚举类型等父类型，这是合理的“优化”
+
+可是这个缩减，会极大地削弱 IDE 自动提示的能力，所以 TypeScript 官方其实还提供了一个黑魔法，它可以让类型缩减被控制，只需要给父类型添加 `& {}` 即可。
+
+```ts
+type BorderColor = 'black' | 'red' | 'green' | 'yello' | 'blue' | string // 类型缩减成 string
+/**
+ * 下面的类型为 "black" | "red" | "green" | "yello" | "blue" | (string & {})，字面量类型全保留了，所以 IDE 提示还会生效
+ */
+type BorderColor = 'black' | 'red' | 'green' | 'yello' | 'blue' | (string & {}) // 字面量类型全都保留了
+```
+
+#### 问题：如何定义一个接口中，某个属性为 number 类型，其他字符串索引返回值的类型为 string 类型？
+
+当联合类型的成员是接口类型，如果满足其中一个接口的属性是另一个接口属性的子集，这个属性也会类型缩减，所以利用这个特性，就可以解决提出来的这个问题。。
+
+例如一个对象：
+
+```js
+{
+  age: 1, // 数字类型
+  anyProperty: 'str' // 其他不确定的属性都是字符串类型
+}
+```
+
+要定义满足上面对象的类型校验，肯定需要用到两个接口的联合类型及类型缩减，所以这个问题的核心在于找到一个既是 number 类型的子类型，这样 age 的类型缩减之后就是 number 类型；同时也是 string 类型的子类型，这样才能满足属性和 string 索引类型的约束关系。
+
+既是 number 的子类型，也是 string 的子类型，哪个类型满足这个条件呢？答案是 never 类型。never 有一个特性是它是所有类型的子类型，自然也是 number 和 string 的子类型。具体实现代码如下：
+
+```ts
+type UnionInterce = { age: number } | { age: never; [key: string]: string }
+
+const O: UnionInterce = {
+  age: 2,
+  name: 'tom',
+}
+```
+
+## 交叉类型（Intersection Type）
+
+交叉类型可以把多个类型合并成一个类型，合并后的类型将拥有所有成员类型。
+
+用 `&` 符号。虽然叫交叉类型，但是是取的所有类型的**并集**。
+
+很显然，如果仅仅把原始类型、字面量类型、函数类型等原子类型合并成交叉类型，是没有任何用处的，因为任何类型都不能满足同时属于多种原子类型，比如即使 string 类型又是 number 类型。举个例子 `type Useless = string & number` 中 Useless 的类型就是 never。
+
+交叉类型真正的用武之地是将多个接口类型合并成一个类型，从而实现等同接口继承的效果，也就是所谓的合并接口类型。
+
+```typescript
+interface DogInterface {
+  run(): void
+}
+
+interface CatInterface {
+  jump(): void
+}
+
+// 交叉类型 用 & 符号。虽然叫交叉类型，但是是取的所有类型的并集。
+let pet: DogInterface & CatInterface = {
+  run() {},
+  jump() {},
+}
+```
+
+**注意：合并的多个接口类型存在同名属性，如果同名属性的类型不兼容，比如同名的 name 属性类型，一个是 number，另一个是 string，合并后，name 属性的类型就是 number 和 string 两个原子类型的交叉类型，即 never；如果同名属性的类型兼容，比如一个是 number，另一个是 number 的子类型、数字字面量类型，合并后 name 属性的类型就是两者中的子类型。**
+
+### 交叉类型用于合并联合类型
+
+交叉类型可以用于合并联合类型，这个交叉类型需要同时满足不同的联合类型限制，也就是提取了所有联合类型的相同类型成员，可以理解为求交集。
+
+既然是求交集，如果多个联合类型中没有相同的类型成员，交叉出来的类型自然就是 never 了。
+
+```ts
+type UnionA = 'px' | 'em' | 'rem' | '%'
+type UnionB = 'vh' | 'em' | 'rem' | 'pt'
+type IntersectionUnion = UnionA & UnionB // 类型为 "em" | "rem"
+```
+
+### 联合、交叉类型优先级
+
+联合、交叉类型本身可以直接组合使用，联合操作符 `|` 的优先级低于交叉操作符 `&`，同样，可以使用小括弧 `()` 来调整操作符的优先级。
 
 ## 索引类型
 

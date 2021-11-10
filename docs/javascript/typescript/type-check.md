@@ -66,7 +66,7 @@ let string2 = string // 类型没有拓宽：string2 的类型也是 'this is st
 
 #### Type Widening
 
-通过 let、var 定义的变量如果满足未显式声明类型注解且被赋予了 null 或 undefined 值，会对 null 和 undefined 的类型进行拓宽，推断出这些变量的类型是 any。
+通过 let、var 定义的变量如果**满足未显式声明类型注解且被直接赋予了 null 或 undefined 值**，会对 null 和 undefined 的类型进行拓宽，推断出这些变量的类型是 any。
 
 **注意，上面没有说函数的形参，形参的类型不会进行拓宽**
 

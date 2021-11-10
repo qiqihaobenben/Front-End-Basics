@@ -147,9 +147,13 @@ const props: { id: number; name?: never } = { id: 1 }
 props.name = 'tom' // 会报错，name 变为只读属性
 ```
 
-## 枚举类型
+## 枚举类型（Enums）
 
-枚举分为数字枚举和字符串枚举，此外还有异构枚举（不推荐）
+枚举，用来表示一个被命名的整型常数的集合。在 TypeScript 中，我们可以使用枚举定义包含被命名的常量的集合，TypeScript 支持数字、字符两种常量值的枚举类型。格式是 `enum + 枚举名字 + 一对花括号，花括号里则是被命名了的常量成员`。
+
+**注意：相对于其他类型，enum 也是一种比较特殊的类型，因为它兼具值和类型于一体，有点类似于 class（在定义 class 结构时，其实我们也自动定义了 class 实例的类型）**
+
+枚举分为数字枚举、字符串枚举、常量枚举，此外还有异构枚举（不推荐使用）
 
 ### 数字枚举
 
@@ -157,7 +161,7 @@ props.name = 'tom' // 会报错，name 变为只读属性
 
 ```typescript
 enum Role {
-  Reporter = 1,
+  Reporter = 1, // 可以指定任意类型（比如整数、负数、小数等）、任意起始的数字
   Developer,
   Maintainer,
   Owner,
@@ -181,6 +185,10 @@ var Role
 })(Role || (Role = {}))
 ```
 
+由于枚举默认的值自递增且完全无法保证稳定性，所以给部分数字类型的枚举成员显式指定数值或给函数传递数值而不是枚举类型作为入参都属于不明智的行为。
+
+**常量命名、结构顺序都一致的两个枚举，即便转译为 JavaScript 后，同名成员的值仍然一样（满足恒等 ===）。但是在 TypeScript 看来，他们不相同、不满足恒等。不仅仅是数字类型枚举，所有其他类型枚举都仅和自身兼容，这就消除了由于枚举不稳定可能造成的风险，所以这是一种极其安全的设计。不过，也是因为不同枚举之间完全不兼容，可能使得枚举变得不那么好用，而两个结构完全一样的枚举类型如果互相兼容，则更符合我们的预期，此时我们可能不得不适用类型断言（as）或者重构代码将“相同”的枚举类型抽离为同一个公共的枚举（推荐后者）**
+
 ### 字符串枚举
 
 字符串枚举只能通过名字取值，不能通过索引取值。
@@ -195,7 +203,7 @@ console.log(Message)
 // 我们看到只有名字作为 key ，说明字符串枚举不能反向映射
 ```
 
-### 常量枚举
+### 常量枚举（const enums）
 
 用 const 声明的枚举就是常量枚举，会在编译阶段被移除。如下代码编译后 Month 是不产生代码的，只能在编译前使用，当我们不需要一个对象，但是需要一个对象的值的时候，就可以使用常量枚举，这样可以减少编译后的代码。
 
@@ -208,7 +216,7 @@ const enum Month {
 let month = [Month.Jan, Month.Feb, Month.Mar]
 ```
 
-### 异构枚举
+### 异构枚举（Heterogeneous enums）
 
 数字和字符串枚举混用，**不推荐**
 
@@ -220,6 +228,40 @@ enum Answer {
   //  X = Math.random() // 含字符串成员的枚举中不允许使用计算值
 }
 ```
+
+### 外部枚举
+
+可以使用 declare 描述一个在其他地方已经定义过的枚举类型，通过这种方式定义出来的枚举类型，被称之为外部枚举。
+
+```ts
+declare enum Day {
+  SUNDAY,
+  MONDAY,
+}
+
+const work = (x: Day) => {
+  if (x === Day.SUNDAY) {
+    console.log(x, 'not work')
+  }
+}
+```
+
+上面的代码转译为 JavaScript 后，外部枚举的定义也会像常量枚举一样被抹除，但是对枚举成员的引用会被保留：
+
+```js
+const work = (x) => {
+  if (x === Day.SUNDAY) {
+    console.log(x, 'not work')
+  }
+}
+```
+
+外部枚举的作用在于为两个不同枚举的成员进行兼容、比较、被复用提供了一种途径，这在一定程度上提升了枚举的可用性。
+
+#### 外部枚举和常规枚举的区别
+
+- 在外部枚举中，如果没有指定初始值的成员都被当作计算成员，这跟常规枚举恰好相反；
+- 即便外部枚举只包含字面量成员，这些成员的类型也不会是字面量成员类型，自然完全不具备字面量类型的各种特性
 
 ### 枚举成员注意点
 
@@ -829,6 +871,10 @@ let example: FromIndex = { a: 1 }
 
 ## 泛型
 
+泛型指的是类型参数化，即将原来某种具体的类型进行参数化。和定义函数参数一样，我们可以给泛型定义若干个类型参数，并在调用时给泛型传入明确的类型参数。
+
+设计泛型的目的在于有效约束类型成员之间的关系，比如函数参数和返回值、类或者接口成员和方法之间的关系。
+
 ### 泛型函数
 
 **注意：用泛型定义函数类型时的位置不用，决定是否需要指定参数类型，见下面例子。**
@@ -852,6 +898,8 @@ let myLog: Log = log
 type Log<T> = (value: T) => T // 如果这样用泛型定义函数类型，必须指定一个参数类型
 let myLog: Log<string> = log
 ```
+
+**注意：函数的泛型入参必须和参数/参数成员建立有效的约束关系才有实际意义。**
 
 ### 泛型接口
 
@@ -904,6 +952,47 @@ log4.run('abc')
 
 **注意：泛型不能应用于类的静态成员。并且实例化时，不指定类型，就可以传入任何类型**
 
+**对于 React 开发者而言，组件也支持泛型，这块的语法有些奇怪，记住即可**
+
+```
+function GenericCom<P>(props: { prop1: string }) {
+  return <></>
+}
+<GenericCom<{ name: string }> prop1="1" />
+```
+
+### 泛型类型
+
+将类型入参的定义移动到类型别名和接口名称后，此时定义的一个接收具体类型入参后返回一个新类型的类型就是泛型类型。
+
+```ts
+type GenericReflectFunction<P> = (param: P) => P
+interface IGenericReflectFunction<P> {
+  (param: P): P
+}
+```
+
+在泛型定义中，甚至可以使用一些类型操作符进行运算表达，使得泛型可以根据入参的类型衍生出不同的类型。
+
+```ts
+type StringOrNumberArray<E> = E extends string | number ? E[] : E
+type StringArray = StringOrNumberArray<string> // 类型是 string[]
+type NumberArray = StringOrNumberArray<number> // 类型是 number[]
+type BooleanType = StringOrNumberArray<boolean> // 类型是 boolean
+```
+
+**但是如果给上面 StringOrNumberArray 泛型传入 string | boolean 联合类型作为入参，将会得到什么类型呢？**
+
+```ts
+type StringOrBoolean = string | boolean
+type test1 = StringOrNumberArray<StringOrBoolean> // 类型为 boolean | string[]
+type test2 = StringOrBoolean extends string | number
+  ? StringOrBoolean[]
+  : StringOrBoolean // 类型为 string | boolean
+```
+
+上面的代码定义的两个类型别名的类型居然不一样，这个就是所谓的分配条件类型（Distributive Conditional Types），官方定义：在条件类型判断的情况下（如上面示例中出现的 extends），如果入参是联合类型，则会被拆解成一个个独立的（原子）类型（成员）进行类型运算。比如上面示例的 string | boolean 入参，先被拆解成 string 和 boolean 这两个独立类型，再分别判断是否是 string | number 类型的子集。**因为 string 是子集而 booelan 不是，所以最终得到的 test1 的类型是 boolean | string[]**。
+
 ### 泛型约束
 
 约束泛型传入的类型
@@ -920,6 +1009,18 @@ function log5<T extends Length>(value: T) {
 log5([1])
 log5('abc')
 log5({ length: 1 })
+```
+
+```ts
+type ObjSetter = <O extends {}, K extends keyof O, V extends O[K]>(
+  obj: O,
+  key: K,
+  value: V
+) => V
+
+const setValueOfObj: ObjSetter = (o, k, v) => (o[k] = v)
+setValueOfObj({ id: 1 }, 'id', 2)
+setValueOfObj({ id: 1 }, 'id', 'tom') // 报错
 ```
 
 ### 泛型总结
