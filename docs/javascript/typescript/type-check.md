@@ -50,6 +50,106 @@ let num = 2 // num 的类型是 number
 let bool = false // bool 的类型是 boolean
 ```
 
+### 类型守卫
+
+JavaScript 作为一种动态语言，意味着其中的参数、值可以是多态（多种类型）。因此需要区别对待每一种状态，确保对参数、值的操作合法。
+
+在 TypeScript 中，因为受静态类型检测约束，所以在编码阶段必须使用类似的手段确保当前的数据类型支持相应的操作。当然，前提条件是已经显式地注解了类型的多态。
+
+```ts
+const convertToUpperCase = (strOrArray: string | string[]) => {
+  if (typeof strOrArray === 'string') {
+    return strOrArray.toUpperCase()
+  } else if (Array.isArray(strOrArray)) {
+    return strOrArray.map((item) => item.toUpperCase())
+  }
+}
+```
+
+上面的代码中，typeof、Array.isArray 条件判断就是类型守卫。**类型守卫的作用在于触发类型缩小。实际上，它还可以用来区分类型集合中的不同成员，类型集合一般包括联合类型和枚举类型**
+
+#### 联合类型的类型守卫
+
+使用类型守卫来区分联合类型的不同成员，常用的类型守卫包括**switch、字面量恒等、typeof、instanceof、in 和自定义类型守卫** 这几种。
+
+一般来说，如果可枚举的值和条件分支越多，那么使用 switch 就会让代码逻辑更简洁、更清晰；反之，则推荐使用字面量恒等进行判断。联合类型的成员如果是类，可以使用 instanceof。
+
+```ts
+/**
+ * 字符串恒等
+ */
+const convert = (c: 'a' | 1) => {
+  if (c === 'a') {
+    return c.toUpperCase() // c is 'a'
+  } else if (c === 1) {
+    return c.toFixed() // c is 1
+  }
+}
+
+/**
+ * switch
+ */
+const feat = (c: { name: 'tom' } | { name: 'bob' }) => {
+  switch (c.name) {
+    case 'tom':
+      return c.name
+    case 'bob':
+      return '123'
+  }
+}
+```
+
+通过类型谓词 is，可以封装自定义类型守卫。
+
+```ts
+interface Dog {
+  wang: string
+}
+interface Cat {
+  miao: string
+}
+function isDog(animal: Dog | Cat): animal is Dog {
+  return 'wang' in animal
+}
+const getName = (animal: Dog | Cat) => {
+  if (isDog(animal)) {
+    return animal.wang
+  } else {
+    return animal.miao
+  }
+}
+```
+
+#### 失效的类型守卫
+
+失效的类型守卫指的是某些类型守卫应用在泛型函数中时不能缩小类型，即失效了。例如 in 和 instanceof、类型谓词封装的自定义类型守卫在泛型类型缩小上是由区别的。
+
+```ts
+interface Dog {
+  wang: string
+}
+interface Cat {
+  miao: string
+}
+function isDog(animal: Dog | Cat): animal is Dog {
+  return 'wang' in animal
+}
+function getName<T extends Dog | Cat>(animal: T) {
+  /**
+     if ('wang' in animal) {
+       return animal.wang // 使用 in ，类型没有缩小，报错
+     }
+     return animal.miao // 从而此处也报错
+     */
+  // instanceof 也可以
+  if (isDog(animal)) {
+    return animal.wang
+  }
+  // return animal.miao // TypeScript 4.3.2 之前报错
+  return (animal as Cat).miao
+}
+```
+
 ### 类型拓宽和类型缩小
 
 #### Literal Widening
