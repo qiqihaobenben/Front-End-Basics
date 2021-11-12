@@ -401,3 +401,15 @@ type T7 = ReturnType<() => string> //即：type T7 = string
 ```
 
 创建运维管理主文件夹，创建地域管理和主机集合的文件夹和路由访问文件
+
+## 增强类型系统
+
+### 声明
+
+在 TypeScript 中安全地使用 JavaScript 的库，关键的步骤就是使用 TypeScript 中的一个 declare 关键字。通过使用 declare 关键字，我们可以声明全局的变量、方法、类、对象。
+
+#### declare 变量
+
+在运行时，前端代码 `<script>` 标签会引入一个全局的库，再导入全局变量。此时，如果想安全地使用全局变量，那么就需要对变量的类型进行声明。
+
+声明变量的语法： `declare (var|let|const) 变量名称:变量类型`
