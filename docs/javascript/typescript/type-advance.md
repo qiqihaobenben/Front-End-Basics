@@ -296,7 +296,7 @@ console.log(getValuest(obj, ['a', 'b']))
 
 ## 映射类型
 
-可以从一个旧的类型，生成一个新的类型
+可以从一个旧的类型，生成一个新的类型。映射类型属于 TypeScript 提供的工具类型，因为时操作接口的，所以也称为**操作接口类型**。
 
 以下代码用到了 TS 内置的映射类型
 
@@ -696,3 +696,5 @@ Array.prototype.getLen = function() {
   return this.length
 }
 ```
+
+## 推荐阅读
