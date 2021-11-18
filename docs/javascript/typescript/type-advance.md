@@ -189,11 +189,65 @@ const O: UnionInterce = {
 }
 ```
 
+### 联合类型二次处理
+
+#### Exclude
+
+TypeScript 的工具类型，作用是从联合类型中去除指定的类型。
+
+```ts
+type Exclude<T, U> = T extends U ? never : T
+type ExcludeStr = Exclude<'a' | 'b' | 'c', 'b'> // 类型为 'a' | 'c'
+```
+
+#### Extract
+
+跟 Exclude 相反，Extract 主要用来从联合类型中提取指定的类型
+
+```ts
+type Extract<T, U> = T extends U ? U : never
+type ExtractStr = Extract<'a' | 'b' | 'c', 'b'> // 类型为 'b'
+```
+
+#### NonNullable
+
+NonNullable 作用是从联合类型中去除 null 或者 undefined 的类型。
+
+```ts
+type NonNullable<T> = T extends null | undefined ? never : T
+// 等同于使用 Exclude
+type NonNullable<T> = Exclude<T, null | undefined>
+type AllType = string | number | null | undefined
+type BasicType = NonNullable<AllType> // 类型为 string | number
+```
+
+#### Record
+
+Record 作用是使用传入的泛型参数分别作为接口类型的属性和值，生成接口类型
+
+```ts
+type Record1<K extends keyof any, T> = {
+  [P in K]: T
+}
+type MenuKey = 'home' | 'about' | 'more'
+
+interface Menu {
+  label: string
+  hidden?: boolean
+}
+
+const menus: Record1<MenuKey, Menu> = {
+  about: { label: '关于' },
+  home: { label: '主页' },
+  more: { label: '更多', hidden: true },
+}
+```
+
+**需要注意：这里的实现限定了第一个泛型参数继承自 `keyof any`，在 TypeScript 中，`keyof any` 指代可以作为对象键的属性，因为 `keyof any` 生成的类型是 `string | number | symbol`，目前，JavaScript 仅支持 `string`、`number`、`symbol` 的值作为对象的键值。**
+
 ## 交叉类型（Intersection Type）
 
 交叉类型可以把多个类型合并成一个类型，合并后的类型将拥有所有成员类型。
-
-用 `&` 符号。虽然叫交叉类型，但是是取的所有类型的**并集**。
 
 很显然，如果仅仅把原始类型、字面量类型、函数类型等原子类型合并成交叉类型，是没有任何用处的，因为任何类型都不能满足同时属于多种原子类型，比如即使 string 类型又是 number 类型。举个例子 `type Useless = string & number` 中 Useless 的类型就是 never。
 
@@ -314,6 +368,8 @@ type ReadonlyObj = Readonly<Obj>
 type PartialObj = Partial<Obj>
 //可以抽取接口的子集
 type PickObj = Pick<Obj, 'a' | 'b'>
+// 去除指定的子集
+type OmitObj = Omit1<Obj, 'a' | 'b'>
 
 // 非同态 会创建新的属性
 type RecordObj = Record<'x' | 'y', Obj>
@@ -357,6 +413,7 @@ type T3 = TypeName<string | string[]> // 得到的类型即：type T3 = "string"
 用法一：利用分布式条件类型可以实现 Diff 操作
 
 ```typescript
+type Diff<T, U> = T extends U ? never : T
 type T4 = Diff<'a' | 'b' | 'c', 'a' | 'e'> // 即：type T4 = "b" | "c"
 // 拆分一下具体步骤
 // Diff<"a","a" | "e"> | Diff<"b","a" | "e"> | Diff<"c", "a" | "e">
@@ -371,7 +428,7 @@ type NotNull<T> = Diff<T, undefined | null>
 type T5 = NotNull<string | number | undefined | null> // 即：type T5 = string | number
 ```
 
-以上的类型别名在 TS 的类库中都有内置的类型
+以上的类型别名在 TS 的类库中都有内置的工具类型
 
 - `Diff => Exclude<T, U>`
 - `NotNull => NonNullable<T>`
@@ -399,8 +456,6 @@ type ReturnType<T extends (...args: any) => any> = T extends (
 ```typescript
 type T7 = ReturnType<() => string> //即：type T7 = string
 ```
-
-创建运维管理主文件夹，创建地域管理和主机集合的文件夹和路由访问文件
 
 ## 增强类型系统
 
