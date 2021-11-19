@@ -350,7 +350,9 @@ console.log(getValuest(obj, ['a', 'b']))
 
 ## 映射类型
 
-可以从一个旧的类型，生成一个新的类型。映射类型属于 TypeScript 提供的工具类型，因为时操作接口的，所以也称为**操作接口类型**。
+在定义类型时，可以组合使用 in 和 keyof，并基于已有的类型创建一个新类型，使得新类型与已有类型保持一致的只读、可选特定，这样的**泛型**称之为映射类型。
+
+可以从一个旧的类型，生成一个新的类型。TypeScript 提供的工具类型很多属于映射类型，因为是操作接口的，所以也称为**操作接口类型**。
 
 以下代码用到了 TS 内置的映射类型
 
@@ -380,6 +382,30 @@ type RecordObj = Record<'x' | 'y', Obj>
 // }
 ```
 
+**注意：映射类型使用索引签名语法（即属性用 [] 括起来）和 in 关键字限定对象属性的范围，特别注意，只能在类型别名定义中使用 in 和 keyof，如果在接口中使用，则会提示一个 ts(1169) 的错误**
+
+#### 使用 as 重新映射 key
+
+从 TypeScript 4.1 起，可以在映射类型的索引签名中使用类型断言。
+
+```ts
+type sourceInterface = {
+  id: number
+  name?: string
+}
+// TypeScript 4.1 起生效
+type TargetGenericTypeAssertiony<S> = {
+  [K in keyof S as Exclude<K, 'id'>]: S[K]
+}
+// 等效于
+// type TargetGenericTypeAssertiony<S> = {
+//   [K in Exclude<keyof S, 'id'>]: S[K]
+// }
+
+type TargetGenericTypeAssertionyInstance =
+  TargetGenericTypeAssertiony<sourceInterface>
+```
+
 ## 条件类型
 
 `T extends U ? X : Y`
@@ -403,12 +429,18 @@ type T2 = TypeName<string[]> // 得到的类型即：type T2 = "object"
 
 ### 分布式条件类型
 
+分布式条件类型，也称为分配条件类型（Distributive Conditional Types），指的是：在条件类型中，如果入参是联合类型，则会被拆解成为一个个独立的（原子）类型（成员），然后再进行类型运算。
+
 `(A | B) extends U ? X : Y` 等价于 `(A extends U ? X : Y) | (B extends U ? X : Y)`
 
 ```typescript
 // 接上文
 type T3 = TypeName<string | string[]> // 得到的类型即：type T3 = "string" | "object"
 ```
+
+**注意：在非泛型条件中，联合类型会被当作一个整体对待，可以解除类型分配，另外通过某些手段强制类型入参被当成一个整体，也可以解除类型分配，例如使用 `[]`**
+
+**还要注意，包含条件类型的泛型接收 never 作为泛型入参时，存在一定“陷阱”，第一，是因为 never 类型是所有类型的子类型，在 extends 判断语句中，始终是真值；第二，是因为 never 是不能分配的底层类型，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实例化得到的类型也是 never。**
 
 用法一：利用分布式条件类型可以实现 Diff 操作
 
@@ -419,6 +451,9 @@ type T4 = Diff<'a' | 'b' | 'c', 'a' | 'e'> // 即：type T4 = "b" | "c"
 // Diff<"a","a" | "e"> | Diff<"b","a" | "e"> | Diff<"c", "a" | "e">
 // 分布结果如下：never | "b" | "c"
 // 最终获得字面量的联合类型 "b" | "c"
+
+type NotDiff = str1 extends str2 ? never : str1 // 解除类型分配
+type NotDiff1<T, U> = [T] extends [U] ? never : T // 解除类型分配
 ```
 
 用法二：在 Diff 的基础上实现过滤掉 null 和 undefined 的值。
@@ -433,7 +468,7 @@ type T5 = NotNull<string | number | undefined | null> // 即：type T5 = string 
 - `Diff => Exclude<T, U>`
 - `NotNull => NonNullable<T>`
 
-此外，内置的还有很多类型，比如从类型 T 中抽取出可以赋值给 U 的类型 `Extract<T, U>`
+此外，内置的还有很多工具类型，比如从类型 T 中抽取出可以赋值给 U 的类型 `Extract<T, U>`
 
 ```typescript
 type T6 = Extract<'a' | 'b' | 'c', 'a' | 'e'> // 即：type T6 = "a"
@@ -441,7 +476,7 @@ type T6 = Extract<'a' | 'b' | 'c', 'a' | 'e'> // 即：type T6 = "a"
 
 比如： 用于提取函数类型的返回值类型 `ReturnType<T>`
 
-先写出 `ReturnType<T>` 的实现，`infer` 表示在 extends 条件语句中待推断的类型变量。
+先写出 `ReturnType<T>` 的实现，类型推断操作符 `infer` 表示在 extends 条件语句中待推断的类型变量。
 
 ```typescript
 type ReturnType<T extends (...args: any) => any> = T extends (
