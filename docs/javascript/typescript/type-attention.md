@@ -49,6 +49,20 @@ let obj: { x: number; y: number } = { x: 1, y: 2 }
 obj.x = 3
 ```
 
+### object、Object 和 {}
+
+`小 object` 代表的是所有非原始类型，也就是说不能把 number、string、boolean、symbol 原始类型赋给 object，在严格模式下，null 和 undefined 类型也不能赋给 object。
+
+`大 Object` 代表所有拥有 toString、hasOwnProperty 方法的类型，所以，所有原始类型、非原始类型都可以赋给 Object，同样，在严格模式下，null 和 undefined 类型也不能赋给 Object。
+
+`{}` 空对象类型和`大 Object` 一样，也表示原始类型和非原始类型的集合，并且在严格模式下，null 和 undefined 也不能赋值给 {}
+
+**综上结论：`{}`、`大 Object` 是比 `小 object` 更宽泛的类型（least specific），`{}` 和 `大 Object` 可以互相代替，用来表示原始类型（null、undefined 除外）和非原始类型；而 `小 object` 则表示非原始类型。**
+
+#### 注意
+
+`大 Object` 包含原始类型，`小 object` 仅包含非原始类型，所以 `大 Object` 似乎是 `小 object` 的父类型。实际上，`大 Object` 不仅是 `小 object` 的父类型，同时也是`小 object` 的子类型。不过，尽管官方文档说可以使用 `小 object` 代替 `大 Object`，但是我们仍要明白 `大 Object` 并不完全等价于`小 object`。
+
 ## symbol 类型
 
 symbol 类型可以直接声明为 symbol 类型，也可以直接赋值，跟 ES6 一样，两个分别声明的 symbol 是不相等的。

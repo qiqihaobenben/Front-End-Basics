@@ -79,7 +79,7 @@ TypeScript 兼容 JavaScript 代码，默认选项允许相当大的灵活性来
 - alwaysStrict：类型 `Boolean`，保证编译出的文件是 ECMAScript 的严格模式并为每个源文件插入 `"use strict";` 语句，默认值为 `false`
 - noImplicitAny：类型 `Boolean`不允许隐式的 any 类型，默认值为 `false`
 - strictNullChecks：类型 `Boolean`，更严格地检查 null 和 undefined 类型，不允许把 null、undefined 赋值给其他类型的变量，例如，数组的 find 方法的返回类型将是更严格的 `T | undefined`
-- strictFunctionTypes：类型 `Boolean`，不允许函数参数双向协变
+- strictFunctionTypes：类型 `Boolean`，开启时，不允许函数参数双向协变（参数的变型规则是，true 是逆变，false 是双向协变）
 - strictPropertyInitialization：类型 `Boolean`，类的实例属性必须初始化，`--strictNullChecks` 必须启用此选项才能生效
 - strictBindCallApply：类型 `Boolean`，更严格的 bind/call/apply 检查，比如会检查参数的类型与函数类型是否一致。
 - noImplicitThis：类型 `Boolean`，不允许 this 有隐式 any 类型

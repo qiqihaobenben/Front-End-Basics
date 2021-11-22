@@ -77,6 +77,7 @@ module.exports = {
             'typescript/typescript-important',
             'typescript/use-typescript-two-years',
             'typescript/intro',
+            'typescript/config_file',
             'typescript/synax',
             'typescript/type-attention',
             'typescript/type-advance',
