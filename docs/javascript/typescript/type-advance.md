@@ -788,3 +788,5 @@ Array.prototype.getLen = function() {
 ```
 
 ## 推荐阅读
+
+- [声明文件](https://ts.xcatliu.com/basics/declaration-files)
