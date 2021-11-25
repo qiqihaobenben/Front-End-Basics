@@ -73,112 +73,6 @@ let s2 = Symbol()
 console.log(s1 === s2) // false
 ```
 
-## void、undefined 、null 类型
-
-void 类型，它仅适用于表示没有返回值的函数，即如果该函数没有返回值，那它的类型就是 void。在 strict 模式下，声明一个 void 类型的变量几乎没有任何实际用处，因为我们**不能把 void 类型的变量值再赋值给除了 any 和 unknown 之外的任何类型变量**。
-
-变量可以被声明为 undefined 和 null ，但是一旦被声明，就不能再赋值其他类型，所以单纯声明 undefined 或者 null 类型的变量是很鸡肋的。
-
-undefined 的最大价值主要体现在接口类型上，它表示一个可缺省、未定义的属性。
-
-null 的价值可能主要体现在接口制定上，它表明对象或属性可能是空值。
-
-```typescript
-let un: undefined = undefined
-let nu: null = null
-un = 1 // 会报错
-nu = 1 // 会报错
-```
-
-undefined 和 null 是任何类型的子类型，那就可以赋值给其他类型。但是需要设置配置项 "strictNullChecks": false。并且这里还有个设计是：可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量，反过来，类型是 void 但值是 undefined 的变量不能赋值给 undefined 类型。
-
-```typescript
-// 设置 "strictNullChecks": false
-let num: number = 123
-num = undefined
-num = null
-
-// 但是更建议将 num 设置为联合类型
-let num: number | undefined | null = 123
-num = undefined
-num = null
-```
-
-undefined 和 null 类型还具备警示意义，它们可以提醒我们针对可能操作这两种（类型）值的情况做容错处理。比如我们需要类型守卫（Type Guard）在操作之前判断值的类型是否支持当前操作。类型守卫既能通过类型缩小影响 TypeScript 的类型检测，也能保障 JavaScript 运行时的安全性。
-
-```ts
-const userInfo: { id?: number; name?: null | string } = { id: 1, name: 'tom' }
-// Type Guard
-if (userInfo.id !== undefined) {
-  userInfo.id.toFixed() // id 的类型缩小成 number
-}
-```
-
-不建议随意使用非空断言来排除值可能为 null 或 undefined 的情况，因为这样很不安全。而比非空断言更安全，比类型守卫更方便的做法是使用单问号（Optional Chain）、双问号（空值合并）来保障代码的安全性。
-
-```ts
-const userInfo: { id?: number; name?: null | string } = {}
-
-userInfo.id!.toFixed() // 非空断言，静态检查ok，但不建议，可能会报错
-userInfo.id?.toFixed() // Optional Chain
-const myName = userInfo.name ?? 'jerry' // 空值合并
-```
-
-**严格模式下，null 和 undefined 表现出与 void 类似的兼容性，不能赋值给除 any 和 unknown 之外的其他类型，反过来，除了 any 和 never 之外，其他类型都不可以赋值给 null 或 undefined。**
-
-## any、never、unknown 类型
-
-### any
-
-any 类型可以赋值给除了 never 之外的任意其他类型，反过来其他类型也可以赋值给 any。
-
-any 可以兼容除 never 以外所有的类型，同时也可以被所有的类型兼容（即 any 既是 bottom type，也是 top type），再次强调 Any is 魔鬼，一定要慎用、少用
-
-### unknown
-
-unknown 主要用来描述类型不确定的变量。
-
-例如在多个判断条件分支场景下，它可以用来接收不同条件下类型各异的返回值的临时变量，在 3.0 之前的版本中，只有使用 any 才能满足这种动态类型场景。
-
-与 any 不同的是，unknown 在类型上更安全。比如我们可以将任意类型的值赋值给 unknown，但是 unknown 类型的值只能赋值给 unknown 或 any。
-
-不能把 unknown 赋值给除了 any 之外任何其他类型，反过来其他类型都可以赋值给 unknown（即 unknown 是 top type）
-
-使用 unknown 后，TypeScript 会对它做类型检测，所有的类型缩小手段对 unknown 都有效，但是如果不缩小类型（Type Narrowing），我们对 unknown 执行的任何操作都会出现 ts(2571) 错误。
-
-```ts
-let result: unknown
-result.toFixed() // 报错提示 ts(2571)
-```
-
-```ts
-let result: unknown
-if (typeof result === 'number') {
-  result.toFixed() // 不报错
-}
-```
-
-### never 类型
-
-never 表示永远不会发生值的类型，例如抛出错误的函数的返回值类型就是 never，函数代码中时一个死循环，那么这个函数的返回值类型也是 never。
-
-never 是所有类型的子类型，它可以赋值给所有类型，但是反过来，除了 never 自身外，其他类型（包括 any 在内的类型）都不能赋值给 never 类型。（即 never 是 bottom type）
-
-在恒为 false 的类型守卫条件判断下，变量的类型将缩小为 never（never 是所有其他类型的子类型，所以是类型缩小为 never，而不是变成 never）
-
-基于 never 的特征，我们可以使用 never 实现一些有意思的功能，比如可以把 never 作为接口类型下的属性类型，用来禁止写入接口下特定的属性。
-
-```ts
-const props: { id: number; name?: never } = { id: 1 }
-props.name = 'tom' // 会报错，name 变为只读属性
-
-let n: never = (() => {
-  throw Error('never')
-})()
-let a: number = n // ok
-let c: {} = n // ok
-```
-
 ## 枚举类型（Enums）
 
 枚举，用来表示一个被命名的整型常数的集合。在 TypeScript 中，我们可以使用枚举定义包含被命名的常量的集合，TypeScript 支持数字、字符两种常量值的枚举类型。格式是 `enum + 枚举名字 + 一对花括号，花括号里则是被命名了的常量成员`。
@@ -219,8 +113,6 @@ var Role
 
 由于枚举默认的值自递增且完全无法保证稳定性，所以给部分数字类型的枚举成员显式指定数值或给函数传递数值而不是枚举类型作为入参都属于不明智的行为。
 
-**常量命名、结构顺序都一致的两个枚举，即便转译为 JavaScript 后，同名成员的值仍然一样（满足恒等 ===）。但是在 TypeScript 看来，他们不相同、不满足恒等。不仅仅是数字类型枚举，所有其他类型枚举都仅和自身兼容，这就消除了由于枚举不稳定可能造成的风险，所以这是一种极其安全的设计。不过，也是因为不同枚举之间完全不兼容，可能使得枚举变得不那么好用，而两个结构完全一样的枚举类型如果互相兼容，则更符合我们的预期，此时我们可能不得不适用类型断言（as）或者重构代码将“相同”的枚举类型抽离为同一个公共的枚举（推荐后者）**
-
 ### 字符串枚举
 
 字符串枚举只能通过名字取值，不能通过索引取值。
@@ -237,7 +129,7 @@ console.log(Message)
 
 ### 常量枚举（const enums）
 
-用 const 声明的枚举就是常量枚举，会在编译阶段被移除。如下代码编译后 Month 是不产生代码的，只能在编译前使用，当我们不需要一个对象，但是需要一个对象的值的时候，就可以使用常量枚举，这样可以减少编译后的代码。
+用 const 声明的枚举就是常量枚举，会在编译阶段被移除（开启 preserveConstEnums 配置后会保存）。如下代码编译后 Month 是不产生代码的，只能在编译前使用，当我们不需要一个对象，但是需要一个对象的值的时候，就可以使用常量枚举，这样可以减少编译后的代码。
 
 ```typescript
 const enum Month {
@@ -288,7 +180,7 @@ const work = (x) => {
 }
 ```
 
-外部枚举的作用在于为两个不同枚举的成员进行兼容、比较、被复用提供了一种途径，这在一定程度上提升了枚举的可用性。
+**外部枚举的作用在于为两个不同枚举的成员进行兼容、比较、被复用提供了一种途径，这在一定程度上提升了枚举的可用性。**
 
 #### 外部枚举和常规枚举的区别
 
@@ -298,10 +190,10 @@ const work = (x) => {
 ### 枚举成员注意点
 
 - 枚举成员是只读的，不能修改重新赋值
-- 枚举成员的分为 const member 和 computer member
+- 枚举成员分为 const member 和 computer member
 
-* 常量成员（const member），包括没有初始值的情况、对已有枚举成员的引用、常量表达式，会在编译的时候计算出结果，以常量的形式出现在运行时环境
-* 计算成员（computer member），需要被计算的枚举成员，不会在编译阶段进行计算，会被保留到程序的执行阶段
+  - 常量成员（const member），包括没有初始值的情况、对已有枚举成员的引用、常量表达式。会在编译的时候计算出结果，以常量的形式出现在运行时环境
+  - 计算成员（computer member），需要被计算的枚举成员，不会在编译阶段进行计算，会被保留到程序的执行阶段
 
 - 在 computed member 后面的枚举成员，一定要赋一个初始值，否则报错
 - 含字符串成员的枚举中不允许使用计算值（computer member），并且在字符串枚举成员后面的枚举成员必须赋一个初始值，否则会报错（见上面的异构类型）
@@ -378,12 +270,16 @@ console.log(E, E.a, E.b, e3, e4) // 打印：{0: "a", 1: "b", a: 0, b: 1} 0 1 3 
 //字符串枚举类型的赋值，只能用枚举成员，不能随意赋值。
 let g1: G = 'abc' // 会报错
 let g2: G = G.a // g2能赋值G.a或者G.b
-let g3: G.a = G.a // g2 只能赋值G.a
+let g3: G.a = g2 // g2 只能赋值G.a
 ```
 
-## 函数类型相关
+### 注意
 
-### 定义 TS 函数的四种方式，第一种方式可以直接调用，但是后三种就需要先实现定义的函数再调用
+**常量命名、结构顺序都一致的两个枚举，即便转译为 JavaScript 后，同名成员的值仍然一样（满足恒等 ===）。但是在 TypeScript 看来，他们不相同、不满足恒等。不仅仅是数字类型枚举，所有其他类型枚举都仅和自身兼容，这就消除了由于枚举不稳定可能造成的风险，所以这是一种极其安全的设计。不过，也是因为不同枚举之间完全不兼容，可能使得枚举变得不那么好用，而两个结构完全一样的枚举类型如果互相兼容，则更符合我们的预期，此时我们可能不得不适用类型断言（as）或者重构代码将“相同”的枚举类型抽离为同一个公共的枚举（推荐后者）**
+
+## 函数类型
+
+#### 定义 TS 函数的四种方式，第一种方式可以直接调用，但是后三种就需要先实现定义的函数再调用
 
 ```typescript
 // 第一种，直接声明
@@ -418,7 +314,7 @@ add4(4, 2)
 
 可选参数必须位于必选参数之后，即可选参数后面不能再有必选参数。
 
-可选参数，即可缺省的参数，它最后推断出来的是原类型跟 undefined 类型的联合类型，但是跟直接注解一个 undefined 的联合类型有本质区别，后者不能不传参，即使是 undefined，也需要传如 undefined。
+可选参数，即可缺省的参数，它最后推断出来的是原类型跟 undefined 类型的联合类型，但是跟直接注解一个 undefined 的联合类型有本质区别，后者不能不传参，即使是 undefined，也需要传入 undefined。
 
 ```typescript
 // y后面不能再有必选参数，所以d会报错
@@ -592,7 +488,7 @@ husky.info() // 如果调用的类的方法中有对类的私有属性和受保�
 console.log(Husky.food) // 'bones' 子类可以调用父类的静态属性
 ```
 
-**注意：TypeScript 中定义类的私有属性仅仅代表静态类型检测层面的私有。如果强制忽略 TypeScript 类型的检查错误，转译且运行 JavaScript 时依旧可以取到 lastName 属性，这是因为 JavaScript 并不支持真正意义上的私有属性。目前，JavaScript 类支持 private 修饰符的提案已经到 stage3 了。**
+**注意：TypeScript 中定义类的私有属性仅仅代表静态类型检测层面的私有。如果强制忽略 TypeScript 类型的检查错误，转译且运行 JavaScript 时依旧可以取到 nickname 属性，这是因为 JavaScript 并不支持真正意义上的私有属性。目前，JavaScript 类支持 private 修饰符的提案已经到 stage3 了。**
 
 ### 抽象类
 
@@ -890,7 +786,7 @@ type AgeType = programLanguageName['name']
 
 - Type: 类型别名可以声明基本类型、联合类型、交叉类型、元组等类型。
 - Type: 类型别名可以使用 typeof 获取实例的类型进行赋值
-- Type: 类型别名可以在索引签名里使用 in，即一个索引签名可以通过映射类型来是索引字符串为联合类型中的一员
+- Type: 类型别名可以在索引签名里使用 in，即一个索引签名可以通过映射类型来使索引字符串为联合类型中的一员
 
 ```ts
 type Index = 'a' | 'b' | 'c'
@@ -909,7 +805,7 @@ let example: FromIndex = { a: 1 }
 
 ### 泛型函数
 
-**注意：用泛型定义函数类型时的位置不用，决定是否需要指定参数类型，见下面例子。**
+**注意：用泛型定义函数类型时的位置不同，决定是否需要指定参数类型，见下面例子。**
 
 泛型函数例子
 

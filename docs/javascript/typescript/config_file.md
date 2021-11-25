@@ -214,14 +214,16 @@ react：会生成 `React.createElement`（`React` 标识符是写死的硬编码
 
 react-native 模式相当于 preserve 它也保留了所有的 JSX，但是输出文件的扩展名是 `.js`
 
-react-jsx：改为 \_\_jsx 调用，输出文件的扩展名是 `.js`
+react-jsx：改为 `__jsx` 调用，输出文件的扩展名是 `.js`
 
-react-jsxdev：改为 \_\_jsxDEV 调用，输出文件的扩展名是 `.js`
+react-jsxdev：改为 `__jsxDEV` 调用，输出文件的扩展名是 `.js`
 
 ### module
 
 - 只有 `"AMD"` 和 `"System"` 能和 --outFile 一起使用。
 - `"ES6"` 和 `ES2015` 可使用在 `target` 为 `"ES5"` 或更低的情况下
+
+参考 [Typescript confusion: tsconfig.json module, moduleResolution, target & lib explained](https://medium.com/@tommedema/typescript-confusion-tsconfig-json-module-moduleresolution-target-lib-explained-65db2c44b491)
 
 ### lib
 

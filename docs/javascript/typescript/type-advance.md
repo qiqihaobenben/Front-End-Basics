@@ -1,5 +1,111 @@
 # TypeScript 高级类型
 
+## void、undefined 、null 类型
+
+void 类型，它仅适用于表示没有返回值的函数，即如果该函数没有返回值，那它的类型就是 void。在 strict 模式下，声明一个 void 类型的变量几乎没有任何实际用处，因为我们**不能把 void 类型的变量值再赋值给除了 any 和 unknown 之外的任何类型变量**。
+
+变量可以被声明为 undefined 和 null ，但是一旦被声明，就不能再赋值其他类型，所以单纯声明 undefined 或者 null 类型的变量是很鸡肋的。
+
+undefined 的最大价值主要体现在接口类型上，它表示一个可缺省、未定义的属性。
+
+null 的价值可能主要体现在接口制定上，它表明对象或属性可能是空值。
+
+```typescript
+let un: undefined = undefined
+let nu: null = null
+un = 1 // 会报错
+nu = 1 // 会报错
+```
+
+undefined 和 null 是任何类型的子类型，那就可以赋值给其他类型。但是需要设置配置项 "strictNullChecks": false。并且这里还有个设计是：可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量，反过来，类型是 void 但值是 undefined 的变量不能赋值给 undefined 类型。
+
+```typescript
+// 设置 "strictNullChecks": false
+let num: number = 123
+num = undefined
+num = null
+
+// 但是更建议将 num 设置为联合类型
+let num: number | undefined | null = 123
+num = undefined
+num = null
+```
+
+undefined 和 null 类型还具备警示意义，它们可以提醒我们针对可能操作这两种（类型）值的情况做容错处理。比如我们需要类型守卫（Type Guard）在操作之前判断值的类型是否支持当前操作。类型守卫既能通过类型缩小影响 TypeScript 的类型检测，也能保障 JavaScript 运行时的安全性。
+
+```ts
+const userInfo: { id?: number; name?: null | string } = { id: 1, name: 'tom' }
+// Type Guard
+if (userInfo.id !== undefined) {
+  userInfo.id.toFixed() // id 的类型缩小成 number
+}
+```
+
+不建议随意使用非空断言来排除值可能为 null 或 undefined 的情况，因为这样很不安全。而比非空断言更安全，比类型守卫更方便的做法是使用单问号（Optional Chain）、双问号（空值合并）来保障代码的安全性。
+
+```ts
+const userInfo: { id?: number; name?: null | string } = {}
+
+userInfo.id!.toFixed() // 非空断言，静态检查ok，但不建议，可能会报错
+userInfo.id?.toFixed() // Optional Chain
+const myName = userInfo.name ?? 'jerry' // 空值合并
+```
+
+**严格模式下，null 和 undefined 表现出与 void 类似的兼容性，不能赋值给除 any 和 unknown 之外的其他类型，反过来，除了 any 和 never 之外，其他类型都不可以赋值给 null 或 undefined。**
+
+## any、never、unknown 类型
+
+### any
+
+any 类型可以赋值给除了 never 之外的任意其他类型，反过来其他类型也可以赋值给 any。
+
+any 可以兼容除 never 以外所有的类型，同时也可以被所有的类型兼容（即 any 既是 bottom type，也是 top type），再次强调 Any is 魔鬼，一定要慎用、少用
+
+### unknown
+
+unknown 主要用来描述类型不确定的变量。
+
+例如在多个判断条件分支场景下，它可以用来接收不同条件下类型各异的返回值的临时变量，在 3.0 之前的版本中，只有使用 any 才能满足这种动态类型场景。
+
+与 any 不同的是，unknown 在类型上更安全。比如我们可以将任意类型的值赋值给 unknown，但是 unknown 类型的值只能赋值给 unknown 或 any。
+
+不能把 unknown 赋值给除了 any 之外任何其他类型，反过来其他类型都可以赋值给 unknown（即 unknown 是 top type）
+
+使用 unknown 后，TypeScript 会对它做类型检测，所有的类型缩小手段对 unknown 都有效，但是如果不缩小类型（Type Narrowing），我们对 unknown 执行的任何操作都会出现 ts(2571) 错误。
+
+```ts
+let result: unknown
+result.toFixed() // 报错提示 ts(2571)
+```
+
+```ts
+let result: unknown
+if (typeof result === 'number') {
+  result.toFixed() // 不报错
+}
+```
+
+### never 类型
+
+never 表示永远不会发生值的类型，例如抛出错误的函数的返回值类型就是 never，函数代码中时一个死循环，那么这个函数的返回值类型也是 never。
+
+**never 是所有类型的子类型**，它可以赋值给所有类型，但是反过来，除了 never 自身外，其他类型（包括 any 在内的类型）都不能赋值给 never 类型。（即 never 是 bottom type）
+
+在恒为 false 的类型守卫条件判断下，变量的类型将缩小为 never（never 是所有其他类型的子类型，所以是类型缩小为 never，而不是变成 never）
+
+基于 never 的特征，我们可以使用 never 实现一些有意思的功能，比如可以把 never 作为接口类型下的属性类型，用来禁止写入接口下特定的属性。
+
+```ts
+const props: { id: number; name?: never } = { id: 1 }
+props.name = 'tom' // 会报错，name 变为只读属性
+
+let n: never = (() => {
+  throw Error('never')
+})()
+let a: number = n // ok
+let c: {} = n // ok
+```
+
 ## 联合类型（Unions）
 
 联合类型用来表示变量、参数的类型不是单一原子类型，而可能是多种不同的类型的组合。

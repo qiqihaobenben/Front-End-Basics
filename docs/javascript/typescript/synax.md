@@ -6,7 +6,7 @@
 
 作用：相当于强类型语言中的类型声明
 
-语法：`(变量/函数): type`，这种语法也叫做类型后置语法
+语法：`(变量/函数): type`，这种语法也叫做**类型后置语法**
 
 ```ts
 let str: string = 'abc'
@@ -22,11 +22,11 @@ let count: number | string = 10
 
 ### 枚举
 
-一组有名字的常量集合，可以类比手机里的通讯录。、
+一组有名字的常量集合，可以类比手机里的通讯录。
 
 ### 泛型
 
-不预先确定的数据类型，具体的类型在使用的时候才能确定。泛型变量可以类比函数参数，是代表类型的参数。
+不预先确定的数据类型，具体的类型在使用的时候才能确定。即**类型参数化**，泛型变量可以类比函数参数，是代表类型的参数。
 
 ## 语法
 
@@ -38,7 +38,7 @@ let count: number | string = 10
 - undefined
 - null
 - Symbol
-- Function
+- BigInt
 - Object
 
 ### TS 的数据类型
@@ -65,7 +65,7 @@ let count: number | string = 10
 ```ts
 /*******原始值*******/
 const isDone: boolean = false
-// 可以使用 number 类型表示 JavaScript 已经支持或者即将支持的十进制证书、浮点数，以及二进制数、八进制数、十六进制数
+// 可以使用 number 类型表示 JavaScript 已经支持或者即将支持的十进制整数、浮点数，以及二进制数、八进制数、十六进制数
 const amount: number = 6
 const integer: number = Number(2)
 const binary: number = 0b1010 // 二进制整数
@@ -135,7 +135,7 @@ function where(l: Coords) {
 }
 
 const a = { x: 100 }
-const b = { x: 100, y1: 'abc' }
+const b = { x: 100, z: 'abc' }
 // a 拥有 number 类型的 x，可以传递给 where
 where(a)
 // b 拥有 number 类型的 x 和 string 类型的 y1，可以传递给 where
@@ -145,7 +145,7 @@ where(b)
 // 区别在于这里传递的是一个对象字面量
 // 对象字面量会被特殊对待并经过额外的属性检查
 // 如果对象字面量中存在目标类型中未声明的属性，则抛出错误
-where({ x: 100, y1: 'abc' })
+where({ x: 100, z: 'abc' })
 
 // 最好的解决方式是为接口添加索引签名
 // 添加如下所示的索引签名后，对象字面量可以有任意数量的属性
@@ -206,7 +206,7 @@ let analog = createClock(AnalogClock, 7, 32)
 
 #### 除了 ES6 增加的 Class 用法，TypeScript 还增加了 C++、Java 中常见的 public / protected / private 限定符，限定变量或函数的使用范围。
 
-TypeScript 使用的是结构性类型系统，只要两种类型的成员类型相同，则认为这两种类型是兼容和一致的，但比较包含 private 和 protected 成员的类型时，只有他们是来自同一处的统一类型成员时才会被认为是兼容的
+**TypeScript 使用的是结构性类型系统，只要两种类型的成员类型相同，则认为这两种类型是兼容和一致的，但比较包含 private 和 protected 成员的类型时，只有他们是来自同一处的统一类型成员时才会被认为是兼容的**
 
 ```ts
 class Animal {
