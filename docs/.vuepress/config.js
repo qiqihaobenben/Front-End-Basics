@@ -81,6 +81,7 @@ module.exports = {
             'typescript/synax',
             'typescript/type-attention',
             'typescript/type-advance',
+            'typescript/type-extend',
             'typescript/type-check',
           ]
         },
