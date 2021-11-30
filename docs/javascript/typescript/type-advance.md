@@ -108,6 +108,10 @@ let a: number = n // ok
 let c: {} = n // ok
 ```
 
+### 推荐阅读
+
+- [TypeScript 中的 never 类型](https://juejin.cn/post/7034133130433232903)
+
 ## 联合类型（Unions）
 
 联合类型用来表示变量、参数的类型不是单一原子类型，而可能是多种不同的类型的组合。
@@ -606,3 +610,7 @@ type ReturnType<T extends (...args: any) => any> = T extends (
 ```typescript
 type T7 = ReturnType<() => string> //即：type T7 = string
 ```
+
+## 推荐阅读
+
+- [TypeScript 的另一面：类型编程](https://juejin.cn/post/7000360236372459527)
