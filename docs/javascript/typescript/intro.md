@@ -93,7 +93,7 @@ TypeScript 同样支持最新的 ECMAScript 标准，并能将代码根据需求
 
 TypeScript 选择改进 JavaScript，而不是取代它。学习 TypeScript 语法并不会增加额外成本。
 
-#### 3、采用 Structural Typing 而不是 Nominal Typing
+#### 3、采用 Structural Typing（结构类型） 而不是 Nominal Typing（名义类型）
 
 面向对象语言，一般会使用 Nominal Typin（名义类型），如 C++、Java、Swift，而函数式语言更习惯使用 Structural Typing（结构类型），如 OCaml、Haskell、Elm。在 JavaScript 中既可以使用面向对象，又可以使用函数式，但是开发者更倾向于使用函数式编程。TypeScript 选择使用结构类型，更符合 JavaScript 开发者的编程习惯。
 
@@ -160,3 +160,4 @@ TypeScript 不只是静态类型的 JavaScript，提高生产力才是 TypeScrip
 - [为什么要在 javascript 中进行静态类型检查-静态类型的优点和缺点](https://www.jianshu.com/p/289b3c734a9f)
 - [TypeScript 被吹过头了？](https://www.infoq.cn/article/hONCcNMIDZiVqzpxIK17)
 - [未来可期的 TypeScript](https://mp.weixin.qq.com/s/a-k0HPU5pXzTvmByA8aS-g)
+- [TypeScript 体系调研报告](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ%3D%3D&mid=2651227148&idx=1&sn=36296746efb0cced763fdadcf6c45700#wechat_redirect)

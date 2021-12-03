@@ -197,7 +197,7 @@ interface Person {
 }
 ```
 
-对于函数成员而言，每个同名的函数声明都会被当做这个函数的重载。**需要注意的是后面声明的接口具有更高的优先级**
+对于函数成员而言，每个同名的函数声明都会被当做这个函数的重载。**需要注意的是：接口内部的函数声明优先级按照顺序确定，接口之间的函数声明后面声明的接口具有更高的优先级，如果函数声明指定的参数是字面量类型，优先级最高**
 
 ```ts
 interface Obj {
@@ -229,7 +229,7 @@ const t3 = obj.identity('a') // => any
 
 #### 合并 namespace
 
-合并 namespace 与合并接口类似，命名空间的合并也会合并其导出成员的属性。不同的是，非导出成员仅在原命名空间内可见。
+合并 namespace 与合并接口类似，命名空间的合并也会合并其**导出成员的属性**，需要注意的是导出的成员是不能重复的。另外不同的是，非导出成员仅在原命名空间内可见。
 
 ```ts
 namespace Person {
@@ -246,6 +246,19 @@ namespace Person {
 ```
 
 在上面的例子，同名的命名空间 Person 中，有一个非导出的属性 age，在第二个命名空间 Person 中没有 age 属性却引用了 age，所以 TypeScript 报错找不到 age。
+
+#### 合并 namespace 和 函数
+
+同名的 namespace 和 函数 合并，命名空间中导出的成员相当于给 函数 添加属性。
+
+```ts
+function Lib() {}
+namespace Lib {
+  export let version = '1.0'
+}
+
+console.log(Lib.version)
+```
 
 #### 类不可合并
 

@@ -223,8 +223,6 @@ react-jsxdev：改为 `__jsxDEV` 调用，输出文件的扩展名是 `.js`
 - 只有 `"AMD"` 和 `"System"` 能和 --outFile 一起使用。
 - `"ES6"` 和 `ES2015` 可使用在 `target` 为 `"ES5"` 或更低的情况下
 
-参考 [Typescript confusion: tsconfig.json module, moduleResolution, target & lib explained](https://medium.com/@tommedema/typescript-confusion-tsconfig-json-module-moduleresolution-target-lib-explained-65db2c44b491)
-
 ### lib
 
 安装 TypeScript 时会顺带安装一个 `lib.d.ts` 的声明文件，并且默认包含了 ES5、DOM、WebWorker、ScriptHost 的库定义。
@@ -263,7 +261,14 @@ yarn add typescript@3.9.10
 
 ## 推荐阅读
 
+### 配置文件
+
 - [了不起的 tsconfig.json 指南](https://mp.weixin.qq.com/s?__biz=MjM5MDc4MzgxNA==&mid=2458455122&idx=1&sn=9f3431a2bbac6cd1d671f4aa90a934de&chksm=b1c22c7b86b5a56d65e61bab63b7a1d83e2b4689a6cb731160f52743ded5a83bedf032398f4a&scene=21)
 - [Typescript 配置文件详解](https://blog.cjw.design/blog/old/typescript)
 - [tsconfig.json](https://www.tslang.cn/docs/handbook/tsconfig-json.html)
 - [编译选项](https://www.tslang.cn/docs/handbook/compiler-options.html)
+
+### target、module
+
+- [Typescript 4.5 —— 浅谈模块能力增强](https://zhuanlan.zhihu.com/p/425740447)
+- [Typescript confusion: tsconfig.json module, moduleResolution, target & lib explained](https://medium.com/@tommedema/typescript-confusion-tsconfig-json-module-moduleresolution-target-lib-explained-65db2c44b491)
