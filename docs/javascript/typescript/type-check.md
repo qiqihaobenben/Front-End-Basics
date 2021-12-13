@@ -648,3 +648,8 @@ function getLanguage(type: Type, x: string | number) {
 - instanceof：判断一个实例是否属于某个类
 - in：判断一个属性是否属于某个对象
 - 类型保护函数：某些判断可能不是一条语句能够搞定的，需要更多复杂的逻辑，适合封装到一个函数内
+
+## 推荐阅读
+
+- [浅谈 Typescript（三）：两个空间的交流](https://zhuanlan.zhihu.com/p/401138248)
+- [TypeScript 类型中的逆变协变](https://mp.weixin.qq.com/s/rqs1SS63niHqI-gxBWXXdA)

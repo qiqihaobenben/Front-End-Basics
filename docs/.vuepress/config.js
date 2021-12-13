@@ -219,6 +219,13 @@ module.exports = {
             'insight/re-decision',
           ]
         },
+        {
+          title: '职业',
+          collapsable: false,
+          children: [
+            'profession/plan-2022',
+          ]
+        },
       ],
       /** 捡贝壳 */
       '/article/': [
