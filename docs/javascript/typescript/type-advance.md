@@ -19,7 +19,7 @@ un = 1 // 会报错
 nu = 1 // 会报错
 ```
 
-undefined 和 null 是任何类型的子类型，那就可以赋值给其他类型。但是需要设置配置项 "strictNullChecks": false。并且这里还有个设计是：可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量，反过来，类型是 void 但值是 undefined 的变量不能赋值给 undefined 类型。
+undefined 和 null 是任何类型的子类型，那就可以赋值给其他类型。但是需要设置配置项 "strictNullChecks": false。并且这里还有个设计是：**可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量，反过来，类型是 void 但值是 undefined 的变量不能赋值给 undefined 类型。**
 
 ```typescript
 // 设置 "strictNullChecks": false
@@ -43,7 +43,7 @@ if (userInfo.id !== undefined) {
 }
 ```
 
-不建议随意使用非空断言来排除值可能为 null 或 undefined 的情况，因为这样很不安全。而比非空断言更安全，比类型守卫更方便的做法是使用单问号（Optional Chain）、双问号（空值合并）来保障代码的安全性。
+不建议随意使用非空断言来排除值可能为 null 或 undefined 的情况，因为这样很不安全。而比非空断言更安全，比类型守卫更方便的做法是使用单问号点（Optional Chain）、双问号（空值合并）来保障代码的安全性。
 
 ```ts
 const userInfo: { id?: number; name?: null | string } = {}
@@ -53,7 +53,7 @@ userInfo.id?.toFixed() // Optional Chain
 const myName = userInfo.name ?? 'jerry' // 空值合并
 ```
 
-**严格模式下，null 和 undefined 表现出与 void 类似的兼容性，不能赋值给除 any 和 unknown 之外的其他类型，反过来，除了 any 和 never 之外，其他类型都不可以赋值给 null 或 undefined。**
+**严格模式下，null 和 undefined 表现出与 void 类似的兼容性，不能赋值给除 any 和 unknown 之外的其他类型，反过来，除了 any 和 never 之外，其他类型都不可以赋值给 null 或 undefined。（实际验证发现，可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量）**
 
 ## any、never、unknown 类型
 
@@ -559,7 +559,29 @@ type T3 = TypeName<string | string[]> // 得到的类型即：type T3 = "string"
 
 **注意：在非泛型条件中，联合类型会被当作一个整体对待，可以解除类型分配，另外通过某些手段强制类型入参被当成一个整体，也可以解除类型分配，例如使用 `[]`**
 
+```ts
+type StringOrNumberArray<T, U> = [T] extends [U] ? T[] : T
+type result = StringOrNumberArray<string | boolean, string | number> // string | boolean
+// 使用 [] 将入参 T 包起来，即便入参是联合类型 string | boolean，也会被当成一个整体对待，所以返回的是 string | boolean。
+```
+
 **还要注意，包含条件类型的泛型接收 never 作为泛型入参时，存在一定“陷阱”，第一，是因为 never 类型是所有类型的子类型，在 extends 判断语句中，始终是真值；第二，是因为 never 是不能分配的底层类型，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实例化得到的类型也是 never。**
+
+```ts
+// never 在 extends 判断语句中始终为 true
+type GetNumber = never extends number
+  ? number[]
+  : never extends string
+  ? string[]
+  : never // number[]
+
+// never 作为泛型的原子出现在extends左侧，不管怎么判断都会得到 never
+type getNever<T> = T extends {} ? T : T[]
+type getNever1<T> = T extends {} ? T[] : T
+
+type result = getNever<never> // never
+type result1 = getNever1<never> // never
+```
 
 用法一：利用分布式条件类型可以实现 Diff 操作
 

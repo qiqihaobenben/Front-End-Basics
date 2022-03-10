@@ -6,11 +6,11 @@
 
 ### 类型推断
 
-**类型推断: 指的是不需要指定变量的类型（函数的返回值类型），TypeScript 可以根据某些规则自动地为其推断出一个类型**
+**类型推断: 指的是不需要指定变量的类型（包括函数的返回值类型），TypeScript 可以根据某些规则自动地为其推断出一个类型**
 
 #### 基础类型推断
 
-具有初始化值的变量，有默认值的函数参数、函数返回的类型都可以推断出来。
+具有初始化值的变量，或者有默认值的函数参数、函数返回的类型等都可以推断出来。
 
 ```typescript
 let a = 1 // 推断为 number
@@ -224,6 +224,8 @@ let foo1: Bar = {
 
 另外还有一种特殊非空断言，即在值（变量、属性）的后边添加 `!` 断言操作符，它可以用来排除值为 null、undefined 的情况。对于非空断言，应该把它视作和 any 一样危险的选择，所以建议用类型守卫来代替非空断言。
 
+#### [TypeScript 中的类型控制流分析演进（包含类型守卫，类型拓宽和缩小）](https://zhuanlan.zhihu.com/p/461842201)
+
 ### 类型兼容
 
 **当一个类型 Y 可以被赋值给另一个类型 X 时，我们就可以说类型 X 兼容类型 Y**
@@ -343,6 +345,11 @@ let p2d = (point: Point2D) => {}
 p3d = p2d // 兼容
 p2d = p3d // 不兼容
 ```
+
+###### 函数类型
+
+- [TypeScript 类型中的逆变协变](https://mp.weixin.qq.com/s/rqs1SS63niHqI-gxBWXXdA)
+- [TypeScript 中的协变与逆变](https://zhuanlan.zhihu.com/p/454202284)
 
 ##### 3、返回值类型
 
@@ -652,4 +659,3 @@ function getLanguage(type: Type, x: string | number) {
 ## 推荐阅读
 
 - [浅谈 Typescript（三）：两个空间的交流](https://zhuanlan.zhihu.com/p/401138248)
-- [TypeScript 类型中的逆变协变](https://mp.weixin.qq.com/s/rqs1SS63niHqI-gxBWXXdA)
