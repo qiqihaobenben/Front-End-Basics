@@ -15,19 +15,17 @@ null 的价值可能主要体现在接口制定上，它表明对象或属性可
 ```typescript
 let un: undefined = undefined
 let nu: null = null
-un = 1 // 会报错
-nu = 1 // 会报错
+un = 1
+nu = 1
 ```
 
 undefined 和 null 是任何类型的子类型，那就可以赋值给其他类型。但是需要设置配置项 "strictNullChecks": false。并且这里还有个设计是：**可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量，反过来，类型是 void 但值是 undefined 的变量不能赋值给 undefined 类型。**
 
 ```typescript
-// 设置 "strictNullChecks": false
 let num: number = 123
 num = undefined
 num = null
 
-// 但是更建议将 num 设置为联合类型
 let num: number | undefined | null = 123
 num = undefined
 num = null
@@ -37,7 +35,6 @@ undefined 和 null 类型还具备警示意义，它们可以提醒我们针对�
 
 ```ts
 const userInfo: { id?: number; name?: null | string } = { id: 1, name: 'tom' }
-// Type Guard
 if (userInfo.id !== undefined) {
   userInfo.id.toFixed() // id 的类型缩小成 number
 }
@@ -48,9 +45,9 @@ if (userInfo.id !== undefined) {
 ```ts
 const userInfo: { id?: number; name?: null | string } = {}
 
-userInfo.id!.toFixed() // 非空断言，静态检查ok，但不建议，可能会报错
-userInfo.id?.toFixed() // Optional Chain
-const myName = userInfo.name ?? 'jerry' // 空值合并
+userInfo.id!.toFixed()
+userInfo.id?.toFixed()
+const myName = userInfo.name ?? 'jerry'
 ```
 
 **严格模式下，null 和 undefined 表现出与 void 类似的兼容性，不能赋值给除 any 和 unknown 之外的其他类型，反过来，除了 any 和 never 之外，其他类型都不可以赋值给 null 或 undefined。（实际验证发现，可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量）**
@@ -71,13 +68,13 @@ unknown 主要用来描述类型不确定的变量。
 
 与 any 不同的是，unknown 在类型上更安全。比如我们可以将任意类型的值赋值给 unknown，但是 unknown 类型的值只能赋值给 unknown 或 any。
 
-不能把 unknown 赋值给除了 any 之外任何其他类型，反过来其他类型都可以赋值给 unknown（即 unknown 是 top type）
+不能把 unknown 赋值给除了 any 和它自身之外任何其他类型，反过来其他类型都可以赋值给 unknown（即 unknown 是 top type）
 
 使用 unknown 后，TypeScript 会对它做类型检测，所有的类型缩小手段对 unknown 都有效，但是如果不缩小类型（Type Narrowing），我们对 unknown 执行的任何操作都会出现 ts(2571) 错误。
 
 ```ts
 let result: unknown
-result.toFixed() // 报错提示 ts(2571)
+result.toFixed()
 ```
 
 ```ts
@@ -89,7 +86,7 @@ if (typeof result === 'number') {
 
 ### never 类型
 
-never 表示永远不会发生值的类型，例如抛出错误的函数的返回值类型就是 never，函数代码中时一个死循环，那么这个函数的返回值类型也是 never。
+never 表示永远不会发生值的类型，例如抛出错误的函数的返回值类型就是 never，函数代码中是一个死循环，那么这个函数的返回值类型也是 never。
 
 **never 是所有类型的子类型**，它可以赋值给所有类型，但是反过来，除了 never 自身外，其他类型（包括 any 在内的类型）都不能赋值给 never 类型。（即 never 是 bottom type）
 
@@ -99,13 +96,13 @@ never 表示永远不会发生值的类型，例如抛出错误的函数的返�
 
 ```ts
 const props: { id: number; name?: never } = { id: 1 }
-props.name = 'tom' // 会报错，name 变为只读属性
+props.name = 'tom'
 
 let n: never = (() => {
   throw Error('never')
 })()
-let a: number = n // ok
-let c: {} = n // ok
+let a: number = n
+let c: {} = n
 ```
 
 ### 推荐阅读
@@ -121,10 +118,8 @@ let c: {} = n // ok
 ```typescript
 let a: number | string = 1
 
-// 字符串字面量联合类型
 let b: 'a' | 'b' | 'c' = 'a'
 
-// 数字字面量联合类型
 let c: 1 | 2 | 3 = 1
 ```
 
@@ -155,16 +150,8 @@ enum Master {
   Girl,
 }
 function getPet(master: Master) {
-  // pet为Dog和Cat的联合类型，只能取两者共有的属性，所以说联合类型在此时只能访问所有类型的交集
   let pet = master === Master.Boy ? new Dog() : new Cat()
   pet.eat()
-  // pet.run() // 不能访问，会报错
-  // if(typeof pet.run === 'function') { // 报错 类型“Dog | Cat”上不存在属性“run”。
-  //   pet.run()
-  // }
-  /**
-   * 只能使用 in
-   */
   if ('run' in pet) {
     pet.run()
   }
@@ -198,7 +185,6 @@ interface Circle {
 }
 type Shape = Square | Rectangle | Circle
 
-// 下面的函数如果只有Square和Rectangle这两种联合类型，没有问题，但是一旦扩展增加Circle类型，不会正常运行，而且也不报错，这个时候我们是希望代码有报错提醒的。
 function area(s: Shape) {
   switch (s.kind) {
     case 'square':
@@ -211,7 +197,6 @@ function area(s: Shape) {
 }
 
 console.log(area({ kind: 'circle', r: 1 }))
-// undefined，不报错，这个时候我们是希望代码有报错提醒的
 ```
 
 如果想要得到正确的报错提醒，第一种方法是设置明确的返回值,第二种方法是利用 never 类型.
@@ -219,7 +204,6 @@ console.log(area({ kind: 'circle', r: 1 }))
 > 第一种方法是设置明确的返回值
 
 ```typescript
-// 会报错：函数缺少结束返回语句，返回类型不包括 "undefined"
 function area(s: Shape): number {
   switch (s.kind) {
     case 'square':
@@ -260,14 +244,14 @@ function area(s: Shape) {
 将 `string` 原始类型和“string 字面量”类型组合成联合类型，效果就是类型缩减成 `string` 原始类型，同样，对于 number、boolean、枚举也是一样的缩减逻辑。
 
 ```ts
-type URStr = 'abc' | string // 类型是 string
-type URNum = 2 | number // 类型是 number
-type URBoolen = true | boolean // 类型是 boolean
+type URStr = 'abc' | string
+type URNum = 2 | number
+type URBoolen = true | boolean
 enum EnumUR {
   ONE,
   TWO,
 }
-type URE = EnumUR.ONE | EnumUR // 类型是 EnumUR
+type URE = EnumUR.ONE | EnumUR
 ```
 
 TypeScript 对这样的场景做了缩减，它把字面量类型、枚举成员类型缩减掉，只保留原始类型、枚举类型等父类型，这是合理的“优化”
@@ -275,11 +259,8 @@ TypeScript 对这样的场景做了缩减，它把字面量类型、枚举成员
 可是这个缩减，会极大地削弱 IDE 自动提示的能力，所以 TypeScript 官方其实还提供了一个黑魔法，它可以让类型缩减被控制，只需要给父类型添加 `& {}` 即可。
 
 ```ts
-type BorderColor = 'black' | 'red' | 'green' | 'yello' | 'blue' | string // 类型缩减成 string
-/**
- * 下面的类型为 "black" | "red" | "green" | "yello" | "blue" | (string & {})，字面量类型全保留了，所以 IDE 提示还会生效
- */
-type BorderColor = 'black' | 'red' | 'green' | 'yello' | 'blue' | (string & {}) // 字面量类型全都保留了
+type BorderColor = 'black' | 'red' | 'green' | 'yello' | 'blue' | string
+type BorderColor = 'black' | 'red' | 'green' | 'yello' | 'blue' | (string & {})
 ```
 
 #### 问题：如何定义一个接口中，某个属性为 number 类型，其他字符串索引返回值的类型为 string 类型？
@@ -316,7 +297,7 @@ TypeScript 的工具类型，作用是从联合类型中去除指定的类型。
 
 ```ts
 type Exclude<T, U> = T extends U ? never : T
-type ExcludeStr = Exclude<'a' | 'b' | 'c', 'b'> // 类型为 'a' | 'c'
+type ExcludeStr = Exclude<'a' | 'b' | 'c', 'b'>
 ```
 
 #### Extract
@@ -325,7 +306,7 @@ type ExcludeStr = Exclude<'a' | 'b' | 'c', 'b'> // 类型为 'a' | 'c'
 
 ```ts
 type Extract<T, U> = T extends U ? U : never
-type ExtractStr = Extract<'a' | 'b' | 'c', 'b'> // 类型为 'b'
+type ExtractStr = Extract<'a' | 'b' | 'c', 'b'>
 ```
 
 #### NonNullable
@@ -334,10 +315,9 @@ NonNullable 作用是从联合类型中去除 null 或者 undefined 的类型。
 
 ```ts
 type NonNullable<T> = T extends null | undefined ? never : T
-// 等同于使用 Exclude
 type NonNullable<T> = Exclude<T, null | undefined>
 type AllType = string | number | null | undefined
-type BasicType = NonNullable<AllType> // 类型为 string | number
+type BasicType = NonNullable<AllType>
 ```
 
 #### Record
@@ -381,7 +361,6 @@ interface CatInterface {
   jump(): void
 }
 
-// 交叉类型 用 & 符号。虽然叫交叉类型，但是是取的所有类型的并集。
 let pet: DogInterface & CatInterface = {
   run() {},
   jump() {},
@@ -399,7 +378,7 @@ let pet: DogInterface & CatInterface = {
 ```ts
 type UnionA = 'px' | 'em' | 'rem' | '%'
 type UnionB = 'vh' | 'em' | 'rem' | 'pt'
-type IntersectionUnion = UnionA & UnionB // 类型为 "em" | "rem"
+type IntersectionUnion = UnionA & UnionB
 ```
 
 ### 联合、交叉类型优先级
@@ -418,7 +397,6 @@ interface Obj {
   b: string
 }
 let key: keyof Obj
-// key的类型就是Obj的属性a和b的联合类型：let key: "a" | "b"
 ```
 
 ### 索引访问操作符
@@ -431,14 +409,13 @@ interface Obj {
   b: string
 }
 let value: Obj['a']
-// value的类型就是Obj的属性a的类型： let value: number
 ```
 
 ### 泛型约束
 
 `T extends U` 泛型变量可以继承某个类型获得某些属性
 
-先看如下代码片段存在的问题。
+先看如下代码片段存在的问题，第二个输出的结果是 `[undefined, undefined]`
 
 ```typescript
 let obj = {
@@ -447,14 +424,12 @@ let obj = {
   c: 3,
 }
 
-//如下函数如果访问obj中不存在的属性也是没有报错的。
 function getValues(obj: any, keys: string[]) {
   return keys.map((key) => obj[key])
 }
 
 console.log(getValues(obj, ['a', 'b']))
 console.log(getValues(obj, ['e', 'f']))
-// 会显示[undefined, undefined]，但是TS编译器并没有报错。
 ```
 
 解决如下
@@ -464,7 +439,6 @@ function getValuest<T, K extends keyof T>(obj: T, keys: K[]): T[K][] {
   return keys.map((key) => obj[key])
 }
 console.log(getValuest(obj, ['a', 'b']))
-// console.log(getValuest(obj, ['e', 'f'])) // 这样就会报错了
 ```
 
 ## 映射类型
@@ -482,23 +456,12 @@ interface Obj {
   c: boolean
 }
 
-// 以下三种类型称为同态，只会作用于Obj的属性，不会引入新的属性
-//把一个接口的所有属性变成只读
 type ReadonlyObj = Readonly<Obj>
-//把一个接口的所有属性变成可选
 type PartialObj = Partial<Obj>
-//可以抽取接口的子集
 type PickObj = Pick<Obj, 'a' | 'b'>
-// 去除指定的子集
 type OmitObj = Omit1<Obj, 'a' | 'b'>
 
-// 非同态 会创建新的属性
 type RecordObj = Record<'x' | 'y', Obj>
-// 创建一个新的类型并引入指定的新的类型为
-// {
-//     x: Obj;
-//     y: Obj;
-// }
 ```
 
 **注意：映射类型使用索引签名语法（即属性用 [] 括起来）和 in 关键字限定对象属性的范围，特别注意，只能在类型别名定义中使用 in 和 keyof，如果在接口中使用，则会提示一个 ts(1169) 的错误**
@@ -512,17 +475,12 @@ type sourceInterface = {
   id: number
   name?: string
 }
-// TypeScript 4.1 起生效
 type TargetGenericTypeAssertiony<S> = {
-  [K in keyof S as Exclude<K, 'id'>]: S[K]
+  [K in keyof S]: S[K]
 }
-// 等效于
-// type TargetGenericTypeAssertiony<S> = {
-//   [K in Exclude<keyof S, 'id'>]: S[K]
-// }
-
-type TargetGenericTypeAssertionyInstance =
-  TargetGenericTypeAssertiony<sourceInterface>
+type TargetGenericTypeAssertionyInstance = TargetGenericTypeAssertiony<
+  sourceInterface
+>
 ```
 
 ## 条件类型
@@ -542,8 +500,8 @@ type TypeName<T> = T extends string
   ? 'function'
   : 'object'
 
-type T1 = TypeName<string> // 得到的类型即： type T1 = "string"
-type T2 = TypeName<string[]> // 得到的类型即：type T2 = "object"
+type T1 = TypeName<string>
+type T2 = TypeName<string[]>
 ```
 
 ### 分布式条件类型
@@ -553,55 +511,46 @@ type T2 = TypeName<string[]> // 得到的类型即：type T2 = "object"
 `(A | B) extends U ? X : Y` 等价于 `(A extends U ? X : Y) | (B extends U ? X : Y)`
 
 ```typescript
-// 接上文
-type T3 = TypeName<string | string[]> // 得到的类型即：type T3 = "string" | "object"
+type T3 = TypeName<string | string[]>
 ```
 
 **注意：在非泛型条件中，联合类型会被当作一个整体对待，可以解除类型分配，另外通过某些手段强制类型入参被当成一个整体，也可以解除类型分配，例如使用 `[]`**
 
 ```ts
 type StringOrNumberArray<T, U> = [T] extends [U] ? T[] : T
-type result = StringOrNumberArray<string | boolean, string | number> // string | boolean
-// 使用 [] 将入参 T 包起来，即便入参是联合类型 string | boolean，也会被当成一个整体对待，所以返回的是 string | boolean。
+type result = StringOrNumberArray<string | boolean, string | number>
 ```
 
 **还要注意，包含条件类型的泛型接收 never 作为泛型入参时，存在一定“陷阱”，第一，是因为 never 类型是所有类型的子类型，在 extends 判断语句中，始终是真值；第二，是因为 never 是不能分配的底层类型，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实例化得到的类型也是 never。**
 
 ```ts
-// never 在 extends 判断语句中始终为 true
 type GetNumber = never extends number
   ? number[]
   : never extends string
   ? string[]
-  : never // number[]
+  : never
 
-// never 作为泛型的原子出现在extends左侧，不管怎么判断都会得到 never
 type getNever<T> = T extends {} ? T : T[]
 type getNever1<T> = T extends {} ? T[] : T
 
-type result = getNever<never> // never
-type result1 = getNever1<never> // never
+type result = getNever<never>
+type result1 = getNever1<never>
 ```
 
 用法一：利用分布式条件类型可以实现 Diff 操作
 
 ```typescript
 type Diff<T, U> = T extends U ? never : T
-type T4 = Diff<'a' | 'b' | 'c', 'a' | 'e'> // 即：type T4 = "b" | "c"
-// 拆分一下具体步骤
-// Diff<"a","a" | "e"> | Diff<"b","a" | "e"> | Diff<"c", "a" | "e">
-// 分布结果如下：never | "b" | "c"
-// 最终获得字面量的联合类型 "b" | "c"
-
-type NotDiff = str1 extends str2 ? never : str1 // 解除类型分配
-type NotDiff1<T, U> = [T] extends [U] ? never : T // 解除类型分配
+type T4 = Diff<'a' | 'b' | 'c', 'a' | 'e'>
+type NotDiff = str1 extends str2 ? never : str1
+type NotDiff1<T, U> = [T] extends [U] ? never : T
 ```
 
 用法二：在 Diff 的基础上实现过滤掉 null 和 undefined 的值。
 
 ```typescript
 type NotNull<T> = Diff<T, undefined | null>
-type T5 = NotNull<string | number | undefined | null> // 即：type T5 = string | number
+type T5 = NotNull<string | number | undefined | null>
 ```
 
 以上的类型别名在 TS 的类库中都有内置的工具类型
@@ -612,7 +561,7 @@ type T5 = NotNull<string | number | undefined | null> // 即：type T5 = string 
 此外，内置的还有很多工具类型，比如从类型 T 中抽取出可以赋值给 U 的类型 `Extract<T, U>`
 
 ```typescript
-type T6 = Extract<'a' | 'b' | 'c', 'a' | 'e'> // 即：type T6 = "a"
+type T6 = Extract<'a' | 'b' | 'c', 'a' | 'e'>
 ```
 
 比如： 用于提取函数类型的返回值类型 `ReturnType<T>`
@@ -630,7 +579,7 @@ type ReturnType<T extends (...args: any) => any> = T extends (
 分析一下上面的代码，首先要求传入 ReturnType 的 T 必须能赋值给一个最宽泛的函数，之后判断 T 能不能赋值给一个可以接受任意参数的返回值待推断为 R 的函数，如果可以，返回待推断返回值 R ，如果不可以，返回 any 。
 
 ```typescript
-type T7 = ReturnType<() => string> //即：type T7 = string
+type T7 = ReturnType<() => string>
 ```
 
 ## 推荐阅读

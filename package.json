@@ -11,6 +11,6 @@
   "author": "cfangxu <chenfangxu_qixin@163.com> (https://qiqihaobenben.github.io/)",
   "license": "CC-BY-4.0",
   "devDependencies": {
-    "vuepress": "^1.8.2"
+    "vuepress": "^1.9.7"
   }
 }
