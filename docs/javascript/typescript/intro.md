@@ -161,4 +161,5 @@ TypeScript 不只是静态类型的 JavaScript，提高生产力才是 TypeScrip
 - [TypeScript 被吹过头了？](https://www.infoq.cn/article/hONCcNMIDZiVqzpxIK17)
 - [未来可期的 TypeScript](https://mp.weixin.qq.com/s/a-k0HPU5pXzTvmByA8aS-g)
 - [TypeScript 体系调研报告](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ%3D%3D&mid=2651227148&idx=1&sn=36296746efb0cced763fdadcf6c45700#wechat_redirect)
+- [为什么我们需要 TS ？](https://mp.weixin.qq.com/s/ipzNMEeW-3B7tYti9sme3w)
 - [浅谈 TS 标称类型介绍及社区实现，即怎么让结构类型的 TS 支持 标称类型](https://mp.weixin.qq.com/s/R7PFMxyDJt4H9Ja-1PZiTA)
