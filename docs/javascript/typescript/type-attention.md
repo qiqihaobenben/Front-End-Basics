@@ -100,9 +100,9 @@ console.log(Role)
 //我们看到打印出来是一个对象，对象中有索引值作为 key 的，有名字作为 key 的，所以枚举既能通过名字取值，又能通过索引取值
 
 // 看一下 TS 编译器是怎么用反向映射实现枚举的。
-'use strict'
+;('use strict')
 var Role
-;(function(Role) {
+;(function (Role) {
   Role[(Role['Reporter'] = 1)] = 'Reporter'
   Role[(Role['Developer'] = 2)] = 'Developer'
   Role[(Role['Maintainer'] = 3)] = 'Maintainer'
@@ -634,9 +634,9 @@ render({
 } as Result) // 还是会报错属性"data"的类型不兼容
 
 // 现在就需要这么写，用 as unknown as xxx
-render(({
+render({
   data: [{ id: 1, name: 'A', sex: 'male' }],
-} as unknown) as Result)
+} as unknown as Result)
 ```
 
 > 解决方法三：用字符串索引签名
@@ -914,9 +914,7 @@ type BooleanType = StringOrNumberArray<boolean> // 类型是 boolean
 ```ts
 type StringOrBoolean = string | boolean
 type test1 = StringOrNumberArray<StringOrBoolean> // 类型为 boolean | string[]
-type test2 = StringOrBoolean extends string | number
-  ? StringOrBoolean[]
-  : StringOrBoolean // 类型为 string | boolean
+type test2 = StringOrBoolean extends string | number ? StringOrBoolean[] : StringOrBoolean // 类型为 string | boolean
 ```
 
 上面的代码定义的两个类型别名的类型居然不一样，这个就是所谓的分配条件类型（Distributive Conditional Types），官方定义：在条件类型判断的情况下（如上面示例中出现的 extends），如果入参是联合类型，则会被拆解成一个个独立的（原子）类型（成员）进行类型运算。比如上面示例的 string | boolean 入参，先被拆解成 string 和 boolean 这两个独立类型，再分别判断是否是 string | number 类型的子集。**因为 string 是子集而 booelan 不是，所以最终得到的 test1 的类型是 boolean | string[]**。
@@ -940,11 +938,7 @@ log5({ length: 1 })
 ```
 
 ```ts
-type ObjSetter = <O extends {}, K extends keyof O, V extends O[K]>(
-  obj: O,
-  key: K,
-  value: V
-) => V
+type ObjSetter = <O extends {}, K extends keyof O, V extends O[K]>(obj: O, key: K, value: V) => V
 
 const setValueOfObj: ObjSetter = (o, k, v) => (o[k] = v)
 setValueOfObj({ id: 1 }, 'id', 2)
@@ -956,3 +950,7 @@ setValueOfObj({ id: 1 }, 'id', 'tom') // 报错
 - 利用泛型，函数和类可以轻松地支持多种类型，增强程序的扩展性
 - 不必写多条函数重载，冗长的联合类型声明，增强代码可读性
 - 灵活控制类型之间的约束
+
+## 推荐阅读
+
+- [如何更容易上手 TypeScript 类型编程？](https://mp.weixin.qq.com/s/X3FXN1KYOlxNk3Fw_oYI2Q)
