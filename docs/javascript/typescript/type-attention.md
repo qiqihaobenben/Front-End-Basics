@@ -100,7 +100,7 @@ console.log(Role)
 //我们看到打印出来是一个对象，对象中有索引值作为 key 的，有名字作为 key 的，所以枚举既能通过名字取值，又能通过索引取值
 
 // 看一下 TS 编译器是怎么用反向映射实现枚举的。
-'use strict'
+;('use strict')
 var Role
 ;(function(Role) {
   Role[(Role['Reporter'] = 1)] = 'Reporter'
@@ -960,3 +960,4 @@ setValueOfObj({ id: 1 }, 'id', 'tom') // 报错
 ## 推荐阅读
 
 - [TS 在项目中的 N 个实用小技巧 - 第三部分](https://mp.weixin.qq.com/s/4WnHk4t_mYnkUMd9_epzbQ)
+- [如何更容易上手 TypeScript 类型编程？](https://mp.weixin.qq.com/s/X3FXN1KYOlxNk3Fw_oYI2Q)
