@@ -659,3 +659,4 @@ function getLanguage(type: Type, x: string | number) {
 ## 推荐阅读
 
 - [浅谈 Typescript（三）：两个空间的交流](https://zhuanlan.zhihu.com/p/401138248)
+- [TS 在项目中的 N 个实用小技巧 - 第二部分](https://mp.weixin.qq.com/s/4WnHk4t_mYnkUMd9_epzbQ)

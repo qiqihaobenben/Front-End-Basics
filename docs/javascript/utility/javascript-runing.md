@@ -841,3 +841,5 @@ break/continue 语句如果后跟了关键字，会产生带 target 的完成记
 [js 引擎的执行过程（二）](https://heyingye.github.io/2018/03/26/js%E5%BC%95%E6%93%8E%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B%EF%BC%88%E4%BA%8C%EF%BC%89/)
 
 [JavaScript 运行机制详解：再谈 Event Loop](http://www.ruanyifeng.com/blog/2014/10/event-loop.html)
+
+TODO 垃圾回收可以看这个：https://mp.weixin.qq.com/s/KZsgQxlrsfYMvJejbZqGHw

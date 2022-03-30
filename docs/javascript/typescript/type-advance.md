@@ -585,3 +585,4 @@ type T7 = ReturnType<() => string>
 ## 推荐阅读
 
 - [TypeScript 的另一面：类型编程](https://juejin.cn/post/7000360236372459527)
+- [TS 在项目中的 N 个实用小技巧 - 第一部分](https://mp.weixin.qq.com/s/4WnHk4t_mYnkUMd9_epzbQ)
