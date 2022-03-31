@@ -478,9 +478,7 @@ type sourceInterface = {
 type TargetGenericTypeAssertiony<S> = {
   [K in keyof S]: S[K]
 }
-type TargetGenericTypeAssertionyInstance = TargetGenericTypeAssertiony<
-  sourceInterface
->
+type TargetGenericTypeAssertionyInstance = TargetGenericTypeAssertiony<sourceInterface>
 ```
 
 ## 条件类型
@@ -524,11 +522,7 @@ type result = StringOrNumberArray<string | boolean, string | number>
 **还要注意，包含条件类型的泛型接收 never 作为泛型入参时，存在一定“陷阱”，第一，是因为 never 类型是所有类型的子类型，在 extends 判断语句中，始终是真值；第二，是因为 never 是不能分配的底层类型，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实例化得到的类型也是 never。**
 
 ```ts
-type GetNumber = never extends number
-  ? number[]
-  : never extends string
-  ? string[]
-  : never
+type GetNumber = never extends number ? number[] : never extends string ? string[] : never
 
 type getNever<T> = T extends {} ? T : T[]
 type getNever1<T> = T extends {} ? T[] : T
@@ -569,11 +563,7 @@ type T6 = Extract<'a' | 'b' | 'c', 'a' | 'e'>
 先写出 `ReturnType<T>` 的实现，类型推断操作符 `infer` 表示在 extends 条件语句中待推断的类型变量。
 
 ```typescript
-type ReturnType<T extends (...args: any) => any> = T extends (
-  ...args: any
-) => infer R
-  ? R
-  : any
+type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any
 ```
 
 分析一下上面的代码，首先要求传入 ReturnType 的 T 必须能赋值给一个最宽泛的函数，之后判断 T 能不能赋值给一个可以接受任意参数的返回值待推断为 R 的函数，如果可以，返回待推断返回值 R ，如果不可以，返回 any 。
@@ -586,3 +576,4 @@ type T7 = ReturnType<() => string>
 
 - [TypeScript 的另一面：类型编程](https://juejin.cn/post/7000360236372459527)
 - [TS 在项目中的 N 个实用小技巧 - 第一部分](https://mp.weixin.qq.com/s/4WnHk4t_mYnkUMd9_epzbQ)
+- [如何更容易上手 TypeScript 类型编程？](https://mp.weixin.qq.com/s/X3FXN1KYOlxNk3Fw_oYI2Q)
