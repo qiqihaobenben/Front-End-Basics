@@ -55,6 +55,7 @@ let count: number | string = 10
 - object
 - **void**
 - **any**
+- **unknown**
 - **never**
 - **元组**
 - **枚举**
@@ -143,7 +144,7 @@ where(b)
 
 // 下面这种调用方式将会报错，虽然它和 where(b) 看起来是一致的
 // 区别在于这里传递的是一个对象字面量
-// 对象字面量会被特殊对待并经过额外的属性检查
+// 对象字面量会被特殊对待并经过额外的属性检查（是不是新鲜？）
 // 如果对象字面量中存在目标类型中未声明的属性，则抛出错误
 where({ x: 100, z: 'abc' })
 
@@ -181,11 +182,7 @@ interface ClockConstructor {
 interface ClockInterface {
   tick()
 }
-function createClock(
-  ctor: ClockConstructor,
-  hour: number,
-  minute: number
-): ClockInterface {
+function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface {
   return new ctor(hour, minute)
 }
 class DigitalClock implements ClockInterface {

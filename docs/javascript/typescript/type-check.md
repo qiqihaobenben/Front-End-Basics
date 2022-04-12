@@ -137,7 +137,7 @@ function isDog(animal: Dog | Cat): animal is Dog {
 function getName<T extends Dog | Cat>(animal: T) {
   /**
      if ('wang' in animal) {
-       return animal.wang // 使用 in ，类型没有缩小，报错
+       return animal.wang // TypeScript 4.3.2 之前使用 in ，类型没有缩小，报错
      }
      return animal.miao // 从而此处也报错
      */
@@ -224,7 +224,7 @@ let foo1: Bar = {
 
 另外还有一种特殊非空断言，即在值（变量、属性）的后边添加 `!` 断言操作符，它可以用来排除值为 null、undefined 的情况。对于非空断言，应该把它视作和 any 一样危险的选择，所以建议用类型守卫来代替非空断言。
 
-#### [TypeScript 中的类型控制流分析演进（包含类型守卫，类型拓宽和缩小）](https://zhuanlan.zhihu.com/p/461842201)
+#### 推荐阅读：[TypeScript 中的类型控制流分析演进（包含类型守卫，类型拓宽和缩小）](https://zhuanlan.zhihu.com/p/461842201)
 
 ### 类型兼容
 
@@ -273,7 +273,7 @@ function test(handler: Handler) {
 
 ##### 1、参数个数
 
-###### 固定参数
+1.1、固定参数
 
 **目标函数的参数个数一定要多于源函数的参数个数**
 
@@ -286,7 +286,7 @@ let handler2 = (a: number, b: number, c: number) => {}
 test(handler2) // 会报错 传入的函数能接收三个参数（参数多了），且参数是number，是不兼容的
 ```
 
-###### 可选参数和剩余参数
+1.2、 可选参数和剩余参数
 
 ```typescript
 let a1 = (p1: number, p2: number) => {}
@@ -317,7 +317,7 @@ c1 = b1 // 兼容
 
 ##### 2、参数类型
 
-###### 基础类型
+2.1、 基础类型
 
 ```typescript
 // 接上面的test函数
@@ -325,7 +325,7 @@ let handler3 = (a: string) => {}
 test(handler3) // 类型不兼容
 ```
 
-###### 接口类型
+2.2、 接口类型
 
 接口成员多的兼容成员少的，也**可以理解把接口展开，参数多的兼容参数少的**。对于不兼容的，也可以通过设置"strictFunctionTypes": false 来消除报错，实现兼容
 
@@ -346,7 +346,7 @@ p3d = p2d // 兼容
 p2d = p3d // 不兼容
 ```
 
-###### 函数类型
+2.3、 函数类型
 
 - [TypeScript 类型中的逆变协变](https://mp.weixin.qq.com/s/rqs1SS63niHqI-gxBWXXdA)
 - [TypeScript 中的协变与逆变](https://zhuanlan.zhihu.com/p/454202284)
@@ -520,9 +520,8 @@ log2 = log1
 
 指的是 TypeScript 能够在特定的区块(`类型保护区块`)中保证变量属于某种特定的类型。可以在此区块中放心地引用此类型的属性，或者调用此类型的方法。
 
-前置代码，之后的代码在此基础运行
-
 ```typescript
+// 前置代码，之后的代码在此基础运行
 enum Type {
   Strong,
   Week,
@@ -543,13 +542,13 @@ class JavaScript {
 }
 ```
 
-实现 getLanguage 方法直接用 lang.helloJava 是不是存在作为判断是会报错的
+实现 getLanguage 方法直接用 lang.helloJava 是不是存在，作为判断是会报错的
 
 ```typescript
 function getLanguage(type: Type, x: string | number) {
   let lang = type === Type.Strong ? new Java() : new JavaScript()
 
-  // 如果想根据lang实例的类型，直接用lang.helloJava是不是存在来作为判断是会报错的，因为现在lang是Java和JavaScript这两种类型的联合类型
+  // 报错：如果想根据lang实例的类型，直接用lang.helloJava是不是存在来作为判断是会报错的，因为现在lang是Java和JavaScript这两种类型的联合类型
   if (lang.helloJava) {
     lang.helloJava()
   } else {
@@ -654,7 +653,7 @@ function getLanguage(type: Type, x: string | number) {
 - typeof：判断一个变量的类型（多用于基本类型）
 - instanceof：判断一个实例是否属于某个类
 - in：判断一个属性是否属于某个对象
-- 类型保护函数：某些判断可能不是一条语句能够搞定的，需要更多复杂的逻辑，适合封装到一个函数内
+- 类型保护函数：某些判断可能不是一条语句能够搞定的，需要更多复杂的逻辑，适合封装到一个函数内。
 
 ## 推荐阅读
 

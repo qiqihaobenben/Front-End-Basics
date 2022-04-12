@@ -1,4 +1,4 @@
-# TypeScript 类型增强
+# TypeScript 类型声明文件
 
 ## 声明
 
@@ -23,7 +23,7 @@ b = 2 // 报错，const 声明不能再赋值
 声明函数的语法与声明变量的语法相同，不同的是 declare 关键字后需要跟 function 关键字。
 
 ```ts
-/* 报错，环境声明的上下文不需要实现
+/* 报错，只需声明，不需要实现
 declare function toString(x: number) {
   return String
 } */
@@ -124,7 +124,7 @@ $.version // => number
 $.ajax()
 ```
 
-在上面的例子中，因为我们声明了全局导入的 jQuery 变量 $，所以可以直接使用 $ 变量的 version 属性以及 ajax 方法。
+在上面的例子中，因为我们声明了全局导入的 jQuery 变量 `$`，所以可以直接使用 `$` 变量的 version 属性以及 ajax 方法。
 
 ### 声明文件
 
@@ -301,7 +301,7 @@ declare global {
     getLen(): number
   }
 }
-Array.prototype.getLen = function() {
+Array.prototype.getLen = function () {
   return this.length
 }
 ```

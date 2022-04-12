@@ -6,11 +6,11 @@ void 类型，它仅适用于表示没有返回值的函数，即如果该函数
 
 在 strict 模式下，声明一个 void 类型的变量几乎没有任何实际用处，因为我们**不能把 void 类型的变量值再赋值给除了 any 和 unknown 之外的任何类型变量**。
 
-变量可以被声明为 undefined 和 null ，但是一旦被声明，就不能再赋值其他类型，所以单纯声明 undefined 或者 null 类型的变量是很鸡肋的。
+变量可以被声明为 undefined 和 null ，但是一旦被声明，就不能再赋值其他类型，所以**单纯**声明 undefined 或者 null 类型的变量是很鸡肋的。
 
 undefined 的最大价值主要体现在接口类型上，它表示一个可缺省、未定义的属性。
 
-null 的价值可能主要体现在接口制定上，它表明对象或属性可能是空值。
+null 的价值也可能主要体现在接口类型上，它表明对象或属性可能是空值。
 
 ```typescript
 let un: undefined = undefined
@@ -19,13 +19,14 @@ un = 1
 nu = 1
 ```
 
-undefined 和 null 是任何类型的子类型，那就可以赋值给其他类型。但是需要设置配置项 "strictNullChecks": false。并且这里还有个设计是：**可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量，反过来，类型是 void 但值是 undefined 的变量不能赋值给 undefined 类型。**
+undefined 和 null 是大部分类型的子类型，那就可以赋值给其他类型。但是需要设置配置项 "strictNullChecks": false。并且这里还有个设计是：**可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量，反过来，类型是 void 但值是 undefined 的变量不能赋值给 undefined 类型。**
 
 ```typescript
+// 配置项 "strictNullChecks": false
 let num: number = 123
 num = undefined
 num = null
-
+// 相当于
 let num: number | undefined | null = 123
 num = undefined
 num = null
@@ -45,20 +46,18 @@ if (userInfo.id !== undefined) {
 ```ts
 const userInfo: { id?: number; name?: null | string } = {}
 
-userInfo.id!.toFixed()
+userInfo.id!.toFixed() // 不建议
 userInfo.id?.toFixed()
 const myName = userInfo.name ?? 'jerry'
 ```
 
-**严格模式下，null 和 undefined 表现出与 void 类似的兼容性，不能赋值给除 any 和 unknown 之外的其他类型，反过来，除了 any 和 never 之外，其他类型都不可以赋值给 null 或 undefined。（实际验证发现，可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量）**
+**严格模式下，null 和 undefined 表现出与 void 类似的兼容性，不能赋值给除 any 和 unknown 之外的其他类型，反过来，除了 any 和 never 之外，其他类型都不可以赋值给 null 或 undefined。（实际验证发现此处有些区别，可以把 undefined 值或类型是 undefined 的变量赋值给 void 类型变量）**
 
 ## any、never、unknown 类型
 
 ### any
 
-any 类型可以赋值给除了 never 之外的任意其他类型，反过来其他类型也可以赋值给 any。
-
-any 可以兼容除 never 以外所有的类型，同时也可以被所有的类型兼容（即 any 既是 bottom type，也是 top type），再次强调 Any is 魔鬼，一定要慎用、少用
+any 类型可以赋值给除了 never 之外的任意其他类型，反过来其他类型也可以赋值给 any。也就是说：any 可以兼容除 never 以外所有的类型，同时也可以被所有的类型兼容（即 any 既是 bottom type，也是 top type），再次强调 Any is 魔鬼，一定要慎用、少用
 
 ### unknown
 
@@ -96,11 +95,12 @@ never 表示永远不会发生值的类型，例如抛出错误的函数的返�
 
 ```ts
 const props: { id: number; name?: never } = { id: 1 }
-props.name = 'tom'
+props.name = 'tom' // 报错
 
 let n: never = (() => {
   throw Error('never')
 })()
+// 执行不到
 let a: number = n
 let c: {} = n
 ```
@@ -108,6 +108,17 @@ let c: {} = n
 ### 推荐阅读
 
 - [TypeScript 中的 never 类型](https://juejin.cn/post/7034133130433232903)
+
+## 汇总以上特殊类型的特征
+
+| 名称      | 可赋值给              | 可接受赋值          |
+| --------- | --------------------- | ------------------- |
+| void      | void,any,unknown      | any,never,undefined |
+| undefined | undefined,any,unknown | any,never           |
+| null      | null,any,unknown      | any,never           |
+| any       | 除 never 外的其他类型 | 任何类型            |
+| unknown   | unknown,any           | 任何类型            |
+| never     | 任何类型              | never               |
 
 ## 联合类型（Unions）
 
@@ -152,6 +163,8 @@ enum Master {
 function getPet(master: Master) {
   let pet = master === Master.Boy ? new Dog() : new Cat()
   pet.eat()
+  // 报错
+  // if(typeof pet.run === 'function') {
   if ('run' in pet) {
     pet.run()
   }
@@ -254,7 +267,9 @@ enum EnumUR {
 type URE = EnumUR.ONE | EnumUR
 ```
 
-TypeScript 对这样的场景做了缩减，它把字面量类型、枚举成员类型缩减掉，只保留原始类型、枚举类型等父类型，这是合理的“优化”
+TypeScript 对这样的场景做了缩减，它把字面量类型、枚举成员类型缩减掉，只保留原始类型、枚举类型等父类型，这是合理的“优化”。
+
+类型缩减发生在父子类型之间，never 是所有类型的子类型，所以任何类型与 never 类型沟通的联合类型，never 都会被缩减掉。
 
 可是这个缩减，会极大地削弱 IDE 自动提示的能力，所以 TypeScript 官方其实还提供了一个黑魔法，它可以让类型缩减被控制，只需要给父类型添加 `& {}` 即可。
 
@@ -289,7 +304,7 @@ const O: UnionInterce = {
 }
 ```
 
-### 联合类型二次处理
+### 联合类型二次处理（用到了分布式条件类型的概念）
 
 #### Exclude
 
@@ -314,7 +329,9 @@ type ExtractStr = Extract<'a' | 'b' | 'c', 'b'>
 NonNullable 作用是从联合类型中去除 null 或者 undefined 的类型。
 
 ```ts
+// 第一种方式
 type NonNullable<T> = T extends null | undefined ? never : T
+// 第二种方式
 type NonNullable<T> = Exclude<T, null | undefined>
 type AllType = string | number | null | undefined
 type BasicType = NonNullable<AllType>
@@ -348,7 +365,7 @@ const menus: Record1<MenuKey, Menu> = {
 
 交叉类型可以把多个类型合并成一个类型。
 
-很显然，如果仅仅把原始类型、字面量类型、函数类型等原子类型合并成交叉类型，是没有任何用处的，因为任何类型都不能满足同时属于多种原子类型，比如即使 string 类型又是 number 类型。举个例子 `type Useless = string & number` 中 Useless 的类型就是 never。
+很显然，如果仅仅把原始类型、字面量类型、函数类型等原子类型合并成交叉类型，是没有任何用处的，因为任何类型都不能满足同时属于多种原子类型，比如既是 string 类型又是 number 类型。举个例子 `type Useless = string & number` 中 Useless 的类型就是 never。
 
 交叉类型真正的用武之地是将多个接口类型合并成一个类型，从而实现等同接口继承的效果，也就是所谓的合并接口类型。
 
@@ -459,7 +476,7 @@ interface Obj {
 type ReadonlyObj = Readonly<Obj>
 type PartialObj = Partial<Obj>
 type PickObj = Pick<Obj, 'a' | 'b'>
-type OmitObj = Omit1<Obj, 'a' | 'b'>
+type OmitObj = Omit<Obj, 'a' | 'b'>
 
 type RecordObj = Record<'x' | 'y', Obj>
 ```
@@ -476,9 +493,15 @@ type sourceInterface = {
   name?: string
 }
 type TargetGenericTypeAssertiony<S> = {
-  [K in keyof S]: S[K]
+  [K in keyof S as `get${Capitalize<string & K>}`]: S[K]
 }
 type TargetGenericTypeAssertionyInstance = TargetGenericTypeAssertiony<sourceInterface>
+/* TargetGenericTypeAssertionyInstance 结果如下
+{
+    getId: number;
+    getName?: string | undefined;
+}
+*/
 ```
 
 ## 条件类型
@@ -519,15 +542,19 @@ type StringOrNumberArray<T, U> = [T] extends [U] ? T[] : T
 type result = StringOrNumberArray<string | boolean, string | number>
 ```
 
-**还要注意，包含条件类型的泛型接收 never 作为泛型入参时，存在一定“陷阱”，第一，是因为 never 类型是所有类型的子类型，在 extends 判断语句中，始终是真值；第二，是因为 never 是不能分配的底层类型，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实例化得到的类型也是 never。**
+**还要注意，never 条件类型判断，存在一定“陷阱”，第一，是因为 never 类型是所有类型的子类型，在 extends 判断语句中，始终是真值；第二，是因为 never 是不能分配的底层类型，包含条件类型的泛型接收 never 作为泛型入参时，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实例化得到的类型也是 never。**
 
 ```ts
+// GetNumber 类型为 number[]
 type GetNumber = never extends number ? number[] : never extends string ? string[] : never
 
 type getNever<T> = T extends {} ? T : T[]
 type getNever1<T> = T extends {} ? T[] : T
 
+// 包含条件类型的泛型接收 never 作为泛型入参时，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，不管如何，都只会得到 never
+// result 类型为 never
 type result = getNever<never>
+// result1 类型为 never
 type result1 = getNever1<never>
 ```
 
@@ -536,6 +563,7 @@ type result1 = getNever1<never>
 ```typescript
 type Diff<T, U> = T extends U ? never : T
 type T4 = Diff<'a' | 'b' | 'c', 'a' | 'e'>
+// 以下两个都不能 Diff
 type NotDiff = str1 extends str2 ? never : str1
 type NotDiff1<T, U> = [T] extends [U] ? never : T
 ```

@@ -65,7 +65,7 @@ $ tsc --project src
 - sourceMap：类型 `Boolean`，生成目标文件的 [sourceMap 文件](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map)（.map 文件），这些文件允许调试器和其他工具在使用实际生成的 JavaScript 文件时，显示原始的 TypeScript 代码，默认值 `false`
 - lib：TS 需要引用的库，即声明文件包，es5 默认引用 DOM、ES5、ScriptHost，es6 默认引用 DOM、ES6、DOM.Iterable、ScriptHost。 如果需要使用 es 的高级版本特性，通常都需要配置，可能的值有： ► ES5 ► ES6 ► ES2015 ► ES7 ► ES2016 ► ES2017 ► ES2018 ► ESNext ► DOM ► DOM.Iterable ► WebWorker ► ScriptHost ► ES2015.Core ► ES2015.Collection ► ES2015.Generator ► ES2015.Iterable ► ES2015.Promise ► ES2015.Proxy ► ES2015.Reflect ► ES2015.Symbol ► ES2015.Symbol.WellKnown ► ES2016.Array.Include ► ES2017.object ► ES2017.Intl ► ES2017.SharedMemory ► ES2017.String ► ES2017.TypedArrays ► ES2018.Intl ► ES2018.Promise ► ES2018.RegExp ► ESNext.AsyncIterable ► ESNext.Array ► ESNext.Intl ► ESNext.Symbol，具体详情可在 [TypeScript 源码](https://github.com/microsoft/TypeScript/tree/master/lib)中查看完成列表。
 - project：类型 `String`，编译指定目录下的项目，这个目录应该包含一个 tsconfig.json 文件
-- composite：类型 `Boolean`，确保 TypeScript 可以确定在哪里可以找到引用项目的输出以编译项目。默认为 `true` TODO
+- composite：类型 `Boolean`，确保 TypeScript 可以确定在哪里可以找到引用项目的输出以编译项目。默认为 `true`。 [查看具体示例](https://juejin.cn/post/6844904004615421966)
 - outDir：类型 `String`，指定输出目录，默认值为目标文件当前位置
 - outFile：类型 `String`，将多个相互依赖的文件生成一个文件，可以用在 AMD 模块中，即开启时应设置 `"module": "AMD"`
 - allowJs：类型 `Boolean` ，允许编译器编译 JS 或 JSX 文件，默认值 `false`
@@ -221,7 +221,7 @@ react-jsxdev：改为 `__jsxDEV` 调用，输出文件的扩展名是 `.js`
 ### module
 
 - 只有 `"AMD"` 和 `"System"` 能和 --outFile 一起使用。
-- `"ES6"` 和 `ES2015` 可使用在 `target` 为 `"ES5"` 或更低的情况下
+- `"ES6"`/`ES2015` 可使用在 `target` 为 `"ES5"` 或更低的情况下
 
 ### lib
 
@@ -247,7 +247,7 @@ yarn add typescript@3.9.10
 
 ### 切换 VS Code 使用的 TypeScript 版本
 
-点击 VS Code 底部工具栏的版本号信息，从而实现 “use VS Code's Version” 和 “use WorkSapce version” 两者的切换。
+点击 VS Code 底部工具栏的版本号信息（或者 cmd + shift + p 搜索切换 TypeScript 版本），从而实现 “use VS Code's Version” 和 “use WorkSapce version” 两者的切换。
 
 我们也可以手动切换，在当前应用目录下的 `.vscode/setting.json` 内添加如下命令，配置 VS Code 默认使用应用目录下安装的 TypeScript 版本提供的语法解析和类型检测服务。
 
