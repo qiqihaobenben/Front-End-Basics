@@ -57,7 +57,7 @@ const myName = userInfo.name ?? 'jerry'
 
 ### any
 
-any 类型可以赋值给除了 never 之外的任意其他类型，反过来其他类型也可以赋值给 any。也就是说：any 可以兼容除 never 以外所有的类型，同时也可以被所有的类型兼容（即 any 既是 bottom type，也是 top type），再次强调 Any is 魔鬼，一定要慎用、少用
+any 类型可以赋值给除了 never 之外的任意其他类型，反过来其他类型也可以赋值给 any。也就是说：any 可以兼容除 never 以外所有的类型，同时也可以被所有的类型兼容（即 any 既是 bottom type(除 never 外)，也是 top type），再次强调 Any is 魔鬼，一定要慎用、少用
 
 ### unknown
 
@@ -111,14 +111,14 @@ let c: {} = n
 
 ## 汇总以上特殊类型的特征
 
-| 名称      | 可赋值给              | 可接受赋值          |
-| --------- | --------------------- | ------------------- |
-| void      | void,any,unknown      | any,never,undefined |
-| undefined | undefined,any,unknown | any,never           |
-| null      | null,any,unknown      | any,never           |
-| any       | 除 never 外的其他类型 | 任何类型            |
-| unknown   | unknown,any           | 任何类型            |
-| never     | 任何类型              | never               |
+| 名称      | 可赋值给              | 可接受赋值               |
+| --------- | --------------------- | ------------------------ |
+| void      | void,any,unknown      | void,any,never,undefined |
+| undefined | undefined,any,unknown | undefined,any,never      |
+| null      | null,any,unknown      | null,any,never           |
+| any       | 除 never 外的其他类型 | 任何类型                 |
+| unknown   | unknown,any           | 任何类型                 |
+| never     | 任何类型              | never                    |
 
 ## 联合类型（Unions）
 
@@ -605,3 +605,4 @@ type T7 = ReturnType<() => string>
 - [TypeScript 的另一面：类型编程](https://juejin.cn/post/7000360236372459527)
 - [TS 在项目中的 N 个实用小技巧 - 第一部分](https://mp.weixin.qq.com/s/4WnHk4t_mYnkUMd9_epzbQ)
 - [如何更容易上手 TypeScript 类型编程？](https://mp.weixin.qq.com/s/X3FXN1KYOlxNk3Fw_oYI2Q)
+- [never 和 unknown 的优雅之道](https://mp.weixin.qq.com/s/rZ96wy8xUrx4T1qG5OKS0w)
