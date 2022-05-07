@@ -42,7 +42,6 @@
 
 ![这个列表是安全的，因为...](./images/comment8.png)
 
-
 <br />
 
 换句话说，要避免那些仅仅是重复说明代码干了点啥的注释。这样的注释没啥用，看着还烦。
@@ -51,5 +50,5 @@
 
 ### 推荐相关文章
 
-[如何写好代码注释](https://zh.javascript.info/comments)
-
+- [如何写好代码注释](https://zh.javascript.info/comments)
+- [共置](https://mp.weixin.qq.com/s/FaG96OR5K5HFXhMO5QHVmQ)

@@ -272,3 +272,5 @@ yarn add typescript@3.9.10
 
 - [Typescript 4.5 —— 浅谈模块能力增强](https://zhuanlan.zhihu.com/p/425740447)
 - [Typescript confusion: tsconfig.json module, moduleResolution, target & lib explained](https://medium.com/@tommedema/typescript-confusion-tsconfig-json-module-moduleresolution-target-lib-explained-65db2c44b491)
+- [理解 TypeScript 的模块系统](https://pengfeixc.com/blogs/javascript/typescript-module-system)
+- [TypeScript 中的多种 import 解义](https://tasaid.com/blog/2019022017450863.html)
