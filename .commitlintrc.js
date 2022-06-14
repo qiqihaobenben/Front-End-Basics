@@ -41,7 +41,7 @@ module.exports = {
         scopes: [],
         allowCustomScopes: true,
         allowEmptyScopes: true,
-        customScopesAlign: "bottom",
+        customScopesAlign: "top",
         customScopesAlias: "custom",
         emptyScopesAlias: "empty",
         upperCaseSubject: false,

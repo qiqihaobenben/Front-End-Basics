@@ -1,5 +1,18 @@
 # 让你的 commit 更有价值
 
+## 更新：cz-relax 一键初始化
+
+之前配置 commitizen 需要好几步，例如首先 commitizen 需要进行初始化并且选择 commitizen adapter，然后需要安装 commitlint ，最后可能还需要 husky 配置 git hooks。
+
+现在，只需要两步，就可以完成上面的工作，让一切变得轻松起来。
+
+```sh
+# 第一步在工作目录安装 cz-relax
+npm install cz-relax --save-dev
+# 第二步初始化，如果报错提示需要使用force，请在最后添加 --force
+npx cz-relax init --language zh
+```
+
 ## 提交规范
 
 AngularJS 在[开发者文档](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)中关于 git commit 的指导说明，提到严格的 git commit 格式规范可以在浏览项目历史的过程中看到更易读的信息，并且能用 git commit 的信息直接生成 AngularJS 的 change log 。
@@ -280,10 +293,10 @@ npm i --save-dev @commitlint/config-conventional @commitlint/cli
 
 ```js
 module.exports = {
-  extends: ["@commitlint/config-conventional"],
+  extends: ['@commitlint/config-conventional'],
   // rules 里面可以设置一些自定义的校验规则
   rules: {},
-};
+}
 ```
 
 在项目中安装 husky ，并在项目根目录新建 husky.config.js 文件，加入以下设置：

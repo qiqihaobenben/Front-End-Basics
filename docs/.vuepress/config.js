@@ -83,6 +83,7 @@ module.exports = {
             'typescript/type-advance',
             'typescript/type-check',
             'typescript/type-extend',
+            'typescript/programing',
           ]
         },
       ],
@@ -100,10 +101,17 @@ module.exports = {
       ],
       '/project/' : [
         {
+          title: '职业',
+          collapsable: false,
+          children: [
+            'business-process',
+          ]
+        },
+        {
           title: '规范',
           collapsable: false,
           children: [
-            'need-or-not-comment'
+            'need-or-not-comment',
           ]
         },
         {
@@ -111,6 +119,8 @@ module.exports = {
           collapsable: false,
           children: [
             'el-scrollbar',
+            'data-analysis-word-interpretation'
+            'online-accident'
           ]
         }
       ],
