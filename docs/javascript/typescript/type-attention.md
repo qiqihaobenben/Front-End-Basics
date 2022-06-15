@@ -964,6 +964,7 @@ setValueOfObj({ id: 1 }, 'id', 'tom') // 报错
 - 不必写多条函数重载，冗长的联合类型声明，增强代码可读性
 - 灵活控制类型之间的约束
 
+
 ## 推荐阅读
 
 - [TS 在项目中的 N 个实用小技巧 - 第三部分](https://mp.weixin.qq.com/s/4WnHk4t_mYnkUMd9_epzbQ)
