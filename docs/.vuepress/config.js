@@ -74,8 +74,6 @@ module.exports = {
         {
           title: 'TypeScript',
           children: [
-            'typescript/typescript-important',
-            'typescript/use-typescript-two-years',
             'typescript/intro',
             'typescript/config_file',
             'typescript/synax',
@@ -84,6 +82,8 @@ module.exports = {
             'typescript/type-check',
             'typescript/type-extend',
             'typescript/programing',
+            'typescript/typescript-important',
+            'typescript/use-typescript-two-years',
           ]
         },
       ],
@@ -119,7 +119,7 @@ module.exports = {
           collapsable: false,
           children: [
             'el-scrollbar',
-            'data-analysis-word-interpretation'
+            'data-analysis-word-interpretation',
             'online-accident'
           ]
         }
@@ -299,11 +299,6 @@ module.exports = {
               collapsable: false,
               path: '/javascript/utility/lexical-grammar'
             },
-            {
-              title: '技术经验',
-              collapsable: false,
-              path: '/project/el-scrollbar'
-            },
           ]
         },
         {
@@ -369,6 +364,11 @@ module.exports = {
         {
           title: '认知',
           children: [
+            {
+              title: '技术经验',
+              collapsable: false,
+              path: '/project/el-scrollbar'
+            },
             {
               title: '方法论',
               collapsable: false,

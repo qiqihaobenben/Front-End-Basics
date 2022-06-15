@@ -36,6 +36,19 @@ console.log(tuple) // [0, "1", 2] 也能都打印出来
 console.log(tuple[2]) // 但是想取出元组中的越界元素，就会报错元组长度是 2，在 index 为 2 时没有元素
 ```
 
+### TypeScript 中元组和数组的区别
+
+TypeScript 中元组和数组有一个最主要的区别是，元组的`length` 属性类型是具体的数字类型，而数组的`length`属性是 number 类型。
+
+```ts
+type tuple = [string, number]
+type array = (string|number)[]
+
+type tupleLength = tuple['length'] // tupleLength 类型为 2
+type arrayLength = array['length'] // arrayLength 类型为 number
+```
+
+
 ## 对象类型
 
 对象如果要赋值或者修改属性值，那么就不能用简单的对象类型，需要定义完整的对象类型

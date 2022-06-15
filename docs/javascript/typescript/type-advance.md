@@ -387,7 +387,17 @@ let pet: DogInterface & CatInterface = {
 }
 ```
 
-**注意：合并的多个接口类型存在同名属性，如果同名属性的类型不兼容，比如同名的 name 属性类型，一个是 number，另一个是 string，合并后，name 属性的类型就是 number 和 string 两个原子类型的交叉类型，即 never；如果同名属性的类型兼容，比如一个是 number，另一个是 number 的子类型、数字字面量类型，合并后 name 属性的类型就是两者中的子类型。**
+**<span style="color:red;">注意</span>：合并的多个接口类型存在同名属性，如果同名属性的类型不兼容，比如同名的 name 属性类型，一个是 number，另一个是 string，合并后，name 属性的类型就是 number 和 string 两个原子类型的交叉类型，即 never；如果同名属性的类型兼容，比如一个是 number，另一个是 number 的子类型、数字字面量类型，合并后 name 属性的类型就是两者中的子类型。**
+
+**<span style="color:red;">还要注意，有一个例外。</span> any 和其他任何类型组成的联合类型，结果都是 any 类型**
+
+```ts
+type a = any | string // a 类型为 any
+type b = any & string // b 类型为 any
+
+// 所以如何实现一个 IsAny 判断一个类型是不是 any
+type IsAny<T> = 1 extends 2 & T ? true : false
+```
 
 ### 交叉类型用于合并联合类型
 
@@ -538,14 +548,17 @@ type T2 = TypeName<string[]>
 type T3 = TypeName<string | string[]>
 ```
 
-**注意：在非泛型条件中，联合类型会被当作一个整体对待，可以解除类型分配，另外通过某些手段强制类型入参被当成一个整体，也可以解除类型分配，例如使用 `[]`**
+**<span style="color:red;">注意</span>：在非泛型条件中，联合类型会被当作一个整体对待，可以解除类型分配，另外通过某些手段强制类型入参被当成一个整体，也可以解除类型分配，例如使用 `[]`**
 
 ```ts
 type StringOrNumberArray<T, U> = [T] extends [U] ? T[] : T
-type result = StringOrNumberArray<string | boolean, string | number>
+type result = StringOrNumberArray<string | boolean, string | number> // 结果是 tring | boolean，而不是 string[] | boolean
+
+// 可以利用这个原理来实现 IsUnion 判断一个类型是不是联合类型
+type IsUnion<T, D = T> = T extends D ? [D] extends [T] ? false : true : false
 ```
 
-**还要注意，never 条件类型判断，存在一定“陷阱”，第一，是因为 never 类型是所有类型的子类型，在 extends 判断语句中，始终是真值；第二，是因为 never 是不能分配的底层类型，包含条件类型的泛型接收 never 作为泛型入参时，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实例化得到的类型也是 never。**
+**<span style="color:red;">还要注意</span>，never 条件类型判断，存在一定“陷阱”，第一，是因为 never 类型是所有类型的子类型，在 extends 判断语句中，始终是真值；第二，是因为 never 是不能分配的底层类型，包含条件类型的泛型接收 never 作为泛型入参时，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实例化得到的类型也是 never。**
 
 ```ts
 // GetNumber 类型为 number[]
@@ -559,6 +572,9 @@ type getNever1<T> = T extends {} ? T[] : T
 type result = getNever<never>
 // result1 类型为 never
 type result1 = getNever1<never>
+
+// 如果要实现一个 IsNever 判断一个类型是不是 never
+type IsNever<T> = [T] extends [never] ? true : false
 ```
 
 用法一：利用分布式条件类型可以实现 Diff 操作
