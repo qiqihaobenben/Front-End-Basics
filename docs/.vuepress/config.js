@@ -75,13 +75,13 @@ module.exports = {
           title: 'TypeScript',
           children: [
             'typescript/intro',
-            'typescript/config_file',
+            'typescript/config-file',
             'typescript/synax',
             'typescript/type-attention',
             'typescript/type-advance',
             'typescript/type-check',
             'typescript/type-extend',
-            'typescript/programing',
+            'typescript/type-programing',
             'typescript/typescript-important',
             'typescript/use-typescript-two-years',
           ]
