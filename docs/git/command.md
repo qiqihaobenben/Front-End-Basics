@@ -305,6 +305,30 @@ git push origin :refs/tags/v0.1 # 删除远程标签
 
 链接：[里面有关于标签的操作](http://blog.csdn.net/vipzjyno1/article/details/22098621)
 
+## git rev-parse
+
+`git rev-parse` 是主要用于操作的辅助 `plumbing` 命令。
+
+```
+git rev-parse --git-dir # 显示 .git 目录的绝对/相对路径
+
+git rev-parse --show-toplevel # 显示工作区的根目录绝对路径
+
+git rev-parse --show-prefix # 显示相对于工作区根目录的相对路径
+
+git rev-parse --show-cdup # 显示从当前目录cd up（后退）到工作区根目录的深度
+
+git rev-parse --local-env-vars # 显示本地的环境变量列表，只列出变量的名称，没有变量的值
+
+git rev-parse --symbolic --branches # 显示分支
+
+git rev-parse --symbolic --tags # 显示标签
+
+git rev-parse HEAD # 显示当前分支最后一次提交的 SHA1 值
+
+git rev-parse --abbrev-ref HEAD # 显示当前的分支
+```
+
 ## git 的特定场景问题解决
 
 [Git 飞行规则(Flight Rules)](https://github.com/k88hudson/git-flight-rules/blob/master/README_zh-CN.md)
