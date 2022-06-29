@@ -1248,7 +1248,7 @@ set  -e
 #或者
 set -o errexit
 
-#可以用下面是方法
+#可以用下面的方法
 command || exit 1
 #或者
 command1 && command2

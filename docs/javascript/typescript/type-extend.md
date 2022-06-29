@@ -309,3 +309,4 @@ Array.prototype.getLen = function () {
 ## 推荐阅读
 
 - [声明文件](https://ts.xcatliu.com/basics/declaration-files)
+- [3 种类型来源和 3 种模块语法](https://mp.weixin.qq.com/s/AsTrGLhipd32RrNUFHuD5A)
