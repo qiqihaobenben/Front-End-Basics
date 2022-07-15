@@ -395,6 +395,7 @@ commitlint 中校验的规则基本上也是够用的，但是会有比较硬核
 
 - [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit)
 - [conventional commit format](https://www.conventionalcommits.org/en/v1.0.0/)
+- [如何编写 Git 提交消息](https://mp.weixin.qq.com/s/ZXhISBQTE3a4SlWLPY4VDA)
 - [Commit message 和 Change log 编写指南](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
 - [Writing Git commit messages](https://365git.tumblr.com/post/3308646748/writing-git-commit-messages)
 - [A Note About Git Commit Messages（文中讲了 subject 50 个字符的约定怎么来的）](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
