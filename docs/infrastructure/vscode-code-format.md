@@ -1,6 +1,6 @@
 # 前端代码规范和编码风格详解
 
-以 VS Code 编辑器为例展开。
+本文以 VS Code 编辑器为例展开，可以搭配 [vscode-linter-example](https://github.com/qiqihaobenben/vscode-linter-example) 这个例子对照着实践一下。
 
 ## VS Code 编辑器自身配置
 
