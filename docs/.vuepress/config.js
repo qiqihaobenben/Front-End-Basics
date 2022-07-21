@@ -87,6 +87,19 @@ module.exports = {
           ]
         },
       ],
+      // 基础建设和工程化
+      '/infrastructure/': [
+        'vscode-code-format',
+        'browserslist',
+        'need-or-not-comment',
+        'data-analysis-word-interpretation'
+      ],
+      // 职业发展
+      '/career/': [
+        'plan-2022',
+        'business-process',
+        'online-accident'
+      ],
       '/frame/vue/': [
         {
           title: 'Vue2源码',
@@ -101,26 +114,10 @@ module.exports = {
       ],
       '/project/' : [
         {
-          title: '职业',
-          collapsable: false,
-          children: [
-            'business-process',
-          ]
-        },
-        {
-          title: '规范',
-          collapsable: false,
-          children: [
-            'need-or-not-comment',
-          ]
-        },
-        {
           title: '实践经验',
           collapsable: false,
           children: [
             'el-scrollbar',
-            'data-analysis-word-interpretation',
-            'online-accident'
           ]
         }
       ],
@@ -229,13 +226,7 @@ module.exports = {
             'insight/re-decision',
           ]
         },
-        {
-          title: '职业',
-          collapsable: false,
-          children: [
-            'profession/plan-2022',
-          ]
-        },
+
       ],
       /** 捡贝壳 */
       '/article/': [
@@ -298,6 +289,17 @@ module.exports = {
               title: 'JavaScript',
               collapsable: false,
               path: '/javascript/utility/lexical-grammar'
+            },
+
+            {
+              title: '基础建设和工程化',
+              collapsable: false,
+              path: '/infrastructure/vscode-code-format'
+            },
+            {
+              title: '职业发展',
+              collapsable: false,
+              path: '/career/plan-2022'
             },
           ]
         },
