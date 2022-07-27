@@ -592,6 +592,7 @@ npx mrm@2 lint-staged
 - [浅析 eslint 原理](https://mp.weixin.qq.com/s/45-itfERV4R77WS0JL_Oew)
 - [自己动手写符合自己业务需求的 eslint 规则](https://mp.weixin.qq.com/s/cbWY0BYeNiCuNtpmylOH9g)
 - [为什么 Eslint 可以检查和修复格式问题，而 Babel 不可以？](https://mp.weixin.qq.com/s/eZuJFDTh3UBmkXkubIT1_g)
+- [深入对比 eslint 插件 和 babel 插件的异同点](https://zhuanlan.zhihu.com/p/406084980)
 - [从 ESLint 开启项目格式化](https://mp.weixin.qq.com/s/gKekFhECTiMGt5L7Qfd59Q)
 - [前端代码规范工程化最佳实践 - ESLint](https://mp.weixin.qq.com/s/2XmU8A9l3EoTwPLRkuCetA)
 - [Prettier 看这一篇就行了](https://zhuanlan.zhihu.com/p/81764012)

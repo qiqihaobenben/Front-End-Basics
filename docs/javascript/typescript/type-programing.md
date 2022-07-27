@@ -17,8 +17,8 @@ subType({ name: 'tom', age: 10, gender: 'male' }) // 报错 对象文字可以�
 
 实现思路：
 
-1. 因为 `keyof T = 'name' | 'age'`， `U` 是 `keyof T` 的子类型，可能为 `'name' | 'age' | ('name' | 'age')`
-2. 所以 `Pick<T, U>` 类型为 `{ name: string } | { age: number} | { name: string, age: number}`
+1. 因为 `keyof T = 'name' | 'age'`， `K` 是 `keyof T` 的子类型，可能为 `'name' | 'age' | ('name' | 'age')`
+2. 所以 `Pick<T, K>` 类型为 `{ name: string } | { age: number} | { name: string, age: number}`
 
 ## 二、下划线字符串转驼峰式
 
@@ -69,7 +69,7 @@ type Readonly<T> = { readonly [key in keyof T]: T[key] }
 
 ### 1、实现一个通用的 `PartialReadonly<T, K>`
 
-它有两个类型参数 `T` 和 `K`，`K` 指定应设置为 `T` 的属性集。如果为提供 `K`，则应使所有属性都变为只读，就像普通的 `Readonly<T>` 一样。
+它有两个类型参数 `T` 和 `K`，`K` 指定应设置为 `T` 的属性集。如果未提供 `K`，则应使所有属性都变为只读，就像普通的 `Readonly<T>` 一样。
 
 ```ts
 type PartialReadonly<T, K extends keyof T = keyof T> = { readonly [key in K]: T[key] } & { [key in Exclude<keyof T, K>]: T[key] }
@@ -98,13 +98,13 @@ interface X {
   y: string
 }
 
-// 期望得到：
+// 期望得到："x" | "y" | "x.a" | "x.b"
 ```
 
 实现：
 
 ```ts
-type DeepKeyOf<T> = T extends Record<string, unknown>
+type DeepKeyOf<T> = T extends Record<string, any>
   ? {
       [key in keyof T]: key extends string ? key | `${key & string}.${DeepKeyOf<T[key]>}` : never
     }[keyof T]
@@ -343,5 +343,6 @@ type UnionToTuple<T> = [T] extends [never] ? [] : [...UnionToTuple<Exclude<T, La
 - [解读 type-challenges Medium 难度 17~24 题](https://mp.weixin.qq.com/s/SJerRC2U5--5kcEZuuZ_uw)
 - [解读 type-challenges Medium 难度 25~32 题](https://mp.weixin.qq.com/s/11B6kLuz9TxykGU6_Hh8ug) -[解读 type-challenges Medium 难度 33~40 题](https://mp.weixin.qq.com/s/eV6V92Q2olfFXiPXZY4vbw)
 - [type-challenges Medium 难度 41~48 题](https://mp.weixin.qq.com/s/VXe_eE0fsnl7mxbrQnjd2A)
+- [type-challenges Medium 难度 49~56 题](https://mp.weixin.qq.com/s/V5URc5muWiaitS5GzCgyxg)
 - [TypeScript 边学边练](https://juejin.cn/post/6989063604016250893)
 - [实现 DeepKeyOf](https://mp.weixin.qq.com/s/6K2DXQ9XxyDbWLe7zw67ag)

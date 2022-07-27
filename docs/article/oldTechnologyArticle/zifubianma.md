@@ -41,3 +41,7 @@ Unicode 符号范围 | UTF-8 编码方式
 0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx
 
 0001 0000-0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+
+### 一些字符乱码的原因
+
+![](../images/zifuluanma.jpeg)
