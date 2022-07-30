@@ -702,11 +702,8 @@ obj.say();
 ## 推荐资料
 
 - [ JavaSript 模块规范 - AMD 规范与 CMD 规范介绍 ](http://blog.chinaunix.net/uid-26672038-id-4112229.html)
-
 - [JavaScript 模块演化简史](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&mid=2651226355&idx=1&sn=aedf47d5a3be53f6c7d5562977624861&chksm=bd4959778a3ed06198cbb746067393cd0f189612f4fc577417e0741df3a2b620373ea025978b&scene=21#wechat_redirect)
-
 - [require() 源码解读](http://www.ruanyifeng.com/blog/2015/05/require.html)
-
 - [在 Node.js 中引入模块：你所需要知道的一切都在这里](https://segmentfault.com/a/1190000009060866#articleHeader0)
-
 - [深入浅出 Node.js（三）：深入 Node.js 的模块机制](http://www.infoq.com/cn/articles/nodejs-module-mechanism#)
+- [ESModule 加载与运行机制](https://mp.weixin.qq.com/s/wxUz5E1Xs5dqYFPRPOnAlw)
