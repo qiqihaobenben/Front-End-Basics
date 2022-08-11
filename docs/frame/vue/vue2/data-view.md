@@ -16,9 +16,7 @@ Vue.js 的核心思想之一是数据驱动视图。所谓数据驱动视图，�
 示例代码：
 
 ```html
-<div id="app">
-  {{ message }}
-</div>
+<div id="app">{{ message }}</div>
 ```
 
 ```js
@@ -50,7 +48,7 @@ function Vue(options) {
 ```js
 let uid = 0
 
-Vue.prototype._init = function(options?: Object) {
+Vue.prototype._init = function (options?: Object) {
   const vm: Component = this
   // a uid
   vm._uid = uid++
@@ -73,11 +71,7 @@ Vue.prototype._init = function(options?: Object) {
     // 就是动态合并options很慢，而内部组件不需要特殊处理，所以进行了此处优化
     initInternalComponent(vm, options)
   } else {
-    vm.$options = mergeOptions(
-      resolveConstructorOptions(vm.constructor),
-      options || {},
-      vm
-    )
+    vm.$options = mergeOptions(resolveConstructorOptions(vm.constructor), options || {}, vm)
   }
   /* istanbul ignore else */
   if (process.env.NODE_ENV !== 'production') {
@@ -112,11 +106,7 @@ Vue.prototype._init = function(options?: Object) {
 我们可以从上到下详细过一遍：`_init()` 方法一开始的时候，将 `this` 赋值给 `vm`，然后在 `vm` (即 `this`) 上定义了两个属性：`_uid` 和 `_isVue`，然后判断有没有定义 `options._isComponent`，在使用 Vue 开发项目的时候，我们是不会使用 `_isComponent` 选项的，这个选项是 Vue 内部使用的，这里会走 else 分支：
 
 ```js
-vm.$options = mergeOptions(
-  resolveConstructorOptions(vm.constructor),
-  options || {},
-  vm
-)
+vm.$options = mergeOptions(resolveConstructorOptions(vm.constructor), options || {}, vm)
 ```
 
 这里就是 `Vue` 真正第一步做的事情： **使用策略对象合并参数选项**
@@ -235,36 +225,28 @@ const strats = config.optionMergeStrategies
 /** 2、在 strats 对象上定义与参数选项名称相同的方法 */
 // 非生产环境会使用这个逻辑
 if (process.env.NODE_ENV !== 'production') {
-  strats.el = strats.propsData = function(parent, child, vm, key) {
+  strats.el = strats.propsData = function (parent, child, vm, key) {
     if (!vm) {
-      warn(
-        `option "${key}" can only be used during instance ` +
-          'creation with the `new` keyword.'
-      )
+      warn(`option "${key}" can only be used during instance ` + 'creation with the `new` keyword.')
     }
     return defaultStrat(parent, child)
   }
 }
-strats.data = function(parentVal, childVal, vm) {}
+strats.data = function (parentVal, childVal, vm) {}
 // LIFECYCLE_HOOKS 就是 ['beforeCreate','created','beforeMount','mounted','beforeUpdate','updated','beforeDestroy','destroyed','activated','deactivated','errorCaptured']
 LIFECYCLE_HOOKS.forEach((hook) => {
   strats[hook] = mergeHook
 })
 // ASSET_TYPES 就是['component','directive','filter']
-ASSET_TYPES.forEach(function(type) {
+ASSET_TYPES.forEach(function (type) {
   strats[type + 's'] = mergeAssets
 })
-strats.watch = function(parentVal, childVal, vm, key) {}
-strats.props = strats.methods = strats.inject = strats.computed = function(
-  parentVal,
-  childVal,
-  vm,
-  key
-) {}
+strats.watch = function (parentVal, childVal, vm, key) {}
+strats.props = strats.methods = strats.inject = strats.computed = function (parentVal, childVal, vm, key) {}
 strats.provide = mergeDataOrFn
 
 /** 3、默认的合并策略：如果有 childVal 则返回 childVal 没有则返回 parentVal */
-const defaultStrat = function(parentVal: any, childVal: any): any {
+const defaultStrat = function (parentVal: any, childVal: any): any {
   return childVal === undefined ? parentVal : childVal
 }
 
@@ -379,10 +361,7 @@ this._hasHookEvent = false
 this._vnode = null // the root of the child tree
 this._staticTrees = null // v-once cached trees
 this.$vnode = this.$options._parentVnode
-this.$slots = resolveSlots(
-  this.$options._renderChildren,
-  this.$options._parentVnode || this.$options._parentVnode.context
-)
+this.$slots = resolveSlots(this.$options._renderChildren, this.$options._parentVnode || this.$options._parentVnode.context)
 this.$scopedSlots = emptyObject
 this._c = (a, b, c, d) => createElement(vm, a, b, c, d, false)
 this.$createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
@@ -441,19 +420,13 @@ Vue 中我们是通过 `$mount` 实例方法去挂载 `vm` 的，因为 `$mount`
 ```js
 // 首先缓存了原型上的 `$mount` 方法，再重新定义该方法。
 const mount = Vue.prototype.$mount
-Vue.prototype.$mount = function(
-  el?: string | Element,
-  hydrating?: boolean
-): Component {
+Vue.prototype.$mount = function (el?: string | Element, hydrating?: boolean): Component {
   el = el && query(el)
 
   /* istanbul ignore if */
   // 对 el 做了限制，Vue 不能挂载在 body 、 html 这样的根节点上
   if (el === document.body || el === document.documentElement) {
-    process.env.NODE_ENV !== 'production' &&
-      warn(
-        `Do not mount Vue to <html> or <body> - mount to normal elements instead.`
-      )
+    process.env.NODE_ENV !== 'production' && warn(`Do not mount Vue to <html> or <body> - mount to normal elements instead.`)
     return this
   }
 
@@ -468,10 +441,7 @@ Vue.prototype.$mount = function(
           template = idToTemplate(template)
           /* istanbul ignore if */
           if (process.env.NODE_ENV !== 'production' && !template) {
-            warn(
-              `Template element not found or is empty: ${options.template}`,
-              this
-            )
+            warn(`Template element not found or is empty: ${options.template}`, this)
           }
         }
       } else if (template.nodeType) {
@@ -534,10 +504,7 @@ Vue.prototype.$mount = function(
 
 ```js
 // public mount method
-Vue.prototype.$mount = function(
-  el?: string | Element,
-  hydrating?: boolean
-): Component {
+Vue.prototype.$mount = function (el?: string | Element, hydrating?: boolean): Component {
   el = el && inBrowser ? query(el) : undefined
   return mountComponent(this, el, hydrating)
 }
@@ -550,22 +517,14 @@ Vue.prototype.$mount = function(
 `$mount` 方法实际上会去调用 `mountComponent` 方法，这个方法定义在 `src/core/instance/lifecycle.js` 文件中：
 
 ```js
-export function mountComponent(
-  vm: Component,
-  el: ?Element,
-  hydrating?: boolean
-): Component {
+export function mountComponent(vm: Component, el: ?Element, hydrating?: boolean): Component {
   // 在 Vue 实例对象上添加 $el 属性，指向挂载元素
   vm.$el = el
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode
     if (process.env.NODE_ENV !== 'production') {
       /* istanbul ignore if */
-      if (
-        (vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
-        vm.$options.el ||
-        el
-      ) {
+      if ((vm.$options.template && vm.$options.template.charAt(0) !== '#') || vm.$options.el || el) {
         warn(
           'You are using the runtime-only build of Vue where the template ' +
             'compiler is not available. Either pre-compile the templates into ' +
@@ -573,10 +532,7 @@ export function mountComponent(
           vm
         )
       } else {
-        warn(
-          'Failed to mount component: template or render function not defined.',
-          vm
-        )
+        warn('Failed to mount component: template or render function not defined.', vm)
       }
     }
   }
@@ -651,7 +607,7 @@ export function mountComponent(
 `Vue.prototype._render` 方法是在调用 `renderMixin` 时添加的，是实例的一个私有方法，它用来把实例渲染成一个虚拟 Node。它定义在 `src/core/instance/render.js` 文件中：
 
 ```js
-Vue.prototype._render = function(): VNode {
+Vue.prototype._render = function (): VNode {
   const vm: Component = this
   const { render, _parentVnode } = vm.$options
 
@@ -673,11 +629,7 @@ Vue.prototype._render = function(): VNode {
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production' && vm.$options.renderError) {
       try {
-        vnode = vm.$options.renderError.call(
-          vm._renderProxy,
-          vm.$createElement,
-          e
-        )
+        vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e)
       } catch (e) {
         handleError(e, vm, `renderError`)
         vnode = vm._vnode
@@ -689,11 +641,7 @@ Vue.prototype._render = function(): VNode {
   // return empty vnode in case the render function errored out
   if (!(vnode instanceof VNode)) {
     if (process.env.NODE_ENV !== 'production' && Array.isArray(vnode)) {
-      warn(
-        'Multiple root nodes returned from render function. Render function ' +
-          'should return a single root node.',
-        vm
-      )
+      warn('Multiple root nodes returned from render function. Render function ' + 'should return a single root node.', vm)
     }
     vnode = createEmptyVNode()
   }
@@ -844,14 +792,7 @@ Vue.js 利用 createElement 方法创建 VNode，它定义在 `src/core/vdom/cre
 ```js
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
-export function createElement(
-  context: Component,
-  tag: any,
-  data: any,
-  children: any,
-  normalizationType: any,
-  alwaysNormalize: boolean
-): VNode | Array<VNode> {
+export function createElement(context: Component, tag: any, data: any, children: any, normalizationType: any, alwaysNormalize: boolean): VNode | Array<VNode> {
   if (Array.isArray(data) || isPrimitive(data)) {
     normalizationType = children
     children = data
@@ -876,12 +817,7 @@ export function _createElement(
 ): VNode | Array<VNode> {
   if (isDef(data) && isDef((data: any).__ob__)) {
     process.env.NODE_ENV !== 'production' &&
-      warn(
-        `Avoid using observed data object as vnode data: ${JSON.stringify(
-          data
-        )}\n` + 'Always create fresh vnode data objects in each render!',
-        context
-      )
+      warn(`Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` + 'Always create fresh vnode data objects in each render!', context)
     return createEmptyVNode()
   }
   // object syntax in v-bind
@@ -893,18 +829,9 @@ export function _createElement(
     return createEmptyVNode()
   }
   // warn against non-primitive key
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    isDef(data) &&
-    isDef(data.key) &&
-    !isPrimitive(data.key)
-  ) {
+  if (process.env.NODE_ENV !== 'production' && isDef(data) && isDef(data.key) && !isPrimitive(data.key)) {
     if (!__WEEX__ || !('@binding' in data.key)) {
-      warn(
-        'Avoid using non-primitive value as key, ' +
-          'use string/number value instead.',
-        context
-      )
+      warn('Avoid using non-primitive value as key, ' + 'use string/number value instead.', context)
     }
   }
   // support single function children as default scoped slot
@@ -924,18 +851,8 @@ export function _createElement(
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
     if (config.isReservedTag(tag)) {
       // platform built-in elements
-      vnode = new VNode(
-        config.parsePlatformTagName(tag),
-        data,
-        children,
-        undefined,
-        undefined,
-        context
-      )
-    } else if (
-      (!data || !data.pre) &&
-      isDef((Ctor = resolveAsset(context.$options, 'components', tag)))
-    ) {
+      vnode = new VNode(config.parsePlatformTagName(tag), data, children, undefined, undefined, context)
+    } else if ((!data || !data.pre) && isDef((Ctor = resolveAsset(context.$options, 'components', tag)))) {
       // component
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
@@ -1003,11 +920,7 @@ export function simpleNormalizeChildren(children: any) {
 // with hand-written render functions / JSX. In such cases a full normalization
 // is needed to cater to all possible types of children values.
 export function normalizeChildren(children: any): ?Array<VNode> {
-  return isPrimitive(children)
-    ? [createTextVNode(children)]
-    : Array.isArray(children)
-    ? normalizeArrayChildren(children)
-    : undefined
+  return isPrimitive(children) ? [createTextVNode(children)] : Array.isArray(children) ? normalizeArrayChildren(children) : undefined
 }
 ```
 
@@ -1018,10 +931,7 @@ export function normalizeChildren(children: any): ?Array<VNode> {
 还是当前这个文件，可以看到 `normalizeArrayChildren` 方法的定义如下：
 
 ```js
-function normalizeArrayChildren(
-  children: any,
-  nestedIndex?: string
-): Array<VNode> {
+function normalizeArrayChildren(children: any, nestedIndex?: string): Array<VNode> {
   const res = []
   let i, c, lastIndex, last
   for (i = 0; i < children.length; i++) {
@@ -1056,12 +966,7 @@ function normalizeArrayChildren(
         res[lastIndex] = createTextVNode(last.text + c.text)
       } else {
         // default key for nested array children (likely generated by v-for)
-        if (
-          isTrue(children._isVList) &&
-          isDef(c.tag) &&
-          isUndef(c.key) &&
-          isDef(nestedIndex)
-        ) {
+        if (isTrue(children._isVList) && isDef(c.tag) && isUndef(c.key) && isDef(nestedIndex)) {
           c.key = `__vlist${nestedIndex}_${i}__`
         }
         res.push(c)
@@ -1097,18 +1002,8 @@ if (typeof tag === 'string') {
   ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
   if (config.isReservedTag(tag)) {
     // platform built-in elements
-    vnode = new VNode(
-      config.parsePlatformTagName(tag),
-      data,
-      children,
-      undefined,
-      undefined,
-      context
-    )
-  } else if (
-    (!data || !data.pre) &&
-    isDef((Ctor = resolveAsset(context.$options, 'components', tag)))
-  ) {
+    vnode = new VNode(config.parsePlatformTagName(tag), data, children, undefined, undefined, context)
+  } else if ((!data || !data.pre) && isDef((Ctor = resolveAsset(context.$options, 'components', tag)))) {
     // component
     vnode = createComponent(Ctor, data, context, children, tag)
   } else {
@@ -1145,7 +1040,7 @@ createComponent 创建组件类型的 VNode 的过程，后续会介绍，本质
 `_update` 方法的作用是把 VNode 渲染成真实的 DOM，它定义在 `src/core/instance/lifecycle.js` 文件中：
 
 ```js
-Vue.prototype._update = function(vnode: VNode, hydrating?: boolean) {
+Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
   const vm: Component = this
   const prevEl = vm.$el
   const prevVnode = vm._vnode
@@ -1345,7 +1240,7 @@ export function createPatchFunction(backend) {
 ```js
 var app = new Vue({
   el: '#app',
-  render: function(createElement) {
+  render: function (createElement) {
     return createElement(
       'div',
       {
@@ -1443,15 +1338,7 @@ if (!isRealElement && sameVnode(oldVnode, vnode)) {
 `createElm`的作用是通过虚拟节点创建真实的 DOM 并插入到它的父节点中。`createElm` 函数的实现如下：
 
 ```js
-function createElm(
-  vnode,
-  insertedVnodeQueue,
-  parentElm,
-  refElm,
-  nested,
-  ownerArray,
-  index
-) {
+function createElm(vnode, insertedVnodeQueue, parentElm, refElm, nested, ownerArray, index) {
   if (isDef(vnode.elm) && isDef(ownerArray)) {
     // This vnode was used in a previous render!
     // now it's used as a new node, overwriting its elm would cause
@@ -1476,19 +1363,13 @@ function createElm(
       }
       if (isUnknownElement(vnode, creatingElmInVPre)) {
         warn(
-          'Unknown custom element: <' +
-            tag +
-            '> - did you ' +
-            'register the component correctly? For recursive components, ' +
-            'make sure to provide the "name" option.',
+          'Unknown custom element: <' + tag + '> - did you ' + 'register the component correctly? For recursive components, ' + 'make sure to provide the "name" option.',
           vnode.context
         )
       }
     }
 
-    vnode.elm = vnode.ns
-      ? nodeOps.createElementNS(vnode.ns, tag)
-      : nodeOps.createElement(tag, vnode)
+    vnode.elm = vnode.ns ? nodeOps.createElementNS(vnode.ns, tag) : nodeOps.createElement(tag, vnode)
     setScope(vnode)
 
     /* istanbul ignore if */
@@ -1518,9 +1399,7 @@ function createElm(
 上面的代码中 `createComponent` 方法目的是尝试创建子组件，在当前这个 case 下它的返回值为 false；接下来判断 `vnode` 是否包含 tag，如果包含，先简单对 tag 的合法性在非生产环境下做校验，看是否是一个合法标签；然后再去调用平台的 DOM 操作去创建一个占位符元素。
 
 ```js
-vnode.elm = vnode.ns
-  ? nodeOps.createElementNS(vnode.ns, tag)
-  : nodeOps.createElement(tag, vnode)
+vnode.elm = vnode.ns ? nodeOps.createElementNS(vnode.ns, tag) : nodeOps.createElement(tag, vnode)
 ```
 
 接下来调用 `createChildren` 方法创建子元素：
@@ -1535,15 +1414,7 @@ function createChildren(vnode, children, insertedVnodeQueue) {
       checkDuplicateKeys(children)
     }
     for (let i = 0; i < children.length; ++i) {
-      createElm(
-        children[i],
-        insertedVnodeQueue,
-        vnode.elm,
-        null,
-        true,
-        children,
-        i
-      )
+      createElm(children[i], insertedVnodeQueue, vnode.elm, null, true, children, i)
     }
   } else if (isPrimitive(vnode.text)) {
     nodeOps.appendChild(vnode.elm, nodeOps.createTextNode(String(vnode.text)))
@@ -1613,6 +1484,10 @@ function insert(parent, elm, ref) {
 而不同平台的 `patch` 的主要逻辑部分又是相同的，所以这些公共部分托管在 `src/core/vdom` 这个大目录下。差异化的部分只需要通过参数来区别，并且通过 `createPatchFunction` 把差异化参数提前固化，这样不用每次调用 `patch` 的时候都传递 `nodeOps`和 `modules`了。
 
 在这里， `nodeOps` 表示对“平台 DOM”的一些操作方法， `modules` 表示平台的一些模块，他们会在整个 `patch` 过程的不同阶段执行相应的钩子函数。
+
+## 补充一个 Vue 生命周期图示
+
+![](./images/lifecycle.png)
 
 ## 参考文档
 

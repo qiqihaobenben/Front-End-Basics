@@ -46,7 +46,7 @@ Vue.js 的目录结构如下：
 
 `src/compiler` 目录包含 Vue.js 所有编译相关的代码。它包括把模板解析成抽象语法树（AST），抽象语法树优化，代码生成等功能。
 
-编译工作可以在构建时做（借助 webpack、vue-loader 等辅助）；也可以在运行时做，使用包含构建功能的 Vue.js。显然，编译是一项耗性能的工作，所以更推荐前者——离线编译。
+编译工作可以在构建时做（借助 webpack、vue-loader 等辅助）；也可以在运行时做，使用包含编译功能的 Vue.js。显然，编译是一项耗性能的工作，所以更推荐前者——离线编译。
 
 ### core
 
@@ -124,9 +124,7 @@ let builds = require('./config').getAllBuilds()
 if (process.argv[2]) {
   const filters = process.argv[2].split(',')
   builds = builds.filter((b) => {
-    return filters.some(
-      (f) => b.output.file.indexOf(f) > -1 || b._name.indexOf(f) > -1
-    )
+    return filters.some((f) => b.output.file.indexOf(f) > -1 || b._name.indexOf(f) > -1)
   })
 } else {
   // filter out weex builds by default
