@@ -1489,10 +1489,11 @@ function insert(parent, elm, ref) {
 
 ![](./images/lifecycle.png)
 
-## 参考文档
+## 推荐阅读
 
 - [Vue2.1.7 源码学习](http://hcysun.me/2017/03/03/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/#%E5%9B%9B%E3%80%81%E4%B8%80%E4%B8%AA%E8%B4%AF%E7%A9%BF%E5%A7%8B%E7%BB%88%E7%9A%84%E4%BE%8B%E5%AD%90)
 - [Vue.js 源码数据驱动](https://ustbhuangyi.github.io/vue-analysis/v2/data-driven/)
+- [Vue2.0 源码解读系列 - 来自 Vue 的神秘礼盒](https://mp.weixin.qq.com/s/hZE474iSQkiVrGsfr91WRQ)
 - [ 打开 Vue 神秘礼盒之合并选项一](https://mp.weixin.qq.com/s/PNeYJtOuwBPgN08TeGi1vg)
 - [ 打开 Vue 神秘礼盒之合并选项二](https://mp.weixin.qq.com/s/ULtSk0kTZHkkXio-7Vy_0g)
 - [ 打开 Vue 神秘礼盒之合并选项三](https://mp.weixin.qq.com/s/Etmcj_ZxP-gNt9LJPXFbCw)

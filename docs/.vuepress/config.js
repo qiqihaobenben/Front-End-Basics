@@ -111,6 +111,12 @@ module.exports = {
             'vue2/computed&watch',
           ]
         },
+        {
+          title: '框架基础',
+          children: [
+            'Virtual-DOM'
+          ]
+        }
       ],
       '/project/' : [
         {

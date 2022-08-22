@@ -1,4 +1,4 @@
-# Vue 中的 Virtual DOM
+# Vue 中的 Virtual DOM 和 diff 算法
 
 ## 什么是 Virtual DOM
 
@@ -40,13 +40,18 @@ console.log(s, index) // 通过index可知属性应该有200+
 
 #### 真实 DOM 操作肯定比现代框架封装的 Virtual DOM 慢？
 
-[https://www.zhihu.com/question/31809713](https://www.zhihu.com/question/31809713)
+[网上都说操作真实 DOM 慢，但测试结果却比 React 更快，为什么？](https://www.zhihu.com/question/31809713)
 
-[https://zhuanlan.zhihu.com/p/86153264](https://zhuanlan.zhihu.com/p/86153264)
+[为什么说 JS 的 DOM 操作很耗性能](https://zhuanlan.zhihu.com/p/86153264)
 
-[https://juejin.cn/post/6844903902689656845](https://juejin.cn/post/6844903902689656845)
+[重新认识 Virtual DOM](https://juejin.cn/post/6844903902689656845)
 
 需要从不同的场景具体分析，例如初始化渲染场景、小量数据更新的场景，大量数据更新的场景。没有任何框架可以比纯手动的优化 DOM 操作更快，框架考虑的是普适性或者说通用性，在不需要手动优化的情况下，提供过得去的性能，来避免性能浪费。
+
+Virtual DOM 真正的价值不在于性能，而是：
+
+1. 为函数式的 UI 编程方式打开了大门
+2. 可以渲染到 DOM 以外的平台，比如 ReactNative
 
 ### 一定要用 Virtual DOM ?
 
@@ -230,11 +235,7 @@ h() 函数有函数重载的概念，函数重载是参数个数和类型不同�
 export function h(sel: string): VNode
 export function h(sel: string, data: VNodeData | null): VNode
 export function h(sel: string, children: VNodeChildren): VNode
-export function h(
-  sel: string,
-  data: VNodeData | null,
-  children: VNodeChildren
-): VNode
+export function h(sel: string, data: VNodeData | null, children: VNodeChildren): VNode
 export function h(sel: any, b?: any, c?: any): VNode {
   let data: VNodeData = {}
   let children: any
@@ -267,22 +268,10 @@ export function h(sel: any, b?: any, c?: any): VNode {
   }
   if (children !== undefined) {
     for (i = 0; i < children.length; ++i) {
-      if (is.primitive(children[i]))
-        children[i] = vnode(
-          undefined,
-          undefined,
-          undefined,
-          children[i],
-          undefined
-        )
+      if (is.primitive(children[i])) children[i] = vnode(undefined, undefined, undefined, children[i], undefined)
     }
   }
-  if (
-    sel[0] === 's' &&
-    sel[1] === 'v' &&
-    sel[2] === 'g' &&
-    (sel.length === 3 || sel[3] === '.' || sel[3] === '#')
-  ) {
+  if (sel[0] === 's' && sel[1] === 'v' && sel[2] === 'g' && (sel.length === 3 || sel[3] === '.' || sel[3] === '#')) {
     addNS(data, children, sel)
   }
   return vnode(sel, data, children, text, undefined)
@@ -379,14 +368,7 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
     // ……
   }
 
-  function addVnodes(
-    parentElm: Node,
-    before: Node | null,
-    vnodes: VNode[],
-    startIdx: number,
-    endIdx: number,
-    insertedVnodeQueue: VNodeQueue
-  ) {
+  function addVnodes(parentElm: Node, before: Node | null, vnodes: VNode[], startIdx: number, endIdx: number, insertedVnodeQueue: VNodeQueue) {
     // ……
   }
 
@@ -394,29 +376,15 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
     // ……
   }
 
-  function removeVnodes(
-    parentElm: Node,
-    vnodes: VNode[],
-    startIdx: number,
-    endIdx: number
-  ): void {
+  function removeVnodes(parentElm: Node, vnodes: VNode[], startIdx: number, endIdx: number): void {
     // ……
   }
 
-  function updateChildren(
-    parentElm: Node,
-    oldCh: VNode[],
-    newCh: VNode[],
-    insertedVnodeQueue: VNodeQueue
-  ) {
+  function updateChildren(parentElm: Node, oldCh: VNode[], newCh: VNode[], insertedVnodeQueue: VNodeQueue) {
     // ……
   }
 
-  function patchVnode(
-    oldVnode: VNode,
-    vnode: VNode,
-    insertedVnodeQueue: VNodeQueue
-  ) {
+  function patchVnode(oldVnode: VNode, vnode: VNode, insertedVnodeQueue: VNodeQueue) {
     // ……
   }
 
@@ -497,15 +465,10 @@ function createElm(vnode: VNode, insertedVnodeQueue: VNodeQueue): Node {
     const dotIdx = sel.indexOf('.', hashIdx)
     const hash = hashIdx > 0 ? hashIdx : sel.length
     const dot = dotIdx > 0 ? dotIdx : sel.length
-    const tag =
-      hashIdx !== -1 || dotIdx !== -1 ? sel.slice(0, Math.min(hash, dot)) : sel
-    const elm = (vnode.elm =
-      isDef(data) && isDef((i = data.ns))
-        ? api.createElementNS(i, tag, data)
-        : api.createElement(tag, data))
+    const tag = hashIdx !== -1 || dotIdx !== -1 ? sel.slice(0, Math.min(hash, dot)) : sel
+    const elm = (vnode.elm = isDef(data) && isDef((i = data.ns)) ? api.createElementNS(i, tag, data) : api.createElement(tag, data))
     if (hash < dot) elm.setAttribute('id', sel.slice(hash + 1, dot))
-    if (dotIdx > 0)
-      elm.setAttribute('class', sel.slice(dot + 1).replace(/\./g, ' '))
+    if (dotIdx > 0) elm.setAttribute('class', sel.slice(dot + 1).replace(/\./g, ' '))
     // 执行模块的 create 钩子函数
     for (i = 0; i < cbs.create.length; ++i) cbs.create[i](emptyNode, vnode)
     // 如果 vnode 中有子节点，创建子 vnode 对应的 DOM 元素并追加到 DOM 树上
@@ -572,12 +535,7 @@ function invokeDestroyHook(vnode: VNode) {
   }
 }
 
-function removeVnodes(
-  parentElm: Node,
-  vnodes: VNode[],
-  startIdx: number,
-  endIdx: number
-): void {
+function removeVnodes(parentElm: Node, vnodes: VNode[], startIdx: number, endIdx: number): void {
   for (; startIdx <= endIdx; ++startIdx) {
     let listeners: number
     let rm: () => void
@@ -613,14 +571,7 @@ function removeVnodes(
 #### addVnodes()
 
 ```ts
-function addVnodes(
-  parentElm: Node,
-  before: Node | null,
-  vnodes: VNode[],
-  startIdx: number,
-  endIdx: number,
-  insertedVnodeQueue: VNodeQueue
-) {
+function addVnodes(parentElm: Node, before: Node | null, vnodes: VNode[], startIdx: number, endIdx: number, insertedVnodeQueue: VNodeQueue) {
   for (; startIdx <= endIdx; ++startIdx) {
     const ch = vnodes[startIdx]
     if (ch != null) {
@@ -633,11 +584,7 @@ function addVnodes(
 #### patchVnode()
 
 ```ts
-function patchVnode(
-  oldVnode: VNode,
-  vnode: VNode,
-  insertedVnodeQueue: VNodeQueue
-) {
+function patchVnode(oldVnode: VNode, vnode: VNode, insertedVnodeQueue: VNodeQueue) {
   const hook = vnode.data?.hook
   // 首先执行用户设置的 prepatch 钩子函数
   hook?.prepatch?.(oldVnode, vnode)
@@ -682,6 +629,62 @@ function patchVnode(
 }
 ```
 
-### 推荐阅读
+## diff 算法
 
-[diff 算法深入一下？](https://mp.weixin.qq.com/s/HwowUwWA4pkSIQ1J4fwr9w)
+为了尽可能减少在页面上频繁操作大规模的真实 DOM，需要在 Virtual DOM 中进行新旧 vnode 的比较，在比较的过程中对于差异的节点调用 DOM api 进行增删改等操作从而更新真实 DOM，这个过程就是 DOM diff，diff 的具体过程和原理就是 diff 算法。
+
+一般 diff 两棵树，复杂度是 O(n^3)，这样的复杂度对于前端框架来说是不可接受的，所以前端框架的 dif 约定了两种处理原则：**只做同层的对比，type 变了就不再对比子节点。**
+
+因为 DOM 节点做跨层级移动的情况还是比较少的，一般情况下都是同一层级的 DOM 的增删改，这样只要遍历，对比一下 type 就行了，是 O(n) 的复杂度，而且 type 变了就不再对比子节点，能省下一大片节点的遍历。另外，因为 Virtual DOM 中记录了关联的 DOM 节点，执行 DOM 的增删改也不需要遍历，是 O(1) 的复杂度，整体的 dff 算法复杂度就是 O(n)。
+
+**diff 算法除了考虑本身的时间复杂度之外，还要做考虑 DOM 的操作次数，所以就要尽量复用节点，通过移动节点代替创建。**
+
+Vue2 的 diff 流程图：
+
+![](./images/v2diff.png)
+
+### 简单 diff 算法
+
+为了尽可能的复用节点，通常会根据 key 或者其他唯一标识符来进行检索，找到已经存在的节点，然后通过移动节点代替创建。
+
+所以简单的 diff 算法就是遍历 newVnode 数组的每个节点，再遍历 oldVnode 数组，看中有没有对应的 key，有的话就移动到新的位置，没有的话再创建新的。目的是根据 key 复用 DOM 节点，通过移动节点而不是创建新节点来减少 DOM 操作。
+
+### 双端 diff 算法
+
+简单 diff 算法需要遍历 newVnode 数组 和 oldVnode 数组，双端 diff 有 4 个指针，分别指向新旧两个 vnode 数组的头尾。头和尾的指针向中间移动，直到 `oldStartIdx > oldEndIdx` 或者 `newStartIdx > newEndIdx`，说明处理完了所有符合的节点，剩余的节点可以直接添加或者删除。
+
+每次对比 `sameVnode(oldStartVnode, newStartVnode)`、`sameVnode(oldEndVnode, newEndVnode)`、`sameVnode(oldStartVnode, newEndVnode)`、`sameVnode(oldEndVnode, newStartVnode)`，即两个头、两个尾，旧的头和新的尾，旧的尾和新的头。
+
+#### 如果符合上面的某个判断，那么节点就是可以复用的
+
+- 对于两个头和两个尾可以复用的节点就直接用 pathVnode 更新一下
+- 旧的头和新的尾复用节点的时候，除了 pathVnode 更新外，还需要把旧的 DOM 移动到最后
+- 旧的尾和新的头复用节点的时候，除了 pathVnode 更新外，还需要把旧的 DOM 移动到最前面
+
+以上的操作完成后，4 个指针都是需要移动的
+
+#### 如果双端都没有可复用的节点
+
+需要在 oldVnode 数组中按照 key 来寻找
+
+- 如果找到了，就把它放到 oldStartVnode.elm（真实 DOM 节点） 的前面，当前的 oldVnode 节点设置为 undefined
+- 如果没找到（可能是根据 key 没找到，或者干脆没有 key），就新建一个节点，然后插入到 oldStartVnode.elm 之前
+
+以上的操作完成后，newStartIdx 指针会移动
+
+#### 符合条件的都处理完之后
+
+- 如果 newVnode 数组有剩余，就会批量新增
+- 如果 oldVnode 数组有剩余，就会批量递减
+
+### Vue3 最长递增子序列
+
+详见[Vue3 Diff —— 最长递增子序列](https://juejin.cn/post/6919376064833667080#heading-14)
+
+## 推荐阅读
+
+- [diff 算法深入一下？](https://mp.weixin.qq.com/s/HwowUwWA4pkSIQ1J4fwr9w)
+- [聊聊 Vue 的双端 diff 算法](https://juejin.cn/post/7114177684434845727)
+- [Vue 虚拟 DOM 和 Diff 算法源码解析](https://mp.weixin.qq.com/s/DsBHNWn6waaS13xX9AxJVA)
+- [图解 Diff 算法——Vue 篇](https://mp.weixin.qq.com/s?__biz=Mzg3MDY2NTEyNg==&mid=2247487073&idx=1&sn=790580c3905876d3f380d6229693cfc4&scene=21#wechat_redirect)
+- [React、Vue2、Vue3 的三种 Diff 算法](https://juejin.cn/post/6919376064833667080)
