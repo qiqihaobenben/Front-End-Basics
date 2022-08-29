@@ -90,6 +90,8 @@ module.exports = {
       // 基础建设和工程化
       '/infrastructure/': [
         'vscode-code-format',
+        'babel',
+        'webpack',
         'browserslist',
         'need-or-not-comment',
         'data-analysis-word-interpretation'
@@ -136,7 +138,15 @@ module.exports = {
       ],
       /** NodeJS 相关 */
       '/nodejs/': [
-        'basic'
+        {
+          title: "基础",
+          children: [
+            'basic',
+            'record',
+            'npm'
+          ]
+        }
+
       ],
       /** 网络基础 */
       '/network-basics/': [

@@ -22,6 +22,7 @@ module.exports = {
         "type-enum": [2, "always", commitTypes.map(function (type) { return type.value; })],
         "scope-case": [2, "always", "lower-case"],
         "subject-empty": [2, "never"],
+        "subject-case": [2, "never", ["upper-case"]]
     },
     prompt: {
         messages: {

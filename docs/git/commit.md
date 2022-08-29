@@ -295,9 +295,63 @@ npm i --save-dev @commitlint/config-conventional @commitlint/cli
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   // rules 里面可以设置一些自定义的校验规则
-  rules: {},
+  rules: {
+    'type-empty': [2, 'never'], // type 不能为空
+    'type-case': [2, 'always', 'lower-case'], // type 必须是全小写
+    'scope-empty': [2, 'always'], // scope 必须为空
+    'subject-empty': [2, 'never'],
+    'subject-case': [2, 'never', ['upper-case']], // subject 不能是全大写
+  },
 }
 ```
+
+#### rules
+
+rules 是由 name 和配置数组构成，配置数组包含
+
+- Level [0..2]: 0 是禁用，1 是警告， 2 是错误
+- `always|never`: never 是用来规则取反的
+- Value: 规则的 value
+
+可用的规则见[https://commitlint.js.org/#/reference-rules](https://commitlint.js.org/#/reference-rules)。
+
+- header-case 单词格式, 例如： lower-case 全小写
+- header-full-stop 结束符
+- header-max-length header 最大长度
+- header-min-length header 最小长度
+- type
+  - type-enum type 可选值 例如: [ 'feat', 'fix' ]
+  - type-case type 单词格式
+  - type-empty type 是否为空
+  - type-max-length type 最大内容长度
+  - type-min-length type 最小内容长度
+- scope
+  - scope-enum scope 可选值, 例如 [ 'components', 'utils', 'cli' ]
+  - scope-case scope 单词格式
+  - scope-empty 是否为空
+  - scope-max-length scope 最大内容长度
+  - scope-min-length scope 最小内容长度
+- subject
+  - subject-case subject 单词格式
+  - subject-empty subject 是否为空
+  - subject-full-stop subject 中止符
+  - subject-max-length subject 最大内容长度
+  - subject-min-length subject 最小内容长度
+  - subject-exclamation-mark 分割符
+- body-full-stop body 结束符
+- body-leading-blank body 开头空行
+- body-empty body 是否为空
+- body-max-length body 最大内容长度
+- body-max-line-length body 最大内容行数
+- body-min-length body 最小内容长度
+- body-case 单词格式 ， 例如： upper-case 全大写
+- footer-leading-blank footer 开头空行
+- footer-empty footer 是否为空
+- footer-max-length footer 最大内容长度
+- footer-max-line-length footer 最大内容行数
+- footer-min-length footer 最小内容长度
+
+#### husky 配合
 
 在项目中安装 husky ，并在项目根目录新建 husky.config.js 文件，加入以下设置：
 

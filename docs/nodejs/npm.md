@@ -95,7 +95,7 @@ npm 脚本的退出码，也遵守 Shell 脚本规则。如果退出码不是 0 
 
 > `npx`：npm 从 5.2 开始，增加了 npx 命令，npx 的原理很简单，就是运行的时候，会到 `./node_modules/.bin` 路径和环境变量 `$PATH` 里面检查命令是否存在，如果存在，就调用执行。除了调用项目内部模块，npx 还可以从 npm 仓库下载包到本地全局，执行完命令以后再删除，也就是说可以使用 npx 来使用你本地没有安装过但是存在 npm 仓库上的包。
 >
-> 其实 `npm init` 跟 npx 也有联系，`npm init <initializer>` 通常被用于创建一个新的或者已经存在的 npm 包。initializer 在这里实际映射的是一个名为 `create-<initializer>` 的 npm 包，该包将有 npx 来下载执行，会进行一些初始化相关的操作。具体可以查看 [你不知道的 npm init](https://juejin.cn/post/6844903684032167950)
+> 其实 `npm init` 跟 npx 也有联系，`npm init <initializer>` 通常被用于创建一个新的或者已经存在的 npm 包。initializer 在这里实际映射的是一个名为 `create-<initializer>` 的 npm 包，该包将由 npx 来下载执行，会进行一些初始化相关的操作。具体可以查看 [你不知道的 npm init](https://juejin.cn/post/6844903684032167950)
 
 ### 执行顺序
 
