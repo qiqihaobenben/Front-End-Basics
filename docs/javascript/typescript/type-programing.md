@@ -341,7 +341,8 @@ type UnionToTuple<T> = [T] extends [never] ? [] : [...UnionToTuple<Exclude<T, La
 
 - [TypeScript 类型体操姿势合集](https://github.com/type-challenges/type-challenges/blob/main/README.zh-CN.md)
 - [解读 type-challenges Medium 难度 17~24 题](https://mp.weixin.qq.com/s/SJerRC2U5--5kcEZuuZ_uw)
-- [解读 type-challenges Medium 难度 25~32 题](https://mp.weixin.qq.com/s/11B6kLuz9TxykGU6_Hh8ug) -[解读 type-challenges Medium 难度 33~40 题](https://mp.weixin.qq.com/s/eV6V92Q2olfFXiPXZY4vbw)
+- [解读 type-challenges Medium 难度 25~32 题](https://mp.weixin.qq.com/s/11B6kLuz9TxykGU6_Hh8ug)
+- [解读 type-challenges Medium 难度 33~40 题](https://mp.weixin.qq.com/s/eV6V92Q2olfFXiPXZY4vbw)
 - [解读 type-challenges Medium 难度 41~48 题](https://mp.weixin.qq.com/s/VXe_eE0fsnl7mxbrQnjd2A)
 - [解读 type-challenges Medium 难度 49~56 题](https://mp.weixin.qq.com/s/V5URc5muWiaitS5GzCgyxg)
 - [解读 type-challenges Medium 难度 57~62 题](https://mp.weixin.qq.com/s/YN52KKVRJ_JHfrRGj520lQ)
