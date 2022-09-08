@@ -46,7 +46,7 @@
 <!-- 避免IE使用兼容模式 -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<!-- 不让百度转码 -->
+<!-- 不被网页（加速）转码 -->
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 
 <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->

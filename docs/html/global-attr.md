@@ -3,7 +3,7 @@
 > 局部属性和全局属性
 
 **局部属性：** 有些元素能规定自己的属性，这种属性称为局部属性。
-比如 link 元素，它具有的局部属性有 href、 rel、 hreflang、 media、 type、 sizes 这六个。
+比如 [link 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link)，它具有的局部属性有 href、 rel、 hreflang、 media、 type、 sizes 这六个。
 **全局属性：** 可以用来配置所有元素共有的行为，这种属性称为全局属性，可以用在任何一个元素身上。
 
 ---
