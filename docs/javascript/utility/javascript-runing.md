@@ -842,4 +842,4 @@ break/continue 语句如果后跟了关键字，会产生带 target 的完成记
 
 [JavaScript 运行机制详解：再谈 Event Loop](http://www.ruanyifeng.com/blog/2014/10/event-loop.html)
 
-TODO 垃圾回收可以看这个：https://mp.weixin.qq.com/s/KZsgQxlrsfYMvJejbZqGHw
+TODO 垃圾回收可以看这个：https://mp.weixin.qq.com/s/KZsgQxlrsfYMvJejbZqGHw 和 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management
