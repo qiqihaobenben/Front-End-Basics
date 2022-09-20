@@ -1,6 +1,6 @@
 # Babel 备忘录
 
-JavaScript 作为宿主语言，强烈依赖执行的环境（浏览器、node 等），不同环境对 JavaScript 语法的支持是不同的，特别是 ES6 止呕，ECMAScript 对版本的更新已经到了一年一次的结构，虽然每年更新的内容不是很多，但是每年还有很多处在不同阶段的提案，Babel 就是为了解决把使用新标准编写的代码或者实验性质的代码转译为当前环境可运行的代码。
+JavaScript 作为宿主语言，强烈依赖执行的环境（浏览器、node 等），不同环境对 JavaScript 语法的支持是不同的，特别是 ES6 之后，ECMAScript 对版本的更新已经到了一年一次的节奏，虽然每年更新的内容不是很多，但是每年还有很多处在不同阶段的提案，Babel 就是为了解决把使用新标准编写的代码或者实验性质的代码转译为当前环境可运行的代码。
 
 Babel 是一个 JavaScript Transpiler(转译器)。
 
@@ -30,7 +30,7 @@ Babel 具体的工作有三个：
 
 #### 词法分析
 
-词法分析，这一步主要是将字节流（char stream） 转换为令牌流（token stream），又成为分词，其中拆分出来的各个部分被称为词法单元（Token）。
+词法分析，这一步主要是将字节流（char stream） 转换为令牌流（token stream），又称为分词，其中拆分出来的各个部分被称为词法单元（Token）。
 
 词法分析就是把代码从 string 类型转换成了数组，数组的元素就是代码中的 token，并且标记了每个 token 的类型。
 
@@ -231,6 +231,7 @@ import "core-js/stable";
 
 - [babel-从入门到上手](https://mp.weixin.qq.com/s/LlQRx5SPmFgnTDO8VunGnw)
 - [99% 开发者没弄明白的 babel 知识](https://zhuanlan.zhihu.com/p/361874935)
+- [Babel 浅谈](https://mp.weixin.qq.com/s/qCJXhfd5ZBkpqV4bs_nY6w)
 - [重点看一下 path 和 scope 的介绍](https://juejin.cn/post/6844903746804137991#heading-4)
 - [​babel 背后到底执行了什么？](https://mp.weixin.qq.com/s/Jd7sX1yNYdXPgepwlq-XLw)
 - [理解 Babel 插件](https://developer.aliyun.com/article/62671)

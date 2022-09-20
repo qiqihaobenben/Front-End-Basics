@@ -510,3 +510,4 @@ ARIA 分为三类：
 ## 推荐阅读
 
 - [HTML 标准文档](https://html.spec.whatwg.org/)
+- [你知道的、不知道的 DOCTYPE](https://mp.weixin.qq.com/s/QayoYPhodIhHO57-I99_wA)

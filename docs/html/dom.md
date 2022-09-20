@@ -152,7 +152,7 @@ Node.replaceChild() 方法用指定的节点替换当前节点的一个子节点
 
 - compareDocumentPosition
 
-用于比较两个节点位置关系，语法：`let compareMask = node.compareDocumentPosition( otherNode )`，返回值是一个表示 Node 和 otherNode 在 Document 中关系的整数值：
+用于比较两个节点位置关系，语法：`let compareMask = node.compareDocumentPosition( otherNode )`，它可以快速判断出两个 DOM 元素的位置关系，诸如：先于、跟随、是否包含。它返回一个整数，代表了两个元素之间的关系。
 
 | 常量名                         | 十进制值 | 含义                   |
 | ------------------------------ | -------- | ---------------------- |
@@ -221,9 +221,72 @@ getElementById、getElementsByClassName、getElementsByTagName、getElementsByNa
 
 getElementsByClassName、getElementsByTagName、getElementsByName 获取的集合 HTMLCollection 并非数组，而是一个能够动态更新的集合。这说明浏览器内部是有高效的索引机制来动态更新这样的集合。
 
-以上获取的元素可以通过 children 获取子元素的集合 HTMLCollection（实时更新），与通过节点的 childNodes 相似，不过只包含元素。
+#### Element 扩展的属性和 API
 
-Element 接口扩展的属性还有 firstElementChild、lastElementChild、nextElementSibling、previousElementSibling，跟 Node 接口的 firstChild、lastChild 相似，不过只包含元素，没有子元素的话返回 null。
+获取的元素可以通过 children 获取子元素的集合 HTMLCollection（实时更新），与通过节点的 childNodes 相似，不过只包含元素。
+
+Element 接口扩展了一些获取元素节点的属性： firstElementChild、lastElementChild、nextElementSibling、previousElementSibling，跟 Node 接口的 firstChild、lastChild 相似，不过只包含元素，没有子元素的话返回 null。
+
+Element 扩展了一些查询和操作节点的 API
+
+- closest
+
+匹配**特定选择器**且离当前元素最近的祖先元素（也可以是当前元素本身）。如果匹配不到，则返回 null。
+
+- insertAdjacentElement
+
+之前说过 Node 接口插入 DOM 节点符合“最小原则的设计”，在 Element 扩展了 insertAdjacent，用于讲一个元素插入到当前元素的给定位置。
+
+insertAdjacentElement 也可以用来对已存在的元素进行移动，当传入的第二个参数是已存在于文档中的元素时，该元素直接被移动（而不是复制并移动）
+
+语法：`element.insertAdjacentElement(position, element);`
+
+position 参数表示元素的位置：
+
+- beforebegin：插入到当前元素的前面
+- afterbegin：插入到当前元素第一个子元素前面
+- beforeend：插入到当前元素最后一个子元素后面
+- afterend：插入到当前元素后面
+
+以上说法可能不是很直观，位置命名的可视化展示如下：
+
+```
+<!-- beforebegin -->
+<p>
+<!-- afterbegin -->
+foo
+<!-- beforeend -->
+</p>
+<!-- afterend -->
+```
+
+> 当节点处于 DOM 树中并且有一个父元素的时候，beforebegin 和 afterend 操作才有效。
+
+返回值是插入的元素，插入失败则返回 null
+
+- insetAdjacentHTML
+
+指定的文本解析为 Element 元素，并将结果节点插入到 DOM 树中的指定位置。它不会重新解析它正在使用的元素，因此它不会破坏元素内的现有元素。这避免了额外的序列化步骤，使其比直接使用 innerHTML 操作更快。
+
+安全问题：使用 insertAdjacentHTML 插入用户输入的 HTML 内容的时候，需要转义之后才能使用。如果只是为了插入文本内容（而不是 HTML 节点），不建议使用这个方法，建议使用 Node.textContent 或者 Element.insertAdjacentText()。因为这样不需要经过 HTML 解释器的转换，性能会好一点。
+
+- insertAdjacentText
+
+将一个给定的文本节点插入到当前元素给定的位置。
+
+- replaceWith
+
+直接将旧元素替换为新元素，语法：`oldElement.replaceWith(newElement)`
+
+需要注意的是：如果传入的 newElement 已经存在于文档中，那么方法的执行结果将是 newElement 被移动并替换掉 oldElement；如果传入的 newElement 是一个字符串，那么它将作为一个 TextNode 替换掉原有的元素。
+
+- remove
+
+把对象从它所属的 DOM 树中删除
+
+- matches
+
+表示元素是否可以被指定的选择器字符串选择，可以的话返回 true; 否则返回 false。
 
 #### Element 操作属性
 
@@ -342,8 +405,99 @@ Range API 可以比节点 API 更精确地操作 DOM 树，凡是节点 API 能�
 
 除此之外，还提供了一个[快捷方式](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMImplementation/createHTMLDocument) document.implementation.createHTMLDocument
 
-## 其他
+## 渲染布局相关
+
+### getBoundingClientRect
+
+Element.getBoundingClientRect 用来返回元素的大小以及相对于浏览器可视窗口的位置，兼容性非常好（IE6+），它的返回值是一个 DOMRect 对象，是包含整个元素的最小矩形（包括 padding 和 border-width）。
+
+DOMRect 对象使用 left、top、right、bottom、x、y、width 和 height 这几个以像素为单位的只读属性描述整个矩形的位置和大小。除了 width 和 height 以外，其他属性是相对于视图窗口的左上角来计算的。要注意**width 和 height 属性是包含了 padding 和 border-width 的，而不仅仅是内容部分的宽度和高度。**
+
+## DOM 观察者 Mutation observer
+
+在处理用户交互的时候，当前页面的 DOM 元素通常会发生很多变化，而有些场景需要开发者们监听这些变化并在触发后执行相应的操作。MutationObserver 是浏览器提供的专门用来监听 DOM 变化的接口，它强大到几乎可以观测到一个元素的所有变化。可观测的对象包括：文本的改变、子节点的添加、移除，任何元素属性的变化。
+
+```js
+function callback(mutationRecords, observer) {
+  mutationRecords.forEach(({ type, target, attributeName, oldValue, addedNodes, removedNodes }) => {
+    switch (type) {
+      case 'attributes':
+        console.log(`attribute ${attributeName} changed`)
+        console.log(`previous value:  ${oldValue} `)
+        console.log(`current value:  ${target.getAttribute(attributeName)} `)
+        break
+      case 'childList':
+        console.log('child nodes changed')
+        console.log(`added: ${addedNodes}`)
+        console.log(`removed: ${removedNodes}`)
+    }
+  })
+}
+
+const observer = new MutationObserver(callback)
+```
+
+使用时先 `new MutationObserver` 构造函数，传入构造函数的是一个回调函数，它会在被监听的 DOM 元素发生变化时执行，它的两个参数分别是：包含本次所有变更的列表 MutationRecords 和 observer 本身。其中，MutationObserver 的每一条都是一个变更记录，它是一个普通的对象，包含如下常用属性：
+
+- type ：变更的类型，attributes/characterData/childList
+- target : 发生变更的 DOM 元素
+- addedNodes ：新增子元素组合成的 NodeList
+- removedNodes ：已移除子元素组成的 NodeList
+- attributeName ：值发生改变的属性名，如果不是属性变更，则返回 null
+- previousSibling ：被添加或移除的子元素之前的兄弟节点
+- nextSibling ：被添加或移除的子元素之后的兄弟节点
+
+有了一个 DOM 观察者 observer，也有了一个完整可用的 DOM 变化后的回调函数 callback，就差一个需要被观测的 DOM 元素了：
+
+```js
+// 选择需要观察变动的节点
+const targetNode = document.getElementById('target')
+
+// 观察者的配置（需要观察什么变动）
+const config = { attributes: true, childList: true, subtree: true }
+
+// 以上述配置开始观察目标节点
+observer.observe(targetNode, config)
+
+// 之后，可停止观察
+observer.disconnect()
+```
+
+上面的代码中，通过调用观察者对象的 observe 方法，对 id 为 target 的 DOM 元素进行了观测（第一个参数就是需要观测的目标元素），而第二个参数，是一个配置对象，设置需要观察什么变动。
+
+配置对象支持如下字段：
+
+- attributes : Boolean ，是否监听元素属性的变化
+- attributeFilter ： String[] ，需要监听的特定属性名称组成的数组
+- attributeOldValue ： Boolean ，当监听元素的属性发生变化时，是否记录并传递属性的上一个值
+- characterData ： Boolean ，是否监听目标元素或子元素树中节点所包含的字符数据的变化
+- characterDataOldValue ： Boolean ，字符数据发生变化时，是否记录并传递其上一个值
+- childList ： Boolean ，是否监听目标元素天假或删除子元素
+- subtree ： Boolean ，是否扩展监视范围到目标元素下的整个字数的所有元素
+
+当不再监听目标元素的变化时，调用观察者对象的 disconnect 方法即可，如果需要的话，可以先调用观察者对象的 takeRecords 方法从观察者对象的通知队列中删除所有待处理的通知（已检测到但是未被回调函数处理），并将他们返回到一个由 MutationRecords 对象组成的数组当中。
+
+### MutationObserver 创建微任务
+
+Vue 的 nextTick 中的微任务降级处理方案之一就是使用 MutationObserver
+
+```js
+let counter = 1
+const observer = new MutationObserver(flushCallbacks) // flushCallbacks 是 nextTick 收集的回调
+const textNode = document.createTextNode(String(counter)) // 未插入DOM中的节点也是可以检测变化的
+observer.observe(textNode, {
+  characterData: true,
+})
+timerFunc = () => {
+  counter = (counter + 1) % 2
+  textNode.data = String(counter)
+}
+```
 
 ## 推荐阅读
 
+- [[译] 究竟什么是 DOM？](https://juejin.cn/post/6844903733571092493)
 - [JS 操作 DOM 常用 API 详解](https://segmentfault.com/a/1190000009588427)
+- [DOM 高级工程师不完全指南](https://mp.weixin.qq.com/s/Zq9I3rXzOSuCkJis7sRytA)
+- [before(),after(),prepend(),append()等新 DOM 方法简介](https://www.zhangxinxu.com/wordpress/2017/09/js-dom-before-after-replacewith-append-prepend/)
+- [如何禁止开发者操作网页上的 DOM 对象？](https://mp.weixin.qq.com/s/mvDeQhcwouC8PQESIUk_Og)
