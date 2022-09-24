@@ -274,7 +274,7 @@ type ChangeArgument<F extends (...args: any[]) => any[]> = Parameters<F>['length
 
 ### 1. 实现把联合类型转化成交叉类型
 
-在 TS 严格模式下，函数的参数是协变的，利用这个特性可以实现把联合类型转化成交叉类型。
+在 TS 严格模式下，函数的参数是逆变的，利用这个特性可以实现把联合类型转化成交叉类型。
 
 ```ts
 type UnionToIntersection<T> = (T extends any ? (args: T) => any : never) extends (args: infer R) => any ? R : never

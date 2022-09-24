@@ -340,7 +340,7 @@ console.log(process.env.npm_package_config.port) // 运行 npm run dev 打印：
 
 npm2 在安装依赖包时，采用简单的递归安装方法，即嵌套模式进行依赖管理。
 
-优点是 node_modules 的结构和 package.json 结构一一对应，层级结构明显，并且保证了每次安装目录结构都是相同的。存在的问题就是依赖地域，包重复安装和嵌套层级过深。
+优点是 node_modules 的结构和 package.json 结构一一对应，层级结构明显，并且保证了每次安装目录结构都是相同的。存在的问题就是依赖地狱，包重复安装和嵌套层级过深。
 
 ### npm 3
 
