@@ -394,6 +394,8 @@ arguments 参数是传递给函数的所有参数（实参）集合。无论是�
 
 arguments 对象有一个名为 length 的属性，表示实参的确切个数。通过数组索引（数组下标）的方式可以获取单个参数的值，需要注意：这里也包括没有和函数形参相关联的其他多余的参数。
 
+> [Function.length](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/length) 是函数对象的一个属性值，指该函数期望传入的参数类型，即形参的个数，**不过要注意，形参的数量不包括剩余参数个数，仅包括第一个具有默认值之前的参数个数**，与之对比的是，arguments.length 是函数被调用时实际传参的个数。
+
 ##### arguments 对象作为函数参数的别名
 
 arguments 对象可以作为函数参数的别名，如果改变了 arguments 对象的值，同时也会影响对应的函数参数；反之亦然，如果更改了某个参数的值，会同时影响参数和 arguments 对象。
