@@ -1,6 +1,6 @@
 # 浏览器工作原理
 
-## 浏览器的多进程架构
+## 浏览器的架构
 
 一个好的程序常常被划分为几个相互独立又彼此配合的模块，浏览器也是如此，以 Chrome 为例，它由多个进程组成，每个进程都有自己核心的职责，它们相互配合完成浏览器的整体功能，每个进程中又包含多个线程，一个进程内的多个线程也会协同工作，配合完成所在进程的职责。
 
@@ -10,4 +10,106 @@
 
 一个进程还可以要求操作系统生成另一个进程来执行不同的任务，系统会为新的进程分配独立的内存。两个进程之间可以使用 IPC（inter Process Communication）进行通信。很多应用都会采用这样的设计，如果一个工作进程反应迟钝，重启这个进程不会影响应用其他进程的工作。
 
-如果要开发一个浏览器，它可以是单进程多线程的应用，也可以是使用 IPC 通信的多进程应用
+### Chrome 多进程架构
+
+如果要开发一个浏览器，它可以是单进程多线程的应用，也可以是使用 IPC 通信的多进程应用。不同的浏览器采用了不同的架构模式，这里并不存在标准，Chrome 采用多进程架构，其顶层存在一个 Browser process 用以协调浏览器的其它进程。
+
+Chrome 主要进程及其职责如下：
+
+- Browser Process
+  1. 负责界面显示和用户交互，包括地址栏，书签栏，前进后退按钮等部分的工作
+  2. 负责处理浏览器的一些不可见的底层操作，比如网络请求和文件访问
+  3. 负责其他子进程管理
+- Renderer Process
+  1. 负责一个 tab 内关于网页呈现的所有事情，核心任务是将 HTML、CSS 和 JavaScript 转换为用户可以与之交互的网页，排版引擎 Blink 和 JavaScript 引擎 V8 都是运行在该进程中。
+  2. 默认情况下，Chrome 会为每个 Tab 标签创建一个渲染进程。出于安全考虑，渲染进程都是运行在沙箱模式下。
+- Plugin Process
+  1. 负责控制一个网页用到的所有插件，如 flash，因为插件易崩溃，所以需要通过插件进程来隔离，以保证插件进程崩溃不会对浏览器和页面造成影响
+- GPU Process
+  1. 负责处理 GPU 相关的任务
+  2. Chrome 刚开始发布的时候是没有 GPU 进程的，而 GPU 的使用初衷是为了实现 3D CSS 的效果，只是随后网页、Chrome 的 UI 界面都
+
+之前作为线程运行在浏览器进程中的网络线程，后来有被独立出来，作为一个单独的**网络进程**，负责处理页面的网络资源请求和加载。
+
+#### Chrome 多进程架构的优缺点
+
+优点：
+
+1. 某一渲染进程出问题不会影响其他进程
+2. 更为安全，在系统层面上限定了不同进程的权限
+
+缺点：
+
+由于不同进程间的内存不共享，所以不同进程的内存常常需要包含相同的内容。
+
+为了节省内存，Chrome 限制了最大进程数，最大进程数量由设备的内存和 CPU 能力决定，当达到这一限制时，新打开的 Tab 会共用之前同一个站点的渲染进程。
+
+#### Chrome 多进程的优化
+
+Chrome 把浏览器不同程序的功能看做服务，这些服务可以方便的分割为不同的进程或者合并为一个进程。以 Browser Process 为例，如果 Chrome 运行在强大的硬件上，它会分割不同的服务到不同的进程（如 Network Process、Storage Process、Device Process、UI Process），这样 Chrome 整体的运行会更加稳定，但是如果 Chrome 运行在资源贫瘠的设备上，这些服务又会合并到同一个进程中运行，这样可以节省内存。
+
+#### iframe 的渲染——Site Isolation
+
+Site Isolation 机制从 Chrome 67 开始默认启用。这种机制允许在同一个 Tab 下的跨站 iframe 使用单独的进程来渲染，这样会更为安全。
+
+## 浏览器的工作过程
+
+应用 Chrome 最多的场景就是在地址栏输入关键字进行搜索或者输入地址导航（跳转）到某个网站，以下是对这个过程的分析：
+
+浏览器 Tab 外的工作主要是由 Browser Process 掌控，Browser Process 又对这些工作进一步划分，使用不同线程进行处理：
+
+- UI thread 控制浏览器上的按钮及输入框
+- Network thread 处理网络请求，从网上获取数据（后被独立出去成为单独的进程）
+- Storage thread 控制文件等的访问
+
+当我们在浏览器地址栏中输入文字，并点击回车获得页面内容的过程在浏览器看来可以分为以下几步：
+
+1. 处理输入
+
+UI thread 需要判断用户输入的是 URL 还是 query
+
+2. 开始导航（跳转）
+
+当用户点击回车键，UI thread 通知 Network thread 获取网页内容，并控制 tab 上的 spinner 展现，表示正在加载中。（如果是网络进程，浏览器进程会通过进程间通信（IPC）把 URL 请求发送给网络进程）
+
+Network thread 接收到 URL 请求后检查本地缓存是否缓存了该请求资源，如果有则将该资源返回给浏览器进程。
+
+如果没有，网络进程会向服务器发起网络请求，流程如下：
+
+- 进行 DNS 解析，获取服务器 IP 地址
+- 利用 IP 地址和服务器建立 TCP 连接
+- 构建请求头信息
+- 发送请求头信息
+- 服务器响应后，网络进程接收响应头和响应信息，并解析响应内容
+
+3. 读取响应
+
+当请求响应返回的时候，首先检查状态码，如果 Network thread 接收到了重定向状态码如 301，Network thread 会从 location 字段中自动读取地址并通知 UI thread 服务器要求重定向，UI thread 会将地址栏的内容更改，之后，另一个 URL 请求会被触发。
+
+如果状态码为 200，Network thread 会根据 Content-Type 及 MIME type sniffing 判断响应内容的格式。如果响应内容的格式是 HTML，下一步将会把这些数据传递给 Renderer Process，如果是 zip 文件或者其他文件，会把相关数据传输给下载管理器或者其他 Plugin Process。
+
+Safe Browsing 检查也会在此时触发，如果域名或者请求内容匹配到已知的恶意站点，Network thread 会展示一个警告页。此外 CORB 检测也会触发，确保敏感数据不会被传递给渲染进程。
+
+4. 查找渲染进程
+
+当上述所有检查完成，Network thread 确信浏览器可以导航到请求网页，Network thread 会通知 UI thread 数据已经准备好，UI thread 会查找或启动一个 Renderer process 进行网页的渲染（检查当前 URL 和之前打开的渲染进程根域名是否相同，如果相同，则复用原来的进程，如果不同，则开启新的渲染进程）
+
+> 由于网络请求获取响应需要时间，这里其实还存在着一个加速方案。当 UI thread 发送 URL 请求给 Network thread 时，浏览器其实已经知道了将要导航到哪个站点。UI thread 会并行的预先查找和启动一个渲染进程，如果一切正常，当 Network thread 接收到数据时，渲染进程已经准备就绪了，但是如果遇到重定向，准备好的渲染进程也许就不可用了，这时候就需要重启一个新的渲染进程。
+
+5. 确认导航
+
+经过了上述过程，数据以及渲染进程都可用了，Browser process 会给 Renderer process 发送“提交文档” IPC 消息，Renderer process 接收到消息并建立传输数据的“管道”，Renderer process 接收完数据后，向 Browser process 发送“确认提交”消息，一旦 Browser process 收到 Renderer process 的渲染确认消息，导航过程结束，页面加载过程开始。
+
+此时，地址栏会更新展示出新页面的网页信息（安全、地址栏 URL），history tab 会更新，可以通过返回键返回之前的页面，为了让关闭 tab 或者窗口后便于恢复，这些信息会存放在硬盘中。
+
+6. 额外的步骤
+
+一旦导航被确认，Renderer process 会使用相关的资源渲染页面，当 Renderer process 渲染结束（渲染结束意味着该页面内的所有的页面，包括所有 iframe 都触发了 onload 时），会发送 IPC 信号到 Browser process，UI thread 会停止展示 tab 中的 spinner。
+
+在这里我们可以明确一点，所有的 JS 代码其实都由 Renderer process 控制，所以在浏览网页内容的过程大部分时候不涉及到其他的进程。不过 beforeunload 事件再次涉及到 Browser process 和 Renderer process 的交互，当当前页面关闭时（关闭 Tab，刷新等等），Browser process 需要通知 Renderer process 进行相关的检查，对相关事件进行处理。
+
+如果导航由 Renderer process 触发（比如在用户点击某连接，或者 JS 执行 `window.location = xxxx`），Renderer process 会首先检查是否有 beforeunload 事件处理器，导航请求由 Renderer process 传递给 Browser process。
+
+如果导航到新的网站，会启用一个新的 Renderer process 来处理新页面的渲染，老的进程会留下来处理类似 unload 等事件。
+
+> 关于页面的生命周期，更多内容可参考 [Page Lifecycle API](https://developer.chrome.com/blog/page-lifecycle-api/#overview_of_page_lifecycle_states_and_events)
