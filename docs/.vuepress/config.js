@@ -143,7 +143,8 @@ module.exports = {
           children: [
             'basic',
             'record',
-            'npm'
+            'npm',
+            'path'
           ]
         }
 

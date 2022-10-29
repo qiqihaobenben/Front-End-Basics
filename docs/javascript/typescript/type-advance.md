@@ -555,7 +555,7 @@ type StringOrNumberArray<T, U> = [T] extends [U] ? T[] : T
 type result = StringOrNumberArray<string | boolean, string | number> // 结果是 tring | boolean，而不是 string[] | boolean
 
 // 可以利用这个原理来实现 IsUnion 判断一个类型是不是联合类型
-type IsUnion<T, D = T> = T extends D ? [D] extends [T] ? false : true : false
+type IsUnion<T, D = T> = T extends D ? ([D] extends [T] ? false : true) : false
 ```
 
 **<span style="color:red;">还要注意</span>，never 条件类型判断，存在一定“陷阱”，第一，是因为 never 类型是所有类型的子类型，在 extends 判断语句中，始终是真值；第二，是因为 never 是不能分配的底层类型，包含条件类型的泛型接收 never 作为泛型入参时，如果作为入参以原子形式出现在条件判断 extends 关键字左侧，则实例化得到的类型也是 never。**
@@ -623,5 +623,6 @@ type T7 = ReturnType<() => string>
 
 - [TypeScript 的另一面：类型编程](https://juejin.cn/post/7000360236372459527)
 - [TS 在项目中的 N 个实用小技巧 - 第一部分](https://mp.weixin.qq.com/s/4WnHk4t_mYnkUMd9_epzbQ)
+- [TypeScript 高级类型及用法](https://mp.weixin.qq.com/s/6bNL45rHaRX60X9kjD7T3g)
 - [如何更容易上手 TypeScript 类型编程？](https://mp.weixin.qq.com/s/X3FXN1KYOlxNk3Fw_oYI2Q)
 - [never 和 unknown 的优雅之道](https://mp.weixin.qq.com/s/rZ96wy8xUrx4T1qG5OKS0w)
