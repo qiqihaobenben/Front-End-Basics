@@ -1,12 +1,3 @@
-<!--
- * @Author: chenfangxu
- * @Date: Sat Oct 29 2022 15:10:42
- * @Description: NodeJS
- * @LastEditors: chenfangxu
- * @LastEditTime: Sat Oct 29 2022 21:09:39
- * @FilePath: /front/docs/nodejs/path.md
--->
-
 # 文件路径相关
 
 ## 文件路径
@@ -164,12 +155,13 @@ console.log(path.dirname('/fangxu/project/front/test/task.js'))
 如果返回的路径字符串长度为零，会返回一个 `.`，代表当前的文件夹。
 
 ```js
+// 在 /Users/cfangxu/project/front 文件夹下
 // 执行 node test/task.js
 const path = require('path')
 console.log(path.join('/fangxu/project/', '/front/test/task.js'))
 // 输出 /fangxu/project/front/test/task.js
 console.log(path.join('fangxu/project/', 'front/test/task.js'))
-// 输出 /fangxu/project/front/test/task.js
+// 输出 fangxu/project/front/test/task.js
 console.log(path.join())
 // 输出 .
 console.log(path.join('./'))
@@ -179,7 +171,7 @@ console.log(path.join('/fangxu/project', './', 'front'))
 console.log(path.join('/fangxu/project', './', 'front', './')) // 注意跟上一个的区别，最后多了分隔符
 // 输出 /fangxu/project/front/
 console.log(path.join('../'))
-// 输出 ./
+// 输出 ../
 console.log(path.join('/fangxu/project', '../', 'front'))
 // 输出 /fangxu/front
 console.log(path.join('/fangxu/project', '../', 'front', '../')) // 注意跟上一个的区别，最后多了分隔符
@@ -225,24 +217,27 @@ console.log(path.resolve('/fangxu/project', '../', 'front', '../'))
 - 如果 from、to 中任一为空，那么，返回当前工作路径
 
 ```js
+// 在 /Users/cfangxu/project/front 文件夹下
 // 执行 node test/task.js
 const path = require('path')
 console.log(path.relative('/fangxu/project/', '/front/test/task.js'))
 // 输出 ../../front/test/task.js
 console.log(path.relative('fangxu/project/', 'front/test/task.js'))
 // 输出 ../../front/test/task.js
-console.log(path.relative('/fangxu/project/', 'fangxu/front/test/task.js')) // 一个是绝对路径，一个不是，是的那个会加上 process.cwd()
-// 输出 ../../../../../../fangxu/front/test/task.js
-// 相当于 console.log(path.relative("/Users/cfangxu/project/front/fangxu/project/","fangxu/front/test/task.js"))
-console.log(path.relative('fangxu/project/', '/fangxu/front/test/task.js')) // 一个是绝对路径，一个不是，是的那个会加上 process.cwd()
+console.log(path.relative('/fangxu/project/', 'fangxu/front/test/task.js')) // 一个是绝对路径，一个不是，不是的那个会加上 process.cwd()
 // 输出 ../../Users/cfangxu/project/front/fangxu/front/test/task.js
-// 相当于 console.log(path.relative("fangxu/project/","/Users/cfangxu/project/front/fangxu/front/test/task.js"))
+// 相当于 console.log(path.relative("/fangxu/project/","/Users/cfangxu/project/front/fangxu/front/test/task.js"))
+console.log(path.relative('fangxu/project/', '/fangxu/front/test/task.js')) // 一个是绝对路径，一个不是，不是的那个会加上 process.cwd()
+// 输出 ../../../../../../fangxu/front/test/task.js
+// 相当于 console.log(path.relative("/Users/cfangxu/project/front/fangxu/project/","/fangxu/front/test/task.js"))
 console.log(path.relative('fangxu/project/', 'fangxu/project/'))
 // 输出 ""
 console.log(path.relative('/fangxu/project/', '/fangxu/project/'))
 // 输出 ""
 console.log(path.relative('/fangxu/project/', ''))
+// 一个是绝对路径，一个不是，不是的那个会加上 process.cwd()
 // 输出 ../../Users/cfangxu/project/front
+// 相当于 console.log(path.relative("/fangxu/project/","/Users/cfangxu/project/front"))
 ```
 
 ## 推荐阅读
