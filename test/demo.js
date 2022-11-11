@@ -1,30 +1,25 @@
-/*
- * @Author: chenfangxu
- * @Date: Sat Oct 29 2022 16:21:12
- * @Description:
- * @LastEditors: chenfangxu
- * @LastEditTime: 2022-11-06 15:06:42
- * @FilePath: /front/test/demo.js
- */
-// 在 /Users/cfangxu/project/front 文件夹下
-// 执行 node test/task.js
-const path = require('path')
-console.log(path.join('/fangxu/project/', '/front/test/task.js'))
-// 输出 /fangxu/project/front/test/task.js
-console.log(path.join('fangxu/project/', 'front/test/task.js'))
-// 输出 fangxu/project/front/test/task.js
-console.log(path.join())
-// 输出 .
-console.log(path.join('./'))
-// 输出 ./
-console.log(path.join('/fangxu/project', './', 'front'))
-// 输出 /fangxu/project/front
-console.log(path.join('/fangxu/project', './', 'front', './')) // 注意跟上一个的区别，最后多了分隔符
-// 输出 /fangxu/project/front/
-console.log(path.join('../'))
-// 输出 ../
-console.log(path.join('/fangxu/project', '../', 'front'))
-// 输出 /fangxu/front
-console.log(path.join('/fangxu/project', '../', 'front', '../')) // 注意跟上一个的区别，最后多了分隔符
-// 输出 /fangxu/
+"use strict";
+
+let firstName = Symbol("first name");
+
+let lastName = Symbol("last name");
+
+// 用于对象字面量的可计算属性名
+let person = {
+  [firstName]: "tom"
+}
+// 对象单个属性设置
+person[lastName] = "zaka"
+
+// 将属性设置为只读
+Object.defineProperty(person, firstName, {writable: false})
+
+// 重写 Symbol 属性
+Object.defineProperties(person, {
+  [lastName]: {
+    value: "nio",
+    writable: false
+  }
+})
+// person[lastName] = "aaa" // 严格模式，会报错
 
