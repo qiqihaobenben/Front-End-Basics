@@ -1,25 +1,17 @@
 "use strict";
 
-let firstName = Symbol("first name");
+let uid = Symbol.for("uid")
+console.log(Symbol.keyFor(uid)) // "uid"
+let desc = String(uid)
 
-let lastName = Symbol("last name");
+let uid2 = Symbol.for("uid") // 返回已有的 Symbol(uid)
+console.log(Symbol.keyFor(uid2)) // "uid"
 
-// 用于对象字面量的可计算属性名
-let person = {
-  [firstName]: "tom"
-}
-// 对象单个属性设置
-person[lastName] = "zaka"
+let uid3 = Symbol("uid")
+console.log(Symbol.keyFor(uid3)) // undefined
+/**
+ * Symbol 全局注册表中不存在 uid3 这个 Symbol，也就是不存在与之有关的键，所以最终返回 undefined
+ */
 
-// 将属性设置为只读
-Object.defineProperty(person, firstName, {writable: false})
 
-// 重写 Symbol 属性
-Object.defineProperties(person, {
-  [lastName]: {
-    value: "nio",
-    writable: false
-  }
-})
-// person[lastName] = "aaa" // 严格模式，会报错
 
