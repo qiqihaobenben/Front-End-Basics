@@ -350,7 +350,7 @@ npm3 的 node_modules 目录改成了更加扁平的层级结构，通过扁平�
 
 存在的问题就是幽灵依赖（依赖不安全，我们可以使用依赖文件中并没有声明的 npm 包）、多重依赖和不确定性，具体可以看一下这篇文章[《关于依赖管理的真相 — 前端包管理器探究》](https://mp.weixin.qq.com/s?__biz=MzI5NjM5NDQxMg%3D%3D&mid=2247495463&idx=1&sn=591c5b3bfcf78f10c718153fe2dc8228#rd&inApp=true&exportTheme=light&isTablet=0)
 
-#### 那么相同名称但是版本不同的包时是按照什么顺序处理？
+#### 那么安装相同名称但是版本不同的包时是按照什么顺序处理？
 
 `npm install` 时，首先将 `package.json` 里的依赖按照字母（`@`排在最前）进行排序，然后将排序后的依赖包按照广度优先遍历的算法进行安装，最先被安装到的模块会被优先安装在一级 `node_modules` 目录下。所谓的广度优先遍历的安装方式，就是优先将同一层级的模块包及其依赖安装好，而不是优先将一个模块及其所有子模块安装好。
 
@@ -367,7 +367,7 @@ package-lock.json 的详细描述主要由 version、resolved、integrity、dev�
 - version：包唯一的版本号
 - resolved：安装源
 - integrity：表明包完整性的 hash 值（验证包是否已失效）
-- dev：如果为 true，则此依赖关系仅是顶级模块的开发依赖关系或者是一个的传递依赖关系
+- dev：如果为 true，则此依赖关系仅是顶级模块的开发依赖关系或者间接的开发依赖、开发依赖的传递依赖关系
 - requires：依赖包所需要的所有依赖项，对应依赖包 package.json 里 dependencies 中的依赖项
 - dependencies：因为版本冲突等原因没有安装在一级 `node_modules` 中的依赖项
 
@@ -495,6 +495,7 @@ Yarn 是 2016 年开源的，yarn 的出现是为了解决 npm v3 中存在的�
 - [npm install 原理分析](https://mp.weixin.qq.com/s?__biz=Mzk0MDMwMzQyOA==&mid=2247490258&idx=1&sn=b293a8deef3b41693e9b547c95f7b135&source=41#wechat_redirect)
 - [JavaScript 包管理器简史（npm/yarn/pnpm）](https://mp.weixin.qq.com/s/0Nx093GdMcYo5Mr5VRFDjw)
 - [深入浅出 npm & yarn & pnpm 包管理机制](https://mp.weixin.qq.com/s/ZTI-8RI0l314Ki9oBxqRWw)
+- [⭐️ 包管理工具的演进](https://mp.weixin.qq.com/s/beP1bxgbTT1Z91KS3svDvw)
 - [从 npm 切换到 pnpm 小记](https://mp.weixin.qq.com/s/nQeB8jmqyuGlhd3VcNhy9A)
 - [深入浅出 tnpm rapid 模式 - 如何比 pnpm 快 10 秒](https://mp.weixin.qq.com/s/7fLqa0EvDZXFCa8HBU2DLw)
 - [浅谈 NPM 依赖治理](https://mp.weixin.qq.com/s/ibmDnso_rPQlu_2MEuLLhQ)

@@ -289,7 +289,7 @@ console.log(String(freezing)) // 字符串模式 32°
 
 JavaScript 中有时会同时存在多个全局执行环境，比如在 Web 浏览器中，如果一个页面包含 `iframe` 标签，就会分别为页面和 `iframe` 内嵌页面生成两个全局执行环境。在大多数情况下，由于数据可以在不同环境间来回传递，不太需要担心；但是如果对象在不同环境间传递之后，想确认它的类型就有麻烦了。
 
-典型的案例是从 `iframe` 想页面中传递一个数组，或者执行反向操作。而在 ECMAScript 6 的术语中，`iframe` 和它的外围页面分别代表不同的领域（realm），而领域指的则是 JavaScript 的执行环境。所以每一个领域都有自己的全局作用域，有自己的全局对象，在任何领域中创建的数组，都是一个正规的数组。然后，如果将这个数组传递到另一个领域中，`instanceof Array` 语句的检测结果会返回 false，此时 `Array` 已是另外一个领域的构造函数，显然被检测的数组不是由这个构造函数创建的。
+典型的案例是从 `iframe` 想页面中传递一个数组，或者执行反向操作。而在 ECMAScript 6 的术语中，`iframe` 和它的外围页面分别代表不同的领域（realm），而领域指的则是 JavaScript 的执行环境。所以每一个领域都有自己的全局作用域，有自己的全局对象，在任何领域中创建的数组，都是一个正规的数组。然后，如果将这个数组传递到另一个领域中，`instanceof Array` 语句的检测结果会返回 false，此时 `Array` 已是另外一个领域的构造函数，显然被检测的数组不是由这个构造函数创建的。（可以参考：[instanceof 和多全局对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/instanceof#instanceof_%E5%92%8C%E5%A4%9A%E5%85%A8%E5%B1%80%E5%AF%B9%E8%B1%A1_%E4%BE%8B%E5%A6%82%EF%BC%9A%E5%A4%9A%E4%B8%AA_frame_%E6%88%96%E5%A4%9A%E4%B8%AA_window_%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BA%A4%E4%BA%92)）
 
 ### 针对类型识别问题的解决方案
 
