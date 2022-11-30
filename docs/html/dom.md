@@ -13,7 +13,7 @@ DOM API 大概包含 4 个部分：
 
 DOM 是一种宿主对象，即由运行环境（此处是浏览器）提供的对象，我们编写的 HTML 代码运行后，就会在内存中得到一棵 DOM 树，HTML 的写法会被转换成对应的文档模型，而我们则可以通过 JavaScript 等语言去访问这个文档模型。
 
-![](./images/dom1.webp)
+![](./images/dom1.png)
 
 其中经常用到的是 [Document](https://developer.mozilla.org/zh-CN/docs/Web/API/Document)、[Element](https://developer.mozilla.org/zh-CN/docs/Web/API/Element)、[Text](https://developer.mozilla.org/zh-CN/docs/Web/API/Text) 节点，[DocumentFragment](https://developer.mozilla.org/zh-CN/docs/Web/API/DocumentFragment) 也非常有用，常常被用来高性能地批量添加节点，其他的 [Comment](https://developer.mozilla.org/zh-CN/docs/Web/API/Comment)、 [ProcessingInstruction](https://developer.mozilla.org/en-US/docs/Web/API/ProcessingInstruction) 和 [DocumentType](https://developer.mozilla.org/zh-CN/docs/Web/API/DocumentType) 很少需要运行时去修改和操作。
 

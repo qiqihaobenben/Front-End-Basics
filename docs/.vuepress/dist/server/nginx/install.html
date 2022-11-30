@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Nginx 安装 | Front-End-Basics</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="陈方旭的个人文档">
+    
+    <link rel="preload" href="/assets/css/0.styles.e4d8b86b.css" as="style"><link rel="preload" href="/assets/js/app.3f9992d7.js" as="script"><link rel="preload" href="/assets/js/2.b9bee1c3.js" as="script"><link rel="preload" href="/assets/js/174.a9960970.js" as="script"><link rel="prefetch" href="/assets/js/10.6cc694f1.js"><link rel="prefetch" href="/assets/js/100.10bfa34e.js"><link rel="prefetch" href="/assets/js/101.4844cb35.js"><link rel="prefetch" href="/assets/js/102.d83128eb.js"><link rel="prefetch" href="/assets/js/103.e61c9f66.js"><link rel="prefetch" href="/assets/js/104.740c8655.js"><link rel="prefetch" href="/assets/js/105.f14e864b.js"><link rel="prefetch" href="/assets/js/106.8662809f.js"><link rel="prefetch" href="/assets/js/107.f7579b24.js"><link rel="prefetch" href="/assets/js/108.0e56c14e.js"><link rel="prefetch" href="/assets/js/109.ab79fa60.js"><link rel="prefetch" href="/assets/js/11.b54f14af.js"><link rel="prefetch" href="/assets/js/110.db1fc531.js"><link rel="prefetch" href="/assets/js/111.ab4d95cc.js"><link rel="prefetch" href="/assets/js/112.b992d808.js"><link rel="prefetch" href="/assets/js/113.bad6e6e1.js"><link rel="prefetch" href="/assets/js/114.ddd179f4.js"><link rel="prefetch" href="/assets/js/115.77900b43.js"><link rel="prefetch" href="/assets/js/116.dfefeec1.js"><link rel="prefetch" href="/assets/js/117.736dcd84.js"><link rel="prefetch" href="/assets/js/118.b8546f58.js"><link rel="prefetch" href="/assets/js/119.0b6dff37.js"><link rel="prefetch" href="/assets/js/12.6f57be8b.js"><link rel="prefetch" href="/assets/js/120.48f24f57.js"><link rel="prefetch" href="/assets/js/121.b5fabcf8.js"><link rel="prefetch" href="/assets/js/122.99647f69.js"><link rel="prefetch" href="/assets/js/123.998cdb0d.js"><link rel="prefetch" href="/assets/js/124.e8f39814.js"><link rel="prefetch" href="/assets/js/125.7c94e38d.js"><link rel="prefetch" href="/assets/js/126.39224229.js"><link rel="prefetch" href="/assets/js/127.3c2d3c58.js"><link rel="prefetch" href="/assets/js/128.e29bdc50.js"><link rel="prefetch" href="/assets/js/129.fbfdd24c.js"><link rel="prefetch" href="/assets/js/13.7fd1998e.js"><link rel="prefetch" href="/assets/js/130.1e94b808.js"><link rel="prefetch" href="/assets/js/131.e42eb23f.js"><link rel="prefetch" href="/assets/js/132.00dfecae.js"><link rel="prefetch" href="/assets/js/133.e98b65c9.js"><link rel="prefetch" href="/assets/js/134.1a201773.js"><link rel="prefetch" href="/assets/js/135.db25f217.js"><link rel="prefetch" href="/assets/js/136.58826ef8.js"><link rel="prefetch" href="/assets/js/137.40fc25e8.js"><link rel="prefetch" href="/assets/js/138.4979226a.js"><link rel="prefetch" href="/assets/js/139.d764aeb5.js"><link rel="prefetch" href="/assets/js/14.764984d3.js"><link rel="prefetch" href="/assets/js/140.48c2d35a.js"><link rel="prefetch" href="/assets/js/141.6761b958.js"><link rel="prefetch" href="/assets/js/142.c25f1e83.js"><link rel="prefetch" href="/assets/js/143.fb560b6f.js"><link rel="prefetch" href="/assets/js/144.a26ef32b.js"><link rel="prefetch" href="/assets/js/145.04d7760b.js"><link rel="prefetch" href="/assets/js/146.802d0534.js"><link rel="prefetch" href="/assets/js/147.486b066a.js"><link rel="prefetch" href="/assets/js/148.1fecebc1.js"><link rel="prefetch" href="/assets/js/149.47df69dd.js"><link rel="prefetch" href="/assets/js/15.f8857e9e.js"><link rel="prefetch" href="/assets/js/150.613b79ff.js"><link rel="prefetch" href="/assets/js/151.82e2c645.js"><link rel="prefetch" href="/assets/js/152.c69a5c36.js"><link rel="prefetch" href="/assets/js/153.f1377716.js"><link rel="prefetch" href="/assets/js/154.c7f0b739.js"><link rel="prefetch" href="/assets/js/155.49a2484f.js"><link rel="prefetch" href="/assets/js/156.14d26974.js"><link rel="prefetch" href="/assets/js/157.0e8db98c.js"><link rel="prefetch" href="/assets/js/158.efa5a4a1.js"><link rel="prefetch" href="/assets/js/159.95403439.js"><link rel="prefetch" href="/assets/js/16.c7522f40.js"><link rel="prefetch" href="/assets/js/160.40fb0ddd.js"><link rel="prefetch" href="/assets/js/161.c3646264.js"><link rel="prefetch" href="/assets/js/162.881a733c.js"><link rel="prefetch" href="/assets/js/163.7d4e9a4e.js"><link rel="prefetch" href="/assets/js/164.45abece5.js"><link rel="prefetch" href="/assets/js/165.f70f28fe.js"><link rel="prefetch" href="/assets/js/166.b0b44469.js"><link rel="prefetch" href="/assets/js/167.06c39265.js"><link rel="prefetch" href="/assets/js/168.9ca3dccc.js"><link rel="prefetch" href="/assets/js/169.9e5ad2b0.js"><link rel="prefetch" href="/assets/js/17.dc6c8e1a.js"><link rel="prefetch" href="/assets/js/170.ccd4c51a.js"><link rel="prefetch" href="/assets/js/171.31b14d61.js"><link rel="prefetch" href="/assets/js/172.ac974f9b.js"><link rel="prefetch" href="/assets/js/173.fac9213f.js"><link rel="prefetch" href="/assets/js/175.0e978c09.js"><link rel="prefetch" href="/assets/js/176.9499a3ea.js"><link rel="prefetch" href="/assets/js/177.ca0cedfa.js"><link rel="prefetch" href="/assets/js/178.be4e7b52.js"><link rel="prefetch" href="/assets/js/18.c860de67.js"><link rel="prefetch" href="/assets/js/19.e6506ad7.js"><link rel="prefetch" href="/assets/js/20.c3217da1.js"><link rel="prefetch" href="/assets/js/21.30166fa1.js"><link rel="prefetch" href="/assets/js/22.7bdb7807.js"><link rel="prefetch" href="/assets/js/23.89cef278.js"><link rel="prefetch" href="/assets/js/24.fa17a67d.js"><link rel="prefetch" href="/assets/js/25.7ef9f03d.js"><link rel="prefetch" href="/assets/js/26.97c7342b.js"><link rel="prefetch" href="/assets/js/27.3135678c.js"><link rel="prefetch" href="/assets/js/28.21ed1793.js"><link rel="prefetch" href="/assets/js/29.c9d72584.js"><link rel="prefetch" href="/assets/js/3.8f8d9ecb.js"><link rel="prefetch" href="/assets/js/30.969b556a.js"><link rel="prefetch" href="/assets/js/31.fb61907e.js"><link rel="prefetch" href="/assets/js/32.e2aca1ba.js"><link rel="prefetch" href="/assets/js/33.314f0e02.js"><link rel="prefetch" href="/assets/js/34.822f921f.js"><link rel="prefetch" href="/assets/js/35.eb7bc312.js"><link rel="prefetch" href="/assets/js/36.fb3d3b51.js"><link rel="prefetch" href="/assets/js/37.a22e300f.js"><link rel="prefetch" href="/assets/js/38.d5f9fe85.js"><link rel="prefetch" href="/assets/js/39.25b05af6.js"><link rel="prefetch" href="/assets/js/4.42df7ce9.js"><link rel="prefetch" href="/assets/js/40.956a7ac0.js"><link rel="prefetch" href="/assets/js/41.cb2601dd.js"><link rel="prefetch" href="/assets/js/42.82715b99.js"><link rel="prefetch" href="/assets/js/43.aee2a16a.js"><link rel="prefetch" href="/assets/js/44.faa3ab83.js"><link rel="prefetch" href="/assets/js/45.ab21f6aa.js"><link rel="prefetch" href="/assets/js/46.e05be02e.js"><link rel="prefetch" href="/assets/js/47.36282390.js"><link rel="prefetch" href="/assets/js/48.b2efd136.js"><link rel="prefetch" href="/assets/js/49.fbea41f0.js"><link rel="prefetch" href="/assets/js/5.c6cf20cb.js"><link rel="prefetch" href="/assets/js/50.ad50bd42.js"><link rel="prefetch" href="/assets/js/51.ea8d8bd6.js"><link rel="prefetch" href="/assets/js/52.b9df09ef.js"><link rel="prefetch" href="/assets/js/53.301bb916.js"><link rel="prefetch" href="/assets/js/54.ba873bec.js"><link rel="prefetch" href="/assets/js/55.c129c01d.js"><link rel="prefetch" href="/assets/js/56.3d17ce6c.js"><link rel="prefetch" href="/assets/js/57.24623ed6.js"><link rel="prefetch" href="/assets/js/58.1df7c9ab.js"><link rel="prefetch" href="/assets/js/59.588c128c.js"><link rel="prefetch" href="/assets/js/6.500251ac.js"><link rel="prefetch" href="/assets/js/60.e396d308.js"><link rel="prefetch" href="/assets/js/61.b19bd1be.js"><link rel="prefetch" href="/assets/js/62.2f932fd6.js"><link rel="prefetch" href="/assets/js/63.0d2fe986.js"><link rel="prefetch" href="/assets/js/64.a57e3ab1.js"><link rel="prefetch" href="/assets/js/65.8b21eec3.js"><link rel="prefetch" href="/assets/js/66.421a9b3e.js"><link rel="prefetch" href="/assets/js/67.86d017d7.js"><link rel="prefetch" href="/assets/js/68.9d73a71c.js"><link rel="prefetch" href="/assets/js/69.40a64bcc.js"><link rel="prefetch" href="/assets/js/7.57ec82ab.js"><link rel="prefetch" href="/assets/js/70.710ff4bf.js"><link rel="prefetch" href="/assets/js/71.2648fe76.js"><link rel="prefetch" href="/assets/js/72.433c4a3c.js"><link rel="prefetch" href="/assets/js/73.3a746cf6.js"><link rel="prefetch" href="/assets/js/74.1c7c35d0.js"><link rel="prefetch" href="/assets/js/75.acfeaa69.js"><link rel="prefetch" href="/assets/js/76.515748bd.js"><link rel="prefetch" href="/assets/js/77.1d939c93.js"><link rel="prefetch" href="/assets/js/78.4506ab33.js"><link rel="prefetch" href="/assets/js/79.4b47c294.js"><link rel="prefetch" href="/assets/js/8.ebb39e11.js"><link rel="prefetch" href="/assets/js/80.a9e39005.js"><link rel="prefetch" href="/assets/js/81.286b2cff.js"><link rel="prefetch" href="/assets/js/82.7e405530.js"><link rel="prefetch" href="/assets/js/83.14b4ef4c.js"><link rel="prefetch" href="/assets/js/84.347158a0.js"><link rel="prefetch" href="/assets/js/85.99eba8cd.js"><link rel="prefetch" href="/assets/js/86.17244fae.js"><link rel="prefetch" href="/assets/js/87.26e532b6.js"><link rel="prefetch" href="/assets/js/88.edbf421e.js"><link rel="prefetch" href="/assets/js/89.7ae3aabc.js"><link rel="prefetch" href="/assets/js/9.0533239d.js"><link rel="prefetch" href="/assets/js/90.3f040f14.js"><link rel="prefetch" href="/assets/js/91.24e5d990.js"><link rel="prefetch" href="/assets/js/92.b1376b57.js"><link rel="prefetch" href="/assets/js/93.92237822.js"><link rel="prefetch" href="/assets/js/94.12d44698.js"><link rel="prefetch" href="/assets/js/95.f4abc18c.js"><link rel="prefetch" href="/assets/js/96.ba86ad30.js"><link rel="prefetch" href="/assets/js/97.0a41e6f4.js"><link rel="prefetch" href="/assets/js/98.a2e7eb32.js"><link rel="prefetch" href="/assets/js/99.ddc53939.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.e4d8b86b.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="Front-End-Basics" class="logo"> <span class="site-name can-hide">Front-End-Basics</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Linux</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/linux/basics.html" class="sidebar-link">Linux 基础</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Shell</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/shell/basics.html" class="sidebar-link">Shell 概览</a></li><li><a href="/server/shell/script.html" class="sidebar-link">Shell 脚本编程详解</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Nginx</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/nginx/introduction.html" class="sidebar-link">Nginx 介绍</a></li><li><a href="/server/nginx/install.html" aria-current="page" class="active sidebar-link">Nginx 安装</a></li><li><a href="/server/nginx/command.html" class="sidebar-link">Nginx 操作命令</a></li><li><a href="/server/nginx/config.html" class="sidebar-link">Nginx 基础配置和语法</a></li><li><a href="/server/nginx/static.html" class="sidebar-link">Nginx 实操-静态资源服务器</a></li><li><a href="/server/nginx/proxy.html" class="sidebar-link">Nginx 实操-代理相关</a></li><li><a href="/server/nginx/tips.html" class="sidebar-link">Nginx 实操-常用配置</a></li><li><a href="/server/nginx/advance.html" class="sidebar-link">Nginx 进阶</a></li><li><a href="/server/nginx/process.html" class="sidebar-link">Nginx 执行流程</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="nginx-安装"><a href="#nginx-安装" class="header-anchor">#</a> Nginx 安装</h1> <p>Nginx 安装方式分为两种：</p> <ol><li>通过 yum、apt-get 等包管理工具安装</li></ol> <p>包管理工具是使用别人编译好的二进制包，同时解决了依赖关系，简单方便，便于升级维护，缺点是对于少见的，古老的 Linux 发行版，很难找到合适的包。</p> <ol start="2"><li>通过源码编译安装</li></ol> <p>使用源代码，根据机器自身的硬件、内核、环境进行编译，生成二进制文件，编译过程可以进行参数设定。优点是不管什么机器，只要有完整的编译环境（基本上所有的 Linux 发行版都有自己的一套完整的编译环境），就可以生成适合自己机器的二进制包，同时因为是针对本机软硬件环境编译的，生成的二进制程序运行起来理论上性能更好，更节省资源。缺点是对新手来说编译过程比较麻烦，同时升级比较麻烦。</p> <p>总起来看，包管理工具安装后程序运行的性能可能会比编译安装差一点点，或者它自带的 Nginx 模块会比较少，但是没有太大的缺点。编译安装可能将来升级版本会比较麻烦，但是熟悉了 Linux 安装环境，添加模块会比较方便。</p> <h2 id="直接安装-以-centos-的-yum-为例"><a href="#直接安装-以-centos-的-yum-为例" class="header-anchor">#</a> 直接安装（以 CentOS 的 yum 为例）</h2> <p><a href="https://nginx.org/en/linux_packages.html" target="_blank" rel="noopener noreferrer">linux_packages - Installation on Linux<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <p>yum 安装是将 yum 源中的 rpm 包下载到本地，安装这个 rpm 包，这个 rpm 包就是别人编译好的二进制包。 yum 安装的优点是方便快捷，特别是不用考虑包依赖，缺点是安装过程，人为无法干预，不能按需安装，源里面有什么就安装什么，不能自定义软件部署的路径，后期的维护成本会增加，并且安装的版本一般也比较低。</p> <p>可以按照 Nginx 官方给出的安装步骤来 <a href="https://nginx.org/en/linux_packages.html#RHEL-CentOS" target="_blank" rel="noopener noreferrer">RHEL-CentOS install<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <p>也可以直接执行：</p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token function">sudo</span> yum <span class="token function">install</span> nginx
+</code></pre></div><p>安装完成后，可以使用 <code>nginx -v</code> 来看具体的 Nginx 版本信息。</p> <h3 id="相关文件夹"><a href="#相关文件夹" class="header-anchor">#</a> 相关文件夹</h3> <p>通过这种方式安装后，可以使用 <code>rpm -ql nginx</code> 来查看 Nginx 安装后的相关目录。</p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token comment"># 配置文件</span>
+/etc/logrotate.d/nginx
+
+<span class="token comment"># fastcgi 配置相关</span>
+/etc/nginx/fastcgi.conf
+/etc/nginx/fastcgi.conf.default
+/etc/nginx/fastcgi_params
+/etc/nginx/fastcgi_params.default
+
+<span class="token comment"># 编码转换映射转化文件</span>
+/etc/nginx/koi-utf
+/etc/nginx/koi-win
+
+<span class="token comment"># 设置http 协议的 Content-Type 与扩展名对应关系</span>
+/etc/nginx/mime.types
+/etc/nginx/mime.types.default
+
+<span class="token comment"># Nginx 主配置文件</span>
+/etc/nginx/nginx.conf
+/etc/nginx/nginx.conf.default
+
+<span class="token comment"># cgi配置相关</span>
+/etc/nginx/scgi_params
+/etc/nginx/scgi_params.default
+/etc/nginx/uwsgi_params
+/etc/nginx/uwsgi_params.default
+
+<span class="token comment"># 编码转换映射转化文件</span>
+/etc/nginx/win-utf
+
+/usr/bin/nginx-upgrade
+<span class="token comment"># 用于配制出系统守护进程管理器管理方式</span>
+/usr/lib/systemd/system/nginx.service
+<span class="token comment"># Nginx 模块目录</span>
+/usr/lib64/nginx/modules
+<span class="token comment"># Nginx 服务启动管理的终端命令</span>
+/usr/sbin/nginx
+
+<span class="token comment"># Nginx的手册和帮助文件</span>
+/usr/share/doc/nginx-1.16.1
+/usr/share/doc/nginx-1.16.1/CHANGES
+/usr/share/doc/nginx-1.16.1/README
+/usr/share/doc/nginx-1.16.1/README.dynamic
+/usr/share/doc/nginx-1.16.1/UPGRADE-NOTES-1.6-to-1.10
+/usr/share/licenses/nginx-1.16.1
+/usr/share/licenses/nginx-1.16.1/LICENSE
+/usr/share/man/man3/nginx.3pm.gz
+/usr/share/man/man8/nginx-upgrade.8.gz
+/usr/share/man/man8/nginx.8.gz
+/usr/share/nginx/html/404.html
+/usr/share/nginx/html/50x.html
+/usr/share/nginx/html/en-US
+/usr/share/nginx/html/icons
+/usr/share/nginx/html/icons/poweredby.png
+/usr/share/nginx/html/img
+/usr/share/nginx/html/index.html
+/usr/share/nginx/html/nginx-logo.png
+/usr/share/nginx/html/poweredby.png
+/usr/share/vim/vimfiles/ftdetect/nginx.vim
+/usr/share/vim/vimfiles/ftplugin/nginx.vim
+/usr/share/vim/vimfiles/indent/nginx.vim
+/usr/share/vim/vimfiles/syntax/nginx.vim
+/var/lib/nginx
+/var/lib/nginx/tmp
+
+<span class="token comment"># Ngxin 的日志目录</span>
+/var/log/nginx
+</code></pre></div><ul><li>上面的目录中位于 <code>/etc</code> 目录下的主要是配置文件；</li> <li><code>/etc/nginx/conf.d/</code> 文件夹，一般是进行子配置的配置项存放处（即我们自定义的配置），<code>/etc/nginx/nginx.conf</code> 主配置文件会默认把这个文件夹中所有子配置项都引入；</li> <li><code>/usr/share/nginx/html/</code> 文件夹，通常静态文件都放在这个文件夹（Nginx 运行起来，什么都不配置时访问的就是这里的 html 页面）</li></ul> <h2 id="源码编译安装"><a href="#源码编译安装" class="header-anchor">#</a> 源码编译安装</h2> <p>Nginx 的二进制文件会把模块直接编译进去，如果想安装第三方的模块，必须通过编译安装的方式。</p> <h3 id="下载-nginx"><a href="#下载-nginx" class="header-anchor">#</a> 下载 Nginx</h3> <p>打开 <a href="https://nginx.org/en/download.html" target="_blank" rel="noopener noreferrer">Nginx 下载<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> 页面，可以看到 Nginx 的三个版本：Mainline version（开发版本）、Stable version（稳定版本）、Legacy versions（过期版本）。复制 nginx-1.20.1 的下载链接： https://nginx.org/download/nginx-1.20.1.tar.gz</p> <div class="language- extra-class"><pre class="language-text"><code># cd /usr/local/src
+
+# 下载
+wget https://nginx.org/download/nginx-1.20.1.tar.gz
+
+# 解压
+tar -xzf nginx-1.20.1.tar.gz
+</code></pre></div><h3 id="相关目录"><a href="#相关目录" class="header-anchor">#</a> 相关目录</h3> <p>在 nginx-1.20.1 文件夹下有如下目录</p> <div class="language- extra-class"><pre class="language-text"><code>auto #目录
+CHANGES #文件：Nginx的变更日志
+CHANGES.ru #文件：俄罗斯版本的Nginx的变更日志
+conf #目录：示例文件，为了方便运维配置，可以直接拷贝到安装目录
+configure #脚本文件：是一个用来生成中间文件，执行编译前的必备动作
+contrib #目录：提供了 pl 脚本和vim 的工具，Nginx 语法在 vim 中语法高亮。
+html #目录：index.html 欢迎页和50x.html 错误页
+LICENSE
+man # Nginx 的帮助文件
+README
+src # Nginx 的源代码
+</code></pre></div><h4 id="auto-目录"><a href="#auto-目录" class="header-anchor">#</a> auto 目录</h4> <div class="language- extra-class"><pre class="language-text"><code>cc
+define
+endianness
+feature
+have
+have_headers
+headers
+include
+init
+install
+lib
+make
+module
+modules
+nohave
+options
+os
+sources
+stubs
+summary
+threads
+types
+unix
+</code></pre></div><p>有四个子目录：cc 用于编译，lib 是工具库库，os 是对操作系统的判断，types 目录。</p> <p>其他所有文件都是为了辅助 configure 脚本执行的时候去判定 Nginx 支持哪些模块，当前的系统有什么特性可以供 Nginx 使用。</p> <h3 id="configure"><a href="#configure" class="header-anchor">#</a> configure</h3> <h4 id="常用的编译选项"><a href="#常用的编译选项" class="header-anchor">#</a> 常用的编译选项</h4> <p>先查看一下 configure 支持的参数： <code>./configure --help</code>。打印出来的信息可以分为几类：</p> <ol><li>目录相关</li></ol> <ul><li><code>--prefix=PATH</code>：指定 Nginx 的安装目录。默认为 <code>/usr/local/nginx</code></li> <li><code>--modules-path=PATH</code>：指定动态模块的目录</li> <li><code>--conf-path=PATH</code>：设置 nginx.conf 配置文件的路径。不过 Nginx 允许使用不同的配置文件启动，通过命令行中的 <code>-c</code> 选项。默认为 <code>${prefix}/conf/nginx.conf</code></li></ul> <ol start="2"><li>模块相关</li></ol> <p>Nginx 大部分常用模块，以 <code>--without</code> 开头的在编译时都默认安装，<code>--with</code> 开头的默认不安装。</p> <ul><li><code>--with-http_ssl_module</code>：使用 https 协议模块。默认情况下，该模块没有被构建。使用这个模块的前提是 openssl 与 openssl-devel 已安装。</li> <li><code>--with-http_stub_status_module</code>：用来监控 Nginx 的当前状态。</li> <li><code>--with-http_realip_module</code>：通过这个模块允许我们改变客户端请求头中客户端 IP 地址值（例如 X-Real-IP 或 X-Forwarded-For），意义在于能够使得后端服务器能获取到原始客户端的 IP 地址。</li> <li><code>--add-module=PATH</code>：添加第三方外部模块，如 nginx-sticky-module-ng 或缓存模块。每次添加新的模块都要重新编译（Tengine 可以在新加入 module 时无需重新编译）</li></ul> <ol start="3"><li>编译相关</li></ol> <ul><li><code>--with-pcre</code>：设置 PCRE 库的源码路径，如果已通过 yum 方式安装，使用 <code>--with-pcre</code> 自动找到库文件。perl 正则表达式使用在 <code>location</code> 指令和 <code>ngx_http_rewrite_module</code> 模块中。</li> <li><code>--with-pcre=DIR</code>：需要从 PCRE 网站下载 PCRE 库的源码并解压。</li> <li><code>--with-zlib=DIR</code>：执行 zlib 的源码解压目录。在默认就启用的网络传输压缩模块 <code>ngx_http_gzip_module</code>时需要使用 zlib。</li></ul> <ol start="4"><li>其他</li></ol> <ul><li><code>--user=USER</code>：设置 Nginx 工作进程的用户。不过安装完成后，可以随时在 nginx.conf 配置文件更改 user 指令。默认的用户名是 nobody。</li> <li><code>--group=GROUP</code>：同上类似。</li></ul> <h4 id="安装前的配置检查"><a href="#安装前的配置检查" class="header-anchor">#</a> 安装前的配置检查</h4> <p>运行 <code>./configure</code> 进行安装前的配置检查，看是否有报错。检查中如果发现一些依赖库没有找到，这时候需要先安装 Nginx 的一些依赖库。根据报错缺啥安装啥。一般不超过以下几种：</p> <div class="language- extra-class"><pre class="language-text"><code># 以下依赖按需安装
+
+yum -y install pcre pcre-devel #安装使nginx支持rewrite
+yum -y install gcc gcc-c++
+yum -y install zlib zlib-devel
+yum -y install openssl openssl-devel
+</code></pre></div><p>解决报错后，进行编译并安装的操作：</p> <div class="language- extra-class"><pre class="language-text"><code>  ./configure  --prefix=/usr/local/nginx  --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_degradation_module --with-http_slice_module --with-http_stub_status_module --with-mail --with-mail_ssl_module --with-stream --with-stream_ssl_module --with-stream_realip_module --with-stream_ssl_preread_module --with-threads
+</code></pre></div><p><strong>这里要特别注意一下以后需要用到的功能模块是否存在，不然以后添加新的包会比较麻烦。之前提到的 auto 目录中有一个 options 文件，这个文件里面保存的就是 Nginx 编译过程中的所有选项配置。其中就有默认安装的模块。</strong></p> <h3 id="中间文件"><a href="#中间文件" class="header-anchor">#</a> 中间文件</h3> <p>在 nginx-1.20.1 文件夹下，执行 <code>./configure ……</code> 后会生成中间文件 objs。objs 的目录如下：</p> <div class="language- extra-class"><pre class="language-text"><code>autoconf.err
+Makefile
+ngx_auto_config.h
+ngx_auto_headers.h
+ngx_modules.c #决定了编译时有哪些模块会被编译进Nginx
+src
+</code></pre></div><h3 id="编译"><a href="#编译" class="header-anchor">#</a> 编译</h3> <p>在 nginx-1.20.1 文件夹下，执行 <code>make</code> ，进行编译。</p> <p>此时中间文件 objs 的目录如下：</p> <div class="language- extra-class"><pre class="language-text"><code>autoconf.err
+Makefile
+nginx
+nginx.8
+ngx_auto_config.h
+ngx_auto_headers.h
+ngx_modules.c
+ngx_modules.o
+src
+</code></pre></div><p>最终运行的 Nginx 二进制文件就在 objs 中。C 语言编译时生成的所有中间文件，都会放在 src 目录。</p> <h3 id="安装"><a href="#安装" class="header-anchor">#</a> 安装</h3> <p>在 nginx-1.20.1 文件夹下，执行 <code>make install</code>。</p> <p>根据上面的 prefix 指定路径 <code>/usr/lcoal/nginx</code> 去查看安装好的目录：</p> <div class="language- extra-class"><pre class="language-text"><code>conf #决定Nginx功能的配置文件目录
+html
+logs
+sbin #Nginx的二进制执行文件
+</code></pre></div><p>查看 nginx 安装后所在的目录，可以看到已经安装到 <code>/usr/local/nginx</code> 目录了：</p> <div class="language- extra-class"><pre class="language-text"><code>whereis nginx #查看nginx的相关目录
+</code></pre></div><h2 id="两种安装方式区别"><a href="#两种安装方式区别" class="header-anchor">#</a> 两种安装方式区别</h2> <ol><li><p>生产环境，yum 和源码安装的区别根本上不是性能和 rpm 库里面版本过低的问题（性能问题完全可以通过配置来避免加载不需要的模块来解决），大部分生产环境要求服务器的环境配置要一致，几千台服务器，如果 yum 安装，机房和机房之间，国家和国家之间，yum 的库不能保持一致维护成本就会很高（现在是不是可以用 docker 来解决？），如果用源码安装，一个脚本几条命令就能保证环境和版本一致。所以一般建议：大型的软件包、软件服务，采用源码编译，小型的软件环境，库文件，可以使用 yum。</p></li> <li><p>对于初学者，建议采用 yum 安装，只需要 <code>yum install &lt;软件名&gt;</code> ，系统就自动根据 yum 源配置文件中的镜像位置去下载安装包，并可以自动分析所需要的软件依赖关系，自动安装所需要的依赖软件包，简单方便，不用考虑依赖关系。但是有些软件并不能通过 yum 安装，所以对于进阶用户，还是建议源码安装的方式，下载源码包，然后解压编译安装，过程中可以指定配置参数，更加灵活方便，兼容性更强。并且建议初学者慢慢尝试源码安装，这一点很有必要，这样能知道自己在做什么，安装过程中，肯定会遇到很多很多问题，遇到问题，解决问题，就慢慢的进阶了，如果一直用 yum 安装，偶然碰到了一点问题，就很难解决。</p></li> <li><p>能解决问题的都是好方法，最重要的是我们知道了两种安装方式的优缺点，在具体场景下就能找到合适的解决办法。在实际工作中，两种方式结合起来使用，效果更加。</p></li></ol> <h2 id="nginx-模块"><a href="#nginx-模块" class="header-anchor">#</a> Nginx 模块</h2> <p><a href="https://nginx.org/en/docs/" target="_blank" rel="noopener noreferrer">官方模块文档链接<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <p>Nginx 的模块使用的前提是编译进了 Nginx，了解一个模块可以从以下三个方面入手：</p> <ul><li>模块提供哪些配置项</li> <li>模块何时被使用</li> <li>模块提供哪些变量</li></ul> <p>上面说的三个方面，如果是官方模块可以直接在官方文档中找到相关的信息，如果是第三方模块，在文档不全的情况下也可以通过查看模块源码的方式来找到相关信息，例如上面编译安装步骤中，在 <code>/usr/local/src/nginx-1.20.1/</code> 的 <code>objs</code> 目录中的 <code>ngx_modules.c</code>，可以看到编译进 Nginx 的所有模块；然后在 <code>/usr/local/src/nginx-1.20.1/</code> 的 <code>src</code> 目录下能找到相应的模块源码，像是 <code>ngx_http_gzip_filter_module</code> 的源码就在 <code>/usr/local/src/nginx-1.20.1/src/http/modules/ngx_http_gzip_filter_module.c</code>。</p> <h3 id="nginx-模块分类"><a href="#nginx-模块分类" class="header-anchor">#</a> Nginx 模块分类</h3> <ul><li>核心模块：nginx 最基本最核心的服务，如进程管理、权限控制、日志记录；</li> <li>标准 HTTP 模块：Nginx 服务器的标准 HTTP 功能；</li> <li>可选 HTTP 模块：处理特殊的 HTTP 请求；</li> <li>邮件服务模块：邮件服务；</li> <li>第三方模块：作为扩展，完成特殊功能</li></ul> <h3 id="模块清单"><a href="#模块清单" class="header-anchor">#</a> 模块清单</h3> <h4 id="核心模块"><a href="#核心模块" class="header-anchor">#</a> 核心模块</h4> <ul><li>ngx_core</li> <li>ngx_errlog</li> <li>ngx_conf</li> <li>ngx_events</li> <li>ngx_http</li> <li>ngx_mail</li> <li>ngx_stream</li> <li>ngx_regex</li></ul> <h4 id="标准-http-模块"><a href="#标准-http-模块" class="header-anchor">#</a> 标准 HTTP 模块</h4> <ul><li>ngx_http</li> <li>ngx_http_core: 配置端口、URI 分析，服务器响应错误处理，别名控制（alias）等</li> <li>ngx_http_log: 自定义 access 日志</li> <li>ngx_http_upstream: 定义一组服务器，可以接收来自 proxy、fastcgi、memcache 的重定向，主要用作负载均衡</li> <li>ngx_http_status</li> <li>ngx_http_autoindex: 自动生成目录列表</li> <li>ngx_http_index: 处理以 <code>/</code> 结尾的请求，如果没有找到 index 页，则看是否开启了 random_index，如果开启了，就用它，否则用 autoindex</li> <li>ngx_http_auth_basic: 基于 http 的身份认证（auth_basic）</li> <li>ngx_http_access: 基于 IP 地址的访问控制（deny、allow）</li> <li>ngx_http_limit_conn: 限制来自客户端的连接的响应和处理速率</li> <li>ngx_http_geo: 根据客户端 IP 地址创建变量</li> <li>ngx_http_map: 创建任意的键值对变量</li> <li>ngx_http_split_clients</li> <li>ngx_http_referer: 过滤 HTTP 头中 Referer 为空的对象</li> <li>ngx_http_rewrite: 通过正则表达式重定向请求</li> <li>ngx_http_proxy</li> <li>ngx_http_fastcgi: 支持 fastcgi</li> <li>ngx_http_uwsgi</li> <li>ngx_http_memcached</li> <li>ngx_http_empty_gif: 从内存创建一个 1x1 的透明 gif 图片，可以快速调用</li> <li>ngx_http_browser: 解析 http 请求头部的 User-Agent 值</li> <li>ngx_http_charset: 指定网页编码</li> <li>ngx_http_headers_filter: 设置 http 响应头</li> <li>ngx_http_upstream_ip_hash</li> <li>ngx_http_upstream_least_conn</li> <li>ngx_http_upstream_keepalive</li> <li>ngx_http_write_filter</li> <li>ngx_http_header_filter</li> <li>ngx_http_chunked_filter</li> <li>ngx_http_range_header</li> <li>ngx_http_gzip_filter</li> <li>ngx_http_postpone_filter</li> <li>ngx_http_ssi_filter</li> <li>ngx_http_charset_filter</li> <li>ngx_http_userid_filter</li> <li>ngx_http_copy_filter</li> <li>ngx_http_range_body_filter</li> <li>ngx_http_not_modified_filter</li></ul> <h4 id="可选-http-模块"><a href="#可选-http-模块" class="header-anchor">#</a> 可选 HTTP 模块</h4> <ul><li>ngx_http_addition: 在请求的响应页面开始或者结尾添加文本信息</li> <li>ngx_http_degradation: 在低内存的情况下允许服务器放回 444 或者 204 错误</li> <li>ngx_http_perl</li> <li>ngx_http_flv: 支持将 Flash 多媒体信息按照流文件传输，可以根据客户端指定的开始位置返回 Flash</li> <li>ngx_http_geoip: 支持解析基于 GeoIP 数据库的客户端请求</li> <li>ngx_http_perftools</li> <li>ngx_http_gzip: 压缩请求的响应</li> <li>ngx_http_gzip_static: 搜索并使用预压缩的以 <code>.gz</code> 为后缀的文件代替一般文件响应客户端请求</li> <li>ngx_http_image_filter: 支持改变 png、jpeg、gif 图片的尺寸和旋转方向</li> <li>ngx_http_mp4: 支持 .mp4、.m4v、.m4a 等多媒体信息按照流文件传输，常与 ngx_http_flv 一起使用</li> <li>ngx_http_random_index: 当收到 <code>/</code> 结尾的请求时，在指定目录下随机选择一个文件作为 index</li> <li>ngx_http_secure_link: 支持对请求链接的有效性检查</li> <li>ngx_http_ssl: 支持 https</li> <li>ngx_http_stub_status</li> <li>ngx_http_sub_module: 使用指定的字符串替换响应中的信息</li> <li>ngx_http_dav: 支持 HTTP 和 WebDAV 协议中的 PUT、DELETE、MKCOL、COPY、MOVE 方法</li> <li>ngx_http_xslt: 将 XML 响应信息使用 XSLT 进行转换</li></ul> <h4 id="邮件服务"><a href="#邮件服务" class="header-anchor">#</a> 邮件服务</h4> <ul><li>ngx_mail_core</li> <li>ngx_mail_pop3</li> <li>ngx_mail_imap</li> <li>ngx_mail_smtp</li> <li>ngx_mail_auth_http</li> <li>ngx_mail_proxy</li> <li>ngx_mail_ssl</li></ul> <h4 id="第三方模块"><a href="#第三方模块" class="header-anchor">#</a> 第三方模块</h4> <ul><li>echo-nginx-module: 支持在 Nginx 配置文件中使用 <code>echo</code>、<code>sleep</code>、<code>time</code>、<code>exec</code> 等类 Shell 命令</li> <li>memc-nginx-module</li> <li>rds-json-nginx-module: 使 Nginx 支持 json 数据的处理</li> <li>lua-nginx-module</li></ul> <h2 id="推荐阅读"><a href="#推荐阅读" class="header-anchor">#</a> 推荐阅读</h2> <ul><li><a href="https://blog.csdn.net/qq_34556414/article/details/104777892" target="_blank" rel="noopener noreferrer">Nginx 源码安装和 yum 安装对比<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://segmentfault.com/a/1190000002797601" target="_blank" rel="noopener noreferrer">nginx 服务器安装及配置文件详解<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/server/nginx/install.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">11/1/2021, 5:57:02 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/server/nginx/introduction.html" class="prev">
+        Nginx 介绍
+      </a></span> <span class="next"><a href="/server/nginx/command.html">
+        Nginx 操作命令
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.3f9992d7.js" defer></script><script src="/assets/js/2.b9bee1c3.js" defer></script><script src="/assets/js/174.a9960970.js" defer></script>
+  </body>
+</html>

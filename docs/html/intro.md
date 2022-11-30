@@ -20,7 +20,7 @@ HTML5 的语义化指的是**合理正确的使用语义化的标签来创建页
 - 引述标签：blockquote 表示段落级引述内容，q 表示行内的引述内容，cite 表示引述的作品名
 - pre：表示这部分内容是预先排版过的，不需要浏览器进行排版。经常与其配合的是：samp 标签表示计算机程序的示例输出，code 标签用来呈现一段计算机代码
 
-![](./images/tag.webp)
+![](./images/tag.png)
 
 具体可见[HTML 元素参考](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element)
 
@@ -474,7 +474,6 @@ frameset 结构的网页如今已经很少见到了，它使用 frameset 标签�
 众所周知，HTML 中允许一些标签不闭合的用法，实际上这些都是符合 SGML 规定的，并且在 DTD 中规定好了的。但是，一些程序员喜欢严格遵守 XML 语法，保证标签闭合性，所以，HTML 4.0.1 又规定了 XHTML 语法，同样有三个版本：
 
 ```
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 

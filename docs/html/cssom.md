@@ -170,7 +170,7 @@ demo.addEventListener('scroll', function (event) {
 
 window 对象上提供了一些全局的尺寸信息，它是通过属性来提供的。
 
-![](./images/cssom1.webp)
+![](./images/cssom1.png)
 
 虽然 window 有这么多相关信息，主要使用的是 innerHeight、innerWidth 和 devicePixelRatio 三个属性。
 
