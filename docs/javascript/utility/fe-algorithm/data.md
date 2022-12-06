@@ -1,4 +1,4 @@
-# 数据结构
+# 常见数据结构
 
 > 数据结构是计算机为了高效地利用资源而组织数据的一种方式。数据结构和算法是解决一切编程问题的基础。
 
@@ -1308,10 +1308,7 @@ for(let i = 1; i < myVertices.length; i++) {
 以上说的图不是加权图，如果要计算加权图中的最短路径（例如，城市 A 和城市 B 之间的最短路径——GPS 和 Google Maps 中用到的算法），广度优先搜索未必合适。
 
 > 举例
-> **Dijkstra 算法** 解决了单源最短路径问题。 **[1、Dijkstra 实现](http://www.zhiwenli.com/wordpress/?p=745)** **[2、理解 Dijkstra](http://www.bijishequ.com/detail/439838?p=)**
-> **Bellman-Ford 算法** 解决了边权值为负的单源最短路径问题。 **[Bellman-Ford 实现](https://segmentfault.com/a/1190000012691823)** **[理解 Bellman-Ford](https://my.oschina.net/qiaotoubao/blog/735890)**
-> **A\*搜索算法** 解决了求仅一对顶点间的最短路径问题，它用经验法则来加速搜索过程。 **[A\*搜索算法实现](https://my.oschina.net/parker/blog/711300)**
-> **Floyd-Warshall 算法** 解决了求所有顶点对间的最短路径这一问题。 **[理解 Floyd-Warshall 算法](https://my.oschina.net/qiaotoubao/blog/738646)**
+> **Dijkstra 算法** 解决了单源最短路径问题。 **[1、Dijkstra 实现](http://www.zhiwenli.com/wordpress/?p=745)** **[2、理解 Dijkstra](http://www.bijishequ.com/detail/439838?p=)** > **Bellman-Ford 算法** 解决了边权值为负的单源最短路径问题。 **[Bellman-Ford 实现](https://segmentfault.com/a/1190000012691823)** **[理解 Bellman-Ford](https://my.oschina.net/qiaotoubao/blog/735890)** > **A\*搜索算法** 解决了求仅一对顶点间的最短路径问题，它用经验法则来加速搜索过程。 **[A\*搜索算法实现](https://my.oschina.net/parker/blog/711300)** > **Floyd-Warshall 算法** 解决了求所有顶点对间的最短路径这一问题。 **[理解 Floyd-Warshall 算法](https://my.oschina.net/qiaotoubao/blog/738646)**
 
 #### <font color="#e6a920">2、深度优先搜索</font>
 

@@ -6,7 +6,7 @@ CSS 中的文字、背景、阴影、表格、边框、链接等都有颜色属�
 
 ### 140 种命名颜色
 
-CSS 中提供了 140 个命名颜色，具体可以查看 https://www.w3schools.com/colors/colors_names.asp。
+CSS 中提供了 140 个命名颜色，具体可以查看 [https://www.w3schools.com/colors/colors_names.asp](https://www.w3schools.com/colors/colors_names.asp)。
 
 所有浏览器都支持这些名称，这些名称都是被预定义过颜色值的。例如 Red,Blue,Cyan,Cornsilk 等，**注意所有命名颜色都不区分大小写**。
 
@@ -105,6 +105,15 @@ div {
 ### 为什么有了 HSL 还需要 LAB 和 LCH 呢？
 
 因为使用 LAB 或 LCH 可以获得更大范围的颜色。LCH 和 LAB 旨在让我们能够接触到人类视觉的整个范围。除此之外，HSL 和 RGB 在感知上并不均匀，并且在 HSL 中，增加或减少亮度会根据色调产生完全不同的效果。
+
+## 置灰网站的方式
+
+- 如果需要全站置灰，使用 CSS 的 `filter: grayscale()`
+- 对于一些低版本的浏览器，使用 SVG 滤镜通过 `filter` 引入
+- 对于仅仅需要首屏置灰的，可以使用 `backdrop-filter: grayscale()` 配合 `pointer-events: none`
+- 对于需要更好兼容性的，使用混合模式的 `mix-blend-mode: hue` 、 `mix-blend-mode: saturation` 、 `mix-blend-mode: color` 也都是非常好的方式
+
+详解 [https://mp.weixin.qq.com/s/pwXyZ-MAemaBhlPC6KM0hA](https://mp.weixin.qq.com/s/pwXyZ-MAemaBhlPC6KM0hA)
 
 ## 参考文档
 

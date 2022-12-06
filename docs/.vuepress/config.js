@@ -4,38 +4,30 @@ module.exports = {
   themeConfig: {
     editLinks: true,
     repo: 'https://github.com/qiqihaobenben/Front-End-Basics',
-    logo: "/logo.png",
-    docsDir: "docs",
+    logo: '/logo.png',
+    docsDir: 'docs',
     editLinkText: '在 GitHub 上编辑此页',
     lastUpdated: 'Last Updated',
     nav: [
-      {text: "首页", link: '/'},
-      {text: "捡贝壳", link: '/article/'},
+      { text: '首页', link: '/' },
+      { text: '捡贝壳', link: '/article/' },
     ],
     sidebarDepth: 0,
     sidebar: {
       /** HTML 相关 */
-      '/html/' : [
-        'global-attr',
-        'meta'
-      ],
+      '/html/': ['global-attr', 'meta', 'intro', 'dom', 'cssom'],
       /** CSS 相关 */
-      '/css/' : [
+      '/css/': [
         {
           title: '理论篇',
           collapsable: false,
-          children: [
-            'theory/typesetting'
-          ]
+          children: ['theory/typesetting', 'theory/basic', 'theory/color'],
         },
         {
           title: '布局篇',
           collapsable: false,
-          children: [
-            'layouts/middle',
-            'layouts/flexbox'
-          ]
-        }
+          children: ['layouts/middle', 'layouts/flexbox'],
+        },
       ],
       /** JavaScript 相关 */
       '/javascript/': [
@@ -52,24 +44,19 @@ module.exports = {
             'utility/javascript-runing',
             'ES6/block',
             'ES6/string',
+            'ES6/symbol',
             'ES6/async',
             'utility/data-interaction/ajax',
             'utility/data-interaction/cross-origin',
-          ]
+          ],
         },
         {
           title: '应用篇',
-          children: [
-            'utility/fp',
-            'utility/cache',
-            'utility/module'
-          ]
+          children: ['utility/fp', 'utility/cache', 'utility/module'],
         },
         {
           title: '数据结构和算法',
-          children: [
-            'utility/fe-algorithm/array'
-          ]
+          children: ['utility/fe-algorithm/data', 'utility/fe-algorithm/array'],
         },
         {
           title: 'TypeScript',
@@ -84,145 +71,89 @@ module.exports = {
             'typescript/type-programing',
             'typescript/typescript-important',
             'typescript/use-typescript-two-years',
-          ]
+          ],
         },
       ],
       // 基础建设和工程化
-      '/infrastructure/': [
-        'vscode-code-format',
-        'babel',
-        'webpack',
-        'browserslist',
-        'need-or-not-comment',
-        'data-analysis-word-interpretation'
-      ],
+      '/infrastructure/': ['vscode-code-format', 'babel', 'webpack', 'browserslist', 'need-or-not-comment', 'data-analysis-word-interpretation'],
       // 职业发展
-      '/career/': [
-        'plan-2022',
-        'business-process',
-        'online-accident'
-      ],
+      '/career/': ['plan-2022', 'business-process', 'online-accident'],
       '/frame/vue/': [
         {
           title: 'Vue2源码',
-          children: [
-            'vue2/directory-build',
-            'vue2/constructor',
-            'vue2/data-view',
-            'vue2/reactive',
-            'vue2/computed&watch',
-          ]
+          children: ['vue2/directory-build', 'vue2/constructor', 'vue2/data-view', 'vue2/reactive', 'vue2/computed&watch'],
         },
         {
           title: '框架基础',
-          children: [
-            'Virtual-DOM'
-          ]
-        }
+          children: ['Virtual-DOM'],
+        },
       ],
-      '/project/' : [
+      '/project/': [
         {
           title: '实践经验',
           collapsable: false,
-          children: [
-            'el-scrollbar',
-          ]
-        }
+          children: ['el-scrollbar'],
+        },
       ],
       /** H5 相关 */
       '/mobile/': [
         {
           title: 'H5',
-          children: ['h5/fit']
-        }
+          children: ['h5/fit'],
+        },
       ],
       /** NodeJS 相关 */
       '/nodejs/': [
         {
-          title: "基础",
-          children: [
-            'basic',
-            'record',
-            'npm',
-            'path'
-          ]
-        }
-
+          title: '基础',
+          children: ['basic', 'record', 'npm', 'path'],
+        },
       ],
       /** 网络基础 */
       '/network-basics/': [
         {
           title: 'HTTP',
           collapsable: false,
-          children: [
-            'http/into',
-            'http/basic'
-          ]
-        }
+          children: ['http/into', 'http/basic'],
+        },
       ],
       /** 数据存储 */
       '/database/': [
         {
           title: 'MySQL',
           collapsable: false,
-          children: [
-            'mysql/mysql'
-          ]
-        }
+          children: ['mysql/mysql'],
+        },
       ],
       /** 服务器运维 */
       '/server/': [
         {
           title: 'Linux',
           collapsable: false,
-          children: [
-            'linux/basics'
-          ]
+          children: ['linux/basics'],
         },
         {
           title: 'Shell',
           collapsable: false,
-          children: [
-            'shell/basics',
-            'shell/script'
-          ]
+          children: ['shell/basics', 'shell/script'],
         },
         {
           title: 'Nginx',
           collapsable: false,
-          children: [
-            'nginx/introduction',
-            'nginx/install',
-            'nginx/command',
-            'nginx/config',
-            'nginx/static',
-            'nginx/proxy',
-            'nginx/tips',
-            'nginx/advance',
-            'nginx/process',
-          ]
-        }
+          children: ['nginx/introduction', 'nginx/install', 'nginx/command', 'nginx/config', 'nginx/static', 'nginx/proxy', 'nginx/tips', 'nginx/advance', 'nginx/process'],
+        },
       ],
       /** Git */
       '/git/': [
         {
           title: 'Git 入门',
           collapsable: false,
-          children: [
-            'intro',
-            'workflow',
-            'theory',
-            'directory',
-            'setconfig'
-          ]
+          children: ['intro', 'workflow', 'theory', 'directory', 'setconfig'],
         },
         {
           title: '命令&实践',
           collapsable: false,
-          children: [
-            'command',
-            'commit'
-          ]
+          children: ['command', 'commit'],
         },
       ],
       /** 方法论 */
@@ -230,56 +161,31 @@ module.exports = {
         {
           title: '高效',
           collapsable: false,
-          children: [
-            'efficiency/tomato',
-          ]
+          children: ['efficiency/tomato'],
         },
         {
           title: '洞见',
           collapsable: false,
-          children: [
-            'insight/interview',
-            'insight/decision',
-            'insight/re-decision',
-          ]
+          children: ['insight/interview', 'insight/decision', 'insight/re-decision'],
         },
-
       ],
       /** 捡贝壳 */
       '/article/': [
         {
           title: '有趣的文章',
-          children: [
-            'book',
-            'read-book',
-            'why-read-book',
-            'soft-skills',
-            'critical-knowledge',
-            'seven-thing',
-            'female',
-            'zhihu48',
-          ]
+          children: ['book', 'read-book', 'why-read-book', 'soft-skills', 'critical-knowledge', 'seven-thing', 'female', 'zhihu48'],
         },
         {
           title: '有趣的人',
-          children: [
-            'year-summary/2019/naibamanong2019'
-          ]
+          children: ['year-summary/2019/naibamanong2019'],
         },
         {
           title: '读书笔记',
-          children: [
-            'book/xiaogouqianqian',
-            'book/ganfa'
-          ]
+          children: ['book/xiaogouqianqian', 'book/ganfa'],
         },
         {
           title: '老技术文章备份',
-          children: [
-            'oldTechnologyArticle/ThinkPHP_template',
-            'oldTechnologyArticle/zifubianma',
-            'oldTechnologyArticle/email',
-          ]
+          children: ['oldTechnologyArticle/ThinkPHP_template', 'oldTechnologyArticle/zifubianma', 'oldTechnologyArticle/email'],
         },
       ],
 
@@ -295,30 +201,30 @@ module.exports = {
             {
               title: 'HTML',
               collapsable: false,
-              path: '/html/global-attr'
+              path: '/html/global-attr',
             },
             {
               title: 'CSS',
               collapsable: false,
-              path: '/css/theory/typesetting'
+              path: '/css/theory/typesetting',
             },
             {
               title: 'JavaScript',
               collapsable: false,
-              path: '/javascript/utility/lexical-grammar'
+              path: '/javascript/utility/lexical-grammar',
             },
 
             {
               title: '基础建设和工程化',
               collapsable: false,
-              path: '/infrastructure/vscode-code-format'
+              path: '/infrastructure/vscode-code-format',
             },
             {
               title: '职业发展',
               collapsable: false,
-              path: '/career/plan-2022'
+              path: '/career/plan-2022',
             },
-          ]
+          ],
         },
         {
           title: '框架',
@@ -326,9 +232,9 @@ module.exports = {
             {
               title: 'Vue',
               collapsable: false,
-              path: '/frame/vue/vue2/directory-build'
-            }
-          ]
+              path: '/frame/vue/vue2/directory-build',
+            },
+          ],
         },
         /** 移动端部分 */
         {
@@ -337,9 +243,9 @@ module.exports = {
             {
               title: 'H5',
               collapsable: false,
-              path: '/mobile/h5/fit'
+              path: '/mobile/h5/fit',
             },
-          ]
+          ],
         },
         /** 服务端部分 */
         {
@@ -349,24 +255,24 @@ module.exports = {
             {
               title: 'NodeJS',
               collapsable: false,
-              path: '/nodejs/basic'
+              path: '/nodejs/basic',
             },
             {
               title: '网络基础',
               collapsable: false,
-              path: '/network-basics/http/into'
+              path: '/network-basics/http/into',
             },
             {
               title: '数据存储',
               collapsable: false,
-              path: '/database/mysql/mysql'
+              path: '/database/mysql/mysql',
             },
             {
               title: '服务器运维',
               collapsable: false,
-              path: '/server/linux/basics'
+              path: '/server/linux/basics',
             },
-          ]
+          ],
         },
         /** 开发工具 */
         {
@@ -375,9 +281,9 @@ module.exports = {
             {
               title: 'Git',
               collapsable: false,
-              path: '/git/intro'
+              path: '/git/intro',
             },
-          ]
+          ],
         },
         /** 认知 */
         {
@@ -386,16 +292,16 @@ module.exports = {
             {
               title: '技术经验',
               collapsable: false,
-              path: '/project/el-scrollbar'
+              path: '/project/el-scrollbar',
             },
             {
               title: '方法论',
               collapsable: false,
-              path: '/method/efficiency/tomato'
+              path: '/method/efficiency/tomato',
             },
-          ]
+          ],
         },
       ],
-    }
-  }
+    },
+  },
 }
