@@ -1,12 +1,11 @@
 'use strict'
 
-var slice = [1, 2, 3],
-  colors = ['red', 'green'],
-  color = 'black'
+const set = new Set([1, 'some time', 2, 4, 6, 2, 2, 1, 5, 3])
 
-with (colors) {
-  push(color)
-  push(...slice)
+console.log([...set])
+
+function eliminateDuplicates(items) {
+  return [...new Set(items)]
 }
 
-console.log(colors)
+console.log(eliminateDuplicates(set))
