@@ -1663,3 +1663,7 @@ EOF #输出：3
 - [linux shell 数据重定向（输入重定向与输出重定向）详细分析](https://www.cnblogs.com/chengmo/archive/2010/10/20/1855805.html)
 - [linux shell 管道命令(pipe)使用及与 shell 重定向区别](https://www.cnblogs.com/chengmo/archive/2010/10/21/1856577.html)
 - [Linux 系统环境变量位置， 环境变量持久化](https://www.linuxidc.com/Linux/2018-09/154325.htm)
+- [手把手教你为 Mac 配一个好用的终端](https://mp.weixin.qq.com/s/dle27qPDYXYcalfy0RGJeQ)
+- [打造 Mac OS 最强终端利器 iTerm2](https://mp.weixin.qq.com/s?__biz=MzA5MjUyMzY0MA==&mid=2247483813&idx=1&sn=cba56cec12616415f7bcececcfacd79c&chksm=906a9cb2a71d15a411e6b6ff661b07b64b3b77454b1aee6c593646e4ba113a6daa9ea028f62c&token=166666239&lang=zh_CN#rd)
+- [Mac 终端增强技能](https://www.jianshu.com/p/0d4d5c0c31a1)
+- [iTerm 与 Zsh 篇](https://xiaozhou.net/learn-the-command-line-iterm-and-zsh-2017-06-23.html)
