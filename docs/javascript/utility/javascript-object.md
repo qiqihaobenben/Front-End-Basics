@@ -1721,3 +1721,7 @@ for(var i = 0; i < objects.length; i++) {
 https://zhuanlan.zhihu.com/p/354146530
 
 ### 控制对象的访问（对象进阶，待整理，可以跟 Vue 一起）
+
+## 一些文档
+
+- [JavaScript 中的原型链 s](https://mp.weixin.qq.com/s/SoCVCPq1UraAES_iIarC4Q)

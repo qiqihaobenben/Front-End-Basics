@@ -342,3 +342,5 @@ vertical-align 相关规则规定了如何在垂直方向对齐盒。下图展�
 ## 推荐阅读
 
 - [CSS 排版与正常流 ](https://zhuanlan.zhihu.com/p/265698290)
+- [网页布局简史](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&mid=2651235652&idx=1&sn=06abd69f6620a549e63fb7aa01e9bbe2&chksm=bd497cc08a3ef5d653463b7f0bbdd06588e71c5c1c31401d32dc5f5304ccd21b06b1b63c2775&scene=21#wechat_redirect)
+- [CSS 简史](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&mid=2651227422&idx=1&sn=62f574bf62045f2214f11f42e011e68c&chksm=bd495c9a8a3ed58ceb698378b27bc5058617f0ce86b262394427948e9cdd5d34576d72d48d66&scene=21#wechat_redirect)

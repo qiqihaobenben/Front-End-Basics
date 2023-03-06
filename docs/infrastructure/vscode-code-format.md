@@ -590,6 +590,7 @@ npx mrm@2 lint-staged
 - [ESLint 工作原理探讨](https://zhuanlan.zhihu.com/p/53680918)
 - [零基础理解 ESLint 核心原理](https://mp.weixin.qq.com/s/wzFh_dvB13hq9OV3pC955w)
 - [浅析 eslint 原理](https://mp.weixin.qq.com/s/45-itfERV4R77WS0JL_Oew)
+- [ESLint 机制分析与简单插件实践](https://mp.weixin.qq.com/s/wYYDG7yU9h3-6DBYTCkuiA)
 - [自己动手写符合自己业务需求的 eslint 规则](https://mp.weixin.qq.com/s/cbWY0BYeNiCuNtpmylOH9g)
 - [为什么 Eslint 可以检查和修复格式问题，而 Babel 不可以？](https://mp.weixin.qq.com/s/eZuJFDTh3UBmkXkubIT1_g)
 - [深入对比 eslint 插件 和 babel 插件的异同点](https://zhuanlan.zhihu.com/p/406084980)
