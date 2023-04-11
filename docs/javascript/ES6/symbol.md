@@ -4,7 +4,7 @@
 
 - 除了 字符串型、数字型、布尔型、null 和 undefined 5 种原始类型外，ECMAScript 6 引入了第 6 种**原始类型**：Symbol。
 - 所有原始值，除了 Symbol 以外都有各自的字面形式。
-- 由于 Symbol 是原始值，因此调用 `new Symbol()` 会导致程序抛出错误
+- 由于 Symbol 是原始值，为了避免创建原始值包装对象，因此调用 `new Symbol()` 会导致程序抛出错误
 - Symbol 函数接受一个可选参数，其可以让你添加一段文本描述即将创建的 Symbol，这段描述不可用于属性访问，但是建议你在每次创建 Symbol 时都添加这样一段描述，以便于阅读代码和调试 Symbol 程序。
 - Symbol 的描述被存储在内部的 `[[Description]]` 属性中，只有当调用 Symbol 的 `toString()` 方法时才可以读取这个属性。在执行 `console.log()` 时会隐式调用 `toString()` 方法，所以 Symbol 的描述会被打印到日志中，但不能直接在代码里访问 `[[Description]]`
 - 不能将 Symbol 转换为字符串和数字类型，如果尝试将 Symbol 与一个字符串拼接，会导致程序抛出错误，将 Symbol 与每一个数学运算符混合使用都会导致程序抛出错误。

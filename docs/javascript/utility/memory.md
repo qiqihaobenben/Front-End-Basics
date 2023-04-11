@@ -228,6 +228,10 @@ foo()
 
 全局变量会直接挂在 window 上，由于引用会一直存在，导致被 GC 识别为活动对象，这样只要程序在运行，该对象的内存就会一直存在无法被回收。
 
+所以要避免（意外地）创建全局变量，或者使用严格模式，在 JavaScript 文件的头部或者函数顶部加上 `use strict;`
+
+#### 注意闭包的使用
+
 #### 及时清理对 DOM 的引用
 
 #### 及时卸载事件监听和计时器
@@ -251,5 +255,6 @@ foo()
 - [JavaScript 内存详解 & 分析指南](https://www.cnblogs.com/ifaswind/p/javascript-memory.html)
 - [V8 引擎垃圾回收与内存分配](https://mp.weixin.qq.com/s?__biz=Mzg3NTcwMTUzNA==&mid=2247486309&idx=1&sn=12d3741ef01fb09fa9bbdb004b85debe&source=41#wechat_redirect)
 - [浅谈 V8 垃圾回收机制](https://mp.weixin.qq.com/s/wT8_cz82Y5Ur74xGKpPgtQ)
+- [连等赋值 a.x = a = {n:2} 和 a = a.x = {n:2}一样吗？](https://mp.weixin.qq.com/s/lTqzPNQPIXsBX7LE-14xRQ)
 
 V8 的新生代的容量是多少
