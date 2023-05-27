@@ -2,6 +2,8 @@
 
 ## NodeJS 事件循环
 
+先精读一下这个[setTimeout和setImmediate到底谁先执行，本文让你彻底理解Event Loop](https://juejin.cn/post/6844904100195205133)
+
 事件循环通俗来说就是一个无限的 while 循环。
 
 Node.js 事件循环的发起点（即执行完一个完整的事件循环）有五个：
