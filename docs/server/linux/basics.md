@@ -1,4 +1,4 @@
-# Linux 基础
+# Linux 版本详述
 
 ## Linux 的由来
 
