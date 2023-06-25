@@ -130,7 +130,7 @@ module.exports = {
         {
           title: 'Linux',
           collapsable: false,
-          children: ['linux/basics'],
+          children: ['linux/computer', 'linux/basics'],
         },
         {
           title: 'Shell',
