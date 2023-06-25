@@ -1,4 +1,4 @@
-#基于 docker 开发(六 dockerfile 详解)
+# dockerfile 详解
 
 #### 什么是 dockerfile?
 
@@ -254,3 +254,5 @@ EXPOSE 80
 CMD ["nginx"]
 
 ```
+
+待看：https://www.leeks.info/zh_CN/latest/Linux_Notes/index.html#docker
