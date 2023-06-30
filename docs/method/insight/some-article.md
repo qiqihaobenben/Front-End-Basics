@@ -14,7 +14,6 @@
 
 #### [技术人员的发展之路](https://coolshell.cn/articles/17583.html)
 
-
 #### [程序员如何把控自己的职业](https://coolshell.cn/articles/20977.html)
 
 #### [如何超过大多数人](https://coolshell.cn/articles/19464.html)
@@ -22,6 +21,11 @@
 ## 认知
 
 #### [红利很短，人生很长](https://mp.weixin.qq.com/s/AEY0P9Xjv5O1TKd6FYRVHg)
+
 #### [别让自己“墙”了自己](https://coolshell.cn/articles/20276.html)
 
 这篇文章就是要劝大家更为开放，让自己有更多的可能性，能到更高的层次，做更有价值的事，成为更强更好的人……当然，如果你觉得你只想做一个平凡人，也和本文并不冲突……另外你也不要觉得这篇文章是让你要成为一个精英，但你一定要去摸高……这篇文章是告诉你一种面对人生的思考方式，在这种思考方式下，你会有更多的可能性，更大的场景……而不是直接把自己归到“平常人”，把自己“墙”了！
+
+## 生活
+
+#### [健身计划](https://newzone.top/Fitness.html)
