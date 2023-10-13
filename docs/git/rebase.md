@@ -193,3 +193,4 @@ git commit --amend git reset
 
 - [Git 最佳实践：原子性提交（atomic commits）](https://hearrain.com/git-zui-jia-shi-jian-:-yuan-zi-xing-ti-jiao-atomic-commits)
 - [彻底搞懂 Git-Rebase](http://jartto.wang/2018/12/11/git-rebase/)
+- [git rebase 用法详解与工作原理](https://waynerv.com/posts/git-rebase-intro/)
