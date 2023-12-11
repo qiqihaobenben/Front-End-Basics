@@ -29,3 +29,7 @@ ChatGPT 可以类比为学说话的鹦鹉，它没有意识、没有欲望、没
 ### 数学基础
 
 - [线性代数和微积分到底有什么用？](https://www.bilibili.com/video/BV1yW41167ax/?spm_id_from=333.999.0.0&vd_source=026a9a8719b918ab2720ca10541a93b4)
+
+## 国内使用 AI
+
+- [在中国国内如何购买 ChatGPT Plus](https://www.digitalnomadlc.com/how-to-buy-chatgptplus/)

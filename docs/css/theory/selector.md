@@ -4,6 +4,33 @@
 
 ## CSS 选择器有哪些?
 
+### 基础选择器
+
+#### 通配符选择器
+
+```css
+* {
+  margin: 0;
+  padding: 0;
+}
+```
+
+#### 类型（标签）选择器
+
+#### 类选择器
+
+#### ID 选择器
+
+### 属性选择器
+
+### 组合选择器
+
+### 伪类选择器
+
+### 伪元素选择器
+
+### 逻辑选择器
+
 ## 什么是 CSS 选择器权重以及它如何工作？
 
 ## 为什么浏览器从右到左匹配 CSS 选择器？
@@ -12,7 +39,7 @@
 
 浏览器渲染的过程大概如下：
 
-HTML 经过解析生成 DOM Tree；而在 CSS 解析完毕后，需要将解析的结果与 DOM Tree 的内容一起进行分析建立一棵 Render Tree，最终用来进行绘图。Render Tree 中的元素（Webkit 中称为 `renderers`，Firefox 中成为 `frames`）与 DOM 元素相对应，但非一一对应：一个 DOM 元素可能会对应多个 renderer，如文本折行后，不同的**行**会成为 Render Tree 中不同的 renderer。也有的 DOM 元素被 Render Tree 完全无视，比如 display:none;元素。
+HTML 经过解析生成 DOM Tree；而在 CSS 解析完毕后，需要将解析的结果与 DOM Tree 的内容一起进行分析建立一棵 Render Tree，最终用来进行绘图。Render Tree 中的元素（Webkit 中称为 `renderers`，Firefox 中称为 `frames`）与 DOM 元素相对应，但非一一对应：一个 DOM 元素可能会对应多个 renderer，如文本折行后，不同的**行**会成为 Render Tree 中不同的 renderer。也有的 DOM 元素被 Render Tree 完全无视，比如 display:none;元素。
 
 在建立 Render Tree 时（Webkit 中的 `Attachment` 过程），浏览器就要为每个 DOM Tree 中的元素根据 CSS 的解析结果（Style Rules）来确定生成怎样的 renderer。对于每个 DOM 元素，必须在所有 Style Rules 中找到符合的 selector 并将对应的规则进行合并。选择器`解析`实际是在这里执行的，在遍历 DOM Tree 时，从 Style Rules 中去寻找对应的 selector。
 
