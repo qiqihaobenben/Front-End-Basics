@@ -2,3 +2,83 @@
   margin: 0;
   padding: 0;
 }
+
+main {
+  margin: 100px auto;
+  width: 300px;
+}
+
+li {
+  padding: 5px 0;
+}
+
+
+[href] {
+  color: purple;
+}
+
+[href="#internal"] {
+  color: green;
+}
+
+/* 需要能有单独的一个单词匹配 */
+[href~="http"] {
+  color: yellow;
+}
+
+[href^="http"] {
+  background-color: grey;
+}
+
+[href$=".org"] {
+  color: white;
+}
+
+[href*="#in"] {
+  background-color: pink;
+}
+
+[href*='#in'i] {
+  text-decoration: initial;
+}
+
+[name|="no"] {
+  color: red;
+}
+
+
+content :nth-child(4) {
+  color: red;
+}
+
+content :nth-child(odd) {
+  color: green;
+}
+
+content :nth-child(2n+1) {
+  color: green;
+}
+
+content :nth-child(even) {
+  color: red;
+}
+
+content :nth-child(2n) {
+  color: orange;
+}
+
+content :nth-child(n+7) {
+  text-decoration: underline;
+}
+
+content :nth-child(-n+3) {
+  border: 1px solid red;
+}
+
+content :nth-child(1 of p.special) {
+  background-color: pink;
+}
+
+content :nth-child(2 of p) {
+  background-color: grey;
+}
