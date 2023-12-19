@@ -46,39 +46,26 @@ li {
   color: red;
 }
 
-
-content :nth-child(4) {
+p:nth-of-type(2n + 1) {
   color: red;
 }
 
-content :nth-child(odd) {
-  color: green;
-}
-
-content :nth-child(2n+1) {
-  color: green;
-}
-
-content :nth-child(even) {
+/* content :nth-child(2n+1 of p) {
   color: red;
+} */
+
+p:nth-of-type(2n) {
+  color: blue;
 }
 
-content :nth-child(2n) {
-  color: orange;
+p:nth-of-type(1) {
+  border: 1px solid black;
 }
 
-content :nth-child(n+7) {
-  text-decoration: underline;
-}
-
-content :nth-child(-n+3) {
-  border: 1px solid red;
-}
-
-content :nth-child(1 of p.special) {
+p.fancy:nth-of-type(2n + 1) {
   background-color: pink;
 }
 
-content :nth-child(2 of p) {
-  background-color: grey;
+:nth-child(2n+1 of p.fancy) {
+  text-decoration: underline;
 }

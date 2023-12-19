@@ -263,7 +263,7 @@ content :nth-child(3) {
 
 /* 如果觉得要选中第一个 p 元素而设置 n 是 1 就是错误的，因为子元素的计数包括任何元素类型的兄弟子元素，所以第一个 p 的索引应该还是3 */
 /* 错误 */
-content p:nth-child(3) {
+content p:nth-child(1) {
   background-color: pink;
 }
 /* 正确 */
@@ -289,7 +289,59 @@ content :nth-child(2 of p) {
 
 #### :nth-of-type()
 
-跟 :nth-child 的区别是，:nth-of-type 伪类是基于相同类型（标签名称）的兄弟元素中的位置来匹配元素
+跟 :nth-child 的区别是，:nth-of-type 伪类是基于**相同类型（标签名称）**的兄弟元素中的位置来匹配元素
+
+:nth-of-type 跟 :nth-child<of <selector>语法> 的效果类似（但是不完全相同），其他的语法，例如 odd、even、An+B 等，可以参考 :nth-child。
+
+```html
+<content>
+  <div>这段不参与计数。</div>
+  <p>这是第一段。</p>
+  <p class="fancy">这是第二段。</p>
+  <div>这段不参与计数。</div>
+  <p class="fancy">这是第三段。</p>
+  <p>这是第四段。</p>
+</content>
+```
+
+```css
+/* 奇数段：第一段和第三段自提颜色设置红色 */
+p:nth-of-type(2n + 1) {
+  color: red;
+}
+/* 如果使用 :nth-child 要达到相同的效果，就需要使用 of <selector> 语法 */
+:nth-child(2n + 1 of p) {
+  color: red;
+}
+
+/* 偶数段 */
+p:nth-of-type(2n) {
+  color: blue;
+}
+
+/* 选中第一段 */
+p:nth-of-type(1) {
+  border: 1px solid black;
+}
+
+/*
+这将匹配第三段，因为它匹配的元素是 2n + 1，计数的范围是相同类型的元素（标签都是 p），并且具有 fancy
+第二个段落具有 fancy 类，因为它不是奇数 :nth-of-type(2n + 1)，所以不匹配
+*/
+p.fancy:nth-of-type(2n + 1) {
+  background-color: pink;
+}
+
+/*
+之前说 :nth-of-type 跟 :nth-child<of <selector>语法> 的效果类似（但是不完全相同）
+不同之处就在这里，下面的选择器将选中第二段，因为 of <selector> 语法的计数范围是所有 selector
+*/
+:nth-child(2n + 1 of p.fancy) {
+  text-decoration: line-through;
+}
+```
+
+![](./images/nth-of-type.png)
 
 #### element:first-child
 
