@@ -5,7 +5,7 @@
 
 main {
   margin: 100px auto;
-  width: 300px;
+  width: 500px;
 }
 
 li {
@@ -13,59 +13,77 @@ li {
 }
 
 
-[href] {
+p:first-child {
   color: purple;
 }
 
-[href="#internal"] {
-  color: green;
+div:only-child {}
+
+content {
+  width: 500px;
 }
 
-/* 需要能有单独的一个单词匹配 */
-[href~="http"] {
-  color: yellow;
+content:only-child {
+  border: 1px solid purple;
 }
 
-[href^="http"] {
-  background-color: grey;
-}
-
-[href$=".org"] {
-  color: white;
-}
-
-[href*="#in"] {
-  background-color: pink;
-}
-
-[href*='#in'i] {
-  text-decoration: initial;
-}
-
-[name|="no"] {
-  color: red;
-}
-
-p:nth-of-type(2n + 1) {
-  color: red;
-}
-
-/* content :nth-child(2n+1 of p) {
-  color: red;
-} */
-
-p:nth-of-type(2n) {
+/* 未访问链接 */
+a:link {
   color: blue;
 }
 
-p:nth-of-type(1) {
-  border: 1px solid black;
+/* 已访问链接 */
+a:visited {
+  color: purple;
 }
 
-p.fancy:nth-of-type(2n + 1) {
-  background-color: pink;
+/* 用户鼠标悬停 */
+a:hover {
+  background-color: yellow;
 }
 
-:nth-child(2n+1 of p.fancy) {
-  text-decoration: underline;
+/* 激活链接 */
+a:active {
+  color: red;
+}
+
+/* 选中的文本是红色背景，金黄色的字体 */
+::selection {
+  color: gold;
+  background-color: red;
+}
+
+/*选中的是蓝色背景，白色的字体的段落*/
+p::selection {
+  color: white;
+  background-color: blue;
+}
+
+:is(h1, h2:invalid-pseudo, h3) {
+  color: red;
+}
+
+main :where(h2):hover {
+  color: purple;
+}
+
+h1:has(+ h2) {
+  margin-bottom: 2em;
+}
+
+/*
+h2:invalid-pseudo {
+  color: red;
+}
+
+h3 {
+  color: red;
+} */
+
+:root {
+  --main-bg-color: 10px;
+}
+
+h1 {
+  border: var(--main-bg-color) red solid;
 }

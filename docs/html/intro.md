@@ -506,6 +506,35 @@ ARIA 分为三类：
 
 [如何使用 WAI-ARIA 增强 Web 可访问性](https://www.w3cplus.com/a11y/a11y-aria.html)
 
+## link 标签、script 标签、meta 标签中为什么有些需要指明 rel 属性，有些需要 type 属性？有些加载资源用 src，有些确用 href？
+
+### 1. `rel` 属性
+
+`rel`（关系）属性描述了当前文档和被链接文档之间的关系。这个属性主要用在 `<link>` 和 `<a>` 标签中。
+
+- **在 `<link>` 标签中**：`rel` 属性用于指定引入的资源与当前文档的关系。例如，`rel="stylesheet"` 表明引入的是一个样式表。
+- **在 `<a>` 标签中**：`rel` 属性用于定义链接和目标资源之间的关系，如 `rel="noopener"` 或 `rel="nofollow"`。
+
+### 2. `type` 属性
+
+`type` 属性指定了资源的 MIME 类型（例如 `text/css` 或 `text/javascript`），帮助浏览器正确地解析和处理资源。
+
+- **在 `<link>` 标签中**：通常用于指定样式表的类型，如 `type="text/css"`。
+- **在 `<script>` 标签中**：用于指定脚本类型，如 `type="text/javascript"`。在现代 Web 开发中，由于 `text/javascript` 是默认类型，这个属性通常可以省略。
+
+### 3. `src` vs `href`
+
+这两个属性用于指定外部资源的 URL，但它们的用途不同。
+
+- **`src`（source）属性**：用于 `<script>`, `<img>`, `<iframe>`, `<video>` 等标签，表示嵌入当前文档的外部资源。例如，在 `<script src="...">` 中，它指的是脚本文件的位置。
+- **`href`（hypertext reference）属性**：用于 `<link>`, `<a>` 等标签，表示指向其他文档或资源的链接。在 `<link href="...">` 中，它指的是样式表或其他关联资源的位置。
+
+总结一下：
+
+- `rel` 属性定义了当前文档与引入资源之间的关系。
+- `type` 属性帮助浏览器确定如何处理指定的资源。
+- `src` 和 `href` 属性分别用于嵌入资源和链接到资源，它们的使用取决于标签类型和上下文。
+
 ## 推荐阅读
 
 - [HTML 标准文档](https://html.spec.whatwg.org/)
