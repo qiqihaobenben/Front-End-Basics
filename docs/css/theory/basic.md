@@ -233,3 +233,7 @@ background: url(images/bg.gif) no-repeat top right;
 2. 关键字 inherit 只可以应用于单独属性，如果应用于一个简写属性，则必须整体应用，这意味着让一个属性的值显式使用继承值的唯一方法就是使用值是 inherit 的普通属性。
 
 3. 简写属性不试图强制它们替代属性的值的特定顺序。不过这只适用于这些属性使用不同类型的值时，因为这个时候顺序并不重要。但当几个属性可以设置相同的值的时候，就需要按照特定规则，例如 `margin: 10px;` 和 `margin: 10px 20px;`
+
+## 推荐文章
+
+- [图解 CSS：揭开 CSS 的面纱](https://mp.weixin.qq.com/s/ZY3qyPeiljd6lbRzanqleQ)

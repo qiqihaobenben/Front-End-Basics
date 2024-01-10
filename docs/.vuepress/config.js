@@ -26,7 +26,7 @@ module.exports = {
         {
           title: '布局篇',
           collapsable: false,
-          children: ['layouts/middle', 'layouts/flexbox'],
+          children: ['layouts/middle', 'layouts/flexbox', 'layouts/grid'],
         },
       ],
       /** JavaScript 相关 */
