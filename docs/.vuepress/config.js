@@ -156,6 +156,8 @@ module.exports = {
           children: ['command', 'commit'],
         },
       ],
+      /** 浏览器 */
+      '/browser/': ['browser-work', 'browser-render', 'rerender'],
       /** 方法论 */
       '/method/': [
         {
@@ -282,6 +284,11 @@ module.exports = {
               title: 'Git',
               collapsable: false,
               path: '/git/intro',
+            },
+            {
+              title: '浏览器',
+              collapsable: false,
+              path: '/browser/browser-work',
             },
           ],
         },
