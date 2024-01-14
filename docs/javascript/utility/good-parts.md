@@ -85,7 +85,7 @@ function once(fn) {
   - 面向对象（object oriented）：例如 C++ JAVA
 - 声明式（declaratve）
   - 函数式（function）：Haskell Erlang
-  - 逻辑式（logic）：Prolog
+  - 逻辑式/响应式（logic）：Prolog
 
 JavaScript 是现代编程语言，命令式和声明式都支持
 
