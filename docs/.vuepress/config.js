@@ -130,7 +130,7 @@ module.exports = {
         {
           title: 'Linux',
           collapsable: false,
-          children: ['linux/computer', 'linux/basics'],
+          children: ['linux/computer', 'linux/basics', 'linux/centos'],
         },
         {
           title: 'Shell',
@@ -272,7 +272,7 @@ module.exports = {
             {
               title: '服务器运维',
               collapsable: false,
-              path: '/server/linux/basics',
+              path: '/server/linux/computer',
             },
           ],
         },
