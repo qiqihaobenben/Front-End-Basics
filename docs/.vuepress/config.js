@@ -26,7 +26,7 @@ module.exports = {
         {
           title: '布局篇',
           collapsable: false,
-          children: ['layouts/middle', 'layouts/flexbox'],
+          children: ['layouts/middle', 'layouts/flexbox', 'layouts/grid'],
         },
       ],
       /** JavaScript 相关 */
@@ -130,7 +130,7 @@ module.exports = {
         {
           title: 'Linux',
           collapsable: false,
-          children: ['linux/computer', 'linux/basics'],
+          children: ['linux/computer', 'linux/basics', 'linux/centos'],
         },
         {
           title: 'Shell',
@@ -156,6 +156,8 @@ module.exports = {
           children: ['command', 'commit'],
         },
       ],
+      /** 浏览器 */
+      '/browser/': ['browser-work', 'browser-render', 'rerender'],
       /** 方法论 */
       '/method/': [
         {
@@ -270,7 +272,7 @@ module.exports = {
             {
               title: '服务器运维',
               collapsable: false,
-              path: '/server/linux/basics',
+              path: '/server/linux/computer',
             },
           ],
         },
@@ -282,6 +284,11 @@ module.exports = {
               title: 'Git',
               collapsable: false,
               path: '/git/intro',
+            },
+            {
+              title: '浏览器',
+              collapsable: false,
+              path: '/browser/browser-work',
             },
           ],
         },

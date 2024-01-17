@@ -37,7 +37,7 @@ jobs:
       - name: Build VuePress site
         run: yarn build
       - name: Deploy to Server
-        uses: AEnterprise/rsync-deploy@v1.0
+        uses: AEnterprise/rsync-deploy@v1.0.2
         env:
           DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
           ARGS: -avz --delete
