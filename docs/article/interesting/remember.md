@@ -1,5 +1,9 @@
 # 需要记在这里的文章
 
+## 一些人的零碎思考
+
+- [张潇雨微博精选](https://rili.zxy.wiki/)
+
 ## 羌塘相关
 
 - [北方的空地](http://www.ruanyifeng.com/blog/2017/12/qiang-tang.html)
