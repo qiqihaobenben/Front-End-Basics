@@ -1,6 +1,6 @@
-# Shell 脚本编程详解
+# shell 脚本编程详解
 
-Shell 脚本（shell script），是一种为 Shell 编写的脚本程序，一般文件后缀为 `.sh`。
+shell 脚本（shell script），是一种为 shell 编写的脚本程序，一般文件后缀为 `.sh`。
 
 ## 脚本解释器
 
@@ -14,7 +14,7 @@ Shell 脚本（shell script），是一种为 Shell 编写的脚本程序，一�
 echo "Hello World!"
 ```
 
-## 运行 Shell 脚本
+## 运行 shell 脚本
 
 ### 第一种方式：作为可执行程序
 
@@ -82,8 +82,8 @@ EOF
 #### 变量类型
 
 - **局部变量**：局部变量是仅在某个脚本内部有效的变量，它们不能被其他的程序和脚本访问。函数中能声明函数内部的局部变量。
-- **环境变量**：环境变量是从父进程中继承而来的变量，对当前 Shell 会话内所有的程序和脚本都可见。创建它们跟创建局部变量类似，但使用的是 `export` 关键字，shell 脚本也可以定义环境变量，但一般自己定义的环境变量关掉当前 Shell 就失效了，后面有介绍怎么让环境变量持久化。
-- **shell 变量（系统变量）**：shell 变量是由 shell 程序设置的特殊变量。shell 变量中有一部分是环境变量，有一部分是局部变量，这些变量保证了 shell 的正常运行。
+- **环境变量**：环境变量是从父进程中继承而来的变量，对当前 Shell 会话内所有的程序和脚本都可见。创建它们跟创建局部变量类似，但使用的是 `export`、`declare -x` 关键字，shell 脚本也可以定义环境变量，但一般自己定义的环境变量关掉当前 Shell 就失效了，后面有介绍怎么让环境变量持久化。
+- **shell 变量（系统变量）**：shell 变量是由 shell 程序设置的特殊变量，对所有 Shell 会话有效。shell 变量中有一部分是环境变量，有一部分是局部变量，这些变量保证了 shell 的正常运行。
 
 #### 变量语法
 
@@ -93,16 +93,35 @@ EOF
 
 变量名的命名规则：
 
-- 首字母必须为字母（a-z,A-Z），剩下的部分只能使用英文字母，数字下划线
+- 只能使用英文字母，数字、下划线
 - 中间不能有空格，可以使用下划线，如果有空格，必须使用单引号或双引号
 - 不能使用标点符号
 - 不能使用 shell 关键字
 
-```
+```sh
 #!/bin/bash
 
+# 等号左右不能有空格
 fruit=apple
 count=5
+
+# 将命令赋值给变量
+_ls=ls
+
+# 将命令的执行结果赋值给变量
+file_list=$(ls -a)
+
+page_size=1
+page_num=2
+# 默认为字符串，不会进行数学运算
+total=${page_size}*${page_num}
+# 声明变量为整型
+let total=${page_size}*${page_num}
+declare -i total=${page_size}*${page_num}
+
+# 到处环境变量
+export total
+declare -x total
 ```
 
 **注意：`varName=value`的等号两边没有空格，变量值如果有空格，需要用引号包住。**
@@ -153,6 +172,8 @@ echo $fruit
 #输出： (空)
 ```
 
+![](./images/declare.png)
+
 #### Shell 特殊变量（系统变量）
 
 上面讲过变量名的命名规则，但是还有一些包含其他字符的变量有特殊含义，这样的变量被称为特殊变量。
@@ -169,8 +190,11 @@ echo $fruit
 | `$-`        | 显示 shell 使用的当前选项(flag)，后面扩展中检测是否为交互模式时会用到        |
 | `$$`        | 当前 Shell 进程 ID。对于 Shell 脚本，就是这些脚本所在的进程 ID               |
 | `$!`        | 最后一个后台运行的进程 ID 号                                                 |
+| `$HOME`     | 当前由用户主目录                                                             |
+| `$PATH`     | 全局命令的搜索路径                                                           |
+| `$PS1`      | 命令提示符                                                                   |
 
-> 命令行参数：运行脚本时传递给脚本的参数成为命令行参数，命令行参数用 `$n` 表示。
+> 命令行参数：运行脚本时传递给脚本的参数称为命令行参数，命令行参数用 `$n` 表示。
 
 ```
 #!/bin/bash
@@ -227,6 +251,8 @@ after="hello,${name}!" #双引号中变量会解析
 echo ${before}_${after}
 # 输出：hello,"shell"!_hello,"shell"!
 ```
+
+- 反引号：执行一段命令
 
 > 设置一个字符串变量，下面的都是对这个变量的操作
 
@@ -556,14 +582,14 @@ fi
 | :----- | :-------------------------------------------------- | :--- |
 | `!` | 非运算 | `[ ! false ]` 返回 true |
 | `-o` | 或运算 |[ ${a} -eq 10 -o ${b} -eq 100 ] 返回 true |
-| `||` | 跟 `-o` 类似，逻辑的 OR，不过需要使用 `[[]]` 表达式 |`[[ ${a} -eq 10 || ${b} -eq 100 ]]` 返回 true |
+| `\|\|` | 跟 `-o` 类似，逻辑的 OR，不过需要使用 `[[]]` 表达式 |`[[ ${a} -eq 10 \|\| ${b} -eq 100 ]]` 返回 true |
 | `-a` | 与运算 | `[ ${a} -eq 10 -a ${b} -eq 50 ]` 返回 true|
 | `&&` | 跟 `-a` 类似，逻辑的 AND，不过需要使用 `[[]]` 表达式 | `[[ ${a} -eq 10 && ${b} -eq 50 ]]` 返回 true|
 | `=` | 检测两个数字或字符串是否相等，相等返回 true | `[ ${a} = ${b} ]` 返回 false |
 | `!=` | 检测两个数字或字符串是否相等，不相等返回 true | `[ ${a} != ${b} ]`返回 true |
 | `==` | 相等。比较两个数字或字符串，如果相等返回 true（不推荐使用，有兼容性问题） | `[ ${a} == ${b} ]` 返回 false |
 | `-z` | 检测字符串长度是否为 0，为 0 返回 true | `[ -z ${x} ]` 返回 false |
-| `-n` | 检测字符串长度是否为 0，不为 0 返回 true | `[ -n ${x} ]` 返回 true |
+| `-n` | 检测字符串长度是否不为 0，不为 0 返回 true | `[ -n ${x} ]` 返回 true |
 | `var` | 检测变量是否存在或不为空，存在或不为空返回 true | `[ $s ]` 返回 false |
 
 ![](./images/shell4.png)
@@ -640,7 +666,7 @@ fi
 文件目录判断运算符列表
 | 运算符 | 说明 |
 | :----- | :-------------------------------------------------- |
-| `-f filename` |判断文件是否存在，当 filename 存在且是正规文件时（既不是目录，也不是设备文件）返回 true|
+| `-f filename` |判断文件是否存在，当 filename 存在且是普通文件时（既不是目录，也不是设备文件）返回 true|
 | `-d pathname` |判断目录是否存在，当 pathname 存在且是目录时返回 true|
 | `-e pathname` |判断【某个东西】是否存在，当 pathname 指定的文件或目录存在时返回 true|
 | `-a pathname` |同上，已经过时，而且使用的时候还有另外一个与的逻辑，容易混淆|
@@ -1023,6 +1049,7 @@ done
 - 函数定义时，`function`关键字可有可无
 - 函数返回值：可以显式的使用 return 语句，返回值类型只能为整数（0-255）。如果不加 return 语句，会默认将最后一条命令运行结果作为返回值。
 - 函数返回值在调用该函数后，通过 `$?` 获得。
+- 在函数内部声明变量一般会使用 `local` 进行限定在当前作用域中生效，或者使用 unset 进行变量撤销
 
 ```
 语法：中括号内表示可选
@@ -1128,9 +1155,9 @@ wc -l < ./test.sh
 | :----- | :---------------------------------------------------------------------------- |
 | >      | 重定向输出                                                                    |
 | >>     | 将输出已追加的方式重定向                                                      |
-| >&     | 将两个输出文件合并                                                            |
+| >&     | 将两个输出文件合并，需要在命令的最后使用                                      |
 | 2>     | 错误重定向                                                                    |
-| &>     | 输出重定向与错误重定向同时实现                                                |
+| &>     | 正确和错误输出统一写入到一个文件中                                            |
 | <&     | 将两个输入文件合并                                                            |
 | <      | 重定向输入                                                                    |
 | <<     | Here 文档语法（见下文扩展），将开始标记 tag 和结束标记 tag 之间的内容作为输入 |
@@ -1178,7 +1205,7 @@ ls test.sh test1.sh  2>/dev/null 1>/dev/null
 
 #将错误输出2 绑定给 正确输出 1，然后将 正确输出 发送给 /dev/null设备  这种常用
 ls test.sh test1.sh >/dev/null 2>&1
-#& 代表标准输出 ，错误输出 将所有标准输出与错误输出 输入到/dev/null文件
+# & 代表标准输出和错误输出 将所有标准输出与错误输出 输入到/dev/null文件
 ls test.sh test1.sh &>/dev/null
 ```
 
@@ -1283,375 +1310,6 @@ set -euxo pipefail
 #或者
 set -eux
 set -o pipefail
-```
-
-## 扩展
-
-### 脚本解释器在环境变量中指定
-
-除了比较常见的用路径指定脚本解释器的方式，还有一种是指定环境变量中的脚本解释器。
-
-```
-指定脚本解释器的路径
-#!/bin/bash`
-
-指定环境变量中的脚本解释器
-#!/usr/bin/env bash
-```
-
-这样做的好处是，系统会自动在 `PATH` 环境变量中查找指定的程序（如例子中的 bash）。因为程序的路径是不确定的，比如安装完新版本的 bash 后，我们有可能会把这个新的路径添加到`PATH`中，来“隐藏”老版本的 bash。所以操作系统的`PATH`变量有可能被配置为指向程序的另一个版本，如果还是直接用 `#!/bin/bash`，那么系统还是会选择老版本的 bash 来执行脚本，如果用`#!/usr/bin/env bash`，就会使用新版本了。
-
-### 环境变量
-
-所有的程序，包括 Shell 启动的程序运行时都可以访问的变量就是环境变量。在 shell 脚本中使用 `export` 可以定义环境变量，但是只在当前运行的 shell 进程中有效，结束进程就没了。如果想持久化，需要将环境变量定义在一些列配置文件中。
-
-配置文件的加载顺序和 shell 进程是否运行在 Interactive 和 Login 模式有关。
-
-#### 交互和非交互模式（Interactive & Non-Interactive）
-
-- Interactive 模式：通常是指读写数据都是从用户的命令行终端（terminal），用户输入命令，并在回车后立即执行的 shell。
-- Non-Interactive 模式：通常是指执行一个 shell 脚本，或 `bash -c` 执行命令
-
-检测当前 shell 运行的环境是不是 Interactive 模式
-
-```
-[[ $- == *i* ]] && echo "Interactive" || echo "Non-interactive"
-```
-
-#### 登录和非登录模式（Login & Non-Login）
-
-- Login 模式：应用在终端登陆时，ssh 连接时，`su --login <username>` 切换用户时，指的是用户成功登录后开启的 Shell 进程，此时会读取 `/etc/passwd` 下用户所属的 shell 执行。
-- Non-Login 模式：应用在直接运行 bash 时，su `<username>` 切换用户时（前面没有加 --login）。指的是非登录用户状态下开启的 shell 进程。
-
-检测当前 shell 运行的环境是不是 Login 模式
-
-```
-shopt -q login_shell && echo "Login shell" || echo "Not login shell"
-
-#如果是zsh，没有shopt命令
-[[ -o login ]] && echo "Login shell" || echo "Not login shell"
-```
-
-进入 bash 交互模式时也可以用 `--login` 参数来决定是否是登录模式：
-
-```
-$> bash
-$> shopt -q login_shell && echo "Login shell" || echo "Not login shell"
-Not login shell
-$> exit
-$> bash --login
-$> shopt -q login_shell && echo "Login shell" || echo "Not login shell"
-Login shell
-$> exit
-```
-
-Login 模式模式下可以用 logout 和 exit 退出，Non-Login 模式下只能用 exit 退出。
-
-#### 配置文件（启动文件）加载顺序
-
-bash 支持的配置文件有 /etc/profile、~/.bash.rc 等。
-
-![配置文件加载顺序](./images/shell2.png)
-
-如上图加载顺序所示
-
-- Interactive&Login 模式：/etc/profile —>( ~/.bash_profile, ~/.bash_login, ~/.profile)其中之一 —>~/.bash_loginout(退出 shell 时调用)
-- Interactive&Non-Login 模式：/etc/bash.bashrc —>~/.bashrc
-- Non-Interactive 模式：通常就是执行脚本（script）的时候，此时配置项是从环境变量中读取和执行的，也就是 `env` 或者 `printenv` 命令输出的配置项。
-
-**现在的系统一般都没有 ~/.bash_profile 文件了，只保留 ~/.bashrc 文件,所有的系统里，~/.bash_profile 都会有这样的逻辑，避免登陆时 ~/.bashrc 被跳过的情况：**
-
-```
-# login shell will execute this
-if [ -n "$BASH_VERSION" ]; then
-	# include .bashrc if it exists
-	if [ -f "$HOME/.bashrc" ]; then
-		. "$HOME/.bashrc"
-	fi
-fi
-```
-
-在发行版的 Linux 系统中，Interactive&Login 模式下的 ~/.bash_profile, ~/.bash_login， ~/.profile 并不一定是三选一，看一下这三个脚本的内容会发现他们会继续调用下一个它想调用的配置文件，这样就可以避免配置项可能需要在不同的配置文件多次配置。如 centos7.2 中 ~/.bash_profile 文件中实际调用了 ~/.bashrc 文件。
-
-```
-# .bash_profile
-
-# Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-	. ~/.bashrc
-fi
-
-# User specific environment and startup programs
-
-PATH=$PATH:$HOME/.local/bin:$HOME/bin
-
-export PATH
-```
-
-![](./images/shell3.png)
-
-如上图所示，开启一个 Shell 进程时，有一些参数的值也会影响到配置文件的加载。如`--rcfile`，`--norc` 等。
-
-常用的 shell 环境变量：
-
-| 变量名  | 描述                                     |
-| :------ | :--------------------------------------- |
-| PATH    | 命令搜索路径，以冒号为分隔符             |
-| HOME    | 用户主目录的路径名，是 cd 命令的默认参数 |
-| SHELL   | 当前运行的 Shell 的全路径名              |
-| TERM    | 终端类型                                 |
-| LOGNAME | 当前的登录名                             |
-| PWD     | 当前工作目录                             |
-
-```
-#输出个别的环境变量值的两种方式
-
-printenv HOME
-
-echo $HOME
-```
-
-全局变量是对所有用户都需要使用的变量，可以将新的变量或修改过的变量设置放在`/etc/profile`文件中，但升级了发行版该文件也会更新，所以这点要注意 （对所有用户）。
-
-最好是在`/etc/profile.d`目录中创建一个以`.sh`结尾的文件，把所有新的变量或修改过的变量全部放在此文件中（对所有用户）。
-
-对于存储个人用户永久性 bash shell 变量的地方是`$HOME/.bashrc`文件。这一点适用于所有类型的 Shell 进程（仅对当前用户）。
-
-### `$*` 和 `$@` 的区别
-
-`$*` 和 `$@` 都表示传递给函数或脚本的所有参数，不被双引号`""`包含时，都是以`"$1" "$2" ... "\$n"`形式把所有参数一个一个单独输出。
-
-但是当他们被双引号包含是，`"$*"` 会将所有的参数作为一个整体，以`"$1 $2 ... $n"`的形式输出所有参数。`"$@"` 还是跟之前一样，把所有参数分开，一个一个的输出。
-
-例如：`./test.sh a b c d`
-
-```
-
-#/bin/bash
-
-echo "打印出没有引号的 $*"
-for var in $*
-do
-echo "$var"
-done
-#输出：打印出没有引号的 $*
-# a
-# b
-# c
-# d
-
-echo "打印出有引号的 \"$*\""
-for var in "$*"
-do
-echo "$var"
-done
-#输出：打印出有引号的 "$*"
-# a b c d
-
-
-echo "打印出没有引号的 $@"
-for var in $@
-do
-echo "$var"
-done
-#输出：打印出没有引号的 $@
-# a
-# b
-# c
-# d
-
-echo "打印出有引号的 \"$@\""
-for var in "$@"
-do
-echo "$var"
-done
-#输出：打印出有引号的 "$@"
-# a
-# b
-# c
-# d
-```
-
-### Shell 中的替换
-
-#### 转义字符替换
-
-使用 `echo` 命令时，使用 `-e` 可以对转义字符进行替换。使用 `-E` 可以禁止转义，默认也是不转义的；使用 `-n` 选项可以禁止插入换行符。
-
-| 转义字符 | 含义                               |
-| :------- | :--------------------------------- |
-| \b       | 退格（删除键）                     |
-| \f       | 换页（FF），将当前位置移到下页开头 |
-| \n       | 换行                               |
-| \c       | 显示不换行                         |
-| \r       | 回车                               |
-| \t       | 水平制表符（tab 键）               |
-| \v       | 垂直制表符                         |
-
-```
-
-#/bin/bash
-
-a=1
-b=2
-
-echo -e "${a}\n${b}" #输出：1
-
-# 2
-
-```
-
-#### 命令替换
-
-命令替换是指 Shell 可以先执行命令，将输出结果暂时保存，在适当的地方输出。
-
-命令替换的语法是：反引号 ``。
-
-```
-
-#!/bin/bash
-
-DATE=`date`
-echo "日期是：\$DATE" #输出：日期是：Sun Oct 18 16:27:42 CST 2020
-
-```
-
-### () 和 (())
-
-#### 先说一下 ()
-
-在 bash 中，`$()`与 ``（反引号）都是用来作命令替换的。先完成引号里的命令行，然后将其结果替换出来，再重组成新的命令行。
-
-相同点：`$()` 与 `` 在操作上，这两者都是达到相应的效果
-
-不同点：
-
-`` 很容易与''搞混乱，尤其对初学者来说。
-
-而`$()` 比较直观；不过 `$()` 有兼容性问题，有些类 Unix 系统不支持。
-
-```
-echo $(expr 1 + 2)
-```
-
-#### 再说 (())
-
-1、(()) 可直接用于整数计算
-
-```
-echo $((1 + 2))
-```
-
-2、(()) 可重新定义变量值，用于判断条件或计算等
-
-```
-#!/bin/bash
-
-a=10
-b=50
-
-((a++))
-echo $a
-#输出：11
-
-((a > b)) && echo "a > b"
-
-((a < b)) && echo "a < b"
-
-# 输出：a < b
-```
-
-3、(()) 可用于进制转换
-
-\$(())可以将其他进制转成十进制数显示出来。语法：`$((N#xx))`，其中，N 为进制，xx 为该进制下某个数值，命令执行后可以得到该进制数转成十进制后的值。
-
-```
-echo $((2#110))
-#输出：6
-echo $((8#11))
-#输出：9
-echo $((16#1a))
-#输出：26
-```
-
-### test 、[] 和 [[]]
-
-type 命令检查
-
-```
-type "test" "[" "[["
-#输出：
-#test is a shell builtin
-#[ is a shell builtin
-#[[ is a reserved word
-```
-
-从上面可以看出，`test`和`[`属于 Shell 的内置命令，`[[`属于 Shell 的保留关键字。
-
-在使用上，`test`和`[`是等价的，因为是命令，所以需要跟它的参数使用空格隔开。
-
-```
-test -f /etc/hosts && echo True
-#输出：True
-
-[ -f /etc/hosts ] && echo True
-#输出：True
-```
-
-因为 `]` 作为最后一个参数表示条件结束，而像`<`、`>`符号会被理解为重定向，导致错误
-
-```
-[ 1 < 2 ]
-#输出：line 13: 2: No such file or directory
-```
-
-`[[`是关键字，能够按照常规的语义理解其中的内容，双中括号中的表达式看作一个单独的语句，并返回其状态码。
-
-```
-[[ 1 < 2 ]] && echo True || echo False
-#输出：True
-```
-
-推荐使用`[[` 来进行各种判断，可以避免很多错误。
-
-如下展示单中括号会引发的错误
-
-```
-[ $a == 1 && $b == 1 ] && echo True || echo False
-#输出：[: missing `]'
-
-#例如$a为空，就会报语法错误，因为 [ 命令拿到的实际上只有 ==、1、] 三个参数
-[ $a == 1 ]
-#输出：[: ==: unary operator expected
-```
-
-### Here Document
-
-[Here Document](https://tldp.org/LDP/abs/html/here-docs.html) 可以理解为“嵌入文档”。Here Document 是 Shell 中的一种特殊的重定向方式，它的基本形式如下：
-
-```
-
-command <<delimiter
-document
-delimiter
-
-```
-
-作用是将两个 delimiter 之间的内容(document)作为输入传递给 command。
-
-**注意：**
-
-- 结尾的 delimiter 一定要顶格写，前面不能有任何字符，后面也不能有任何字符，包括空格和 tab 缩进。
-- 开始的 delimiter 前后的空格会被忽略掉。
-
-```
-#!/bin/bash
-
-wc -l << EOF
-line 1
-line 2
-line 3
-EOF #输出：3
 ```
 
 ## 参考文档
