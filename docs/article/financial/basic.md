@@ -9,3 +9,7 @@
 - [如果牛市来了](https://mp.weixin.qq.com/s/OhuNId4NoaiD-kZpzVJ1Mw)
 - [如何建立一套自己的投资系统？（一）](https://mp.weixin.qq.com/s/jzDx3qaX99w0RrbSmBs3fg)
 - [这篇文章很贵](https://mp.weixin.qq.com/s/h-CjVK5YPK3FsqCPkRpWxQ)
+
+## 实践
+
+- [玩CASHFLOW打造你的财务自由之路](https://www.bmpi.dev/money/play-cashflow-to-build-your-financial-freedom/)
