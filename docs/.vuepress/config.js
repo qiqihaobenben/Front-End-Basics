@@ -36,18 +36,15 @@ module.exports = {
           children: [
             'utility/lexical-grammar',
             'utility/syntax',
+            'ES6/block',
             'utility/javascript-type',
             'utility/javascript-function',
             'utility/javascript-object',
             'utility/javascript-asynchronous',
             'ES6/promise',
-            'utility/javascript-runing',
-            'ES6/block',
-            'ES6/string',
-            'ES6/symbol',
             'ES6/async',
-            'utility/data-interaction/ajax',
-            'utility/data-interaction/cross-origin',
+            'utility/javascript-runing',
+            'utility/memory',
           ],
         },
         {
@@ -56,7 +53,7 @@ module.exports = {
         },
         {
           title: '数据结构和算法',
-          children: ['utility/fe-algorithm/data', 'utility/fe-algorithm/array'],
+          children: ['utility/fe-algorithm/data', 'utility/fe-algorithm/array', 'ES6/string', 'ES6/symbol', 'ES6/set_map'],
         },
         {
           title: 'TypeScript',
@@ -72,6 +69,10 @@ module.exports = {
             'typescript/typescript-important',
             'typescript/use-typescript-two-years',
           ],
+        },
+        {
+          title: '网络请求',
+          children: ['utility/data-interaction/ajax', 'utility/data-interaction/cross-origin'],
         },
       ],
       // 基础建设和工程化
