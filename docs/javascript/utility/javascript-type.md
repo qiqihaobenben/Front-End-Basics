@@ -77,6 +77,8 @@ Null 表示定义了但是为空，Null 类型也只有一个值，就是 null�
 
 null 是 JavaScript 关键字，所以在任何代码中，都可以放心用 null 关键字来获取 null 值。
 
+从概念上讲，undefined 表示值的缺失，null 表示对象的缺失（这也可以说明 typeof null === "object" 的原因）。
+
 #### null 推荐用法
 
 如果定义的变量准备在将来用于保存对象，那么最好将该变量初始化为 null 而不是其他值。这样一来，只要直接检查 null 值就可以知道相应的变量是否已经保存了一个对象的引用。例如：
@@ -87,7 +89,7 @@ if(car !== null) {
 }
 ```
 
-换句话说，只要意在保存对象的变量还没有真正保存对象，就应该明确地给把该变量赋值成 null。这样做不仅可以体现 null 作为空对象指针的惯例，而且也有助于进一步区分 null 和 undefined。
+换句话说，只要打算保存对象的变量还没有真正保存对象，就应该明确地给把该变量赋值成 null。这样做不仅可以体现 null 作为空对象指针的惯例，而且也有助于进一步区分 null 和 undefined。
 
 扩展：关于 undefined 和 null 的一篇文章：[undefined-null-revisited](https://2ality.com/2021/01/undefined-null-revisited.html)
 
@@ -327,6 +329,21 @@ JavaScript 语言设计上试图模糊对象和基本类型之间的关系，让
 console.log("abc".charAt(0)); //a
 ```
 
+**在创建变量时，对于 boolean、number、string、null 和 undefined 这个五个原始值类型来说，字面量优于封装对象**
+
+- 封装对象会占用更大的内存
+- 相同的字符串也无法比较，例如，new 出来的 String 是一个真正的对象，每个 String 对象对是一个单独的对象，即使是两个相同的字符串，两者的引用也不相同。
+
+```js
+const s1 = new String('hello')
+const s2 = new String('hello')
+typeof 'hello' // string
+typeof s1 // object
+typeof s2 // object
+s1 === s2 // false
+s1 == s2 // false
+```
+
 #### 扩展
 
 从技术角度讲，ECMA-262 中对象的行为不一定适用于 JavaScript 中的其他对象。浏览器环境中的对象，比如 BOM 和 DOM 中的对象，都属于宿主对象，因为它们是由宿主环境提供和定义的。ECMA-262 不负责定义宿主对象，因此宿主对象可能会也可能不会继承 Object。
@@ -341,20 +358,31 @@ JavaScript 是弱类型语言，所以类型转换发生的非常频繁，大部
 
 ### StringToNumber
 
-String 转换成 Number 时，建议使用 Number()，不推荐使用 parseInt() 和 parseFloat()。
+String 转换成 Number 时，建议使用 一元加操作符`+` 或 Number() 进行 **Number 强制类型转换（String 类型隐式转换为 Number 类型时，就是用的 一元加操作符 ）**，不推荐使用 parseInt() 和 parseFloat()。
 
 #### Number()
 
 Number() 会把数字字符串转换为数字，不是数字字符串的返回值就是 NaN。
 
-- 如果字符串只包含数字（包括前面带正号或负号的情况）则将其转换为十进制数值，即"1"会变成 1，而"011"
-  会变成 11（注意：前导的零被忽略了）
-- 如果字符串中包含有效的浮点格式，如"1.1"，则将其转换为对应的浮点数值（同样，也会忽略前导零）
+- 如果字符串只包含数字（包括前面带正号或负号的情况，符号标志只能出现一次，并且后面不能跟空格）则将其转换为十进制数值，即"1"会变成 1，而"011" 会变成 11（注意：前导的零被忽略了）
+- 如果字符串中包含有效的浮点格式（小数点只能出现一次），如"1.1"，则将其转换为对应的浮点数值（同样，也会忽略前导零）
 - 如果字符串中包含有效的二进制、八进制和十六进制，例如"0xf"，则将其转换为相同大小的十进制整数。
-- 如果字符串是空的（不包含任何字符），则将其转换为 NaN。
-- 如果字符串中包含除上述格式之外的字符，则将其转换为 NaN。
+- 如果是空字符串或仅包含空格的字符串转换为 0。。
+- 如果字符串中包含除上述格式之外的字符（数字分隔符也不能使用），则将其转换为 NaN。
+- 前导和尾随的空格/换行符会被忽略
+- Infinity 和 -Infinity 被当作是字面量。在实际代码中，它们是全局变量。
 
-**扩展：一元加操作符的操作与 Number()函数相同。**
+##### Number 强制转换的其他规则
+
+- Number 将按原样返回
+- undefined 转换为 NaN。
+- null 转换为 0。
+- true 转换为 1；false 转换为 0。
+- BigInt 抛出 TypeError，以防止意外的强制隐式转换导致精度损失。（一元加操作符会遵循，Number()不会抛出 TypeError，而是返回其数字值，并且可能导致精度损失）
+- Symbol 抛出 TypeError。
+- 对象首先通过按顺序调用它们的 [@@toPrimitive]()（使用 "number" 提示）、valueOf() 和 toString() 方法将其转换为原始值（拆箱操作）。然后将得到的原始值转换为数字。
+
+##### 注意：一元加操作符的操作与 Number() 函数几乎相同。一元加操作符会完全按照 Number 强制转换规则， Number() 在处理 BigInt 类型时跟规则不同。
 
 #### parseInt(string, radix);
 
@@ -362,7 +390,10 @@ parseInt(string, radix) 解析一个字符串并返回指定基数的**十进制
 
 - string 要被解析的值
 
-  如果参数不是一个字符串，则将其转换为字符串（使用 ToString）。字符串开头的空白符将会被忽略。如果第一个字符不是数字字符或者负号，就返回 NaN。如果第一个字符是数字，就继续解析第二个字符，直到解析完所有的后续字符或者遇到了一个非数字字符。
+  - 如果参数不是一个字符串，则将其转换为字符串（使用 ToString）。
+  - 字符串开头的空白符将会被忽略。
+  - 如果第一个字符不是数字字符或者负号，就返回 NaN。
+  - 如果第一个字符是数字，就继续解析第二个字符，直到解析完所有的后续字符或者遇到了一个非数字字符。
 
 - radix 可选（建议必传）
 
@@ -458,7 +489,7 @@ var s2 = s1.substring(2);
 2. 在实例上调用指定的方法；
 3. 销毁这个实例。
 
-根据装换过程描述来看，意味着我们不能再运行时为基本类型值添加属性和方法。
+根据转换过程描述来看，意味着我们不能在运行时为基本类型值添加属性和方法。
 
 ```
 var s1 = "hello";
@@ -466,7 +497,7 @@ s1.color = "red";
 console.log(s1.color)  // undefined
 ```
 
-上面的代码中的第二行试图为字符串 s1 添加一个 color 属性。但是，当第三行代码再次访问 s1 时，其 color 属性不见了。问题的原因就是第二行创建的 String 对象在执行第三行代码时已经被销毁了。第三行代码有创建了自己的 String 对象。而该对象没有 color 属性。
+上面的代码中的第二行尝试为字符串 s1 添加一个 color 属性。但是，当第三行代码再次访问 s1 时，其 color 属性不见了。问题的原因就是第二行创建的 String 对象在执行第三行代码时已经被销毁了。第三行代码有创建了自己的 String 对象。而该对象没有 color 属性。
 
 #### 显式调用装箱转换
 
@@ -512,11 +543,11 @@ console.log(Object.prototype.toString.call(symbolObject)) // [object Symbol]
 
 1. 当一个对象要转换为对应的原始值时，会调用 ToPrimitive(input[,PreferredType])方法进行转换，这个方法的作用就是将输入转换成一个非对象类型。参数 PreferredType 是可选的，它的作用是确定要转成的类型。如果不传 PreferredType，默认是 number。
 
-2. 如果设置了 [Symbol.toPrimitive] 时，会直接调用此函数，否则进入第三步。
+2. 如果设置了 [Symbol.toPrimitive] 时，会直接调用此函数，它必须返回原始值，如果返回对象，会导致 TypeError。否则进入第三步。
 
 3. 根据 PreferredType 决定 valueOf 和 toString 的调用顺序。如果 PreferredType 的值是 string，那就先执行 toString，后执行 valueOf。否则，先执行 valueOf，后执行 toString。
 
-注意：拆箱转换会尝试调用 valueOf 和 toString 来获得拆箱后的基本类型。如果 valueOf 和 toString 都不存在，或者没有返回基本类型，则会产生类型错误 TypeError。
+4. 拆箱转换会尝试调用 valueOf 和 toString 来获得拆箱后的基本类型。如果其中一个返回对象，则忽略其返回值，从而使用另一个的返回值。如果 valueOf 和 toString 都不存在，或者没有返回基本类型，则会产生类型错误 TypeError。
 
 #### 拆箱转换为 Number
 
@@ -569,27 +600,13 @@ console.log(o + '')
 // hello
 ```
 
-## 规范类型
+#### 总结一下
 
-除了 7 中语言类型，还有一些语言的实现者更关系的规范类型
+有三种不同的路径可以将对象转换为原始值：
 
-- List 和 Record
-
-  list 是用来描述参数列表的执行，其实跟 ES 中规定的数组的意义相近，但是写规范的时候还不存在 ES 的数组类型，所以使用 List 代替，写作<<1,2>>。
-
-  Record 是用来描述算法中的数据聚合的，可以简单理解为 ES 重的对象，这个类型内部聚合了一个或多个命名字段（可以理解为键值对），其中命名字段的值一般是 ES 规范中的值或者 Record 类型关联的抽象值（可以简单对应为 JS 中的基本类型的值或者是对象类型的值），字段的名称始终用[[name]]表示。可以在 JS 对象的原型链上或原型链中的某个属性中看到类型的标识，例如 [[Scopes]]，但一般涉及语言实现，不会对外暴露出具体信息。
-
-- Set 和 Relation
-
-Set 主要是解释内存模型中使用的无序元素集合，即数学意义上的集合，其中的元素出现不超过一次，应该与 ES6 中的 Set 类型对应，在语言层面上会用于描述字符集之类的。
-
-Relation 用于解释 Set 之间的关系，例如包含、交叉等，可以参考数学定义上的集合关系。
-
-- Completion Record：用于描述异常、跳出等语句执行过程。翻译过来就是完成时的记录，这里的完成时一般是指语句执行后的完成状态。这个完成状态有几种类型，例如正常的赋值语句完成后，他的完成状态就是 normal，break,continue,return,throw 这些语句执行完成后，其完成状态就是对应的状态（break,continue,return,throw）
-- Reference：用来解释诸如 delete,typeof,赋值运算符，super 关键字和其他语言特征等运算符的行为。简单理解，就是如何去解析这些运算符的使用，有点类似此法作用域中对变量的 LHS,RHS 的朝招。
-- Property Descriptor：属性描述符，用来解释对象属性的特性的操作，其值为 Record 类型，分为数据属性描述符和访问器属性描述符。例如：[[Writable]]、[[Get]]等。
-- Lexical Environment 和 Environment Record：用于描述变量和作用域
-- Data Block：用于描述二进制数据
+- 原始值强制转换：`[@@toPrimitive]("default")` → `valueOf()` → `toString()`
+- 数字类型强制转换、number 类型强制转换、BigInt 类型强制转换：`[@@toPrimitive]("number")` → `valueOf()` → `toString()`
+- 字符串类型强制转换：`[@@toPrimitive]("string")` → `toString()` → `valueOf()`
 
 ## typeof 运算符
 
@@ -650,3 +667,8 @@ typeof null 会返回 "object"，这是由于历史原因造成的，1995 年 Ja
 对于原始类型，比较时会直接比较他们的值，如果值相等就相等。
 
 对于引用类型，比较时会比较他们的引用地址，虽然两个变量在堆中存储的对象具有一模一样的属性值，但是他们被存储在了不同的存储地址，因为比较时会不相等。
+
+## 链接
+
+- [Number 强制转换](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number#number_%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2)
+- [原始值强制转换](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures#%E5%8E%9F%E5%A7%8B%E5%80%BC%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2)
