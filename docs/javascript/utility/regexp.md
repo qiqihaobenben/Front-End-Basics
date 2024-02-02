@@ -4,7 +4,7 @@
 
 ### 概念
 
-正则表达式（Regular Expression），简称 regex，是一种特殊的文本模式（特定的规则、模板或结构），用于在字符串中搜索、匹配和替换文本。
+正则表达式（Regular Expression），简称 regex，是一种特殊的文本模式（特定的规则、模板或结构），用于在**字符串**中搜索、匹配和替换文本。
 
 ### 正则表达式在计算机领域的发展
 
@@ -50,8 +50,30 @@ const reg = /hello/i
 
 ```js
 const reg = new RegExp('hello', 'i')
+```
 
-//其实还有一种形式的字面量 new RegExp(/hello/, 'i')
+##### new RegExp() 创建字面量形式
+
+```js
+var regex = new RegExp(/xyz/i)
+// 等价于
+var regex = /xyz/i
+```
+
+其实还有一种形式的字面量 `new RegExp(/xyz/i)` ，注意第一个参数不是字符串，而是正则表达式字面量。
+
+这样的写法就会存在正则表达式字面量中修饰符和 RegExp 构造函数第二个参数冲突的情况。在 ES5 中不允许此时使用第二个参数添加修饰符，否则会报错。
+
+```
+var regex = new RegExp(/xyz/, 'i');
+// Uncaught TypeError: Cannot supply flags when constructing one RegExp from another
+```
+
+ES6 改变了这种行为。如果 RegExp 构造函数第一个参数是一个正则对象，那么可以使用第二个参数指定修饰符。而且，返回的正则表达式会忽略原有的正则表达式的修饰符，只使用新指定的修饰符。
+
+```
+new RegExp(/abc/ig).flags // gi
+new RegExp(/abc/ig, 'i').flags // i ，原有正则对象的修饰符是ig，它会被第二个参数i覆盖
 ```
 
 #### 字面量和构造函数的区别
@@ -95,8 +117,8 @@ reg2.test(str)
 
 例如下面代码中正则表达式的 d、 o 、g 三个字符，就是字面量字符
 
-```js
-;/dog/.test('old dog') // true
+```
+/dog/.test('old dog') // true
 ```
 
 ### 元字符
@@ -195,6 +217,19 @@ console.log(str1) // ab\c\*
 - `+`：匹配前一项 1 次或多次，等价于 `{1,}`
 - `*`：匹配前一项 0 次或多次，等价于 `{0,}`
 
+### 预定义模式
+
+- `\d`：匹配 0-9 之间的任一数字，相当于[0-9]
+- `\D`：匹配所有 0-9 以外的字符，相当于[^0-9]
+- `\w`：匹配任意的字母、数字和下划线，相当于[A-Za-z0-9_]
+- `\W`：除所有字母、数字和下划线以外的字符，相当于[^a-za-z0-9_]
+- `\s`：匹配空格（包括换行符、制表符、空格符等），相等于[ \t\r\n\v\f]
+- `\S`：匹配非空格的字符，相当于[^ \t\r\n\v\f]
+- `\b`：匹配词的边界（边界包括：空格、起始、结束）
+- `\B`：匹配非词边界，即在词的内部
+
+**扩展：跟 `[^]` 类似，`[\S\s]` 指代一切字符。**
+
 ### 字符类
 
 字符类（class）又被称为 字符组 或 字符集合，表示有一系列字符可供选择，只要匹配其中一个就可以了。所有可供选择的字符都放在方括号内，比如 `[xyz]` 表示 x、y、z 之中任选一个匹配
@@ -261,9 +296,11 @@ var str = "\u0130\u0131\u0132";
 /[A-z]/.test('\\') // true
 ```
 
+##### 如果想让方括号中的连字符匹配一个普通的连字符，连字符必须放在字符组的开头，保证它是一个普通字符。
+
 #### 方括号内的其他需要转义的元字符
 
-需要转义的元字符，除了 `]`、`\` 不能写在方括号中外， `. + ? * { } / ( ) $ | [`在方括号内只是匹配普通字符
+需要转义的元字符，除了`\` 需要转义，不能直接写在方括号中外， `. + ? * { } / ( ) $ | [ ]`在方括号内只是匹配普通字符
 
 ```
 /[.+?*{}/()$|]/.test('*') // true
@@ -347,38 +384,111 @@ while (true) {
 /y((..)\2)\1/.test('yabababab') // true
 ```
 
+##### 具名分组（ES2018）
+
+ES2018 引入了具名组匹配（Named Capture Groups），允许为每一个组匹配指定一个名字，既便于阅读代码，又便于引用。
+
+语法是：“具名组匹配” 在圆括号内部，模式的头部添加 “问号 + 尖括号 + 组名”，例如 `?<year>`
+
+- 捕获分组的改变
+
+组匹配的一个问题是，每一组的匹配含义不容易看出来，而且只能用数字序号（比如 `matchObj[1]`）引用，要是组的顺序变了，引用的时候就必须修改序号。
+
+```js
+const RE_DATE = /(\d{4})-(\d{2})-(\d{2})/
+
+const matchObj = RE_DATE.exec('1999-12-31')
+const year = matchObj[1] // 1999
+const month = matchObj[2] // 12
+const day = matchObj[3] // 31
+```
+
+具名组匹配可以在 `exec` 方法返回结果的 `groups` 属性上引用该组名。同时，数字序号（`matchObj[1]`）依然有效。
+
+```js
+const RE_DATE = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/
+
+const matchObj = RE_DATE.exec('1999-12-31')
+const year = matchObj.groups.year // "1999"
+const month = matchObj.groups.month // "12"
+const day = matchObj.groups.day // "31"
+```
+
+具名组匹配等于为每一组匹配加上了 ID，便于描述匹配的目的。如果组的顺序变了，也不用改变匹配后的处理代码。
+
+如果具名组没有匹配，那么对应的 `groups` 对象属性会是 `undefined`。
+
+```js
+const RE_OPT_A = /^(?<as>a+)?$/
+const matchObj = RE_OPT_A.exec('')
+
+matchObj.groups.as // undefined
+'as' in matchObj.groups // true
+```
+
+上面代码中，具名组 as 没有找到匹配，那么 matchObj.groups.as 属性值就是 undefined，并且 as 这个键名在 groups 是始终存在的。
+
+- 引用字符的改变
+
+具名组匹配的引用字符的语法是 `\k`开始，后面添加“尖括号 + 组名”，例如 `\k<first>`
+
+```
+/(.)b(.)\1b\2/.test("abcabc") // true
+/(?<first>.)b(?<last>.)\k<first>b\k<last>/.test("abcabc") // true
+
+
+// 引用字符的顺序可以按照实际情况调整
+/y(..)(.)\2\1/.test('yabccab') // true
+/y(?<first>..)(?<last>.)\k<last>\k<first>/.test('yabccab') // true
+```
+
+- replace 方法的改变
+
+字符串替换时，使用`$<组名>`引用具名组。
+
+```
+let re = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/u;
+
+'2015-01-02'.replace(re, '$<day>/$<month>/$<year>')
+// '02/01/2015'
+```
+
+replace 方法的第二个参数也可以是函数，具名组匹配在原来的基础上，新增了最后一个函数参数：具名组构成的一个对象。函数内部可以直接对这个对象进行解构赋值。
+
+```
+'2015-01-02'.replace(re, (
+   matched, // 整个匹配结果 2015-01-02
+   capture1, // 第一个组匹配 2015
+   capture2, // 第二个组匹配 01
+   capture3, // 第三个组匹配 02
+   position, // 匹配开始的位置 0
+   S, // 原字符串 2015-01-02
+   groups // 具名组构成的一个对象 {year, month, day}
+ ) => {
+ let {day, month, year} = groups;
+ return `${day}/${month}/${year}`;
+});
+```
+
 ##### 实际应用的例子
 
 1. 匹配网页标签
 
 ```
-
+let reg = /<([^>]+)>[^<]*<\/\1>/
 ```
 
 2. 捕获带有属性的标签
 
 ```
-
+let reg = /<(\w+)\s([^>]*)>(.*?)<\/\1>/
 ```
 
 3. 匹配网址并且捕获 host
 
 ```
-
+let reg = /^(https?:\/\/)?([\w-]+\.)+[\w-]+/
 ```
-
-### 预定义模式
-
-- `\d`：匹配 0-9 之间的任一数字，相当于[0-9]
-- `\D`：匹配所有 0-9 以外的字符，相当于[^0-9]
-- `\w`：匹配任意的字母、数字和下划线，相当于[A-Za-z0-9_]
-- `\W`：除所有字母、数字和下划线以外的字符，相当于[^a-za-z0-9_]
-- `\s`：匹配空格（包括换行符、制表符、空格符等），相等于[ \t\r\n\v\f]
-- `\S`：匹配非空格的字符，相当于[^ \t\r\n\v\f]
-- `\b`：匹配词的边界
-- `\B`：匹配非词边界，即在词的内部
-
-**扩展：跟 `[^]` 类似，`[\S\s]` 指代一切字符。**
 
 ### 修饰符
 
@@ -435,6 +545,179 @@ regex.test(str); // false
 /world$/m.test('hello world\n') // true
 /^b/m.test('a\nb') // true 加上m修饰符以后，换行符\n也会被认为是一行的开始
 ```
+
+#### `u` 修饰符（ES6）
+
+含义为“Unicode 模式”，用来正确处理大于\uFFFF 的 Unicode 字符。也就是说，会正确处理四个字节的 UTF-16 编码。
+
+##### 点字符
+
+点（`.`）字符在正则表达式中，含义是除了换行符以外的任意单个字符。对于码点大于 `0xFFFF` 的 Unicode 字符，点字符不能识别，必须加上 `u` 修饰符。
+
+```
+var s = '𠮷';
+
+/^.$/.test(s) // false
+/^.$/u.test(s) // true
+```
+
+##### Unicode 字符表示法
+
+ES6 新增了使用大括号表示 Unicode 字符，这种表示法在正则表达式中必须加上 `u` 修饰符，才能识别当中的大括号，否则会被解读为量词。
+
+```
+/\u{61}/.test('a') // false
+/\u{61}/u.test('a') // true
+/\u{20BB7}/u.test('𠮷') // true
+```
+
+上面代码表示，如果不加 `u` 修饰符，正则表达式无法识别 `\u{61}` 这种表示法，只会认为这匹配 61 个连续的 u。
+
+##### 预定义模式
+
+`u` 修饰符也影响到预定义模式，能否正确识别码点大于`0xFFFF`的 Unicode 字符。
+
+```
+/^\S$/.test('𠮷') // false
+/^\S$/u.test('𠮷') // true
+```
+
+上面代码的 `\S` 是预定义模式，匹配所有非空白字符。只有加了 `u` 修饰符，它才能正确匹配码点大于 `0xFFFF` 的 Unicode 字符。
+
+利用这一点，可以写出一个正确返回字符串长度的函数。
+
+```js
+function codePointLength(text) {
+  var result = text.match(/[\s\S]/gu)
+  return result ? result.length : 0
+}
+
+var s = '𠮷𠮷'
+
+s.length // 4
+codePointLength(s) // 2
+```
+
+##### 量词
+
+使用 u 修饰符后，所有量词都会正确识别码点大于 0xFFFF 的 Unicode 字符。
+
+```
+/a{2}/.test('aa') // true
+/a{2}/u.test('aa') // true
+/𠮷{2}/.test('𠮷𠮷') // false
+/𠮷{2}/u.test('𠮷𠮷') // true
+```
+
+##### 转义
+
+没有 u 修饰符的情况下，正则中没有定义的转义（如逗号的转义\,）无效，而在 u 模式会报错。
+
+```
+/\,/ // 输出 /\,/
+/\,/u // 报错
+```
+
+#### `y` 修饰符（ES6）
+
+也叫做“粘连”（sticky）修饰符。
+
+`y` 修饰符的作用与 `g` 修饰符类似，也是全局匹配，后一次匹配都从上一次匹配成功的下一个位置开始。不同之处在于，`g` 修饰符只要剩余位置中存在匹配就可，而 `y` 修饰符**确保匹配必须从剩余的第一个位置开始**，这也就是“粘连”的涵义。
+
+```js
+var s = 'aaa_aa_a'
+var r1 = /a+/g
+var r2 = /a+/y
+
+r1.exec(s) // ["aaa"]
+r2.exec(s) // ["aaa"]
+
+r1.exec(s) // ["aa"]
+r2.exec(s) // null y修饰符要求匹配必须从头部开始，所以返回null
+```
+
+##### 实际上，`y` 修饰符号隐含了头部匹配的标志 `^`。
+
+```
+/b/y.exec('aba') // null
+```
+
+##### 单单一个 `y` 修饰符对 `match` 方法，只能返回第一个匹配，必须与 `g` 修饰符联用，才能返回所有匹配。
+
+```
+'a1a2a3'.match(/a\d/y) // ["a1"]
+'a1a2a3'.match(/a\d/gy) // ["a1", "a2", "a3"]
+```
+
+#### `s` 修饰符：`dotAll` 模式（ES2018）
+
+`dotAll` 模式，即点（dot）代表一切字符。
+
+正则表达式中，点（`.`）是一个特殊字符，代表任意的单个字符，
+
+但是有两个例外:
+
+- 一个是四个字节的 UTF-16 字符，这个可以用 `u` 修饰符解决；
+- 另一个是行终止符（line terminator character）。**这个就需要 `s` 修饰符解决**
+
+所谓行终止符，就是该字符表示一行的终结。以下四个字符属于“行终止符”。
+
+- U+000A 换行符（`\n`）
+- U+000D 回车符（`\r`）
+- U+2028 行分隔符（line separator）
+- U+2029 段分隔符（paragraph separator）
+
+```
+/foo.bar/.test('foo\nbar') // false
+```
+
+上面代码中，因为 `.` 不匹配 `\n`，所以正则表达式返回 false。
+
+但是，很多时候我们希望匹配的是任意单个字符，这时有一种变通的写法。
+
+```
+/foo[^]bar/.test('foo\nbar') // true
+```
+
+这种解决方案毕竟不太符合直觉，ES2018 引入 `s` 修饰符，使得 `.` 可以匹配任意单个字符。
+
+```
+/foo.bar/s.test('foo\nbar') // true
+```
+
+##### `s` 修饰符和多行修饰符 `m` 不冲突，两者一起使用的情况下，`.` 匹配所有字符，而 `^`和`$` 匹配每一行的行首和行尾。
+
+#### `d` 修饰符：正则匹配索引
+
+ES2022 新增了 d 修饰符，这个修饰符可以让 exec()、match()的返回结果添加 indices 属性，在该属性上面可以拿到匹配的开始位置和结束位置。
+
+注意，开始位置包含在匹配结果之中，相当于匹配结果的第一个字符的位置。但是，结束位置不包含在匹配结果之中，是匹配结果的下一个字符。
+
+如果正则表达式包含组匹配，那么 indices 属性对应的数组就会包含多个成员，提供每个组匹配的开始位置和结束位置。
+
+```
+const text = 'zabbcdef';
+const re = /ab+(cd)/d;
+const result = re.exec(text);
+
+result.indices // [ [ 1, 6 ], [ 4, 6 ] ]
+```
+
+上面例子中，正则表达式 re 包含一个组匹配(cd)，那么 `indices` 属性数组就有两个成员，第一个成员是整个匹配结果（abbcd）的开始位置和结束位置，第二个成员是组匹配（cd）的开始位置和结束位置。
+
+如果正则表达式包含具名组匹配，indices 属性数组还会有一个 groups 属性。该属性是一个对象，可以从该对象获取具名组匹配的开始位置和结束位置。
+
+```
+const text = 'zabbcdef';
+const re = /ab+(?<Z>cd)/d;
+const result = re.exec(text);
+
+result.indices.groups // { Z: [ 4, 6 ] }
+```
+
+面例子中，exec()方法返回结果的 indices.groups 属性是一个对象，提供具名组匹配 Z 的开始位置和结束位置。
+
+如果获取组匹配不成功，indices 属性数组的对应成员则为 undefined，indices.groups 属性对象的对应成员也是 undefined。
 
 ### 特殊字符
 
@@ -528,13 +811,19 @@ while (reg.test('babaa')) count++;
 new RegExp('').test('abc')
 ```
 
-如果想使用正则表达式字面量模式，不能用 `//`，这个是错误的，需要使用 `/(?:)/`
+如果想使用正则表达式字面量模式匹配所有字符串，不能用 `//`，这个是错误的，需要使用 `/(?:)/`
 
 ```
 /(?:)/.test('abc')
 
 // 因为
 new RegExp('').toString() // '/(?:)/'
+```
+
+另外 `/^$/` 可以匹配空字符串
+
+```
+/^$/.test('')
 ```
 
 #### RegExp.prototype.exec()
@@ -613,22 +902,38 @@ while(true) {
 
 只读布尔值，是否带修饰符 `m`
 
+#### unicode
+
+ES6 新增，只读布尔值，表示是否设置了 u 修饰符。
+
+#### sticky
+
+ES6 新增，只读布尔值，表示是否设置了 u 修饰符。
+
+#### dotall
+
+返回一个布尔值，表示该正则表达式是否处在 dotAll 模式。
+
 #### flags
 
 返回一个字符串，包含了已经设置的所有修饰符，按字母排序。
 
 ```js
-var r = /abc/gim
+var r = /abc/gimuy
 
 r.ignoreCase // true
 r.global // true
 r.multiline // true
-r.flags // 'gim'
+r.unicode // true
+r.sticky // true
+r.flags // 'gimuy'
 ```
 
 #### lastIndex
 
 可读写整数，如果带 g 修饰符，这个属性储存在整个字符串中下一次检索开始的位置，这个属性会被 `exec()` 和 `test()` 方法用到。
+
+当调用 `exec()` 或 `test()` 的正则表达式具有修饰符 `g` 时，它将把当前正则表达式对象的 `lastIndex` 属性设置为紧挨着匹配子串的字符位置。如果没发现任何匹配结果，`lastIndex` 将重置为 `0`。
 
 ### 字符串实例方法
 
@@ -664,6 +969,34 @@ var r = /a|b/g;
 r.lastIndex = 7;
 'xaxb'.match(r) // ['a', 'b']
 r.lastIndex // 0
+```
+
+#### String.prototype.matchAll()
+
+ES2020 增加了 String.prototype.matchAll()方法，可以一次性取出所有匹配。不过，它返回的是一个迭代器（Iterator），而不是数组。
+
+```js
+const string = 'test1test2test3'
+const regex = /t(e)(st(\d?))/g
+
+for (const match of string.matchAll(regex)) {
+  console.log(match)
+}
+// ["test1", "e", "st1", "1", index: 0, input: "test1test2test3"]
+// ["test2", "e", "st2", "2", index: 5, input: "test1test2test3"]
+// ["test3", "e", "st3", "3", index: 10, input: "test1test2test3"]
+```
+
+上面代码中，由于 `string.matchAll(regex)` 返回的是迭代器，所以可以用 `for...of` 循环取出。相对于返回 `match()` 数组，返回迭代器的好处在于，如果匹配结果是一个很大的数组，那么迭代器比较节省资源。
+
+迭代器转为数组是非常简单的，使用`...`运算符和 `Array.from()`方法就可以了。
+
+```
+// 转为数组的方法一
+[...string.matchAll(regex)]
+
+// 转为数组的方法二
+Array.from(string.matchAll(regex))
 ```
 
 #### String.prototype.search()
@@ -804,6 +1137,26 @@ function customTrim(str) {
 // [ '', 'aaa', '*', 'a', '*' ]
 ```
 
+#### ES6 的扩展
+
+ES6 出现之前，字符串对象共有 4 个方法，可以使用正则表达式：`match()`、`replace()`、`search()`和`split()`。
+
+ES6 将这 4 个方法，在语言内部全部调用 RegExp 的实例方法，从而做到所有与正则相关的方法，全都定义在 RegExp 对象上。
+
+- `String.prototype.match` 调用 `RegExp.prototype[Symbol.match]`
+- `String.prototype.replace` 调用 `RegExp.prototype[Symbol.replace]`
+- `String.prototype.search` 调用 `RegExp.prototype[Symbol.search]`
+- `String.prototype.split` 调用 `RegExp.prototype[Symbol.split]`
+
+例如：
+
+```js
+var re = /[0-9]+/g
+var str = '2022-01-02'
+var result = re[Symbol.match](str)
+console.log(result) // ["2022", "01", "02"]
+```
+
 ## 进阶概念
 
 ### 匹配模式
@@ -828,19 +1181,256 @@ var s = 'aaa';
 s.match(/a+?/) // ["a"]
 ```
 
+##### 再举一个例子
+
+```
+'aabab'.match(/a.*?b/g) // ['aab', 'ab']
+```
+
+`a.*?b` 匹配最短的，以 a 开始，以 b 结束的字符串。把它应用于 aabab 的话，它会匹配 aab（第一到第三个字符）和 ab（第四到第五个字符）。
+
+为什么第一个匹配是 aab（第一到第三个字符）而不是 ab（第二到第三个字符）？简单地说，因为正则表达式有另一条规则，比懒惰／贪婪规则的优先级更高：最先匹配到的拥有最高的优先权——The match that begins earliest wins。
+
+#### 独占模式（JS 暂不支持）
+
+独占模式需要在待匹配的量词字符后面跟随一个加号即可：`?+`、`++`、`*+`、`{1,5}+`。同贪婪模式一样，独占模式一样会匹配最长。不过在独占模式下，正则表达式尽可能长地去匹配字符串，一旦匹配不成功就会结束匹配而不会回溯。
+
+### 匹配顺序
+
+通常情况下，正则将会从左到右地测试每个条件。
+
+#### 使用分枝条件时，要注意各个条件的顺序。
+
+如果满足了某个分枝的话，就不会去再管其它的条件了。
+
+例如：美国邮编的规则是 5 位数字，或者用连字号间隔的 9 位数字。
+
+```
+/\d{5}-\d{4}|\d{5}/ // 正确方式
+/\d{5}|\d{5}-\d{4}/ // 错误方式，只会匹配5位的邮编(以及9位邮编的前5位)
+```
+
 ### 断言
+
+断言（Assertion）也被称为零宽断言或环视（lookaround），它代表的是一个位置，这个位置应该满足一定的条件（断言），只有当断言为真时才会认为其之前或之后的正则匹配成功。
+
+它自身只进行子表达式的匹配，不占有字符，匹配到的内容不保存到最终的匹配结果。
 
 #### 先行断言
 
+先行断言（lookahead）有时也被称作正向断言，语法是：`(?=exp)`，用于检查某个特定模式是否出现在另一个模式的后面（右边），通俗点说，在某个位置往右（往后）看是否匹配 `?=` 后面的子表达式。
+
+```js
+var m = 'abcabd'.match(/b(?=c)/) // ["b"]
+```
+
+上面代码中，匹配 b 的地方有两个，然后从这两个位置往右看是否匹配正向断言的子表达式 c，所以只有第一个 b 是真正匹配成功的。
+
+##### 密码强度校验（举例）
+
+至少有一个大写字母。至少有一个小写字母。至少有一个数字。至少有 8 个字符。
+
+```
+/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/.test('123456aA') // true
+```
+
+这是一个特殊的例子，用于检查字符串中是否至少有一个大写字母等。
+
+`(?=.*[A-Z])`：用于检查字符串中是否存在至少一个大写字母。其中：
+
+- `?=` 是先行断言的开始。
+- `.*` 代表任意数量的任意字符，这意味着大写字母可以出现在字符串中的任意位置。
+- `[A-Z]` 匹配任意一个大写字母。
+
 #### 先行否定断言
+
+先行否定断言（negative lookahead）有时也被称为正向否定断言，语法是：`(?!=exp)`，用于确保某个模式后面不跟随另一个特定的模式
+
+```
+/\d+(?!\.)/.exec('3.14') // ["14"]
+```
+
+上面代码中，正则表达式指定，只有不在小数点前面的数字才会被匹配，因此返回的结果就是 14。
+
+##### 数字格式化（举例）
+
+1234567890 格式化为 1,234,567,890
+
+```js
+let test = '1234567890'
+let reg = /\B(?=(\d{3})+(?!\d))/g
+console.log(test.replace(reg, ','))
+```
+
+主要看一下正则表达式部分：
+
+- `\B` 非词边界，即在词内部的间隔处
+- `?=` 先行断言，后面必须匹配
+  - `(\d{3})+` 1 个或多个连续的三个数字
+  - `?!` 先行否定断言，多个连续的三个数字后不能有数字
+
+#### 后行断言
+
+后行断言（lookbehind）有时也被称为反向断言，语法是：`(?<=exp)`，用于检查某个特定模式是否出现在另一个模式的前面（左边）。
+
+```
+/(?<=\$)\d+/.exec('123$100') // 100
+```
+
+“后行断言”的实现，需要先匹配 `/(?<=y)x/` 的 `x`，然后再回到左边，匹配 `y` 的部分。这种“先右后左”的执行顺序（后行），与所有其他正则操作相反，导致了一些不符合预期的行为。
+
+##### 后行断言的组匹配
+
+```
+/^(\d+)(\d+)$/.exec('1053') // ["1053", "105", "3"]
+```
+
+没有“后行断言”时，第一个括号是贪婪模式，第二个括号只能捕获一个字符，所以结果是 105 和 3。
+
+```
+/(?<=(\d+)(\d+))$/.exec('1053') // ["", "1", "053"]
+```
+
+有“后行断言”时，由于执行顺序是从右到左，第二个括号是贪婪模式，第一个括号只能捕获一个字符，所以结果是 1 和 053。
+
+##### 后行断言的引用字符
+
+如果后行断言的反斜杠引用字符（`\1`）放在括号的后面，就不会得到匹配结果，必须放在前面才可以。**因为后行断言是先从左到右扫描，发现匹配以后再回过头，从右到左完成反斜杠引用。**
+
+```
+/(?<=(o)d\1)r/.exec('hodor')  // null
+/(?<=\1d(o))r/.exec('hodor')  // ["r", "o"]
+```
+
+#### 后行否定断言
+
+后行否定断言（negative lookbehind）有时也被称为反向否定断言，语法是：`(?<!exp)`，用于确保某个模式前面不是另一个特定的模式。
+
+```
+/(?<!\$)\d+/.exec('123$100') // 123
+```
 
 ## 正则表达式引擎
 
+正则表达式的执行需要正则引擎，正则引擎主要分为两类：
+
+- DFA（Deterministic finite automaton） 确定型有穷自动机
+  - 使用 DFA 引擎的程序：awk（大多数版本）、egrep（大多数版本）、flex、lex、MySQL 等
+- NFA（Non-deterministic finite automaton）不确定型有穷自动机
+  - 使用 NFA 引擎的程序：Java、Perl、PCRE library、less、more、sed（大多数版本）、Python、Ruby 等
+  - 一般指的是 Traditional NFA
+
+其实：NFA 还能继续分为 Traditional NFA 和 POSIX NFA，这就跟 PCRE 流派和 POSIX 流派有些关系了，另外还有一些程序支持 DFA 和 NFA 的结合体，例如 GNU awk
+
+#### 确定型和不确定型
+
+假设有一个字符串 abc 需要匹配，在没有编写正则表达式的前提下，**直接可以确定字符匹配顺序的就是确定型，不能确定字符匹配顺序的就是不确定型**。
+
+#### 有穷
+
+有穷即表示有限的意思，这里表示有限的次数内能得到结果
+
+#### 自动机
+
+自动机就是自动完成，在我们设置好匹配规则后由引擎会自动完成，不需要人为干预。
+
+### DFA 引擎
+
+DFA 是从匹配文本入手，从左到右，每个字符不会匹配两次，它的时间复杂度是多项式的，所以通常情况下，它的速度更快，但支持的特性很少，不支持捕获组、各种引用等等
+
+正则里面的 DFA 引擎实际上就是把正则表达式转换成一个图的邻接表，然后通过跳表的形式判断一个字符串是否匹配该正则。
+
+#### DFA 的特点
+
+- 先看文本，再看正则，**以文本为主导**
+- 匹配过程，字符串只看一次，不管正则表达式写得多烂，匹配速度都很快
+- 不支持捕获组、断言等高级功能
+
+### NFA 引擎
+
+NFA 是从正则表达式入手，不断读入字符，尝试是否匹配当前正则，不匹配则吐出字符重新尝试，通常它的速度比较慢，最优时间复杂度为多项式的，最差情况为指数级的。但 NFA 支持更多的特性，因而绝大多数编程场景下（包括 Java，JS），就是 NFA。
+
+正则里面 NFA 引擎实际上就是在语法解析的时候，构造出的一个有向图。然后通过深搜的方式，去一条路径一条路径的递归尝试。
+
+#### NFA 的特点
+
+- 先看正则，再看文本，**以正则为主导**
+- 匹配过程中，可能会发生回退，字符串同一部分会比较多次（通常将回退称为“回溯”）
+- 功能强大，可以拿到匹配的上下文信息，支持捕获组、断言等功能
+
+### 灾难性回溯真实案例
+
+大部分语言的正则引擎都是 NFA 的，JS 也是，如果写出了有性能问题的正则表达式，容易造成灾难性回溯。
+
+使用 [regex101](https://regex101.com/) 统计 step
+
+```
+let regexp = /^(\w+\s?)*$/;
+
+alert( regexp.test("A good string") ); // true 一共 14 steps
+alert( regexp.test("Bad characters: $@#") ); // false 一共 16412 steps，如果字符串再长一点会执行更多 step
+```
+
+- [必看-灾难性回溯](https://zh.javascript.info/regexp-catastrophic-backtracking)
+- [一个由正则表达式引发的血案](https://www.cnblogs.com/study-everyday/p/7426862.html)
+- [觅迹寻踪之正则表达式](https://mp.weixin.qq.com/s?__biz=MjM5NjA1NzEwMA==&mid=2651019020&idx=1&sn=49ea80e217d17703647ae40fff0c0369&scene=21#wechat_redirect)
+
+#### 如何避免
+
+- 改用 DFA 的正则引擎（速度快，功能弱，没有捕获组断言等功能）
+- 提高对正则性能问题的重视，开发的时候少写模糊匹配，越精确越好，因为模糊匹配、贪婪匹配、懒惰匹配都可能带来回溯问题
+- 使用独占模式可以有效避免回溯问题（JS 暂时没有此模式）
+- 不要滥用括号和字符类
+- 拆分表达式，有时候，多个小正则表达式的速度比一个大正则表达式的速度要快
+
 ## 性能
 
-正则表达式的性能高于常规的循环遍历字符串操作
+### 基本概述
+
+#### 正则表达式的性能高于常规的循环遍历字符串操作
+
+#### 如果只需要匹配几个字母的大小写，可以直接写明，如果使用 `i`修饰符，会每个字母都匹配一遍大小写
+
+```
+/[MmSs]/.test('mS')
+```
+
+#### 尽量使用正则表达式字面量形式
+
+因为 JavaScript 引擎会在脚本加载时编译正则表达式字面量。相比之下，使用 `RegExp` 构造函数创建的正则表达式可能会在每次使用时都重新编译
+
+#### 使用行或者字符串的开始、结束符
+
+如果是从行首或者行尾匹配，使用 `^` 或 `$` 能更精准匹配
+
+## 扩展
+
+### 匹配中文字符
+
+- `[\u4e00-\u9fa5]` 是错的，不要用二十年前的正则表达式了
+- `/\p{Unified_Ideograph}/u` 是正确的，不需要维护，匹配所有汉字。这里 `\p` 是 Unicode 属性转义正则表达式，并且需要使用 `u` 修饰符。
+- `/\p{Ideographic}/u` 和 `/\p{Script=Han}/u` 匹配除了汉字以外的其他一些字符，太宽泛，在「汉字匹配正则表达式」这个需求下，是错的。
+- 目前只有 Chrome 支持 Unicode 属性转义正则表达式。对其他环境，使用 @babel/plugin-proposal-unicode-property-regex 和 regexpu-core 进行优雅降级。
+
+具体细节可以看
+
+- [JavaScript 正则表达式匹配汉字](https://mp.weixin.qq.com/s?__biz=MzAwNTAzMjcxNg%3D%3D&mid=2651425175&idx=1&sn=87dfcb5cee723f8a2997f2376f8f17e1#wechat_redirect)
+- [Unicode：修饰符 “u” 和 class \p{…}](https://www.bookstack.cn/read/zh.javascript.info/49063ecacf52dcca.md)
 
 ## 链接
 
-- [JavaScript Regular Expression Visualizer](<https://jex.im/regulex/#!flags=&re=%5E(a%7Cb)*%3F%24>)
+### 技术文章
+
 - [梳理正则表达式发展史](https://mp.weixin.qq.com/s/hYYDRHgjBs0TVTQty9pSBw)
+- [RegExp 对象](https://wangdoc.com/javascript/stdlib/regexp)
+- [现代 JavaScript 教程中文版-正则表达式](https://www.bookstack.cn/read/zh.javascript.info/bf6e57fcc0ce32fb.md)
+- [正则表达式引擎执行原理](https://segmentfault.com/a/1190000021787021)
+- [浅谈正则表达式原理](http://www.alloyteam.com/2019/07/13574/)
+
+### 验证和联系
+
+- [regex101](https://regex101.com/)
+- [JavaScript Regular Expression Visualizer](<https://jex.im/regulex/#!flags=&re=%5E(a%7Cb)*%3F%24>)
+- [正则练习 RegexOne - Learn Regular Expressions](https://regexone.com/)
+- [正则大全](https://any86.github.io/any-rule/)
+- [super-expressive 用自然语言的方式构建正则表达式](https://github.com/francisrstokes/super-expressive)
