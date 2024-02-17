@@ -58,6 +58,31 @@
 
 <br />
 
+### 3、calc
+
+![calc](./images/17.png)
+
+```
+.container {
+    position: relative;
+    margin: 0 auto;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #666;
+}
+
+.item {
+    position: absolute;
+    left: calc(50% - 200px / 2);
+    top: calc(50% - 200px / 2);
+    width: 200px;
+    height: 200px;
+    background-color: #8c7676;
+}
+```
+
+兼容性：浏览器必须支持 calc。
+
 ## 子元素不定宽高
 
 ### 1、display:table-cell;
@@ -164,34 +189,23 @@
 兼容性：主流浏览器均支持。
 **注意：子元素必须要是 inline-block 或者 inline 的元素，并且子元素不能绝对定位和浮动。**
 
-### 5、calc
-
-![calc](./images/17.png)
+### 6、grid
 
 ```
 .container {
-    position: relative;
-    margin: 0 auto;
+    display: grid;
     width: 600px;
     height: 400px;
     border: 2px solid #666;
+    justify-items: center;
+    align-items: center;
 }
-
 .item {
-    position: absolute;
-    left: calc(50% - 200px / 2);
-    top: calc(50% - 200px / 2);
-    width: 200px;
-    height: 200px;
+    display: inline-bloock;
+    padding: 100px;/*用padding来撑开元素，没有设置宽高*/
     background-color: #8c7676;
 }
 ```
-
-兼容性：浏览器必须支持 calc。
-
-### 6、grid
-
-TODO 待补充……
 
 <br />
 
@@ -199,3 +213,4 @@ TODO 待补充……
 
 - [CSS 元素水平垂直居中方法总结](http://www.cnblogs.com/Dudy/p/4085292.html)
   里面还有关于背景图的居中和兼容低版本浏览器的写法
+- [如何居中一个元素](https://github.com/ljianshu/Blog/issues/29)

@@ -185,7 +185,7 @@ body * + * {
 - 内部的 Box 会在垂直方向，一个接一个的放置（即块级元素独占一行）；
 - BFC 的区域不会与 float box 重叠；（可以实现自适应两栏布局）
 - 内部的 Box 垂直方向的距离由 margin 决定。属于**同一 BFC** 的两个**相邻 Box** 的 margin 会发生重叠；【按照 BFC 的定义，只有同属一个 BFC 时，两个元素才有可能发生垂直 margin 的重叠，这个包括相邻元素或者嵌套元素，只要它们之间没有阻挡（比如边框、非空内容、padding 等）就会发生 margin 重叠。】
-- 计算 BFC 的高度时，浮动元素也参与计算；（清除浮动，另外提一下 min-height:contain-float;这个新的属性值也能让元素包含浮动）
+- 计算 BFC 的高度时，浮动元素也参与计算；（可以用来清除浮动，另外提一下 min-height:contain-float;这个新的属性值也能让元素包含浮动）
 - BFC 就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也是如此。
 
 2. 如何创建 BFC
@@ -306,7 +306,7 @@ display 属性设置为 inline-block 后，该元素就会像一个行内盒子�
 
 确定元素的包含块，要看元素是如何定位的。
 
-如果元素的定位方式为静态定位（即不指定 position 属性的值）、相对定位（即 position 的属性值为 relative）或 sticky，则其包含块的边界就计算到一个最近的父元素（sticky是最近的可滚动的父元素）内边距边缘，该父元素的 display 属性值必须能够提供类似块级的上下文，如 block、inline-block、table-cell、list-item 等。
+如果元素的定位方式为静态定位（即不指定 position 属性的值）、相对定位（即 position 的属性值为 relative）或 sticky，则其包含块的边界就计算到一个最近的父元素（sticky 是最近的可滚动的父元素）内边距边缘，该父元素的 display 属性值必须能够提供类似块级的上下文，如 block、inline-block、table-cell、list-item 等。
 
 如果元素的定位方式是绝对定位（即 position 属性的值为 absolute），那么包含块是距离它最近的定位祖先（即 position 属性设置为 static 之外任意值的祖先元素）。如果没有这么一个定为祖先，那么它就相对于文档的根元素（即 html 元素）定位。文档的根元素也叫作起始包含块（initial containing block）。
 

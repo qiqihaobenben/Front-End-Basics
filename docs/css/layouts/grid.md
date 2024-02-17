@@ -111,7 +111,7 @@ grid-template 属性是 grid-template-columns、grid-template-rows、grid-templa
 
 ### align-content
 
-设置网格项在网格容器里面的沿垂直方向的排列防水
+设置网格项在网格容器里面的沿垂直方向的排列方式
 
 ### place-content
 

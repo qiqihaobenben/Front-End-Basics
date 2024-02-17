@@ -3,10 +3,10 @@
   padding: 0;
 }
 
-main {
+/* main {
   margin: 100px auto;
   width: 500px;
-}
+} */
 
 li {
   padding: 5px 0;
@@ -86,4 +86,40 @@ h3 {
 
 h1 {
   border: var(--main-bg-color) red solid;
+}
+
+.container {
+  height: 100vh;
+}
+
+.left {
+  float: left;
+  margin-left: -100%;
+  width: 100px;
+  height: 100%;
+  background-color: antiquewhite;
+}
+
+.main-wrap {
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
+.main {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100px;
+  margin-left: 100px;
+  margin-right: 200px;
+  background-color: brown;
+  border: 4px solid gold;
+}
+
+.right {
+  float: left;
+  margin-left: -200px;
+  width: 200px;
+  height: 100%;
+  background-color: aquamarine;
 }
