@@ -16,6 +16,7 @@
 ## 视频
 
 - [一文带你了解 OpenAI Sora](https://mp.weixin.qq.com/s/Efk-gP8iuau3crWB2wWizg)
+- [Sora 的前世今生：从文生图到文生视频](https://mp.weixin.qq.com/s/dIAUwc33IZMid9gVB5uTJg)
 
 ## 跟技术的实际应用
 
