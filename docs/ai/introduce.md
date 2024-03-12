@@ -5,7 +5,6 @@
 - [大白话讲清楚 ChatGPT](https://mp.weixin.qq.com/s/tri0OINMaOxYeqSk8iFesg)
 - [初探 chatgpt](https://mp.weixin.qq.com/s/nUgoxyLpYOdUzCzyjrs7xw)
 - [ChatGPT 原理探索](https://juejin.cn/post/7218048201982787645)
-- [万字科普 GPT4 为何会颠覆现有工作流](https://www.bilibili.com/video/BV1MY4y1R7EN/?spm_id_from=333.337.search-card.all.click&vd_source=026a9a8719b918ab2720ca10541a93b4)
 - [万字科普 ChatGPT-4 为何会颠覆人类社会](https://www.modevol.com/episode/clf9d5kni0zo301mm6tkl9t87)
 - [50+ ChatGPT 提示和策略，加速你的 Web 开发工作流程](https://mp.weixin.qq.com/s/V1E3OS7Jc19XSTjDAufVkA)
 
