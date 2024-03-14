@@ -369,19 +369,63 @@ seajs.use(['./a','./b']，function(a , b){
 ES6 的模块自动采用严格模式，不管有没有在模块头部加上"use strict";。
 严格模式主要有以下限制。
 
-- 变量必须声明后再使用
-- 函数的参数不能有同名属性，否则报错
+- 禁止使用未声明的变量：在严格模式下，如果尝试使用未声明的变量，JavaScript 会抛出错误。
+
+```
+"use strict";
+x = 3.14; // ReferenceError: x is not defined
+```
+
+- 禁止重复的函数参数名称：在严格模式下，函数不能有重名的参数。
+
+```
+"use strict";
+function myFunc(a, a) { // SyntaxError: Duplicate parameter name not allowed in this context
+}
+```
+
+- 禁止重复的对象字面量属性名称：在严格模式下，对象字面量中出现重复的名称会导致语法错误。
+
+```
+"use strict";
+var obj = {a: 1, a: 2}; // SyntaxError: Duplicate data property in object literal not allowed in strict mode
+```
+
 - 不能使用 with 语句
 - 不能对只读属性赋值，否则报错
 - 不能使用前缀 0 表示八进制数，否则报错
 - 不能删除不可删除的属性，否则报错
 - 不能删除变量 delete prop，会报错，只能删除属性 delete global[prop]
-- eval 不会在它的外层作用域引入变量
-- eval 和 arguments 不能被重新赋值
+- 更严格的 eval 行为：在严格模式下，eval 拥有自己的作用域，而不是共享本地作用域
+
+```
+"use strict";
+var x = 2;
+eval("var x = 5;");
+alert(x); // 2, 因为eval中声明的x不会影响外部作用域
+
+```
+
+- eval 和 arguments 不能被重新赋值，在严格模式下，不能对 eval 和 arguments 赋值，且它们被视为关键字，因此不能用作变量或函数名。
+
+```
+"use strict";
+eval = 17; // SyntaxError
+var arguments = 42; // SyntaxError
+```
+
 - arguments 不会自动反映函数参数的变化
 - 不能使用 arguments.callee
 - 不能使用 arguments.caller
-- 禁止 this 指向全局对象
+- this 关键字在全局作用域中的值为 undefined，而不是指向全局对象（在非严格模式下，它会指向全局对象，例如浏览器中的 window 对象）。
+
+```
+"use strict";
+function myFunction() {
+  return this; // 在严格模式下，这里的this将是undefined
+}
+```
+
 - 不能使用 fn.caller 和 fn.arguments 获取函数调用的堆栈
 - 增加了保留字（比如 protected、static 和 interface）
 
@@ -405,7 +449,6 @@ var firstName = 'chen';
 var lastName = 'fangxu';
 var year = 1991;
 export {firstName, lastName, year}
-
 ```
 
 `1、 通常情况下，export输出的变量就是本来的名字，但是可以使用as关键字重命名。`
@@ -434,6 +477,8 @@ var m = 1;
 export m;
 
 //上面两种写法都会报错，因为没有提供对外的接口。第一种写法直接输出1，第二种写法通过变量m，还是直接输出1。1只是一个值，不是接口。
+// ES6模块的设计旨在提高代码的可读性和维护性，需要明确地声明哪些变量、函数或类是可供外部使用的。这种设计要求开发者显式声明他们想要导出的内容，而不是隐式地做这件事（比如直接导出一个字面量）。这样做可以让模块的结构更加清晰，也便于开发者和工具理解和分析代码。
+
 
 // 写法一
 export var m = 1;
@@ -447,6 +492,7 @@ var n = 1;
 export {n as m};
 
 //上面三种写法都是正确的，规定了对外的接口m。其他脚本可以通过这个接口，取到值1。它们的实质是，在接口名与模块内部变量之间，建立了一一对应的关系。
+// 注意，export 后面的 {} 并不是一个对象，而是 export 规定的语法，是一个只读引用。
 ```
 
 `3、最后，export命令可以出现在模块的任何位置，只要处于模块顶层就可以。如果处于块级作用域内，就会报错，接下来说的import命令也是如此。`
@@ -521,7 +567,7 @@ sayDefault();
 //结果：I am default Fn
 ```
 
-`1、默认输出和正常输出的比较`
+`1、默认导出和正常导出的比较`
 
 ```
 // 第一组

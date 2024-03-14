@@ -1,8 +1,20 @@
 # NodeJS 备忘
 
+## NodeJS 基本架构
+
+![](./images/node-jiagou.jpg)
+
+上图可以看出 Node.js 是运行在操作系统之上的
+
+它底层由 V8 JavaScript 引擎，以及一些 C/C++ 写的库构成，包括 libUV 库、c-ares、llhttp/http-parser、open-ssl、zlib 等等。其中：libUV 负责处理事件循环，c-ares、llhttp/http-parser、open-ssl、zlib 等库提供 DNS 解析、HTTP 协议、HTTPS 和文件压缩等功能。
+
+在这些模块的上一层是中间层，中间层包括 Node.js Bindings、Node.js Standard Library 以及 C/C++ AddOns。Node.js Bindings 层的作用是将底层那些用 C/C++ 写的库接口暴露给 JS 环境，而 Node.js Standard Library 是 Node.js 本身的核心模块。至于 C/C++ AddOns，它可以让用户自己的 C/C++ 模块通过桥接的方式提供给 Node.js。
+
+中间层之上就是 Node.js 的 API 层了，我们使用 Node.js 开发应用，主要是使用 Node.js 的 API 层，所以 Node.js 的应用最终就运行在 Node.js 的 API 层之上。
+
 ## NodeJS 事件循环
 
-先精读一下这个[setTimeout和setImmediate到底谁先执行，本文让你彻底理解Event Loop](https://juejin.cn/post/6844904100195205133)
+先精读一下这个[setTimeout 和 setImmediate 到底谁先执行，本文让你彻底理解 Event Loop](https://juejin.cn/post/6844904100195205133)
 
 事件循环通俗来说就是一个无限的 while 循环。
 
@@ -29,3 +41,11 @@ Node.js 事件循环的发起点（即执行完一个完整的事件循环）有
 ## Node.js 应用场景
 
 Node.js 异步非阻塞的特性，适合网络 I/O 较多，并发高，但是 CPU 计算较少，业务复杂度高和业务迭代快的服务，或者一些通用性服务，所以 Node.js 适合应用在业务网关、中台服务及运营系统等。不适合**大内存**和 **CPU 密集**的场景。
+
+## 写 Node.js 模块的 3 种方式
+
+JavaScript 引入标准的模块机制 ES Modules，写 Node.js 模块的时候，可以有 3 种方式：
+
+1. 直接采用最新的 ES Modules，在 Node.js v13.2.0 以后的版本中可行，但是使用上有些条件，文件的后缀名需要改为 `.mjs`，如果要用 ES Modules 定义 .js 文件的模块，可以在 Node.js 的配置文件 package.json 中设置参数 type: module。。
+2. 采用 ES Modules，通过 Babel 编译。
+3. 仍然使用旧的 CommonJS 规范，预计未来 Node.js 在很长一段时间内依然会同时兼容 ES Modules 和 CommonJS。

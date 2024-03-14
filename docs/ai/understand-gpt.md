@@ -175,7 +175,9 @@ ChatGPT 的思维链能力，可能是在训练做代码的单字接龙后所产
 - 研发：[初探 chatgpt](https://mp.weixin.qq.com/s/nUgoxyLpYOdUzCzyjrs7xw)
 - [详解｜程序员如何适应 AI 时代的新需求](https://mp.weixin.qq.com/s/_qKk7KDsAGbR-jfvwlZULQ)
 
-## 其他相关
+## 使用案例
+
+- [ChatGPT 如何成了学习的神兵利器](https://mp.weixin.qq.com/s/ECFxhRj-Dko097gukaSCTA)
 
 ## 国内使用 AI
 
