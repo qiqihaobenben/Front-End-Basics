@@ -4,8 +4,8 @@
 
 NodeJS 中的文件路径大概有:
 
-- `__dirname` ：总是返回被执行的 js 文件所在文件夹的绝对路径
-- `__filename` ：总是返回被执行的 js 文件的绝对路径
+- `__dirname` ：总是返回被执行的 js 文件所在文件夹的绝对路径（CommonJS 模块系统，ESModule 需要使用 import.meta.url 转换）
+- `__filename` ：总是返回被执行的 js 文件的绝对路径（也是针对 CommonJS 模块系统）
 - `process.cwd()` ：总是返回运行 node 命令时所在的文件夹的绝对路径
 - `./` 或者 `../` ：相对路径，这样的路径分为两种情况：
   1. 引入模块，例如在 `require()` 中使用时，跟 `__dirname` 的效果相同，不会因为启动脚本的目录不一样而改变

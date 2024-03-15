@@ -183,7 +183,7 @@ _文件查找策略_
 
 （3）如果 X 不带路径
 　　a. 根据 X 所在的父模块，确定 X 可能的安装目录。
-　　b. 依次在每个目录中，将 X 当成文件名或目录名加载。
+　　b. 优先搜索当前目录下的node_modules目录，如果找不到，会递归向上搜索父级目录，直到找到或者到达操作系统的根目录为止
 
 （4） 抛出 "not found"
 ```
@@ -192,29 +192,38 @@ _文件查找策略_
 
 <br />
 
-// TODO 要改
+#### Module.exports 与 exports 的关系
 
-> 模块循环依赖
+在一个 Node.js 模块文件开始执行时，module.exports 和 exports 实际上指向同一个对象。这个对象是该模块对外暴露的接口。以认为 exports 是 module.exports 的一个引用或别名，因此对 exports 进行的修改也会反映在 module.exports 上。**需要注意：引擎最后返回的是 module.exports，所以不要重新赋值 exports，推荐只使用 module.exports 或 exports 中的一个来导出模块内容，避免混用造成混淆**
 
+在 Node.js 的源码中，`module.exports` 和 `exports` 指向同一个对象的实现基于 JavaScript 的引用机制。当 Node.js 执行一个模块时，它实际上会按照以下步骤操作：
+
+1. **创建模块对象**：Node.js 为每个模块创建一个 `Module` 实例。这个实例有一个 `exports` 属性，初始时指向一个空对象 `{}`。
+
+2. **设置 exports 别名**：在模块的代码执行环境中，Node.js 设置了一个局部变量 `exports`，并将其指向 `module.exports` 的初始对象。因此，`exports` 和 `module.exports` 开始时都引用同一个对象。
+
+3. **执行模块代码**：当模块代码执行时，可以通过 `exports` 或 `module.exports` 添加、修改或删除属性。由于它们指向同一个对象，对任一个对象的修改都会反映在另一个上。
+
+4. **导出模块**：当模块执行完毕后，Node.js 使用 `module.exports` 的当前值作为模块的导出值。
+
+### 源码简化表示
+
+在 Node.js 的实现中，可以简化地理解为以下过程：
+
+```javascript
+function require(/* ... */) {
+  // ...
+  var module = { exports: {} }
+  var exports = module.exports
+
+  // 模块代码在这里执行，可以修改 exports 或 module.exports
+
+  // 最终返回 module.exports
+  return module.exports
+}
 ```
-//创建两个文件，module1.js 和 module2.js，并且让它们相互引用
-// module1.js
-exports.a = 1;
-require('./module2');
-exports.b = 2;
-exports.c = 3;
 
-// module2.js
-const Module1 = require('./module1');
-console.log('Module1 is partially loaded here', Module1);
-
-//执行 node module2.js 打印： {a:1,b:2,c:3}
-//执行 node module1.js 打印： {a:1}
-```
-
-在 module1 完全加载之前需要先加载 module2，而 module2 的加载又需要 module1。这种状态下，我们从 exports 对象中能得到的就是在发生循环依赖之前的这部分。上面代码中，只有 a 属性被引入，因为 b 和 c 都需要在引入 module2 之后才能加载进来。
-
-Node 使这个问题简单化，在一个模块加载期间开始创建 exports 对象。如果它需要引入其他模块，并且有循环依赖，那么只能部分引入，也就是只能引入发生循环依赖之前所定义的这部分。
+CommonJS 规范有 1、2 两个版本，`exports.属性名 = ...`的用法属于早期，也就是 CommonJS 1 的用法。`module.exports`用法属于 CommonJS 2 的用法，我们应该尽量用 `module.exports`，避免用 `exports.属性名 =`的写法。
 
 ## AMD
 
@@ -639,48 +648,29 @@ export * from 'my_module';
 > 1、声明的变量，对外都是只读的。但是导出的是对象类型的值，就可修改。
 > 2、导入不存在的变量，值为 undefined。
 
-### ES6 中的循环引用
+### ESModule 的向下兼容
 
-ES6 中，imports 是 exports 的只读视图，直白一点就是，imports 都指向 exports 原本的数据，比如：
-
-```
-//------ lib.js ------
-export let counter = 3;
-export function incCounter() {
-    counter++;
-}
-
-//------ main.js ------
-import { counter, incCounter } from './lib';
-
-// The imported value `counter` is live
-console.log(counter); // 3
-incCounter();
-console.log(counter); // 4
-
-// The imported value can’t be changed
-counter++; // TypeError
-```
-
-因此在 ES6 中处理循环引用特别简单，看下面这段代码：
+在 Node.js 环境中，ES Modules 向下兼容 CommonJS，因此用 import 方式可以引入 CommonJS 方式导出的 API，但是会以 default 方式引入。
 
 ```
-//------ a.js ------
-import {bar} from 'b'; // (1)
-export function foo() {
-  bar(); // (2)
-}
+// abc.js 这是一个 CommonJS 规范的模块
+const a = 1;
+const b = 2;
+const c = () => a + b;
 
-//------ b.js ------
-import {foo} from 'a'; // (3)
-export function bar() {
-  if (Math.random()) {
-    foo(); // (4)
-  }
-}
+module.exports = {a, b, c};
 ```
 
-假设先加载模块 a，在模块 a 加载完成之后，bar 间接性地指向的是模块 b 中的 bar。无论是加载完成的 imports 还是未完成的 imports，imports 和 exports 之间都有一个间接的联系，所以总是可以正常工作。
+```
+// index.mjs 是一个 ESModule 规范的模块，可以使用 import 导入 CommonJS 模块
+// 错误方式：import {a, b, c} from './test.js';
+import abc from './test.js';
+console.log(abc.a, abc.b, abc.c()); // 1 2 3
+
+// module.exports = {a, b, c} 相当于：
+// const abc = {a, b, c};
+// export default abc;
+```
 
 ### 实例
 
@@ -744,6 +734,132 @@ console.log(obj.age)
 obj.say();
 //结果：say hello
 ```
+
+## CommonJS 和 ESModule 规范两者有五个不同：
+
+1. 重命名导出的公共 API 的方式不同；
+
+2. CommonJS 在 require 文件的时候可以忽略 .js 文件扩展名，而 ES Module 在 import 文件的时候不能忽略 .mjs 的扩展名；
+
+3. CommonJS 规范的 require 是可以放在块级作用域中的，而 ES Module 的 import 则不能放在任何语句块中；
+
+4. CommonJS 的 require 是一个函数，可以动态拼接文件路径，而 ES Modules 的 import 语句是不允许用动态路径的。虽然 ES Module 规范不允许 import 语句动态拼接路径，但是它允许 import 作为异步函数异步动态加载模块。
+
+5. CommonJS 运行时才引入模块，ESModule 是编译时加载。
+
+## CommonJS 和 ESModule 的循环引用处理
+
+### CommonJS 循环引用处理
+
+Node.js 中的 CommonJS 模块系统处理循环引用的方式较为直接且实用。
+
+#### 缓存模块实例
+
+当 Node.js 首次加载一个模块时，它会缓存该模块的 `exports` 对象。如果在循环引用场景中再次遇到该模块的导入请求，Node.js 会直接使用缓存中的 `exports` 对象，而不是重新加载模块。这样做可以防止无限循环加载，并确保模块实例的唯一性。
+
+#### 返回部分完成的对象
+
+在循环引用时，模块可能还未执行完毕就被再次请求。此时，Node.js 会提供该模块当前的 `exports` 对象的状态，即便它还没有完全执行完毕。这意味着在循环引用的情况下，模块可能会返回一个“部分完成”的对象。
+
+#### 处理循环引用的步骤
+
+1. **开始加载模块 A**：Node.js 执行模块 A 的代码。
+2. **模块 A 导入模块 B**：在模块 A 的执行过程中，如果遇到对模块 B 的导入请求，Node.js 会暂停模块 A 的执行，开始加载模块 B。
+3. **模块 B 导入模块 A**：如果模块 B 中存在对模块 A 的导入，由于模块 A 已经开始加载并且被缓存，Node.js 会将当前的（部分完成的）`module.exports` 对象提供给模块 B。
+4. **继续执行模块 B**：模块 B 可以使用模块 A 中已经定义的部分，尽管这部分可能还未完全执行完成。
+5. **完成模块 B 的加载**：一旦模块 B 加载完毕，控制权回到模块 A，继续执行未完成的部分。
+
+通过这种机制，Node.js 的 CommonJS 模块系统能够在循环引用的场景下正常工作，尽管这可能导致一些复杂的依赖关系和时序问题。在设计模块时，最好尽可能避免循环引用，或者仔细管理依赖关系以避免出现运行时错误。
+
+#### 代码示例
+
+```
+//创建两个文件，module1.js 和 module2.js，并且让它们相互引用
+// module1.js
+exports.a = 1;
+require('./module2');
+exports.b = 2;
+exports.c = 3;
+
+// module2.js
+const Module1 = require('./module1');
+console.log('Module1 is partially loaded here', Module1);
+
+//执行 node module2.js 打印： {a:1,b:2,c:3}
+//执行 node module1.js 打印： {a:1}
+```
+
+在 module1 完全加载之前需要先加载 module2，而 module2 的加载又需要 module1。这种状态下，我们从 exports 对象中能得到的就是在发生循环依赖之前的这部分。上面代码中，只有 a 属性被引入，因为 b 和 c 都需要在引入 module2 之后才能加载进来。
+
+### ESModule 循环引用处理
+
+ESModule 采用静态导入和导出，这意味着模块间的依赖关系在代码执行前就已确定。下面是 ESModule 处理循环引用的基本过程：
+
+#### 1. 导入和导出解析
+
+在执行任何代码之前，ESModule 系统会首先解析所有模块的导入和导出语句。这个解析阶段确定了模块之间的依赖关系，但不会执行模块的具体代码。
+
+#### 2. 实例化
+
+每个模块都会被实例化。在实例化阶段，模块的导出被创建并绑定，但导出的值可能还未被赋值。即使模块存在循环依赖，这个阶段也可以完成，因为实际的值尚未被使用，只是建立了导出的“框架”。
+
+#### 3. 评估
+
+模块代码的执行（或称为评估）会根据依赖关系顺序进行。如果模块 A 依赖模块 B，那么模块 B 会先于模块 A 执行。当一个模块执行时，它对导出值的赋值操作会反映到所有依赖于该模块的其他模块中。
+
+#### 处理循环依赖的关键点
+
+- **Live Bindings**：ESModule 使用的是“活绑定”（live bindings），意味着导入的变量是对导出变量的实时绑定。即使在循环依赖的情况下，当模块的导出值在模块内部被更新时，依赖于这个模块的其他模块会立即看到这个更新。
+
+```
+//------ lib.js ------
+export let counter = 3;
+export function incCounter() {
+    counter++;
+}
+
+//------ main.js ------
+import { counter, incCounter } from './lib';
+
+// The imported value `counter` is live
+console.log(counter); // 3
+incCounter();
+console.log(counter); // 4
+
+// The imported value can’t be changed
+counter++; // TypeError
+```
+
+- **延迟执行**：由于 ESModule 的导入和导出是静态分析的，循环依赖不会直接导致运行时错误。相反，它允许延迟执行某些依赖项的代码，直到所有相关模块都已经加载并实例化。
+
+#### 循环引用的示例
+
+假设有两个模块相互依赖：
+
+- **模块 A** 导出一个变量和一个函数，函数依赖于**模块 B**的某个导出。
+- **模块 B** 导入**模块 A**的变量或函数，并在某个点上使用它。
+
+即使这两个模块相互依赖，由于“活绑定”和静态解析的特性，它们可以正常工作，前提是不立即在模块的顶层代码中使用彼此的导出（以避免在执行顺序上造成问题）。
+
+```
+//------ a.js ------
+import {bar} from 'b'; // (1)
+export function foo() {
+  bar(); // (2)
+}
+
+//------ b.js ------
+import {foo} from 'a'; // (3)
+export function bar() {
+  if (Math.random()) {
+    foo(); // (4)
+  }
+}
+```
+
+假设先加载模块 a，在模块 a 加载完成之后，bar 间接性地指向的是模块 b 中的 bar。无论是加载完成的 imports 还是未完成的 imports，imports 和 exports 之间都有一个间接的联系，所以（不立即执行的情况下）总是可以正常工作。
+
+总之，ESModule 通过静态分析、实例化阶段的绑定创建，以及执行阶段的活绑定，有效地处理循环依赖，确保即使在复杂的依赖关系中也能正常工作。
 
 ## 推荐资料
 
