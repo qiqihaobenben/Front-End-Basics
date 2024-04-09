@@ -93,9 +93,9 @@ node index.js 1991 name=chenfangxu --v "lalla"
   'lalla' ]
 ```
 
-- process.env：返回一个对象，成员为当前 Shell 的环境变量，比如 process.env.HOME 返回用户的主目录。
-
+- process.env：返回一个对象，成员为当前 Shell 的环境变量，比如 process.env.HOME 返回用户的主目录，process.env.PATH 环境变量 PATH
 - process.platform：返回一个字符串，表示当前的操作系统，比如 Linux。
+- process.version: Node 版本
 
 #### 方法
 
