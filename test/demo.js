@@ -18,43 +18,22 @@
 //   }
 // }
 // let testObject = new TestClass()
-const fs = require('fs')
 
-setTimeout(() => {
-  // 新的事件循环的起点
+const hide = (target, prefix = '_') =>
+  new Proxy(target, {
+    has: (obj, prop) => !prop.startsWith(prefix) && prop in obj,
+    ownKeys: (obj) => Reflect.ownKeys(obj).filter((prop) => typeof prop !== 'string' || !prop.startsWith(prefix)),
+    get: (obj, prop, rec) => {
+      console.log(prop, rec)
+      return prop in rec ? obj[prop] : undefined
+    },
+  })
 
-  console.log('1')
-
-  sleep(10000)
-
-  console.log('sleep 10s')
-}, 0)
-
-/// 将会在 poll 阶段执行
-
-fs.readFile('./index.html', { encoding: 'utf-8' }, (err, data) => {
-  if (err) throw err
-
-  console.log('read file success')
+let userData = hide({
+  firstName: 'Tom',
+  mediumHandle: '@tbarrasso',
+  _favoriteRapper: 'Drake',
 })
 
-console.log('2')
-
-/// 函数实现，参数 n 单位 毫秒 ；
-
-function sleep(n) {
-  var start = new Date().getTime()
-
-  while (true) {
-    if (new Date().getTime() - start > n) {
-      // 使用  break  实现；
-
-      break
-    }
-  }
-}
-
-// 循环 1 -10
-for (var i = 1; i <= 10; i++) {
-  console.log(i)
-}
+userData._favoriteRapper // undefined
+'_favoriteRapper' in userData
