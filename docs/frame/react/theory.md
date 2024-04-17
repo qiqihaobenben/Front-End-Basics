@@ -36,11 +36,55 @@ React 被称为应用级框架的原因在于——其每次更新流程都是�
 
 在浏览器每一帧的时间中，预留一些时间给 JS 线程，React 利用这部分时间更新组件（可以看到，在[源码](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L119)中，预留的初始时间是 5ms）。
 
-当预留的时间不够用时，React 将线程控制权交还给浏览器使其有时间渲染 UI，React 则等待下一帧时间到来继续被中断的工作。
+当预留的时间不够用时，React 将线程控制权交还给浏览器的渲染引擎，使其有时间渲染 UI，React 则等待下一帧时间到来继续被中断的工作。
 
 > 这种将长任务分拆到每一帧中，像蚂蚁搬家一样一次执行一小段任务的操作，被称为时间切片（time slice）
 
 所以，解决 CPU 瓶颈的关键是实现时间切片，而时间切片的关键是：将同步的更新变为可中断的异步更新。
+
+##### 扩展：页面渲染和事件循环
+
+默认情况下，浏览器的每个 Tab 页对应一个渲染进程，渲染进程包含“主线程”（包括 JS 线程和渲染线程）、事件触发线程（I/O 线程）、定时器触发线程、合成线程等多个线程。
+
+主线程的工作非常繁忙。要处理事件响应，执行 JS 代码，处理 DOM，计算样式，处理布局等。
+
+主线程维护着一个事件循环，所有参与调度的任务都会加入到任务队列中，这些任务不仅来自于线程内部，也可能来自于外部。主线程会在事件循环中不断地从任务队列中取出任务执行，随着循环一直执行，新加入的任务会位于队列末尾，之前加入的任务会被取出执行。
+
+其他进程通过 IPC 将任务发送给渲染进程的事件触发线程（I/O 线程），事件触发线程再将任务发送给主线程的任务队列。
+
+```
+例如：
+1. 点击鼠标后，浏览器进程通过 IPC 将“点击事件”发送给渲染进程的事件触发线程，事件触发线程再将其发送给任务队列。
+2. 资源加载完成后，网络进程通过 IPC 将“资源加载完成”事件发送给渲染进程的事件触发线程，事件触发线程再将其发送给任务队列。
+```
+
+任务队列分为宏任务队列和微任务队列。因为加入宏任务队列的新任务需要等待队列中其他任务都执行完后才能执行（此时任务队列中的任务被称为宏任务），这对于“突发情况下需要优先执行的任务”是不利的，为了解决时效性问题，在宏任务执行过程中可以产生微任务，保存在主线程的微任务队列中。在该宏任务执行结束前，主线程会遍历微任务队列，将该宏任务执行过程中产生的微任务批量执行。
+
+#### 扩展：浏览器渲染
+
+在宏任务中，有一类“与渲染相关的任务”，包括：
+
+- 构建 DOM：将 HTML 解析为 DOM 树
+- 构建 CSSOM：将 CSS 解析为 CSSOM 树
+- 构建 Render Tree：将 DOM 树和 CSSOM 树结合，生成 Render Tree
+- 布局（Layout）：构建布局树，布局树会移除 Render 树中不可见的元素，比如 display: none 的元素，并计算可见部分的几何位置
+- 分层（Layer）：将页面划分为多个图层，一些层叠上下文 CSS 属性（比如 z-index、opacity、position）、“由于显式不全被裁剪的内容”等回事 DOM 元素形成独立的图层，每个图层可以单独绘制，这样可以提高绘制效率
+- 绘制（Paint）：为每个图层生成包含“绘制信息”的绘制列表，将绘制列表提交给渲染进程的合成器线程用于绘制
+
+执行上述任务的流程被称为“渲染流水线”。每次执行流水线时，上述所有任务并不一定全部执行。
+
+```
+例如：
+1. 当通过 JS 或 CSS 修改 DOM 元素的几何属性（如宽高、位置等）时，会触发完整的渲染流水线，这种情况称为重排。
+2. 当修改的属性不涉及几何属性（如颜色、背景等）时，会省略流水线中的 Layout 和 Layer 过程，这种情况称为重绘。
+3. 当修改“不涉及重排、重绘的属性”（比如 transform 属性）时，会省略流水线中的 Layout、Layer 和 Paint 过程，仅执行合成线程的绘制工作，这种情况称为合成。
+
+按照性能高低对这些情况排序，重排 < 重绘 < 合成。这也是 CSS 动画性能优于JS 动画性能的原因，前者可能仅涉及合成，后者可能涉及重排和重绘。
+```
+
+绘制的最终产物是是一张图片，这张图片被发送给显卡后即可显示在屏幕上。屏幕的刷新频率为 60Hz，即每秒刷新 60 次，每 16.6ms 刷新一次，所以当屏幕的刷新频率跟显卡更新频率一致时，用户不会感知卡顿。
+
+渲染流水线可以简单理解为也是宏任务，那么“执行 JS” 与渲染流水线同为宏任务，如果 JS 执行时间过长，导致渲染流水线绘制图片的速度跟不上屏幕的刷新频率，就会造成页面掉帧，用户就会感知到卡顿。
 
 ### 解决网络 IO 瓶颈
 
@@ -113,21 +157,42 @@ React16 架构可以分为三层：
 
 #### Reconciler（协调器）
 
-React16 采用新的[Reconciler](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/react-reconciler/src/ReactFiberWorkLoop.new.js#L1673)，其内部采用了 `Fiber` 架构
+React16 采用新的[Reconciler](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/react-reconciler/src/ReactFiberWorkLoop.new.js#L1673)，其内部采用了 `Fiber` 架构，被称为 Fiber Reconciler。
 
-React 16 中的 Reconciler 更新工作从递归变成了可以中断的循环过程。每次循环都会调用 shouldYield 判断当前是否有剩余时间。
+**React 16 中的 Reconciler 更新工作从递归变成了可以中断的循环过程。每次循环都会调用 shouldYield 判断当前是否有剩余时间。如果没有剩余时间则暂停更新流程，将主线程交给渲染流水线，等待下一个宏任务再继续执行，这就是 Time Slice 的实现原理。**
+
+**当 Scheduler 将调度后的任务交给 Reconclier 后，Reconciler 会为变化的 VDOM 元素 打上代表增/删/更新的各种副作用标记（flag）。**
 
 ```js
 function workLoopConcurrent() {
-  // Perform work until Scheduler asks us to yield
+  // 一直执行任务，知道任务执行完成或中断
   while (workInProgress !== null && !shouldYield()) {
-    // $FlowFixMe[incompatible-call] found when upgrading Flow
     performUnitOfWork(workInProgress)
   }
 }
+
+// shouldYield 是 shouldYieldToHost 别名
+var frameYieldMs = 5
+var frameInterval = frameYieldMs
+var startTime = -1 // 当前任务开始时间，会在不同的函数中更新
+function shouldYieldToHost() {
+  var timeElapsed = getCurrentTime() - startTime
+
+  // 时间间隔是否大于调度器设置的时间间隔，默认为 5ms
+  if (timeElapsed < frameInterval) {
+    return false
+  }
+
+  return true
+}
+
+// 代表插入或移动元素的 flag
+const Placement = 0b0000000000000000000000010
+// 代表更新元素的 flag
+const Update = 0b0000000000000000000000100
 ```
 
-那么 React16 是如何解决中断更新时 DOM 渲染不完全的问题呢？
+##### 那么 React16 是如何解决中断更新时 DOM 渲染不完全的问题呢？
 
 在 React16 中，Reconciler 与 Renderer 不再是交替工作。当 Scheduler 将任务交给 Reconciler 后，Reconciler 会为变化的虚拟 DOM 打上代表增/删/更新的[标记](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/react-reconciler/src/ReactSideEffectTags.js)
 
@@ -135,7 +200,18 @@ function workLoopConcurrent() {
 
 #### Renderer（渲染器）
 
-Renderer 根据 Reconciler 为虚拟 DOM 打的标记，同步执行对应的 DOM 操作。
+Scheduler 与 Reconciler 的工作都在内存中进行，只有当所有组件都完成 Reconciler 的工作，工作流程才会进入 Renderer
+
+Renderer 根据 Reconciler 为 VDOM 元素打的各种标记（flag），同步执行对应的 DOM 操作。
+
+## 主打特性的迭代
+
+按照“主打特性”划分，React 大体经历了四个发展时期：
+
+1. Sync Mode：同步模式，React15 之前的版本
+2. Async Mode：异步模式，React16 之前的版本
+3. Concurrent Mode：并发模式，React16.4 之前的版本
+4. Concurrent Features：并发特性，React16.4 之后的版本
 
 ## Fiber 架构
 
@@ -149,13 +225,39 @@ Renderer 根据 Reconciler 为虚拟 DOM 打的标记，同步执行对应的 DO
 
 之前 React15 的 Reconciler 采用递归的方式执行，数据保存在递归调用栈中，所以被称为 “Stack” Reconciler。React16 的 Reconciler 基于 Fiber 节点实现，被称为 Fiber Reconciler。
 
+```
+// class FiberNode
+return：指向父 FiberNode
+child：指向第一个子 FiberNode
+sibling：指向右边的兄弟 FiberNode
+```
+
 #### 作为静态的数据结构
 
 每个 Fiber 节点对应一个 React element，保存了该组件的类型（函数组件/类组件/原生组件...）、对应的 DOM 节点等信息。
 
+```
+// class FiberNode
+tag：对应组件的类型 Function、Class、HostComponent、HostRoot
+key：key属性
+elementType：大部分情况同 type
+type：对于 FunctionComponent，指函数本身；对于 ClassComponent，指Class；对于 HostComponent，指 DOM tagName（小写形式）
+stateNode：FiberNode 对应的元素，比如 FunctionComponent 对应的 DOM 元素
+```
+
 #### 作为动态的工作单元
 
 每个 Fiber 节点保存了本次更新中该组件改变的状态、要执行的工作（需要被删除/被插入页面中/被更新...）
+
+```
+// class FiberNode
+flags：代表本次更新中该组件改变的状态
+subTreeFlags：代表本次更新中其子组件改变的状态
+deletions：
+lanes：代表本次更新中该组件的优先级
+childLanes：代表本次更新中其子组件的优先级
+alternate：指向上次更新时的 FiberNode
+```
 
 ### React Fiber 可以理解为：
 
