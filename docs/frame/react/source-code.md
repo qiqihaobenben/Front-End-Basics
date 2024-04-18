@@ -27,14 +27,27 @@ function createRoot(container, options) {
   var hydrationCallbacks = (options != null && options.hydrationOptions) || null
 
   var isStrictMode = options != null && options.unstable_strictMode === true
-
+  // 生成 FiberRootNode 和 HostRootFiber
   var root = createContainer(container, ConcurrentRoot, hydrate, hydrationCallbacks, isStrictMode)
 
   return new ReactDOMRoot(root)
 }
+/**
+ * FiberRootNode: {
+ *  tag: ConcurrentRoot (就是 1)
+ *  current: FiberNode（具体为 HostRootFiber）
+ *  containerInfo: DOMElement（即为 createRoot 传入的 container 元素，例如 div#root）
+ * }
+ *
+ * FiberRootNode.current 为 HostRootFiber
+ * HostRootFiber: {
+ *  tag: HostRoot （就是 3）
+ *  stateNode: FiberRootNode （指向 FiberRootNode）
+ * }
+ */
 ```
 
-`ReactDOM.createRoot(container, options?)`创建一个与 DOM 容器节点绑定的 root。这个 root 负责管理 React 组件树的渲染。 返回值为 `new ReactDOMRoot(root)`
+`ReactDOM.createRoot(container, options?)`创建一个与 DOM 容器节点绑定的 root，称为 FiberRootNode。这个 root 负责管理 React 组件树的渲染。 返回值为 `new ReactDOMRoot(root)`
 
 ```js
 function ReactDOMRoot(internalRoot) {
@@ -194,14 +207,13 @@ function unstable_scheduleCallback(priorityLevel, callback, options) {
 
 #### requestHostCallback 调用 schedulePerformWorkUntilDeadline
 
-使用 postMessage 技术确保在下一个 JavaScript 宏任务前执行工作。
+在浏览器中使用 postMessage 技术确保尽早插入新的宏任务。
 
 ```js
 var channel = new MessageChannel()
 var port = channel.port2
 channel.port1.onmessage = performWorkUntilDeadline
 schedulePerformWorkUntilDeadline = function () {
-  // 设置一个微任务，准备在浏览器的空闲时执行。
   port.postMessage(null)
 }
 ```
