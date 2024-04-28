@@ -117,6 +117,9 @@ sudo usermod -l newuser olduser # sudo usermod -l [新用户名] [旧用户名]
 sudo usermod -d /home/newdir newuser
 # 修改用户 newuser 的所在组为 newgroup
 sudo usermod -g newgroup newuser
+# -a 参数表示附加，只和 -G 参数一同使用，表示在添加用户到新组的同时保持其在其他组的成员资格
+# wheel 组的成员可以使用 sudo 命令执行需要 root 权限的命令。
+sudo usermod -aG whell newuser
 # 删除 newuser 用户
 sudo userdel newuser
 # 列出 newuser 用户的详细信息，包括登录信息，家目录

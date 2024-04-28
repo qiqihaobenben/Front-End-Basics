@@ -69,10 +69,12 @@ Linux 由来和 Linux 各发行版的详细描述，可以参考 [Linux 版本�
 ```shell
 # 查看内核版本
 uname -a
+#或者
+uname -r
 # 或者
 cat /proc/version
 
-# 查看发行版本
+# 查看 centos 发行版本
 cat /etc/os-release
 # 或者
 cat /etc/redhat-release
