@@ -613,6 +613,20 @@ chgrp -R newgroup mydir
 
 关于前台后台进程切换，可以查看：[Linux 程序前台后台切换](https://www.cnblogs.com/geogre123/p/10643152.html)
 
+## 网络相关
+
+mac 查看自己的公网 ip
+
+```
+curl ipinfo.io/json
+```
+
+mac 查看自己的内网 ip
+
+```
+ifconfig
+```
+
 ### 推荐阅读
 
 - [CentOS 根目录下各目录介绍](https://zhuanlan.zhihu.com/p/46279950)
