@@ -90,6 +90,19 @@ Debian 是社区类 Linux 的典范，是迄今为止最遵循 GNU 规范的 Lin
 - 如果你需要的是一个服务器系统，而且你已经非常厌烦各种 Linux 的配置，只是想要一个比较稳定的服务器系统而已，那么你最好的选择就是 CentOS 了，安装完成后，经过简单的配置就能提供非常稳定的服务了；
 - 如果你需要的是一个坚如磐石的非常稳定的服务器系统，那么你的唯一选择就是 FreeBSD（FreeBSD 并不是一个 Linux 系统）。 如果你需要一个稳定的服务器系统，而且想深入摸索一下 Linux 的各个方面的知识，想自己定制许多内容，那么推荐使用 Gentoo。
 
+### Linux 软件包
+
+Linux 软件包是一种软件的分发方式，软件包是一个压缩文件，里面包含了软件的二进制文件、配置文件、依赖文件、安装脚本等。软件包就是一个应用程序，可以是一个 GUI 应用程序、命令行工具等。
+
+软件包管理工具分为两种：
+
+- 底层工具：主要用来处理安装和删除软件包文件等任务：DPKG、RPM
+  - DPKG：Debian Package，Debian 系列的软件包管理工具，例如：Debian、Ubuntu、Linux Mint 等
+  - RPM：Redhat Package Manager，Redhat 系列的软件包管理工具，例如：Redhat、Fedora、CentOS 等
+- 上层工具：主要用来处理数据的搜索任务和软件包的依赖解析：APT、YUM
+
+![](./images/package-manager.png)
+
 ### 推荐阅读
 
 - [Linux 各大发行版有什么特色？](https://www.zhihu.com/question/24261540)

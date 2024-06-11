@@ -76,8 +76,15 @@ cat /proc/version
 
 # 查看 centos 发行版本
 cat /etc/os-release
-# 或者
+# 或者，非 Redhat 系统没有此命令
 cat /etc/redhat-release
+# 或者，有些系统会没有 lsb_release 命令
+lsb_release -a
+
+# 获取准确的版本号
+sudo cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\..*/\1/' # 例如会返回 7
+# 或者，不过有些系统会没有 lsb_release 命令
+lsb_release -a | grep -e Release | awk -F ":" '{ print $2 }' | awk -F "." '{print $1}' | sed 's/[[:space:]]//g'
 ```
 
 ### Linux 系统应用领域
