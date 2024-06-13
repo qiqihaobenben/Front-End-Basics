@@ -127,6 +127,10 @@ docker build --target build-env -t myapp:build .
 
 5. **安全性**: 在构建时传递机密信息（如密码、密钥）要特别小心，可以使用 `--secret` 或 `--build-arg` 来处理，但最好是避免在 Dockerfile 中直接包含这些信息。
 
+#### docker build 原理示例
+
+[查看文章中间镜像的构建过程](https://www.cnblogs.com/poloyy/p/15451933.html)
+
 ### 使用 Dockerfile 构建镜像的步骤
 
 - 编写一个 dockerfile 文件
@@ -502,17 +506,18 @@ ADD test /absoluteDir/    # 添加 "test" 到 /absoluteDir/
 
 功能类似 ADD，但是不会自动解压文件，也不能访问网络资源
 
-- 格式： COPY <src> <dest>
-- 详解：复制本地主机的 <src>下内容到镜像中的 <dest>，目标路径不存在时，会自动创建。
-  - <src>：可以是 Dockerfile 所在目录的一个相对路径（文件或目录）
-  - <dest>：可以是镜像内绝对路径，或者相对于工作目录（WORKDIR）的相对路径
+- 格式： `COPY [--chown=<user>:<group>] <src>... <dest>`
+  - `--chown=<user>:<group>` : 可选参数，用于设置复制后文件的所有者（用户和组）。例如，--chown=user:group。
+- 复制本地主机的 `<src>`下内容到镜像中的 `<dest>`，目标路径不存在时，会自动创建。
+  - `<src>`：是相对于构建上下文的路径，不能使用相对于 Dockerfile 的相对路径（因为 Dockerfile 可能不在上下文中）
+  - `<dest>`：可以是镜像内绝对路径，或者相对于工作目录（WORKDIR）的相对路径
 - 路径：支持正则表达式， `COPY test* /tmp`
 
 #### COPY 作用详解
 
-- COPY 指令从 <src> 复制文件、目录或远程文件 URL，并将它们添加到路径 <dest>
-- 可以指定多个 <src> 资源，但如果它们是文件或目录，则它们的路径被解析为相对于构建上下文的路径
-- 每个 <src> 可能包含通配符，匹配将使用 Go 的 filepath.Match 规则完成
+- COPY 指令从 `<src>` 复制文件、目录或远程文件 URL，并将它们添加到路径 `<dest>`
+- 可以指定多个 `<src>` 资源，但如果它们是文件或目录，则它们的路径被解析为相对于构建上下文的路径
+- 每个 `<src>` 可能包含通配符，匹配将使用 Go 的 filepath.Match 规则完成
 
 #### 示例
 
@@ -531,6 +536,102 @@ COPY test.txt <WORKDIR>/relativeDir/
 # 使用绝对路径，将 test.txt 添加到 /absoluteDir/ 目录下
 COPY test.txt /absoluteDir/
 ```
+
+#### --from=<name> 示例
+
+将从 from 指定的构建阶段中寻找源文件 `<src>`
+
+```dockerfile
+# 第一构建阶段:将仅用于生成 requirements.txt 文件
+FROM tiangolo/uvicorn-gunicorn:python3.9 as requirements-stage
+
+# 将当前工作目录设置为 /tmp
+WORKDIR /tmp
+
+# 生成 requirements.txt
+RUN touch requirements.txt
+
+# 第二构建阶段，在这往后的任何内容都将保留在最终容器映像中
+FROM python:3.9
+
+# 将当前工作目录设置为 /code
+WORKDIR /code
+
+# 从第一个阶段复制 requirements.txt;这个文件只存在于前一个 Docker 阶段，这就是使用 --from-requirements-stage 复制它的原因
+COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
+
+# 运行命令
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+```
+
+#### COPY `<src>` 详解
+
+#### `<src>` 路径必须在构建的上下文中
+
+- COPY 指令只能访问构建上下文中的文件和目录。确保构建上下文包含所需的所有文件。
+- 使用 .dockerignore 文件排除不需要的文件，可以减少构建上下文的大小和构建时间。
+
+```dockerfile
+# test.txt 是相对路径，相对于构建上下文
+COPY test.txt /mkdir/
+
+# 以下错误写法，文件均不在上下文目录中，并不会被找到
+# 这个找的就是构建上下文的上级目录的 test.txt
+COPY ../test.txt /mkdir/
+# 这个找的是本机根目录下的 test.txt
+COPY /test.txt /mkdir/
+
+# 不能添加  ../something 、 /something ，因为 docker 构建的第一步是将上下文目录（和子目录）发送到 docker 守护进程
+```
+
+##### `<src>` 是目录
+
+- 则复制目录的全部内容，包括文件系统元数据
+- 不会复制目录本身，只会复制其内容，并保持目录结构。
+
+```dockerfile
+COPY dir /mydir/
+```
+
+##### `<src>` 是任何其他类型的文件
+
+- 则将其与其元数据一起单独复制
+- `<dest>` 以斜杠 / 结尾，它将被视为一个目录，并且 `<src>` 的内容将写入 `<dest>`/base(`<src>`)
+
+##### 指定了多个 `<src>` 资源，或者由于使用了通配符
+
+则 `<dest>` 必须是一个目录，并且必须以斜杠 / 结尾
+
+```dockerfile
+COPY test1.txt test2.txt /mydir/
+```
+
+#### COPY `<dest>` 详解
+
+##### `<dest>` 不以斜杠结尾
+
+它将被视为常规文件，并且 `<src>` 的内容将写入 `<dest>`
+
+```dockerfile
+COPY test.txt /mytext
+```
+
+##### 如果 `<dest>` 是一个已存在的目录，COPY 指令会将 `<src>` 文件或目录复制到 `<dest>` 目录中。
+
+##### `<dest>` 不存在
+
+路径中所有缺失的目录都会自动创建
+
+```dockerfile
+COPY test.txt /dir/test/my/
+```
+
+#### ADD 和 COPY 的区别和使用场景
+
+- ADD 支持添加远程 url 和自动提取压缩格式的文件，COPY 只允许从本机中复制文件
+  - ADD 从远程 url 获取文件和复制的效果并不理想，因为该文件会增加 Docker Image 最终的大小，相反，应该使用 curl huo wget 来获取远程文件，然后在不需要它时进行删除
+- COPY 支持从其他构建阶段中复制源文件（--from）
+- 根据官方 Dockerfile 最佳实践，除非真的需要从远程 url 添加文件或自动提取压缩文件才用 ADD，其他情况一律使用 COPY
 
 ### **VOLUME：** 用户指定持久化目录
 
@@ -633,44 +734,84 @@ RUN ["/bin/bash", "-c", "echo hello"]
 - RUN 指令将在当前镜像上加新的一层，并执行任何命令和提交结果，生成的提交镜像将用于 Dockfile 中的后续步骤
 - 分层 RUN 指令和生成提交符合 Docker 核心概念，提交成本低，并且可以通过 docker history 中的任意步骤创建容器，像 git 代码控制一样
 
-**CMD：**构建容器后调用，也就是在容器启东市才进行调用
+### **CMD：** 指定容器默认执行的命令，构建容器后调用，也就是在容器启动时才进行调用
 
 ```
 格式：
 CMD["excutable","param1","param2"](执行可执行文件，优先)
 CMD["param1","param2"]（设置了ENTRYPOINT，则直接调用ENTRYPOINT添加参数）
 CMD command param1 param2 (执行shell内部命令)
+
 示例：
 CMD echo "This is a test."
 CMD ["/user/bin/wc", "--help"]
-注：
-CMD 不同于RUN，CMD用于指定在容器启动时所要执行的命令，而RUN用于指定镜像构建时所要执行的命令。
 ```
 
-**ENTRYPOINT：**配置容器，使其可执行化。配合 CMD 可省去"application"，只使用参数。
+#### 注意
+
+- 一个 Dockerfile 只有一个 CMD 指令，若有多个，只有最后一个 CMD 指令生效
+- CMD 主要目的：为容器提供默认执行的命令，这个默认值可以包含可执行文件，也可以不包含可执行文件，如果不包含可执行文件，意味着必须指定 ENTRYPOINT 指令（第二种写法）
+- exec 模式下不能单独使用环境变量，必须要跟命令一起用
+
+```
+# 错误写法，不会使用 HOME 环境变量
+CMD [ "echo", "$HOME" ]
+
+# 正确写法，需要将 echo 和使用环境变量放一起
+CMD [ "sh", "-c", "echo $HOME" ]
+```
+
+#### RUN 和 CMD 的区别
+
+- RUN 可以在构建阶段运行很多个命令，而且每运行一个命令都会单独提交结果
+- CMD 在构建阶段不执行任何操作，而是指定镜像默认执行的命令
+
+### **ENTRYPOINT：** 指定镜像的默认入口命令，该入口命令会在启动容器时作为根命令执行
+
+- ENTRYPOINT 指定镜像的默认入口命令，该入口命令会在启动容器时作为根命令执行，所有其他传入值作为该命令的参数
+- ENTRYPOINT 的值可以通过 docker run --entrypoint 来覆盖掉
+- Dockerfile 中只允许有一个 ENTRYPOINT 命令，多指定时会覆盖前面的设置，而只执行最后的 ENTRYPOINT 指令
 
 ```
 格式：
 ENTRYPOINT ["executable","param1","param2"](可执行文件，优先)
 ENTRYPOINT command param1 param2 (shell 内部命令)
+
 示例:
 FROM ubuntu
 ENTRYPOINT["top","-b"]
 CMD['-c']
-注：
-ENTRYPOINT与CMD非常类似，不同的是通过docker run执行的命令不会覆盖ENTRYPOINT，而docker run命令中指定的任何参数，都会被当做参数再次传递给ENTRYPOINT，Dockerfile中只允许有一个ENTRYPOINT命令，多指定时会覆盖前面的设置，而只执行最后的ENTRYPOINT指令
 ```
 
-**ONBUILD：**用于设置镜像触发器
+#### CMD 和 ENTRYPOINT 区别
+
+- CMD 指定这个容器启动的时候要运行的命令，不可以追加命令
+- ENTRYPOINT 指定这个容器启动的时候要运行的命令，可以追加命令
+
+#### ENTRYPOINT 和 CMD 联合使用
+
+- 当指定了 ENTRYPOINT 后，CMD 的含义就发生了改变，不再是直接的运行其命令，而是将 CMD 的内容作为参数传给 ENTRYPOINT 指令
+- 换句话说实际执行时，会变成 `<ENTRYPOINT> "<CMD>"`
+
+#### ENTRYPOINT 应用场景
+
+- 启动容器就是启动主进程，但启动主进程前，可能需要一些准备工作，比如 mysql 可能需要一些数据库配置、初始化的工作，这些工作要在最终的 mysql 服务器运行之前解决
+- 还可能希望避免使用 root 用户去启动服务，从而提高安全性，而在启动服务前还需要以 root 身份执行一些必要的准备工作，最后切换到服务用户身份启动服务
+- 这些准备工作是和容器 CMD 无关的，无论 CMD 是什么，都需要事先进行一个预处理的工作，这种情况下，可以写一个脚本，然后放入 ENTRYPOINT 中去执行，而这个脚本会将接到的参数（也就是 <CMD>）作为命令，在脚本最后执行
+
+### **ONBUILD：** 用于设置镜像触发器
+
+- ONBUILD 是一个特殊的指令，它后面跟的是其它指令，比如 RUN, COPY 等，而这些指令，在当前镜像构建时并不会被执行
+- 只有当以当前镜像为基础镜像，去构建下一级镜像的时候才会被执行
+- Dockerfile 中的其它指令都是为了定制当前镜像而准备的，唯有 ONBUILD 是为了帮助别人定制自己而准备的
 
 ```
 格式：
 ONBUILD [INSTRUCTION]
+
 示例：
 ONBUILD ADD . /app/src
 ONBULD RUN /usr/local/bin/python-build --dir /app/src
-注:
-当缩构建的镜像被用作其他镜像的基础镜像，改镜像中的触发器将会被触发
 ```
 
 小例子：
@@ -718,5 +859,3 @@ EXPOSE 80
 CMD ["nginx"]
 
 ```
-
-待看：https://www.leeks.info/zh_CN/latest/Linux_Notes/index.html#docker
