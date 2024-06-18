@@ -89,6 +89,8 @@ $ echo $SHELL
 
 teletypeWriter 的简称，和终端等价，早期指电传打印机，延伸到 Linux 中，指的是 输入/输出 环境（可以简单理解为一个命令行对话窗口）
 
+tty1-tty7 代表本地控制台终端，tty1-tty6 是本地的字符界面终端（命令行），tty7 是图形终端
+
 #### 终端模拟器
 
 关联虚拟 tty 的输入输出软件，例如 Mac 的 Terminal、iTerms2 等。
