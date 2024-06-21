@@ -76,3 +76,8 @@ echo -e "=========== 5.配置国内镜像加速 ================\n\n"
 
 docker ps -a
 ```
+
+## 文章
+
+- [CentOS 7 离线安装 Docker](https://kunyuan.tech/archives/1287)
+- [内网环境下 - 安装 linux 命令、搭建 docker 以及安装镜像](https://developer.aliyun.com/article/1446267)
