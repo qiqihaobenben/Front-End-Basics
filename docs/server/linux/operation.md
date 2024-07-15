@@ -655,3 +655,11 @@ mac 查看自己的内网 ip
 ```
 ifconfig
 ```
+
+### netstat
+
+[Linux netstat 命令详解](https://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html)
+
+### nc
+
+[nc 命令详解](https://wangchujiang.com/linux-command/c/nc.html)
