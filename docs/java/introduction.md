@@ -139,14 +139,51 @@ println "Making a cup of coffee!"
 
 ### 总结与对比
 
-| 特性            | Java (.java)               | Kotlin (.kt)                   | Groovy (.groovy)             |
-|-----------------|----------------------------|-------------------------------|------------------------------|
-| 类型系统        | 静态类型，强类型                    | 静态类型（支持类型推断）       | 动态类型                     |
-| 语法简洁性      | 详细、冗长                  | 简洁、现代                    | 灵活、简洁                   |
-| 空安全          | 手动检查                    | 内置空安全机制                | 需要手动处理                 |
-| 脚本支持        | 需要完整的类和方法定义      | 支持脚本方式编写              | 天然支持脚本编写             |
-| 函数式编程      | 基本支持                    | 强支持                        | 支持                         |
-| 互操作性        | 与其他 JVM 语言兼容         | 高度兼容 Java                 | 高度兼容 Java                |
-| 常见应用场景    | 企业级应用、大型系统        | Android 开发、现代应用        | 构建工具、脚本、自动化任务   |
+| 特性         | Java (.java)           | Kotlin (.kt)             | Groovy (.groovy)           |
+| ------------ | ---------------------- | ------------------------ | -------------------------- |
+| 类型系统     | 静态类型，强类型       | 静态类型（支持类型推断） | 动态类型                   |
+| 语法简洁性   | 详细、冗长             | 简洁、现代               | 灵活、简洁                 |
+| 空安全       | 手动检查               | 内置空安全机制           | 需要手动处理               |
+| 脚本支持     | 需要完整的类和方法定义 | 支持脚本方式编写         | 天然支持脚本编写           |
+| 函数式编程   | 基本支持               | 强支持                   | 支持                       |
+| 互操作性     | 与其他 JVM 语言兼容    | 高度兼容 Java            | 高度兼容 Java              |
+| 常见应用场景 | 企业级应用、大型系统   | Android 开发、现代应用   | 构建工具、脚本、自动化任务 |
 
 Java 提供了稳定的基础，Kotlin 带来了现代化的简洁性和高效性，而 Groovy 则提供了灵活的脚本和快速开发能力。
+
+## Java 的版本解释
+
+### 前置知识
+
+- Java 第一代平台： 1995 年，Sun 公司首推 Oak，因 Oak 商标已被占用后改名为 Java。1996 年 1 月，Sun 公司发布了 Java 的第一个开发工具包（JDK 1.0），也就是最初版本 Java1.0
+
+- Java 第二代平台：1999 年 6 月，Sun 公司发布了第二代 Java 平台（简称为 Java2），它有 3 个版本：
+
+  - J2ME（Java2 Micro Edition，Java2 平台的微型版），应用于移动、无线及有限资源的环境；
+  - J2SE（Java2 Standard Edition，Java 2 平台的标准版），应用于桌面环境；
+  - J2EE（Java2 Enterprise Edition，Java 2 平台的企业版），应用于基于 Java 的应用服务器。
+
+- J2SE 改名：2004 年 9 月 30 日，J2SE 1.5 发布，为了表示该版本的重要性，J2SE 1.5 更名为 Java SE 5.0（内部版本号 1.5.0），代号为“Tiger”，Tiger 包含了从 1996 年发布 1.0 版本以来的最重大的更新。
+
+- 第二代平台改名：2005 年 6 月，在 Java One 大会上，Sun 公司发布了 Java SE 6。此时，Java 的各种版本已经更名，已取消其中的数字 2，如 J2EE 更名为 JavaEE，J2SE 更名为 JavaSE，J2ME 更名为 JavaME。
+
+自 1996 年发布 Java1.0；直到 2004 年 9 月版本号提升为 5.0，这一新版本为 Java SE5.0（或 J2SE1.5），在 2005 年 6 月 Sun 公司终结了已经有 8 年历史的 J2SE、J2EE、J2ME 的命名方式启用了今天的 Java SE、Java EE、Java ME 命名方式，而此后的版本为 Java SE6、Java SE7、Java SE8、Java SE9、Java SE10、Java SE11、Java SE12… Java SE17 等。
+
+### Java 和 JDK 的关系
+
+- Java SE，现在提到的 Java 指代的就是 Java SE
+  Java 平台标准版 (Java SE) API 定义了用于通用计算的核心 Java 平台。这些 API 称为 java
+
+- JDK
+  Java 开发工具包 (JDK) API 特定于 JDK，不一定在 Java SE 平台的所有实现中都可用。这些 API 称为 jdk。
+
+自 1996 年发布 JDK1.0；此后命名为 JDK1.1、JDK1.2、JDK1.3、JDK1.4、采用 1.X 的命名方式，即 JDK 在 Java1.0 到 Java9 对应每一个版本号 ：JDK1.0、JDK1.2 … JDK1.8、JDK1.9。Java10 以后我们可以理解为 JDK 对应名称为：JDk10、JDK11、JDK12 … JDK17
+
+在程序员眼中，Java（或者说 Java SE）和 JDK 是一样的，都是指代 Java 的开发工具包。
+
+- [Java 版本和 JDK 版本](https://cloud.tencent.com/developer/article/2128820)
+- [JDK 的版本号解惑](https://cloud.tencent.com/developer/article/1873446)
+
+## IDEA
+
+[IDEA 激活教程](https://ziby0nwxdov.feishu.cn/wiki/OyLBwBd9oiVFTykXrHvcEB91nyb)

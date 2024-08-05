@@ -55,7 +55,9 @@ sayer.hello(); //hello
 Node 从 CommonJS 的一些创意中，创造出自己的模块化实现。由于 Node 在服务端的流行，Node 的模块形式被（不正确地）称为 CommonJS。
 
 Node.js 模块可以分为两大类，一类是核心模块，另一类是文件模块。
+
 **核心模块** 就是 Node.js 标准的 API 中提供的模块，如 fs、http、net 等，这些都是由 Node.js 官方提供的模块，编译成了二进制代码，可以直接通过 require 获取核心模块，例如 require('fs')，核心模块拥有最高的加载优先级，如果有模块与核心模块命名冲突，Node.js 总是会加载核心模块。
+
 **文件模块** 是存储为单独的文件（或文件夹）的模块，可能是 JavaScript 代码、JSON 或编译好的 C/C++代码。在不显式指定文件模块扩展名的时候，Node.js 会分别试图加上.js、.json、.node(编译好的 C/C++代码)。
 
 > 加载方式

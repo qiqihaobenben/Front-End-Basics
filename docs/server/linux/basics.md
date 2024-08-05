@@ -103,6 +103,10 @@ Linux 软件包是一种软件的分发方式，软件包是一个压缩文件�
 
 ![](./images/package-manager.png)
 
+## 试用各种 Linux 发行版
+
+[在线试用各种 Linux 发行版，它会分配一个虚拟机，浏览器里连接桌面](https://distrosea.com/)
+
 ### 推荐阅读
 
 - [Linux 各大发行版有什么特色？](https://www.zhihu.com/question/24261540)
