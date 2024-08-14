@@ -52,9 +52,9 @@ $ tsc --project src
 
 这些选项用于配置项目的运行时期望、编译后的 JavaScript 的输出方式和位置，以及与现有 JavaScript 代码的集成级别。
 
-- target：类型 `String`，指定编译代码的目标，不同的目标将影响代码中使用的特性是否会被降级，可用的值有 ► "ES3"（默认值） ► "ES5" ► "ES6"/ "ES2015" ► "ES2016" ► "ES2017" ► "ES2018" ► "ES2019" ► "ES2020" ► "ESNext"
-- module：类型 `String`，指定生成哪个模块系统代码，可以为 `"None"`、`"CommonJS"`、`"AMD"`、`"System"`、`"UMD"`、`"ES6"`/`"ES2015"`、`ES2020`、`ES2022`、`ESNext`、`Node12` 或者 `Nodenext`。默认值为 `target === "ES3" or "ES5" ? "CommonJS" : "ES6/ES2015"`
-- jsx：类型 `"react"|preserve|"react-native"|"react-jsx"|"react-jsxdev"`，在 .tsx 文件里支持 JSX，没有默认值
+- target ：类型 `String`，指定编译代码的目标，不同的目标将影响代码中使用的特性是否会被降级，可用的值有 ► "ES3"（默认值） ► "ES5" ► "ES6"/ "ES2015" ► "ES2016" ► "ES2017" ► "ES2018" ► "ES2019" ► "ES2020" ► "ESNext"
+- module ：类型 `String`，指定生成哪个模块系统代码，可以为 `"None"`、`"CommonJS"`、`"AMD"`、`"System"`、`"UMD"`、`"ES6"`/`"ES2015"`、`ES2020`、`ES2022`、`ESNext`、`Node12` 或者 `Nodenext`。默认值为 `target === "ES3" or "ES5" ? "CommonJS" : "ES6/ES2015"`
+- jsx ：类型 `"react"|preserve|"react-native"|"react-jsx"|"react-jsxdev"`，在 .tsx 文件里支持 JSX，没有默认值
 - jsxFactory：类型 `String`，指定 `"jsx": "react"`时，使用的 JSX 工厂函数，比如 `React.createElement` 或 `h`，配合 `jsx` 属性一起用。默认值为 `React.createElement`
 - incremental：类型 `Boolean`，TS 编译器在第一次编译之后会生成一个储存编译信息的文件，第二次编译会在第一次的基础上进行增量编译，可以提高编译的速度。默认值分为两种情况，当 `composite` 为 `true` 时，默认值为 `true`，否则为 `false`
 - tsBuildInfoFile：类型 `String`，增量编译文件的存储位置，配合 `--incremental` 一起使用
@@ -100,15 +100,15 @@ TypeScript 支持一些额外的代码检查，在某种程度上介于编译器
 
 模块解析部分的编译选项会影响代码中模块导入以及编译相关的配置。
 
-- moduleResolution：类型 `String`，模块解析策略，默认值为 `module === "AMD" or "UMD" or "System" or ES6/ES2015 ? "Classic" : "Node"`。在目前的新代码中，我们一般都是使用 Node，而不是用 Classic。具体的模块解析策略可以[查看详情](https://www.typescriptlang.org/docs/handbook/module-resolution.html#module-resolution-strategies)
+- moduleResolution ：类型 `String`，模块解析策略，默认值为 `module === "AMD" or "UMD" or "System" or ES6/ES2015 ? "Classic" : "Node"`。在目前的新代码中，我们一般都是使用 Node，而不是用 Classic。具体的模块解析策略可以[查看详情](https://www.typescriptlang.org/docs/handbook/module-resolution.html#module-resolution-strategies)
 - baseUrl：类型 `String`，解析非相对模块名的基准目录，默认是当前目录。实践证明，当 ts 中 import 引用非相对路径的模块，例如 `import "foo"`，ts 会首先查询 node_modules 目录，如果没有查找到需要的，就会根据 baseUrl 设置的路径目录查找该模块。可以查看[模块解析文档](https://www.tslang.cn/docs/handbook/module-resolution.html#base-url)了解详情
 - paths：类型 `Object`，基于 baseUrl 的路径映射列表，用来将模块路径重新映射到相对于 baseUrl 定位的其他路径配置。这里我们可以将 paths 理解为 webpack 的 alias 别名配置。默认值为 `{}`，查看[模块解析文档](https://www.tslang.cn/docs/handbook/module-resolution.html#path-mapping)了解详情
 - rootDir：类型 `String`，仅用来控制 `--outDir` 输出的目录结构，默认值为基于 input 传入的文件列表计算来的公共根路径
 - rootDirs：类型 `Array<String>`，根（root）文件夹列表，可以指定多个目录作为根目录，这个选项允许编译器在这些“虚拟”目录中解析相对应的模块导入，就像他们被合并到同一个目录中一样，查看 [模块解析文档](https://www.tslang.cn/docs/handbook/module-resolution.html#virtual-directories-with-rootdirs) 了解详情
 - typeRoots：类型 `Array<String>`，声明文件包根目录，默认是 node_modules/@types，如果 typeRoots 指定，则仅包括 typeRoots 下面的包。
 - types：类型 `Array<String>`，加载的声明文件包，默认情况下，所有的 typeRoots 包都将被包含在编译过程中。如果指定 types 属性，将仅检索指定名称的 @types 包。当 types 是 `[]` 时，表示禁止自动包含任何 @types 包。可以[查看详情](https://www.tslang.cn/docs/handbook/tsconfig-json.html#types-typeroots-and-types)了解。
-- allowSyntheticDefaultImports：类型 `Boolean` ，允许从没有设置默认导出的模块中默认导入，即使一个模块没有默认导出（`export default`），也可以在其他模块中像导入包含默认导出模块一样的方式导入这个模块。这并不影响代码的输出，仅为了类型检查。默认值有两种情况：1、 `module === "system"` 或设置了 `esModuleInterop` 且 `module` 不为 `es2015`/`esnext` 时，默认值为 `true`；2、其他情况下默认值为 `false`。具体含义可以查看[TypeScript 中的多种 import 解义](https://tasaid.com/blog/2019022017450863.html)
-- esModuleInterop：类型 `Boolean`，指的是 ES 模块的互操作性。在默认情况下，TypeScript 像 ES6 模块一样对待 CommonJS/AMD/UMD，但是此时的 TypeScript 代码转译会导致不符合 ES6 模块规范，不过，开启 esModuleInterop 后，这些问题都将得到修复。一般情况下，在启用 esModuleInterop 时，会同时启用 allowSyntheticDefaultImports。
+- allowSyntheticDefaultImports ：类型 `Boolean` ，允许从没有设置默认导出的模块中默认导入，即使一个模块没有默认导出（`export default`），也可以在其他模块中像导入包含默认导出模块一样的方式导入这个模块。这并不影响代码的输出，仅为了类型检查。默认值有两种情况：1、 `module === "system"` 或设置了 `esModuleInterop` 且 `module` 不为 `es2015`/`esnext` 时，默认值为 `true`；2、其他情况下默认值为 `false`。具体含义可以查看[TypeScript 中的多种 import 解义](https://tasaid.com/posts/688d139e/)
+- esModuleInterop ：类型 `Boolean`，指的是 ES 模块的互操作性。在默认情况下，TypeScript 像 ES6 模块一样对待 CommonJS/AMD/UMD，但是此时的 TypeScript 代码转译会导致不符合 ES6 模块规范，不过，开启 esModuleInterop 后，这些问题都将得到修复。一般情况下，在启用 esModuleInterop 时，会同时启用 allowSyntheticDefaultImports 。
 
 #### Source Maps
 
@@ -273,5 +273,79 @@ yarn add typescript@3.9.10
 - [Typescript 4.5 —— 浅谈模块能力增强](https://zhuanlan.zhihu.com/p/425740447)
 - [Typescript confusion: tsconfig.json module, moduleResolution, target & lib explained](https://medium.com/@tommedema/typescript-confusion-tsconfig-json-module-moduleresolution-target-lib-explained-65db2c44b491)
 - [理解 TypeScript 的模块系统](https://pengfeixc.com/blogs/javascript/typescript-module-system)
-- [TypeScript 中的多种 import 解义](https://tasaid.com/blog/2019022017450863.html)
-- [ESM的TS的module配置nodenext](https://mp.weixin.qq.com/s/_RmAH6p2lyzkhqLWw8cIKw)
+- [TypeScript 中的多种 import 解义](https://tasaid.com/posts/688d139e/)
+- [ESM 的 TS 的 module 配置 nodenext](https://mp.weixin.qq.com/s/_RmAH6p2lyzkhqLWw8cIKw)
+
+#### target 介绍
+
+在 TypeScript 中，`target` 是 `tsconfig.json` 文件中的一个选项，用于指定编译输出的 JavaScript 版本。这个选项决定了 TypeScript 编译器会生成与哪个版本的 ECMAScript (ES) 兼容的 JavaScript 代码。
+
+##### 常见的 `target` 选项
+
+1. **`ES3`**:
+
+   - 输出的代码与 ECMAScript 3 (ES3) 规范兼容。
+   - 支持老旧的浏览器，如 Internet Explorer 6-8。
+   - 不支持现代 JavaScript 特性，如 `let`、`const`、箭头函数、模块等。
+   - 默认值，如果未指定 `target`，TypeScript 将生成 ES3 兼容的代码。
+
+2. **`ES5`**:
+
+   - 输出的代码与 ECMAScript 5 (ES5) 规范兼容。
+   - 支持稍微现代的浏览器，如 Internet Explorer 9+。
+   - 增加了 `strict mode`，但不支持诸如 `let`、`const`、模块、Promise、箭头函数等 ES6+ 的特性。
+
+3. **`ES6`/`ES2015`**:
+
+   - 输出的代码与 ECMAScript 6 (ES6) 或 ECMAScript 2015 规范兼容。
+   - 支持现代 JavaScript 特性，包括 `let`、`const`、箭头函数、模块、类、模板字符串等。
+   - 大部分现代浏览器已经支持 ES6 特性。
+
+4. **`ES7`/`ES2016`**:
+
+   - 输出的代码与 ECMAScript 2016 (ES7) 规范兼容。
+   - 主要新增了 `Array.prototype.includes` 和 `**` 操作符（指数运算符）。
+
+5. **`ES8`/`ES2017`**:
+
+   - 输出的代码与 ECMAScript 2017 (ES8) 规范兼容。
+   - 新增了 `async`/`await`，以及 `Object.values` 和 `Object.entries`。
+
+6. **`ES9`/`ES2018`**:
+
+   - 输出的代码与 ECMAScript 2018 (ES9) 规范兼容。
+   - 新增了 `rest/spread properties`，`Promise.prototype.finally`，`asynchronous iteration`。
+
+7. **`ES10`/`ES2019`**:
+
+   - 输出的代码与 ECMAScript 2019 (ES10) 规范兼容。
+   - 新增了 `Array.prototype.flat` 和 `Array.prototype.flatMap`，以及 `Object.fromEntries`。
+
+8. **`ES11`/`ES2020`**:
+
+   - 输出的代码与 ECMAScript 2020 (ES11) 规范兼容。
+   - 支持 `BigInt`，`dynamic import`，`nullish coalescing`（`??`），以及 `optional chaining`（`?.`）。
+
+9. **`ES12`/`ES2021`**:
+
+   - 输出的代码与 ECMAScript 2021 (ES12) 规范兼容。
+   - 支持 `String.prototype.replaceAll`，逻辑赋值运算符（`&&=`, `||=`, `??=`），以及 `WeakRefs` 和 `FinalizationRegistry`。
+
+10. **`ES13`/`ES2022`**:
+
+    - 输出的代码与 ECMAScript 2022 (ES13) 规范兼容。
+    - 支持 `top-level await`，类字段声明，`at()` 方法，以及正则表达式匹配索引。
+
+11. **`ESNext`**:
+    - 输出的代码与最新的 ECMAScript 提案兼容（即尚未完全纳入标准的特性）。
+    - 这是一个动态目标，会随着 ECMAScript 标准的演变而变化。
+    - 当设置为 `ESNext` 时，TypeScript 会尽可能生成现代浏览器和 JavaScript 引擎能够支持的最先进的 JavaScript 代码。
+    - 注意：`ESNext` 不稳定，目标特性可能会改变，通常用于尝试最新的 JavaScript 特性，而这些特性还未被正式标准化。
+
+##### `ESNext` 详解
+
+- **动态性**: `ESNext` 是一个动态选项，随着 ECMAScript 新特性的推出而更新。每当新的 ECMAScript 版本发布时，`ESNext` 也会更新，以支持该版本中包含的新功能。
+- **开发和实验**: 适合开发者实验最新的 JavaScript 特性，尤其在你希望使用还未在所有环境中普及的功能时。
+- **转译策略**: 使用 `ESNext` 时，TypeScript 编译器通常不会进行任何降级转换（比如 `async/await` 转换为 `Promise`），除非明确需要兼容较旧的 JavaScript 运行时。
+
+选择 `target` 时，需要根据你的项目需求和目标运行环境来决定。如果你希望使用现代 JavaScript 特性并且运行环境支持，那么选择 `ES6` 或更高版本是合理的。如果你希望始终使用最新的 JavaScript 特性，可以考虑使用 `ESNext`。
