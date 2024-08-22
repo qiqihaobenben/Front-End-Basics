@@ -250,8 +250,16 @@ package com.example.PersonDemo;
 - 局部内部类 ： 在类的局部位置（在成员方法中）
 - 匿名内部类
 
-
 ## 常用类
+
+### 包装类
+
+#### 包装类对应表
+
+#### 自动装箱和拆箱
+
+- 装箱
+- 拆箱
 
 ### String 类
 
@@ -259,9 +267,12 @@ package com.example.PersonDemo;
 
 #### 字符串类的特点
 
-
 #### String 对象的特点
-
 
 #### StringBuilder
 
+##### String 和 StringBuilder 的相互转换
+
+### Object 类
+
+Object 类是一个特殊的类，
