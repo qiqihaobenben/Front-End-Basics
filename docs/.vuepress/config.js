@@ -64,7 +64,7 @@ module.exports = {
             'typescript/type-attention',
             'typescript/type-advance',
             'typescript/type-check',
-            'typescript/type-extend',
+            'typescript/type-declare',
             'typescript/type-programing',
             'typescript/typescript-important',
             'typescript/use-typescript-two-years',
