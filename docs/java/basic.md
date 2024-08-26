@@ -336,7 +336,9 @@ Java 中的内部类是一种特殊的类，它定义在另一个类的内部，
 
 ## 常用类
 
-### 基本类型的包装类
+### 包装类
+
+#### 包装类对应表
 
 Byte、Short、Integer、Long、Float、Double、Boolean、Character
 
@@ -368,6 +370,12 @@ Byte、Short、Integer、Long、Float、Double、Boolean、Character
 #### String 对象的特点
 
 #### StringBuilder
+
+##### String 和 StringBuilder 的相互转换
+
+### Object 类
+
+Object 类是一个特殊的类，
 
 ## 集合
 
