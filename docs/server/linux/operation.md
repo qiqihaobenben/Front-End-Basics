@@ -641,25 +641,3 @@ chgrp -R newgroup mydir
 关闭终端后，在另一个终端 `jobs` 已经无法看到后台跑的程序了，此时利用 `ps aux` 可以看到所有进程。
 
 关于前台后台进程切换，可以查看：[Linux 程序前台后台切换](https://www.cnblogs.com/geogre123/p/10643152.html)
-
-## 网络相关
-
-mac 查看自己的公网 ip
-
-```
-curl ipinfo.io/json
-```
-
-mac 查看自己的内网 ip
-
-```
-ifconfig
-```
-
-### netstat
-
-[Linux netstat 命令详解](https://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html)
-
-### nc
-
-[nc 命令详解](https://wangchujiang.com/linux-command/c/nc.html)
