@@ -377,28 +377,169 @@ Byte、Short、Integer、Long、Float、Double、Boolean、Character
 
 Object 类是一个特殊的类，
 
+### 时间类型
+
+Java 中的日期类型可以分为两类：旧的日期类型和新的日期类型。
+
+- 旧的日期类型
+
+旧的日期类型包括 Date 和 Calendar，它们可以用于表示日期和时间。
+
+- 新的日期类型
+
+另一类新的日期类型是 Java 8 推出的新特性，称为新的日期和时间 API。它提供了一种更为简单的方式来处理日期和时间，允许开发人员更轻松地实现日期和时间的计算。新的日期和时间 API 包括 LocalDate、LocalTime 和 LocalDateTime 等类。
+
+Java 中的日期类主要有以下几个：
+
+- Date 类：转化后精度损失较多，不推荐使用。
+- Calendar 类：比较繁琐，但提供了丰富的日期操作方法。
+- SimpleDateFormat 类：可以将日期与字符串互相转化，常用于日期的格式化操作。
+- LocalDate、LocalTime、LocalDateTime、ZonedDateTime 类：Java 8 新增，使用简单，提供了丰富的日期操作方法，并且支持时区。
+
+其中，LocalDate 表示日期，LocalTime 表示时间，LocalDateTime 表示日期和时间，ZonedDateTime 则表示带时区的日期和时间。这些类都封装了日期和时间的操作方法，并且支持创建、比较、格式化、解析等各种操作。同时，它们也遵循了不可变性的原则，保证了操作安全和线程安全。
+
+#### Date
+
+Java 中的 Date 类是用于表示日期和时间的类。 Date 类封装了当前时间，以及毫秒数，以便能够进行计算和转换，主要包含以下几个方法：
+
+- long getTime()：返回自 1970 年 1 月 1 日 00:00:00 GMT 以来此 Date 对象表示的毫秒数。
+- void setTime(long time)：设置此 Date 对象表示时间点，以表示自 1970 年 1 月 1 日 00:00:00 GMT 以来的毫秒数。
+- boolean before(Date when)：当此 Date 对象表示的时间在 when 之前时，返回 true，否则返回 false。
+- boolean after(Date when)：当此 Date 对象表示的时间在 when 之后时，返回 true，否则返回 false。
+- boolean equals(Object obj)：当此 Date 对象表示的时间和 obj 表示的时间相同时，返回 true，否则返回 false。
+
+#### Calendar
+
+- Calendar getInstance()：静态方法，用于获取由当前日期和时间初始化的 Calendar 对象。
+- void set(int field, int value)：将给定的时间字段（如年、月、日等）设置为给定值。
+- void add(int field, int amount)：将给定的时间字段（如年、月、日等）的值按照给定的量进行加减运算。
+- int get(int field)：获取指定时间字段的值。
+- Date getTime()：返回以 Date 类型表示的 Calendar 对象当前表示的日期和时间
+- before(Object when)和 after(Object when)：用于比较所代表的日期是否在指定日期之前或之后。参数为 Object 类型，实际上通常传入的是 Date 类型对象。
+
+#### SimpleDateFormat
+
+- SimpleDateFormat(String pattern)：构造一个新的 SimpleDateFormat 对象并使用指定的日期格式模式。
+- String format(Date date)：将给定的日期对象格式化为字符串。
+- Date parse(String source)：将给定的字符串解析为日期对象。
+- void setLenient(boolean lenient)：指定解析日期时是否允许使用宽松的解析规则，默认为 true，即启用宽松的解析规则。
+
+#### LocalDate
+
+Java 8 中引入了 LocalDate 类，它是一个表示日期（年、月、日）的不可变类。
+
+- now()：静态方法，用于获取当前系统日期。
+- of(int year, int month, int dayOfMonth)：静态方法，用于创建指定日期的 LocalDate 对象。
+- getYear()、getMonthValue()和 getDayOfMonth()：获取日期的年、月、日。
+- plusDays()、plusMonths()和 plusYears()：将日期加上指定的天数、月数、年数。
+- minusDays()、minusMonths()和 minusYears()：将日期减去指定的天数、月数、年数。
+- isBefore()和 isAfter()：用于比较当前日期是否在指定日期之前或之后。
+- format()：将日期格式化为指定格式的字符串。
+
+#### 关于 Java 中的日期类使用，总结了一些经验：
+
+优先使用 Java 8 的新日期/时间 API：java.time 包，它是早期的 java.util 包的替代品，更简单易用。
+
+尽量避免使用过时的 java.util.Date 和 SimpleDateFormat 类，因为它们可能会导致严重的 bug，并且不支持时区。
+
+使用 ISO 8601 格式（yyyy-MM-dd）来表示日期，以确保正确性。
+
+尽可能地尝试使用线程安全的类，例如 java.time.LocalDateTime 和 java.time.LocalDate。
+
+如果需要，可以使用 java.util.Calendar 类来表示日期，但需要谨慎处理，因为它不是线程安全的。
+
+使用预定义格式解析和格式化日期字符串：在使用 SimpleDateFormat 进行格式化和解析日期时，通常需要自己定义日期格式。这种方式容易出错且容易导致代码的可读性下降。Java 8 中新增了 DateTimeFormatter 类，该类提供了预定义的日期格式以及自定义的格式化和解析。使用 DateTimeFormatter 类进行日期格式化和解析可以减少犯错的机会。
+
+使用 Calendar 时要注意月份的索引从 0 开始：在使用 Calendar 类获取月份时，月份的索引从 0 开始，即 0 表示 1 月，1 表示 2 月，以此类推。这可能会导致混淆和错误，因此建议使用 LocalDate 代替。
+
+使用 Period 和 Duration 进行日期和时间的计算：Period 和 Duration 类分别用于计算日期和时间之间的差异。这些类提供了易于使用且灵活的 API，可用于计算日期之间的差异（例如年、月和天）以及时间之间的差异（例如小时，分钟和秒）。
+
+#### 为什么 Java 8 的新日期/时间 API 比早期的 java.util 包更好？
+
+Java 8 的新日期/时间 API 比早期的 java.util 包更好，因为它提供了更加简便、可读性更好的 API，并且支持时区，更加安全可靠。此外，它提供了用于计算、比较、格式化日期/时间的许多方法，以及用于将日期/时间转换为字符串的格式化方法，使得操作日期/时间变得更加容易。
+
+## 异常
+
+- 空指针异常（NullPointerException）: 当程序试图在没有引用的对象上调用方法，或者试图访问或修改一个不存在的对象时，抛出此异常。
+
+- 类型转换异常（ClassCastException）: 当一个类型的对象转换成不兼容的类型时，抛出此异常。
+
+- 数组负下标异常（ArrayIndexOutOfBoundsException）: 当程序试图访问一个数组中不存在的索引时，抛出该异常。
+
+- 数学异常（ArithmeticException）: 数学运算异常时抛出此异常。
+
+- 算术异常（IllegalArgumentException）: 当传递给方法的参数不合法时，抛出此异常。
+
+- 违反安全原则异常（SecurityException）: 当一个程序违反安全原则时，抛出此异常。
+
+- 文件未找到异常（FileNotFoundException）: 当程序尝试访问不存在的文件时，抛出此异常。
+
+- 栈溢出异常（StackOverflowError）: 当程序堆栈溢出时，抛出此异常。
+
+- 字符串解析异常（NumberFormatException）: 当程序试图将字符串转换成不支持的数字格式时，抛出此异常。
+
+- 运行时异常（RuntimeException）: 所有可能在 Java 程序运行时发生的异常的基类.
+
 ## 集合
 
 ### 单列集合 Collection
 
 #### List
 
+Java 的 List 类型集合是指位于 java.util 包下的 List 接口，主要分类有两种，分别是 ArrayList 和 LinkedList 两个类
+
 值可以重复
 
 - ArrayList
 - LinkedList
 
+##### ArrayList
+
+ArrayList 是基于数组实现的 List 集合，底层其实就是使用了一个数组进行的元素存储。
+
+当我们不断往 ArrayList 里面添加元素的时候，内部会有一个判断机制，判断数组的容量是否达到了一定阈值，如果达到了就会发生一个数组拷贝操作，将旧的数组的内容拷贝到新的数组里面去，这部分的操作会比较消耗性能，所以说它的插入和删除操作效率比较低。但是采用数组进行存储，底层会有数组的索引下标存在，因此当我们需要根据索引下标去检索数据的时候，其效率会非常高。
+
+##### LinkedList
+
+LinkedList 是基于双向链表实现的，当我们插入对象的时候，内部会创建一个新的节点对象，然后放入到一条链表的尾部，由于没有牵扯到类似于 ArrayList 那样的数组拷贝操作，所以它的插入和删除操作效率比较高。但是由于没有类似于数组的索引下标的存在，所以在进行数据检索的时候，效率会稍微弱一些。
+
+##### List 是否真的可以无限量添加元素？
+
+不行，List 实际上有一个容量限制，即 List 的容量是受内存限制的，当内存的容量不够时，List 就不能无限量添加元素了。
+
 #### Set
 
 值不可重复
+
+Set 集合是 Java 中的一种特殊的集合，它不允许集合中出现重复元素。Set 集合中的元素是无序的，不可重复的，没有索引。
+
+Set 集合本身的定义是一个接口类型，但是其下可以使用 HashSet、TreeSet 等实现，其中 HashSet 提供了最快的查找和插入速度，而 TreeSet 则提供了有序的元素组织。
 
 - HashSet
 - LinkedHashSet
 - TreeSet
 
+#### HashSet
+
+HashSet 是 Java 中的一种 Set 接口实现，它不允许集合中有重复的元素。它使用哈希表实现，允许插入和检索操作的时间复杂度为 O(1)。
+
+它的实现是基于哈希函数的，因此元素的存储次序与插入次序无关，而且比较两个元素时，不需要使用 equals()方法，只需要调用 hashCode()方法就可以判断两个元素是否相等。
+
+它的一个优势是，它可以检测集合中的重复元素，因此不会出现重复的元素。另外，它也可以快速检索元素，因为它使用哈希函数来存储元素，因此可以快速检索元素。
+
+#### TreeSet
+
+TreeSet 是 java.util 包中的一个集合类，它继承自 AbstractSet，是基于 TreeMap 实现的，TreeSet 中的元素是按照元素的自然顺序排序的，或者根据构造函数传入的 Comparator 进行排序的。
+
+TreeSet 不允许集合中存在重复元素，它提供了多种操作集合元素的方法，如添加、删除、查找等，还提供了多种不同的迭代器，可以用 Iterator 或 ListIterator 迭代 TreeSet 中的元素。
+
 ### 双列集合 Map
 
 双列集合，就是常说的键值对集合，在存储的时候都是一个键对应一个值，键是不可以重复的，值是可以重复的。所以在 Map 集合中，键是具备唯一性的。
+
+哈希表是一种以键值对方式进行存储的数据结构，在 Java 体系中，所有的哈希表都会基于统一的 Map 接口去实现。
+
+Java 中的 Map 接口位于 java.util 包路径下。
 
 - HashMap
 - HashTable
@@ -428,3 +569,102 @@ TreeMap 是一种基于红黑树实现的有序哈希表，它使用键的自然
 - 是否需要排序：如果需要，则可以选择 TreeMap 或者 LinkedHashMap；如果不需要，则可以选择 HashMap 或者 HashTable。
 
 - 是否允许 null 值和 null 键：如果允许，则可以选择 HashMap 或者 LinkedHashMap；如果不允许，则可以选择 HashTable 或者 TreeMap。
+
+### 有了数组，为什么还要有集合的出现？
+
+- 数组只能存储单一类型的数据，而集合可以存储多种类型的数据；
+
+- 数组的长度是固定的，而集合的长度是可变的；
+
+- 数组的存储操作比较复杂，而集合的存储操作比较简单；
+
+- 数组不支持一些高级的操作，比如排序、查找等，而集合支持；
+
+## IO
+
+io 可以理解为是 input 和 output 的两个缩写，分别代表了数据的 ”输入“和”输出“ 。io 流则是描述了将数据从内存和数据源之间拷贝的一个过程。
+
+输入：数据从数据源加载到内存。
+
+输出：数据从内存写回到数据源。
+
+### 字节流
+
+字节流（Byte Stream）是 Java 中的一种流，它是处理二进制数据的最基本的流，可以处理任何类型的数据，例如字符串、图像等。 字节流的特点是把数据看成一个个字节，它们是无类型的，可以处理任何类型的数据。
+
+#### 常见的字节流
+
+- InputStream：字节输入流，这个是字节流的抽象类，提供了某些字节流操作的基本实现，比如读取、关闭流等。
+
+- OutputStream：字节输出流，同样也是字节流抽象类，提供字节流操作的基本实现，比如写入、关闭流等。
+
+FileInputStream：允许应用程序以字节的方式从文件中读取数据。
+
+FileOutputStream：允许应用程序以字节的方式向文件写入数据。
+
+ByteArrayInputStream：允许应用程序从一个字节数组中读取数据。
+
+ByteArrayOutputStream：允许应用程序以字节的方式向字节数组中写入数据。
+
+DataInputStream：允许应用程序从输入流中读取基本的 Java 数据类型。
+
+DataOutputStream：允许应用程序以字节的方式向输出流中写入基本的 Java 数据类型。
+
+BufferedInputStream：允许应用程序从输入流中读取数据，同时将数据存储在缓冲区中，以提高读取效率。
+
+BufferedOutputStream：允许应用程序以字节的方式向输出流中写入数据，同时将数据存储在缓冲区中，以提高写入效率。
+
+### 字符流
+
+#### Java 中常见的关闭 IO 流操作有哪些？
+
+使用 try-with-resources 方法关闭资源：try-with-resources 语句可以优雅地关闭 IO 流，它可以在 try 语句块结束时自动关闭资源，而不需要手动关闭；
+
+使用 close()方法关闭资源：close()方法是用来关闭输入流或输出流的方法，它处理的是一次性的资源关闭，其具体的实现是将资源的引用设置为 null；
+
+使用 flush()方法清空缓冲区：flush()方法是用来清空输出缓冲区的方法，它会将缓冲区中的内容刷新到输出流中，使得缓冲区清空，这样就可以避免程序出现异常。
+
+### 字符流
+
+Java 中的字符流也称为字符输入/输出流，是把字符数据读入程序或者将字符数据写出程序的流。字符流以字符为单位读取数据，而不是以字节为单位，因此可以更有效地处理文本文件。字符流基于字符集，因此可以以更高效的编码方式来处理文本，从而提高性能。 Java 中提供了两个基本的字符流类：Reader 和 Writer，它们分别用于读取和写入数据。比如，FileReader 用于从文件中读取数据，而 FileWriter 用于将数据写入文件中。
+
+#### 常见的字符流
+
+- InputStreamReader：从字节流转换为字符流。
+- BufferedReader：字符输入流，使用缓冲区。
+- CharArrayReader：从字符数组中读取数据。
+- StringReader：从字符串中读取数据。
+- FileReader：从文件中读取数据。
+- OutputStreamWriter：将字符流转换为字节流。
+- BufferedWriter：字符输出流，使用缓冲区。
+- CharArrayWriter：向字符数组中写入数据。
+- StringWriter：向字符串中写入数据。
+- FileWriter：将数据写入文件中。
+
+## 反射
+
+在 Java 的反射应用中，最常见的就是对 Class 类的相关操作，Class 类常用的反射接口。
+
+- String getName(): 返回类的完整名称，包括包名。
+
+- Class getSuperclass(): 返回当前类的直接父类。
+
+- Class getDeclaringClass(): 返回声明当前类的 Class 对象。
+
+- Class[] getInterfaces(): 返回当前类实现的接口 Class 对象数组。
+
+- int getModifiers(): 返回类的修饰符（public、private、protected 等）。
+
+- Field[] getFields(): 返回类的公共属性。
+
+- Method[] getMethods(): 返回类的公共方法。
+
+- Constructor[] getConstructors(): 返回类的构造方法。
+
+- Field[] getDeclaredFields(): 返回类的所有属性（包括私有属性）。
+
+- Method[] getDeclaredMethods(): 返回类的所有方法（包括私有方法）。
+
+- Constructor[] getDeclaredConstructors(): 返回类的所有构造方法（包括私有构造方法）。
+
+- Object newInstance(): 创建实例。
