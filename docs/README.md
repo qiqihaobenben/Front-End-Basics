@@ -1,8 +1,3 @@
----
-home: true
-heroText: null
-tagline: null
----
 <h1 style="textAlign: center;">Front-End-Basics & Grow Up</h1>
 
 <h3  style="textAlign: center;">这是一个从前端基础慢慢汇总成体系，再扩展到全栈的技术文档</h3>
@@ -17,9 +12,9 @@ tagline: null
 
 <p>对自己有了一个比较明确的愿景：做一个终身学习、长期做有价值的事、三观自洽、情绪稳定且平静的人。</p>
 
-::: slot footer
+---
 [备案号：京ICP备2020048965号-1](https://beian.miit.gov.cn/)
-:::
+
 
 
 
