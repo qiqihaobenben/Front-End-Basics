@@ -13,7 +13,8 @@
 <p>对自己有了一个比较明确的愿景：做一个终身学习、长期做有价值的事、三观自洽、情绪稳定且平静的人。</p>
 
 ---
-[备案号：京ICP备2020048965号-1](https://beian.miit.gov.cn/)
+<a href="https://beian.miit.gov.cn/" target="_blank">京ICP备2020048965号-1</a>
+
 
 
 

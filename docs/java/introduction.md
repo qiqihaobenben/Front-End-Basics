@@ -187,3 +187,12 @@ Java 提供了稳定的基础，Kotlin 带来了现代化的简洁性和高效�
 ## IDEA
 
 [IDEA 激活教程](https://ziby0nwxdov.feishu.cn/wiki/OyLBwBd9oiVFTykXrHvcEB91nyb)
+激活大法： https://www.yuque.com/ziyou-urpsp/iqd2l9/zto1s0iv7ot18qhz
+特别提示：复制上面的链接一定要用电脑浏览器打开！
+重要：1、一定要解压到桌面再运行工具（请勿与其它工具一起使用）请打开链接仔细查看教程。
+2、虚拟产品具有可复制性，如果不是激活工具本身的原因请不要以以下借口退宽，如：看错了，买错了，这个不是我想要的等等原因
+【好·评】后赠送：
+各类编程语言教程合集
+涵盖 Python、Php、Script 等各类编程语言最新教程
+
+请添加客服 v 有任何问题可以及时联系：lkjhgfdsa06730
