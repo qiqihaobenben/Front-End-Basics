@@ -60,11 +60,44 @@ grid-template-areas 属性的使用规则如下：
 - 一个连续的区域必须是一个矩形
 - 使用`.`符号，让一个格子留空
 
+以上 3 个属性都用上示例如下：
+
+```
+.container {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 100px 100px 100px;
+  grid-template-areas: "header header header"
+                       "main main sidebar"
+                       "footer footer footer";
+  }
+```
+
 ### grid-template
 
 grid-template 属性是 grid-template-columns、grid-template-rows、grid-template-areas 这三个属性的合并简写形式
 
 例如：grid-template-rows/grid-template-columns：将 grid-template-rows 和 grid-template-columns 设为指定值，而 grid-template-areas 设置为 none。
+
+```
+/* 为 grid-template-rows / grid-template-columns */
+grid-template: 100px 1fr / 50px 1fr;
+grid-template: auto 1fr / auto 1fr auto;
+grid-template: [linename] 100px / [columnname1] 30% [columnname2] 70%;
+grid-template: fit-content(100px) / fit-content(40%);
+
+/* 为 grid-template-areas grid-template-rows / grid-template-column */
+grid-template:
+  "a a a"
+  "b b b";
+grid-template:
+  "a a a" 20%
+  "b b b" auto;
+grid-template:
+  [header-top] "a a a" [header-bottom]
+  [main-top] "b b b" 1fr [main-bottom]
+  / auto 1fr auto;
+```
 
 ### row-gap
 
