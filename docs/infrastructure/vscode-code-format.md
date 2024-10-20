@@ -7,7 +7,7 @@
 VS Code 的配置有三种形式：全局默认配置、用户配置、工作区配置。
 
 - 全局默认配置：VS Code 在安装完成后，在安装目录会有一个 `settings.json` 配置文件。
-- 用户配置：对应的是软件目录中跟当前用户相关联的特定文件夹中的 `settings.json` 配置文件（类似于 macOS 中 $HOME/Library/Application Support/Code/User/settings.json），用户配置在所有打开窗口都生效。通过 `ctrl/cmd + ,` 打开的设置就是用户配置 `settings.json` 的 UI 视图。
+- 用户配置：对应的是软件目录中跟当前用户相关联的特定文件夹中的 `settings.json` 配置文件（类似于 macOS 中 \$HOME/Library/Application Support/Code/User/settings.json），用户配置在所有打开窗口都生效。通过 `ctrl/cmd + ,` 打开的设置就是用户配置 `settings.json` 的 UI 视图。
 - 工作区配置：也称项目配置，此时的 `settings.json` 存放于项目所在根目录的 `.vscode` 文件中，当项目在 VS Code 中打开时，仅针对当前项目打开的窗口生效。
 
 这三种形式的配置优先级：项目配置 > 用户配置 > 全局默认配置。
@@ -164,7 +164,7 @@ insert_final_newline = true
 
 EditorConfig 仅能够简单的配置一些规则，并不能完全满足需求，只是起到一个**跨编辑器和 IDE 统一编码风格的兜底配置**，如果要达到很好的代码规范和编码风格的统一，还需要配置其他代码检查和格式化工具使用，比如：ESLint 和 Prettier。
 
-## ESLint
+## ESLint(V9 以下)
 
 ESLint 是一款插件化的 JavaScript 代码静态检查工具，其核心是通过 Espree（默认解析器）对 JavaScript 代码解析得到的 AST（抽象语法树）进行模式匹配（每条规则都会对匹配的过程进行监听，每当匹配到一个类型，相应的规则就会进行检查），分析代码达到检查代码质量和编码风格的能力，同时有些 lint 规则可以避免 bug 的产生，在提高代码可读性、可维护性的前提下，减少问题数量。
 
