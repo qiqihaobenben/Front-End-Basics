@@ -27,13 +27,21 @@ Cache-Control 是 HTTP/1.1 引入的响应头字段，用于控制缓存策略�
 
 #### Cache-Control 指令
 
-1. max-age： 指定资源在缓存中的最大有效期，以秒为单位。例如：Cache-Control: max-age=3600 表示资源在缓存中有效期为 3600 秒（1 小时）。
-2. no-cache： 表示浏览器不应直接使用缓存中的资源，需要向服务器发送请求进行验证。例如：Cache-Control: no-cache。
-3. no-store： 表示禁止缓存存储任何关于请求和响应的内容。每次都需要向服务器发送请求获取最新的资源。例如：Cache-Control: no-store。
-4. must-revalidate： 指示缓存必须在过期之前重新验证资源的有效性。如果验证失败，则必须向服务器重新获取资源。例如：Cache-Control: must-revalidate。
-5. public： 表示响应可以被任意缓存（包括客户端和代理服务器）缓存。例如：Cache-Control: public。
-6. private： 表示响应只能被客户端缓存，不允许被代理服务器缓存。例如：Cache-Control: private。
-7. no-transform： 告知中间缓存服务器不要修改响应的内容，保持原样传递给客户端。例如：Cache-Control: no-transform。
+- max-age： 指定资源在缓存中的最大有效期，以秒为单位。例如：Cache-Control: max-age=3600 表示资源在缓存中有效期为 3600 秒（1 小时）。
+- s-maxage=<seconds> ：仅适用于共享缓存（如 CDN），优先级高于 max-age。
+- public： 表示响应可以被任意缓存（包括客户端和代理服务器）缓存。例如：Cache-Control: public。
+- private： 默认值，表示响应只能被客户端缓存，不允许被代理服务器缓存。例如：Cache-Control: private。
+- immutable ：指示资源不会随时间改变，可以永远缓存。
+- no-cache： 强制缓存重新验证，即使缓存中有副本，也要向服务器检查缓存的有效性。。例如：Cache-Control: no-cache。
+- no-store： 表示禁止缓存存储任何关于请求和响应的内容。每次都需要向服务器发送请求获取最新的资源。例如：Cache-Control: no-store。
+- must-revalidate： 指示缓存必须在过期之后重新验证资源的有效性。如果验证失败，则必须向服务器重新获取资源。例如：Cache-Control: must-revalidate。
+- proxy-revalidate ：与 must-revalidate 类似，但仅适用于共享缓存。
+- no-transform： 告知中间缓存服务器不要修改响应的内容，保持原样传递给客户端。例如：Cache-Control: no-transform。
+
+有缓存效果的指令：public，private，max-age，s-maxage，immutable。
+没有缓存效果或限制缓存的指令：no-cache，no-store，must-revalidate，proxy-revalidate，no-transform。
+
+Cache-Control 的值是可以组合使用的。通过组合不同的指令，可以更精确地控制缓存行为。以下是一些常见的组合用法和示例：
 
 ```js
 // 设置资源的 Cache-Control 指令为 public，有效期为1小时
@@ -53,7 +61,7 @@ app.get('/example', (req, res) => {
 浏览器请求资源得到强缓存响应头时，浏览器会将该资源缓存到本地，当浏览器下一次访问该资源时，同时满足以下 3 个条件，浏览器会直接使用本地资源，不发起 HTTP 请求。
 
 1. 两次请求的 URL 完全相同（包括 host、pathname、query）
-2. 请求的动作时 GET
+2. 请求的动作是 GET
 3. 请求头不带有 Cache-Control 是 no-cache、no-store、max-age=0 ，pragma 是 no-cache 这两个信息。
 
 > 在 HTTP/1.0 中，Pragma: no-cache 的作用是确保每次请求都会向服务器请求最新的数据，即使有缓存也会被忽略。尽管 Pragma: no-cache 在过去被广泛使用，但随着 HTTP/1.1 的普及和引入了更为强大的缓存控制机制 Cache-Control，Pragma: no-cache 已经逐渐被弃用。
@@ -113,10 +121,7 @@ const http = require('http')
 
 // 生成 ETag，通常使用文件内容的哈希值
 function generateETag(content) {
-  return crypto
-    .createHash('md5')
-    .update(content)
-    .digest('hex')
+  return crypto.createHash('md5').update(content).digest('hex')
 }
 
 http

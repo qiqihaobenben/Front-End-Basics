@@ -497,6 +497,7 @@ Yarn 是 2016 年开源的，yarn 的出现是为了解决 npm v3 中存在的�
 - [深入浅出 npm & yarn & pnpm 包管理机制](https://mp.weixin.qq.com/s/ZTI-8RI0l314Ki9oBxqRWw)
 - [⭐️ 包管理工具的演进](https://mp.weixin.qq.com/s/beP1bxgbTT1Z91KS3svDvw)
 - [从 npm 切换到 pnpm 小记](https://mp.weixin.qq.com/s/nQeB8jmqyuGlhd3VcNhy9A)
+- [新一代包管理工具 pnpm](https://www.qjidea.com/pnpm/)
 - [深入浅出 tnpm rapid 模式 - 如何比 pnpm 快 10 秒](https://mp.weixin.qq.com/s/7fLqa0EvDZXFCa8HBU2DLw)
 - [浅谈 NPM 依赖治理](https://mp.weixin.qq.com/s/ibmDnso_rPQlu_2MEuLLhQ)
 - [为什么你应该考虑将 node_modules 上传到远程仓库](https://mp.weixin.qq.com/s/YH96X8U8HAIShkbuShhHog)

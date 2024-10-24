@@ -60,7 +60,7 @@
 
 ## Java File（.java）、Kotlin File（.kt）、Groovy File（.groovy）
 
-Java、Kotlin 和 Groovy 都是可以运行在 JVM（Java 虚拟机）上的编程语言。它们有各自的文件类型和特性。我们可以用不同风格的编写“咖啡食谱”来比喻它们，来帮助理解。
+Java、Kotlin 和 Groovy 都是可以运行在 JVM（Java 虚拟机）上的编程语言。它们有各自的文件类型和特性。我们可以用不同风格编写“咖啡食谱”来比喻它们，帮助理解。
 
 ### Java File (.java)
 

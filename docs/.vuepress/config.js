@@ -131,7 +131,7 @@ module.exports = {
         {
           title: 'Linux',
           collapsable: false,
-          children: ['linux/computer', 'linux/basics', 'linux/centos'],
+          children: ['linux/computer', 'linux/version', 'linux/centos'],
         },
         {
           title: 'Shell',
