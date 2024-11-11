@@ -1,10 +1,12 @@
-# docker-compose.yml 配置
+# docker-compose
+
+## docker-compose.yml 配置
 
 `docker-compose` 是一个用于定义和运行多容器 Docker 应用的工具。它使用 YAML 文件来配置应用的服务、网络和卷等。接下来，我将详细介绍 `docker-compose.yml` 文件中的常用配置项，并提供相应的示例。
 
 ### 基本配置项
 
-1. **version**: 定义 `docker-compose` 文件的版本。
+1. **version**: 定义 `docker-compose` 文件的版本。新的 docker-compose 不需要显示指定
 2. **services**: 定义应用中所有的服务。
 3. **networks**: 定义网络配置。
 4. **volumes**: 定义数据卷，用于数据持久化。
@@ -37,6 +39,8 @@ services:
 
 为容器指定一个自定义名称。
 
+指定容器名称，但是指定后不能够横向扩展，往往不会用到
+
 ```yaml
 services:
   web:
@@ -46,6 +50,8 @@ services:
 #### 4. ports
 
 定义主机与容器之间的端口映射。
+
+在 trafik 代理下往往不需要指定。
 
 ```yaml
 services:
@@ -151,6 +157,31 @@ services:
       - .env
 ```
 
+#### 14. labels
+
+用于为容器、服务或网络等资源添加元数据。这些标签可以帮助标识和管理容器，支持多种用途，包括监控、调试和自动化管理。例如可以筛选容器，在结合 traefik 或者 k8s 使用时，用以控制流量
+
+```yaml
+labels:
+  - com.example.description:"Accounting webapp"
+  - com.example.department:"Finance"
+  - com.example.label-with-empty-value:""
+
+labels:
+  - "com.example.environment=production"
+  - "com.example.department=marketing"
+```
+
+com.example.environment=production：表示这个服务运行在生产环境中。
+
+com.example.department=marketing：表示这个服务属于营销部门。
+
+这些标签可以用于：
+
+- 识别和管理：通过标签可以快速识别容器的用途、所属部门或环境。
+- 自动化工具：许多自动化工具和平台（如 Kubernetes、监控系统）可以读取标签，以便执行特定操作。
+- 文档化：为其他开发人员和运维人员提供关于容器的额外信息。
+
 ### 网络和卷的配置项
 
 #### networks
@@ -229,3 +260,48 @@ volumes:
 - **volumes**: 定义了一个本地驱动的数据卷 `db-data`，用于持久化 MySQL 数据。
 
 通过这些配置，`docker-compose` 能够轻松地管理多容器应用的启动、停止和整体操作。
+
+## docker-compose 命令
+
+```
+# 启动
+$ docker-compose up --build xxx -d
+
+# 查看日志
+$ docker-compose logs
+
+# 停止
+$ docker-compose stop
+
+# 删除
+$ docker-compose rm
+```
+
+使用 docker-compose up 启动容器，它会自动查找当前目录下的 docker-compose.yaml 文件作为配置文件
+
+## 扩展
+
+### version 字段的历史进程
+
+在 Docker Compose 的历史上，`version` 字段曾经是 `docker-compose.yml` 文件中一个重要的部分，用于指定 Compose 文件的格式版本。随着 Docker Compose 的发展，`version` 字段的角色和重要性也发生了变化。
+
+#### `version` 字段的历史进程
+
+1. **早期版本（1.x 和 2.x）**：
+
+   - 在这些版本中，`version` 字段用于指示 `docker-compose.yml` 文件的格式版本，不同的格式版本支持不同的功能和语法。
+   - 例如，`version: '2'` 引入了更复杂的网络和卷配置，而 `version: '2.1'` 等后续版本则逐步增加了更细化的控制能力。
+
+2. **3.x 版本**：
+
+   - `version: '3'` 及其子版本（如 `3.1`、`3.2` 等）主要为了支持 Docker Swarm 模式，提供了更丰富的集群管理功能。
+   - 这些版本继续发展，增加了对增强的资源限制、部署策略等功能的支持。
+
+3. **Compose V2（当前版本）**：
+   - 随着 Docker Compose V2 的推出，`version` 字段的使用变得更加灵活。Compose V2 通过检测 Compose 文件的内容和 Docker 引擎版本来自动确定支持的功能，而不是依赖显式的 `version` 字段。
+   - 在最新的 Docker Compose 中，`version` 字段变得可选，默认情况下不需要显式指定。Docker Compose 会根据 Docker 引擎的功能自动适配。
+
+#### 现代实践
+
+- **无需指定 `version`**：在现代 Docker Compose 实践中，`version` 字段通常可以忽略，尤其是在使用最新的 Docker Compose CLI 时。
+- **向后兼容**：如果你的项目需要向后兼容，或者在一个较老的 Docker 环境中运行，仍然可以指定 `version`，以确保兼容性。

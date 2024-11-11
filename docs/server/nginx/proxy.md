@@ -54,6 +54,7 @@ server {
 - proxy_temp_file_write_size：缓存区临时文件每次的写入大小
 - proxy_busy_buffers_size：不是独立的空间，是 proxy_buffers 和 proxy_buffer_size 的一部分，及时转发包体
 - proxy_read_timeout: 配置 Nginx 向后端服务器组发出 read 请求后的超时时间
+- proxy_ssl_server_name： 的主要作用是确保在与上游服务器建立的 SSL/TLS 连接中，使用正确的主机名进行握手
 
 其他更多的指令查看 [ngx_http_proxy_module](https://nginx.org/en/docs/http/ngx_http_proxy_module.html)
 

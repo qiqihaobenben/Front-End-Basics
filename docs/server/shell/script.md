@@ -1312,6 +1312,12 @@ set -eux
 set -o pipefail
 ```
 
+## AI
+
+LangCommand is a local inference command-line tool powered by llama.cpp that transforms natural language descriptions into executable shell commands.
+
+https://github.com/guoriyue/LangCommand
+
 ## 参考文档
 
 - [Shell 中傻傻分不清楚的 TOP3](https://mp.weixin.qq.com/s/UofKYTb9hp2FXYIKM5Q3Qw)

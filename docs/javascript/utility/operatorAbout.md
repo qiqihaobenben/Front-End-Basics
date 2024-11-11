@@ -108,18 +108,18 @@ false && (true || true) // 改成这样结果就是 false 了
 
 ```js
 function Foo() {
-  getName = function() {
+  getName = function () {
     console.log(1)
   }
   return this
 }
-Foo.getName = function() {
+Foo.getName = function () {
   console.log(2)
 }
-Foo.prototype.getName = function() {
+Foo.prototype.getName = function () {
   console.log(3)
 }
-var getName = function() {
+var getName = function () {
   console.log(4)
 }
 function getName() {
@@ -852,10 +852,15 @@ NaN 与布尔值不相等。
 
 ### 2. 加号运算符 (`+`)
 
+- 字符串与其他类型相加，会先尝试把其他类型转换为字符串，然后进行字符串拼接。
+- 对象、数组或函数会首先尝试转换为原始类型的值（通常是字符串或数字），调用 valueOf 如果返回的是原始值，那就按照实际情况继续后续操作，如果不是原始值，会再调用 toString 转换为字符串，然后走字符串与其他类型相加的逻辑。
+- 剩下的 数字、布尔值、undefined、null，都会尝试先转换为数字，然后进行数字相加
+- 如果只有加号在前，后面的所有类型都会尝试转换为数字
+
 #### 1. 字符串与其他类型
 
 - 当数字与字符串相加时，数字会被转换为字符串，然后进行字符串拼接。例如，`'3' + 2` 会变成 `'32'`。
-- 当布尔值和字符串相加时，布尔值会被转换为字符串，然后进行字符串拼接，例如，`'text' + true` 会变成 `'text1'`
+- 当布尔值和字符串相加时，布尔值会被转换为字符串，然后进行字符串拼接，例如，`'text' + true` 会变成 `'texttrue'`
 - `null` 和 `undefined` 也类似，总起来说字符串和其他类型相加，其他类型都会调用 `String()` 进行转换。
 
 #### 2. 布尔值与非字符串
@@ -881,7 +886,7 @@ console.log({}+[]) // [object Object]， {} 被视为对象
 
 #### 4. `null` 和 `undefined` 与其他类型
 
-`null` 通常被转换为 `0`，而 `undefined` 被转换为 `NaN`。
+**`null` 通常被转换为数字 `0`，而 `undefined` 被转换为 `NaN`。**
 
 - 例如，`4 + null` 会得到 `4`（因为 `null` 转换为 `0`）。
 - `4 + undefined` 会得到 `NaN`。
@@ -906,6 +911,19 @@ console.log({}+[]) // [object Object]， {} 被视为对象
 if ('abc') {
   console.log('hello')
 } // "hello"
+```
+
+```
+// 非(!)
+console.log(!true)        //false
+console.log(![])          // false
+console.log(!!{})         // true !{} 会调用{}的valueOf 和 toString, 转换成[object object]
+
+// 或(||) 和 与(&&)
+console.log(0 || 1)       // 1
+console.log(1 || 0)       // 1
+console.log(0 && 1)       // 0
+console.log(1 && 0)       // 0
 ```
 
 ### 5. 关系运算符 (`<`, `>`, `<=`, `>=`)
@@ -938,6 +956,10 @@ undefined 在与其他值比较时通常会返回 false。
 
 - 在 JavaScript 中，了解这些隐式类型转换非常重要，因为它们可能导致意料之外的结果，特别是在处理复杂的表达式时。
 - 为了避免意外的类型转换，建议使用严格等于 (`===` 和 `!==`) 运算符，它们不进行类型转换，只有在两边的值和类型都相等时才返回 `true`。
+
+### 相关文章
+
+- [那些你不知道的隐式类型转换](https://mp.weixin.qq.com/s/5jPYIRE0UjXqZSq5ikglrA)
 
 ## JavaScript 中的相等性判断
 
@@ -1004,6 +1026,109 @@ function sameValueZero(x, y) {
 - 零值相等与严格相等的区别在于其将 NaN 视作是相等的
 - 零值相等与同值相等的区别在于其将 -0 和 0 视作相等的。
 - 这使得它在搜索期间通常具有最实用的行为，特别是在与 NaN 一起使用时。它被用于 Array.prototype.includes()、TypedArray.prototype.includes() 及 Map 和 Set 方法用来比较键的相等性。
+
+## 对象转换为原始值的原理
+
+javascript 的隐式类型转换中，对象会转换为原始值，原理是什么？执行过程是怎么样的？什么情况下会优先调用 toString 转换为字符串？什么情况下会优先调用 valueOf 转换为数字？
+
+在 JavaScript 中，隐式类型转换是一个复杂而有趣的机制。当需要将对象转换为原始值时，JavaScript 通过一系列步骤来决定如何进行转换。具体来说，对象转换为原始值的过程涉及调用对象的 `toString` 和 `valueOf` 方法。
+
+### 执行过程
+
+当 JavaScript 需要将对象转换为原始值时，通常会执行以下步骤：
+
+1. **调用 `valueOf` 方法**：
+
+   - `valueOf` 方法通常返回对象的原始值表示，默认情况下，许多对象的 `valueOf` 方法返回对象自身，而不是原始值。
+   - 如果 `valueOf` 返回一个原始值（如数字、字符串、布尔值），那么 JavaScript 就使用这个值进行后续操作。
+
+2. **调用 `toString` 方法**：
+   - 如果 `valueOf` 没有返回一个原始值，JavaScript 会调用 `toString` 方法。
+   - `toString` 方法通常返回对象的字符串表示。
+
+这两者的调用顺序通常取决于具体的上下文和操作符。
+
+### 优先调用 `toString` 的情况
+
+- **字符串上下文**：当对象处于需要字符串的上下文时（如使用加号运算符进行字符串连接），`toString` 会优先被调用。
+
+  ```javascript
+  const obj = {
+    toString() {
+      return 'Hello'
+    },
+    valueOf() {
+      return 42
+    },
+  }
+
+  console.log(obj + '!') // "Hello!"
+  ```
+
+### 优先调用 `valueOf` 的情况
+
+- **数值上下文**：当对象处于需要数值的上下文（如数学运算）时，`valueOf` 会优先被调用。
+
+  ```javascript
+  const obj = {
+    toString() {
+      return '42'
+    },
+    valueOf() {
+      return 42
+    },
+  }
+
+  console.log(obj + 10) // 52
+  ```
+
+### 默认行为
+
+- 对于大多数内置对象，`valueOf` 返回对象本身，而 `toString` 返回对象的字符串表示。
+- 如果 `valueOf` 和 `toString` 均未被重写，则 JavaScript 使用对象的默认字符串格式 `[object Object]`。
+
+### 自定义转换
+
+开发者可以通过重写 `toString` 和 `valueOf` 方法来自定义对象的隐式转换行为。这在某些情况下非常有用，比如实现自定义的数学运算或字符串表示。
+
+现代的 JavaScript 引入了 `Symbol.toPrimitive` 方法来自定义对象到原始值的转换行为。`Symbol.toPrimitive` 是一个内置的 Symbol，用作对象的一个方法键。当 JavaScript 需要将对象转换为原始值时，如果对象实现了这个方法，JavaScript 会调用它。
+
+#### `Symbol.toPrimitive` 的用法
+
+`Symbol.toPrimitive` 方法可以定义在对象上，用来指定在不同上下文中如何转换为原始值。这个方法接受一个参数，指示期望的转换类型：
+
+- `"number"`：表示对象应转换为一个数字。
+- `"string"`：表示对象应转换为一个字符串。
+- `"default"`：表示对象应转换为默认的原始值。通常与 `"number"` 行为相同，但可以根据需要调整。
+
+#### 示例
+
+以下是如何使用 `Symbol.toPrimitive` 自定义对象的转换行为：
+
+```javascript
+const myObject = {
+  [Symbol.toPrimitive](hint) {
+    if (hint === 'number') {
+      return 42
+    } else if (hint === 'string') {
+      return 'Hello'
+    } else {
+      return 'default'
+    }
+  },
+}
+
+console.log(+myObject) // 42，调用 number hint
+console.log(`${myObject}`) // "Hello"，调用 string hint
+console.log(myObject + ' world') // "default world"，调用 default hint
+```
+
+#### 优势
+
+- **明确性**：`Symbol.toPrimitive` 提供了一种明确的机制来控制对象到原始值的转换，避免了依赖 `toString` 和 `valueOf` 的不确定性。
+- **灵活性**：可以根据不同的上下文需求自定义转换行为，提高代码的灵活性和可读性。
+
+通过使用 `Symbol.toPrimitive`，开发人员可以更精确地控制对象的行为，特别是在复杂的运算或类型转换场景中。这使得 JavaScript 的类型转换机制更加健壮和可预测。
 
 ## 链接
 

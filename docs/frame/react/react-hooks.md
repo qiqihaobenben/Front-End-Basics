@@ -780,6 +780,10 @@ setName2('XiaoHong')
 
 因为 React 属于应用级框架，从关注“自变量与应用的对应关系”角度看，其更新粒度不需要很细，因此无需使用细粒度更新。
 
+## hooks 合集
+
+https://usehooks.com/
+
 ## 参考
 
 - [一文吃透 react-hooks 原理](https://juejin.cn/post/6944863057000529933)

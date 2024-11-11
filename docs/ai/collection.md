@@ -5,7 +5,7 @@
 - [免费在线 AI 聊天](https://aichatru.ru/zh-CN)
   - 无需登录，免费的 GPT-4o、GPT-4o Mini 和 Claude 3 AI 模型聊天。
 
-## 合计
+## 合集
 
 - [discovai-AI 产品搜索引擎，搜索 AI 工具](https://discovai.io/)
 - [开源的 AI 应用搜索引擎，收入超过 1 万个应用](https://askaitools.ai/)
@@ -36,3 +36,8 @@
 
 - [Flux AI 文生图](https://fluximg.com/)
   - 免费使用的 Flux AI 文生图服务
+
+## 编程
+
+- [LangCommand-自然语言转 shell 命令](https://github.com/guoriyue/LangCommand)
+  - LangCommand 是一个由 llama.cpp 驱动的本地推理命令行工具，它将自然语言描述转换为可执行的 shell 命令。
