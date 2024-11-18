@@ -177,7 +177,7 @@ Java 提供了稳定的基础，Kotlin 带来了现代化的简洁性和高效�
 - JDK
   Java 开发工具包 (JDK) API 特定于 JDK，不一定在 Java SE 平台的所有实现中都可用。这些 API 称为 jdk。
 
-自 1996 年发布 JDK1.0；此后命名为 JDK1.1、JDK1.2、JDK1.3、JDK1.4、采用 1.X 的命名方式，即 JDK 在 Java1.0 到 Java9 对应每一个版本号 ：JDK1.0、JDK1.2 … JDK1.8、JDK1.9。Java10 以后我们可以理解为 JDK 对应名称为：JDk10、JDK11、JDK12 … JDK17
+自 1996 年发布 JDK1.0；此后命名为 JDK1.1、JDK1.2、JDK1.3、JDK1.4、采用 1.X 的命名方式，即 JDK 在 Java1.0 到 Java9 对应每一个版本号 ：JDK1.0、JDK1.2 … JDK1.8、JDK1.9。Java10 以后我们可以理解为 JDK 对应名称为：JDK10、JDK11、JDK12 … JDK17
 
 在程序员眼中，Java（或者说 Java SE）和 JDK 是一样的，都是指代 Java 的开发工具包。
 
