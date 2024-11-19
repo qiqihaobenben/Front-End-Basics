@@ -53,7 +53,7 @@ a-maven-project
 
 所有的目录结构都是约定好的标准结构，我们千万不要随意修改目录结构。使用标准结构不需要做任何配置，Maven 就可以正常使用。
 
-## 依赖管理
+### 依赖管理
 
 设想一下手动安装依赖的过程，例如安装 Unit，JavaMail，MySQL 驱动等等，方法是通过搜索引擎搜索到项目的官网，然后手动下载 zip 包，解压，放入 classpath。如果依赖包还有依赖，还得重复这些步骤，这个过程非常繁琐。
 
@@ -103,7 +103,7 @@ spring-boot-starter-web
   ...
 ```
 
-### 唯一 ID 确定依赖
+#### 唯一 ID 确定依赖
 
 对于某个依赖，Maven 只需要 3 个变量即可唯一确定某个 jar 包：
 
@@ -117,7 +117,7 @@ spring-boot-starter-web
 
 **注：只有以-SNAPSHOT 结尾的版本号会被 Maven 视为开发版本，开发版本每次都会重复下载，这种 SNAPSHOT 版本只能用于内部私有的 Maven repo，公开发布的版本不允许出现 SNAPSHOT。**
 
-### 依赖范围
+#### 依赖范围
 
 在 `pom.xml` 文件中声明依赖时，可以指定依赖的范围。依赖范围决定了依赖在项目中的使用范围。
 
@@ -165,7 +165,7 @@ provided 依赖表示编译时需要，但运行时不需要。最典型的 prov
 </dependency>
 ```
 
-### 依赖排除
+#### 依赖排除
 
 在 `pom.xml` 文件中，使用 Maven 来管理项目依赖时，可能会遇到某些库引入了你不需要的传递性依赖。为了避免引入这些不必要的依赖，可以在声明依赖时使用 `<exclusions>` 元素来排除特定的依赖。
 
@@ -187,7 +187,7 @@ provided 依赖表示编译时需要，但运行时不需要。最典型的 prov
 </dependency>
 ```
 
-#### 解释
+##### 解释
 
 - **`<dependency>`**：定义一个项目依赖。
 - **`<groupId>`**：依赖的组织标识符。
@@ -198,11 +198,216 @@ provided 依赖表示编译时需要，但运行时不需要。最典型的 prov
   - **`<groupId>`**：要排除的依赖的组织标识符。
   - **`<artifactId>`**：要排除的依赖的项目名称。
 
-#### 使用场景
+##### 使用场景
 
 - **避免冲突**：多个依赖可能引入不同版本的同一库，导致版本冲突。
 - **减少体积**：排除不必要的库，减小应用体积，提高性能。
 - **安全性**：移除已知存在漏洞的传递性依赖。
+
+### 构建流程标准化
+
+Maven 不但有标准化的项目结构，而且还有一套标准化的构建流程，可以自动化实现编译，打包，发布，等等。
+
+#### Lifecycle、Phase 和 Goal
+
+Maven 的生命周期（lifecycle）是由一系列阶段（phase）组成的，每个阶段又包含了一个或多个目标（goal）。Maven 的构建过程就是按照生命周期、阶段和目标的顺序依次执行的。
+
+- lifecycle 它包含一个或多个 phase，相当于 Java 的 package；
+- phase 它包含一个或多个 goal，相当于 Java 的 class；
+- goal 它其实才是真正干活的，相当于 class 的 method。
+
+##### Goal
+
+执行一个 phase 会触发一个或多个 goal，goal 的命名总是 abc:xyz 这种形式。
+
+| 执行的 Phase | 对应执行的 Goal  |
+| :----------- | :--------------- |
+| compile      | compiler:compile |
+| test         | surefire:test    |
+
+大多数情况，我们只要指定 phase，就默认执行这些 phase 默认绑定的 goal，只有少数情况，我们可以直接指定运行一个 goal，例如，启动 Tomcat 服务器：
+
+```
+mvn tomcat:run
+```
+
+所以通常情况，我们总是执行 phase 默认绑定的 goal，因此不必指定 goal。
+
+#### 以内置的生命周期`default`为例，它包含以下阶段：
+
+在 Maven 的构建生命周期中，`default` 生命周期是最核心的部分，涵盖了从验证到部署的完整过程。每个阶段都有特定的目标（goal），这些目标由 Maven 插件执行。以下是 `default` 生命周期中每个阶段的详细说明：
+
+##### 1. `validate`
+
+- **作用**：验证项目的配置信息是否正确，并确保所有必要的信息可用。
+- **常用 goal**：没有特定的默认 goal，通常根据具体插件和配置执行自定义的验证。
+
+##### 2. `initialize`
+
+- **作用**：初始化构建状态。例如，设置属性或环境变量。
+- **常用 goal**：没有特定的默认 goal，通常用于插件的初始化步骤。
+
+##### 3. `generate-sources`
+
+- **作用**：生成源代码。
+- **常用 goal**：通常由代码生成插件执行，如 `antlr:generate`。
+
+##### 4. `process-sources`
+
+- **作用**：处理生成的源代码，可能包括代码格式化或其他处理。
+- **常用 goal**：没有特定的默认 goal，通常由代码处理插件执行。
+
+##### 5. `generate-resources`
+
+- **作用**：生成资源文件。
+- **常用 goal**：没有特定的默认 goal，通常由资源生成插件执行。
+
+##### 6. `process-resources`
+
+- **作用**：复制和处理资源文件到目标目录。
+- **常用 goal**：`resources:resources`，将资源文件复制到 `target` 目录。
+
+##### 7. `compile`
+
+- **作用**：编译项目的源代码。
+- **常用 goal**：`compiler:compile`，将 `.java` 源文件编译为 `.class` 文件。
+
+##### 8. `process-classes`
+
+- **作用**：处理编译后的类文件。
+- **常用 goal**：没有特定的默认 goal，通常用于字节码增强等。
+
+##### 9. `generate-test-sources`
+
+- **作用**：生成测试源代码。
+- **常用 goal**：通常由测试代码生成插件执行。
+
+##### 10. `process-test-sources`
+
+- **作用**：处理测试源代码。
+- **常用 goal**：没有特定的默认 goal，通常由测试代码处理插件执行。
+
+##### 11. `generate-test-resources`
+
+- **作用**：生成测试资源文件。
+- **常用 goal**：没有特定的默认 goal，通常由测试资源生成插件执行。
+
+##### 12. `process-test-resources`
+
+- **作用**：复制和处理测试资源文件到测试目标目录。
+- **常用 goal**：`resources:testResources`，将测试资源文件复制到 `target` 目录。
+
+##### 13. `test-compile`
+
+- **作用**：编译测试源代码。
+- **常用 goal**：`compiler:testCompile`，编译测试 `.java` 文件。
+
+##### 14. `process-test-classes`
+
+- **作用**：处理编译后的测试类文件。
+- **常用 goal**：没有特定的默认 goal，通常用于测试字节码增强等。
+
+##### 15. `test`
+
+- **作用**：运行测试。
+- **常用 goal**：`surefire:test`，执行单元测试。
+
+##### 16. `prepare-package`
+
+- **作用**：为打包准备额外的步骤。
+- **常用 goal**：没有特定的默认 goal，通常用于预处理。
+
+##### 17. `package`
+
+- **作用**：将编译好的代码打包成可分发的格式（如 JAR 或 WAR）。
+- **常用 goal**：`jar:jar`，`war:war`。
+
+##### 18. `pre-integration-test`
+
+- **作用**：执行集成测试前的必要步骤。
+- **常用 goal**：通常用于启动需要的环境或服务。
+
+##### 19. `integration-test`
+
+- **作用**：运行集成测试。
+- **常用 goal**：可能使用 `failsafe:integration-test`。
+
+##### 20. `post-integration-test`
+
+- **作用**：集成测试后进行清理。
+- **常用 goal**：通常用于停止服务或清理环境。
+
+##### 21. `verify`
+
+- **作用**：运行任何检查，验证打包结果。
+- **常用 goal**：可能使用 `verifier:verify`。
+
+##### 22. `install`
+
+- **作用**：将包安装到本地 Maven 仓库。
+- **常用 goal**：`install:install`。
+
+##### 23. `deploy`
+
+- **作用**：将包部署到远程仓库，以供共享。
+- **常用 goal**：`deploy:deploy`。
+
+这些阶段和相应的 goals 组成了 Maven 的构建生命周期，可以根据需要在 `pom.xml` 中配置和扩展，以满足项目的特定需求。每个阶段的执行可以由插件定义和扩展，从而实现自定义的构建过程。
+
+如果我们运行 `mvn package`，Maven 就会执行 `default` 生命周期，它会从开始一直运行到 `package` 这个 phase 为止。
+
+```
+validate
+initialize
+...
+prepare-package
+package
+```
+
+如果我们运行 `mvn compile`，Maven 也会执行 `default` 生命周期，但这次他只会运行到 `compile` 这个 phase 为止。
+
+```
+validate
+initialize
+...
+process-resources
+compile
+```
+
+#### Maven 另一个常用的生命周期是 `clean`，它会执行 3 个 phase
+
+Maven 的 `clean` 生命周期主要用于清理项目的构建输出，即删除生成的文件和目录。这一生命周期包括三个阶段（phase），它们依次执行，确保清理操作的完整性和有效性。以下是 `clean` 生命周期中的三个阶段的详细介绍：
+
+##### 1. `pre-clean`
+
+- **作用**：在清理之前执行的步骤。主要用于执行一些准备工作或设置清理前的条件。
+- **常用 goal**：通常没有特定的默认 goal，用户可以根据需要自定义一些准备步骤。
+
+##### 2. `clean`
+
+- **作用**：执行实际的清理操作。这是 `clean` 生命周期的核心阶段，负责删除项目构建过程中生成的文件和目录，通常是 `target` 目录。
+- **常用 goal**：`maven-clean-plugin:clean`，它删除默认构建目录中的所有文件和子目录，确保项目构建环境的干净整洁。
+
+##### 3. `post-clean`
+
+- **作用**：在清理之后执行的步骤。用于进行后续的处理或记录日志。
+- **常用 goal**：通常没有特定的默认 goal，用户可以根据需要添加一些后处理步骤。
+
+##### 使用示例
+
+在命令行中运行 `clean` 生命周期的命令：
+
+```bash
+mvn clean
+```
+
+这条命令会依次执行上述三个阶段，确保项目的构建目录被清理干净，以便进行新的构建。
+
+##### 扩展
+
+- **自定义清理操作**：虽然 `maven-clean-plugin` 已经提供了基础的清理功能，但用户可以通过插件配置在 `pom.xml` 中添加自定义的清理操作。例如，删除特定的日志文件或临时文件。
+
+- **与其他生命周期结合使用**：`clean` 生命周期常与 `default` 生命周期结合使用，例如 `mvn clean install`，以确保在每次构建之前都进行清理操作。
 
 ## Maven 的基本命令
 
@@ -265,7 +470,120 @@ Maven 是一个强大的项目管理和构建工具，提供了多种命令来�
 
 - **插件支持**：许多命令是通过 Maven 插件实现的，用户可以自定义或扩展这些功能。
 
-## 常见的关键问题
+### `mvn` 命令的本质
+
+我们使用 mvn 这个命令时，后面的参数是 phase，Maven 自动根据生命周期运行到指定的 phase。
+
+例如，运行 mvn clean package，Maven 先执行 clean 生命周期并运行到 clean 这个 phase，然后执行 default 生命周期并运行到 package 这个 phase，实际执行的 phase 如下：
+
+```
+pre-clean
+clean （注意这个clean是phase）
+validate （开始执行default生命周期的第一个phase）
+initialize
+...
+prepare-package
+package
+```
+
+在实际开发过程中，经常使用的命令有：
+
+- mvn clean：清理所有生成的 class 和 jar；
+- mvn clean compile：先清理，再执行到 compile；
+- mvn clean test：先清理，再执行到 test，因为执行 test 前必须执行 compile，所以这里不必指定 compile；
+- mvn clean package：先清理，再执行到 package。
+
+大多数 phase 在执行过程中，因为我们通常没有在 pom.xml 中配置相关的设置，所以这些 phase 什么事情都不做。
+
+经常用到的 phase 其实只有几个：
+
+- clean：清理
+- compile：编译
+- test：运行测试
+- package：打包
+
+### 使用插件
+
+前面介绍了 Maven 的 lifecycle，phase 和 goal：使用 Maven 构建项目就是执行 lifecycle，执行到指定的 phase 为止。每个 phase 会执行自己默认的一个或多个 goal。goal 是最小任务单元。
+
+以`compile`这个 phase 为例，如果执行：
+
+```
+mvn compile
+```
+
+Maven 将执行 compile 这个 phase，这个 phase 会调用 compiler 插件执行关联的 compiler:compile 这个 goal。
+
+实际上，执行每个 phase，都是通过某个插件（plugin）来执行的，Maven 本身其实并不知道如何执行 compile，它只是负责找到对应的 compiler 插件，然后执行默认的 compiler:compile 这个 goal 来完成编译。
+
+所以，使用 Maven，实际上就是配置好需要使用的插件，然后通过 phase 调用它们。
+
+Maven 已经内置了一些常用的标准插件，例如 maven-jar-plugin：
+
+| 插件名称 | 对应执行的 phase |
+| :------- | :--------------- |
+| clean    | clean            |
+| compiler | compile          |
+| surefire | test             |
+| jar      | package          |
+
+如果标准插件无法满足需求，我们还可以使用自定义插件。使用自定义插件的时候，需要声明。例如，使用 maven-shade-plugin 可以创建一个可执行的 jar，要使用这个插件，需要在 pom.xml 中声明它：
+
+```
+<project>
+    ...
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+                            ...插件配置...
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+```
+
+自定义插件往往需要一些配置，例如，maven-shade-plugin 需要指定 Java 程序的入口，它的配置是：
+
+```
+<configuration>
+    <transformers>
+        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+            <mainClass>com.itranswarp.learnjava.Main</mainClass>
+        </transformer>
+    </transformers>
+</configuration>
+```
+
+注意，Maven 自带的标准插件例如 compiler 是无需声明的，只有引入其它的插件才需要声明。
+
+下面列举了一些常用的插件：
+
+- maven-shade-plugin：打包所有依赖包并生成可执行 jar，[插件的实践介绍](https://www.cnblogs.com/wanghengbin/p/17927038.html)；
+- cobertura-maven-plugin：生成单元测试覆盖率报告；
+- findbugs-maven-plugin：对 Java 源码进行静态分析以找出潜在问题。
+
+#### 总结
+
+Maven 通过自定义插件可以执行项目构建时需要的额外功能，使用自定义插件必须在 pom.xml 中声明插件及配置；
+
+插件会在某个 phase 被执行时执行；
+
+插件的配置和用法需参考插件的官方文档。
+
+## 常见的关键问题 🌟
 
 ### Maven 如何知道从何处下载所需的依赖？也就是相关的 jar 包？
 
@@ -293,7 +611,7 @@ Maven 并不会每次都从中央仓库下载 jar 包。一个 jar 包一旦被�
 </settings>
 ```
 
-#### 下载依赖的几种方式以及如何使用
+### 下载依赖的几种方式以及如何使用？
 
 - 中央仓库
 - 远程仓库
@@ -364,7 +682,7 @@ mvn install:install-file -Dfile=/path/to/your.jar -DgroupId=com.example -Dartifa
 - **本地仓库**：自动管理，用户无需干预。
 - **本地包**：适用于没有发布在仓库中的内部库或临时使用的库。
 
-### 如何搜索第三方组件
+### 如何搜索第三方组件？
 
 如果我们要引用一个第三方组件，比如 okhttp，如何确切地获得它的 groupId、artifactId 和 version？方法是通过 [search.maven.org](https://search.maven.org/) 搜索关键字，找到对应的组件后，直接复制信息。
 
