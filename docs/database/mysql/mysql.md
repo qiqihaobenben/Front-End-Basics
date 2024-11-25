@@ -170,9 +170,16 @@ SELECT user FROM user;
 
 > 1、使用 CREATE USER 语句（推荐）
 
+CREATE USER '用户名'@'主机' IDENTIFIED BY '密码';
+
+- 主机：指定该用户可以从哪些主机访问 MySQL（通常是本地或远程）。常见值：
+  - 'localhost'：只允许从本地访问。
+  - '%'：默认值，允许从任何主机访问。
+
 ```sql
 # 输入
-CREATE USER chenfangxu IDENTIFIED BY '123456';
+
+CREATE USER 'chenfangxu'@'localhost' IDENTIFIED BY '123456';
 SELECT user FROM user;
 
 #输出
@@ -225,7 +232,7 @@ SHOW GRANTS FOR chenfangxu;
 ```sql
 # 输入
 GRANT SELECT ON performance_schema.* TO chenfangxu@'%';
-SHOW GRANTS FOR chenfangxu;
+SHOW GRANTS FOR chenfangxu@%;
 
 # 输出
 +------------------------------------------------------------+
@@ -1128,6 +1135,190 @@ SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SE
 
 <br>
 
+## 数据库索引
+
+### **什么是数据库索引？**
+
+通俗地说，**索引（Index）** 就像一本书的目录。当我们想找到一本书中特定的内容时，可以直接根据目录定位到具体的页码，而不需要从第一页开始逐页翻找。同样，在数据库中，索引是一种加速查询的结构，可以快速找到某些特定数据，而不需要扫描整个表。
+
+### **为什么需要索引？**
+
+假设有一个学生表（`students`），包含 10 万条学生信息。如果你想查找某个学生的名字，数据库默认会逐行扫描整个表（称为全表扫描，效率较低）。但如果你为 `name` 字段创建了索引，那么数据库可以直接通过索引快速找到对应的记录，而不需要遍历整个表。
+
+### **索引的具体作用**
+
+1. **加速查询**：让查询速度更快。
+2. **加速排序**：索引可以帮助数据库快速对数据进行排序。
+3. **提高多表查询效率**：在关联查询时，索引可以显著提高连接性能。
+
+虽然索引能提升查询效率，但它也有 **缺点**：
+
+- 索引会占用额外的存储空间。
+- 索引会稍微降低数据的插入、删除和更新速度（因为需要维护索引结构）。
+
+### **索引的分类**
+
+以下是常见的几种索引类型，通俗解释和使用示例：
+
+#### **1. 普通索引（Basic Index）**
+
+- **通俗解释**：这是最常见的索引类型，用于加速查询操作。
+- **示例**：假设有一张学生表 `students`，我们经常根据 `name` 查询学生信息。
+
+```sql
+-- 创建普通索引
+CREATE INDEX idx_name ON students(name);
+
+-- 查询某个学生的信息
+SELECT * FROM students WHERE name = 'Alice';
+```
+
+**查询过程：**
+
+- 如果没有索引，数据库会扫描整个表来查找 `name = 'Alice'` 的记录。
+- 如果有索引，数据库会直接通过索引找到对应的记录。
+
+#### **2. 唯一索引（Unique Index）**
+
+- **通俗解释**：唯一索引除了加速查询，还能保证某个字段的值不能重复。
+- **示例**：学生的学号（`student_id`）是唯一的，我们可以为它创建唯一索引。
+
+```sql
+-- 创建唯一索引
+CREATE UNIQUE INDEX idx_student_id ON students(student_id);
+
+-- 查询某个学号的学生信息
+SELECT * FROM students WHERE student_id = '2023001';
+```
+
+**特点：**
+
+- 如果你尝试插入重复的 `student_id`，数据库会报错，提示违反唯一约束。
+
+#### **3. 主键索引（Primary Key Index）**
+
+- **通俗解释**：主键是一种特殊的唯一索引，它不仅唯一，还不能为 `NULL`。
+- **示例**：
+  在设计学生表时，我们通常会将 `student_id` 设置为主键，确保每个学生都有唯一的学号。
+
+```sql
+-- 创建表时定义主键索引
+CREATE TABLE students (
+  student_id INT PRIMARY KEY, -- 主键会自动创建索引
+  name VARCHAR(50),
+  age INT
+);
+
+-- 查询某个学号的学生信息
+SELECT * FROM students WHERE student_id = 12345;
+```
+
+**特点：**
+
+- 主键自动创建索引。
+- 每个表只能有一个主键。
+
+#### **4. 复合索引（Composite Index）**
+
+- **通俗解释**：复合索引是针对多个字段一起创建的索引，用于加速多条件查询。
+- **示例**：假设我们经常根据学生的 `name` 和 `age` 两个条件查询信息。
+
+```sql
+-- 创建复合索引
+CREATE INDEX idx_name_age ON students(name, age);
+
+-- 查询某个名字和年龄的学生信息
+SELECT * FROM students WHERE name = 'Alice' AND age = 20;
+```
+
+**注意：**
+
+- 复合索引的字段顺序很重要，比如 `name` 在前，`age` 在后。
+- 索引可以加速以下查询：
+  ```sql
+  SELECT * FROM students WHERE name = 'Alice';
+  SELECT * FROM students WHERE name = 'Alice' AND age = 20;
+  ```
+  但对于只查询 `age` 的条件，如 `WHERE age = 20`，复合索引不起作用。
+
+#### **5. 全文索引（Full-Text Index）**
+
+- **通俗解释**：用于加速文本字段的模糊查询，比如搜索文章内容中的某个关键词。
+- **示例**：假设我们有一张文章表 `articles`，需要根据内容中的关键词查找文章。
+
+```sql
+-- 创建全文索引
+CREATE FULLTEXT INDEX idx_content ON articles(content);
+
+-- 搜索包含 "database" 的文章
+SELECT * FROM articles WHERE MATCH(content) AGAINST('database');
+```
+
+**特点：**
+
+- 全文索引适用于大量文本数据的搜索。
+- 比普通的 `LIKE '%keyword%'` 查询更高效。
+
+#### **6. 聚集索引（Clustered Index）**
+
+- **通俗解释**：聚集索引将数据的物理存储顺序与索引顺序保持一致。大多数数据库（如 MySQL 的 InnoDB 引擎）默认使用主键作为聚集索引。
+- **特点**：
+  - 一个表只能有一个聚集索引。
+  - 查询主键或范围数据时性能非常高。
+
+### **索引的使用示例**
+
+假设有一个学生表 `students`，表结构如下：
+
+| student_id | name    | age | grade |
+| ---------- | ------- | --- | ----- |
+| 1          | Alice   | 20  | A     |
+| 2          | Bob     | 22  | B     |
+| 3          | Charlie | 21  | A     |
+
+#### 查询示例
+
+1. **没有索引的查询：**
+
+   ```sql
+   SELECT * FROM students WHERE name = 'Alice';
+   ```
+
+   - 数据库会扫描整个表（全表扫描），逐行比较 `name` 是否等于 `'Alice'`。
+   - 如果表有 10 万行，查询会很慢。
+
+2. **有索引的查询：**
+   ```sql
+   CREATE INDEX idx_name ON students(name);
+   SELECT * FROM students WHERE name = 'Alice';
+   ```
+   - 数据库会通过索引直接定位到 `name = 'Alice'` 的记录，显著提升查询速度。
+
+### **索引可能带来的问题**
+
+1. **插入/更新性能下降**：
+   - 每次插入、更新或删除数据时，索引也需要同步更新，可能会导致性能下降。
+2. **占用存储空间**：
+   - 索引需要额外的磁盘空间，尤其是创建了多个索引时，存储开销会增加。
+3. **错误使用复合索引**：
+   - 如果复合索引的字段顺序不符合查询条件顺序，索引可能不起作用。
+
+### **总结**
+
+1. **索引是数据库优化的利器**，可以显著提升查询性能。
+2. **常见类型**：
+   - 普通索引：加速查询。
+   - 唯一索引：加速查询并保证唯一性。
+   - 复合索引：适合多条件查询。
+   - 全文索引：适合文本搜索。
+3. **使用注意事项**：
+   - 不要对每个字段都创建索引，应该根据实际查询场景添加。
+   - 索引会影响写入性能，所以需要平衡增删改与查询的性能需求。
+
+---
+
+<br>
+
 ## 全文本搜索
 
 并非所有引擎都支持全文本搜索，例如 MyISAM 支持全文本搜索，InnoDB 不支持。
@@ -1289,7 +1480,7 @@ DELETE FROM customers WHERE cust_id = 10011;
 
 <br>
 
-## 创建和操纵表
+## 创建和操作表
 
 ### 创建表
 
