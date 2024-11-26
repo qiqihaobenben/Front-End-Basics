@@ -1067,7 +1067,7 @@ SELECT p1.prod_id, p1.prod_name FROM products AS p1, products AS p2 WHERE p1.ven
 
 ### 外部联结
 
-联结包含了那些在相关表中没有关联行的行，外部联结的两种基本形式：左外部联结(LEFT OUTER JOIN 即 LEFT JOIN)和右外部联结。它们之间唯一差别是所关联的表的顺序不同。更具体可以看一下 [JOIN 详解](https://segmentfault.com/a/1190000015572505)。
+外部联结包含了那些在相关表中没有关联行的行，外部联结的两种基本形式：左外部联结(LEFT OUTER JOIN 即 LEFT JOIN)和右外部联结。它们之间唯一差别是所关联的表的顺序不同。更具体可以看一下 [JOIN 详解](https://segmentfault.com/a/1190000015572505)。
 
 ```sql
 ### 列出每个客户下的订单，包括那些至今未下订单的客户
