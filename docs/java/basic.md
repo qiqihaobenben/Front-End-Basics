@@ -8,8 +8,8 @@
 
 2. 创建一个 Hello.java 文件
 
-- 一个 Java 源码文件只能定义一个 public 类型的 class，Java 文件中类名必须跟文件名相同，类名以大写字母开头
-- 一个程序中有且只有一个主方法（main）。Java 规定，某个类定义的 public static void main(String[] args)是 Java 程序的固定入口方法，因此，Java 程序总是从 main 方法开始执行。
+- 一个 Java 源码文件只能定义一个 public 类型的 class，Java 文件中类名必须跟文件名相同，类名以大写字母开头，大小写敏感
+- 一个类中有且只有一个主方法（main）。Java 规定，某个类定义的 public static void main(String[] args)是 Java 程序的固定入口方法，因此，Java 程序总是从 main 方法开始执行。
 - Java 源码的缩进不是必须的，但是用缩进后，格式好看，很容易看出代码块的开始和结束，缩进一般是 4 个空格或者一个 tab。
 
 ```java
@@ -20,6 +20,8 @@ public class Hello {
   // 一个程序中有且只有一个主方法
   public static void main(String[] args) {
     // 在控制台输出一串文字，双引号中的内容就是要输出的文字内容
+    // System.out.println 是 Java 提供的内置功能，println 是 printline 的 缩写，如果没有参数，会输出一行空行。
+    // 方法体中的语句必须用 ; (英文分号)结尾
     System.out.println("Hello, World!");
   }
 }
@@ -33,6 +35,8 @@ public class Hello {
 Java 源码本质上是一个文本文件，我们需要先用 javac 把 Hello.java 编译成字节码文件 Hello.class，然后，用 java 命令执行这个字节码文件。
 
 因此，可执行文件 javac 是编译器，而可执行文件 java 就是虚拟机。
+
+> 扩展：[轻松看懂 Java 字节码](https://juejin.cn/post/6844903588716609543)
 
 ### 使用 IDE 编写代码
 
