@@ -691,6 +691,8 @@ console.log(o + ""); // "[object myObject]"
 
 要明确的重要的一点是：这个[[prototype]]内部属性连接了实例和构造函数的原型对象，而不是实例与构造函数。
 
+![](https://wanquan-ai.oss-cn-beijing.aliyuncs.com/fangxu/frontend-doc/function-class-prototype.webp)
+
 ###### 扩展
 
 1、`__proto__`
