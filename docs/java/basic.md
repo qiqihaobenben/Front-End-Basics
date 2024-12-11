@@ -679,7 +679,31 @@ double d3 = -1.0 / 0; // -Infinity
 
 这三种特殊值在实际运算中很少碰到，我们只需要了解即可。
 
-## 布尔运算
+### 布尔运算
+
+布尔运算是一种关系运算，包括以下几类：
+
+- 比较运算符：`>`，`>=`，`<`，`<=`，`==`，`!=`
+- 与运算 `&&`
+- 或运算 `||`
+- 非运算 `!`
+
+```java
+boolean isGreater = 5 > 3; // true
+int age = 12;
+boolean isZero = age == 0; // false
+boolean isNonZero = !isZero; // true
+boolean isAdult = age >= 18; // false
+boolean isTeenager = age >6 && age <18; // true
+```
+
+关系运算符的优先级从高到低依次是：
+
+- `!`
+- `>`，`>=`，`<`，`<=`
+- `==`，`!=`
+- `&&`
+- `||`
 
 ## Java 数组
 
