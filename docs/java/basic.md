@@ -284,7 +284,7 @@ Java 的 `float` 和 `double` 类型都是基于 **IEEE 754 标准** 的 **浮�
 
 #### 字符型 char
 
-表示单个字符类型。字符型就是平时使用的各种字符、字母、数字，以及各种标点符号。
+character 的缩写。表示单个字符类型。字符型就是平时使用的各种字符、字母、数字，以及各种标点符号。
 
 字符类型 char 表示一个字符。Java 的 char 类型除了可表示标准的 ASCII 外，还可以表示一个 Unicode 字符：
 
@@ -292,15 +292,27 @@ Java 的 `float` 和 `double` 类型都是基于 **IEEE 754 标准** 的 **浮�
 // 字符类型
 public class Main {
     public static void main(String[] args) {
-        char a = 'A';
+        char en = 'A';
         char zh = '中';
-        System.out.println(a);
+        System.out.println(en);
         System.out.println(zh);
+
+//      因为Java在内存中总是使用Unicode表示字符，所以，一个英文字符和一个中文字符都用一个char类型表示，它们都占用两个字节。要显示一个字符的Unicode编码，只需将char类型直接赋值给int类型即可：
+
+        int enUnicode = en;
+        System.out.println(enUnicode); // 字母“A”的Unicodde编码是63
+        System.out.println((int) zh); // 汉字“中”的Unicode编码是20013
+
+//      还可以直接用转义字符\\u+Unicode编码来表示一个字符
+        char enU = '\u0041';
+        char zhU = '\u4e2d';
+        System.out.println(enU); // 'A'，因为十六进制0041 = 十进制65
+        System.out.println(zhU); // '中'，因为十六进制4e2d = 十进制20013
     }
 }
 ```
 
-注意 char 类型使用单引号'，且仅有一个字符，要和双引号"的字符串类型区分开。
+**注意 char 类型使用单引号'，且仅有一个字符，要和双引号"的字符串类型区分开。**
 
 #### 布尔类型 boolean
 
@@ -332,7 +344,207 @@ Java 语言对布尔类型的存储并没有做规定，因为理论上存储布
 
 在 Java 中表示字符串的时候，需要通过一对双引号将其括起来。
 
+```java
+String s = ""; // 空字符串，包含0个字符
+String s1 = "A"; // 包含一个字符
+String s2 = "ABC"; // 包含3个字符
+String s3 = "中文 ABC"; // 包含6个字符，其中有一个空格
+```
+
+如果字符串本身恰好包含一个 `"` 字符怎么表示？例如，`"abc"xyz"` ，编译器就无法判断中间的引号究竟是字符串的一部分还是表示字符串结束。这个时候，我们需要借助转义字符 `\` ：
+
+```java
+String s = "abc\"xyz"; // 包含7个字符: a, b, c, ", x, y, z
+```
+
+因为 `\` 是转义字符，所以，两个 `\\` 表示一个 `\` 字符：
+
+```java
+String s = "abc\\xyz"; // 包含7个字符: a, b, c, \, x, y, z
+```
+
+常见的转义字符包括：
+
+- `\"` 表示字符`"`
+- `\'` 表示字符`'`
+- `\\`表示字符`\`
+- `\n` 表示换行符
+- `\r` 表示回车符
+- `\t` 表示 Tab
+- `\u`#### 表示一个 Unicode 编码的字符
+
+```java
+String s = "ABC\n\u4e2d\u6587"; // 包含6个字符: A, B, C, 换行符, 中, 文
+```
+
+Java 的编译器对字符串做了特殊照顾，可以使用+连接任意字符串和其他数据类型，这样极大地方便了字符串的处理。
+
+如果用+连接字符串和其他数据类型，会将其他数据类型先自动转型为字符串，再连接。
+
+```java
+// 字符串连接
+public class Main {
+    public static void main(String[] args) {
+        int age = 25;
+        String s = "age is " + age;
+        System.out.println(s); // age is 25
+    }
+}
+```
+
+如果我们要表示多行字符串，使用+号连接会非常不方便：
+
+```java
+String s = "first line \n"
+         + "second line \n"
+         + "end";
+```
+
+从 Java 13 开始，字符串可以用 3 引号 `"""..."""` 表示多行字符串（Text Blocks）了。
+
+```java
+// 多行字符串
+public class Main {
+    public static void main(String[] args) {
+        String s = """
+                   SELECT * FROM
+                     users
+                   WHERE id > 100
+                   ORDER BY name DESC
+                   """;
+        System.out.println(s);
+    }
+}
+```
+
+上述多行字符串实际上是 5 行，在最后一个 DESC 后面还有一个\n。如果我们不想在字符串末尾加一个\n，就需要这么写：
+
+```
+String s = """
+           SELECT * FROM
+             users
+           WHERE id > 100
+           ORDER BY name DESC""";
+```
+
+还需要注意到，多行字符串前面共同的空格会被去掉，即：
+
+```
+String s = """
+...........SELECT * FROM
+...........  users
+...........WHERE id > 100
+...........ORDER BY name DESC
+...........""";
+```
+
+用`.`标注的空格都会被去掉。
+
+如果多行字符串的排版不规则，那么，去掉的空格就会变成这样：
+
+```
+String s = """
+.........  SELECT * FROM
+.........    users
+.........WHERE id > 100
+.........  ORDER BY name DESC
+.........  """;
+```
+
+即总是以最短的行首空格为基准。
+
+##### 不可变特性
+
+Java 的字符串除了是一个引用类型外，还有个重要特点，就是字符串不可变。考察以下代码：
+
+```java
+// 字符串不可变
+public class Main {
+    public static void main(String[] args) {
+        String s = "hello";
+        System.out.println(s); // 显示 hello
+        s = "world";
+        System.out.println(s); // 显示 world
+    }
+}
+```
+
+观察执行结果，难道字符串 s 变了吗？其实变的不是字符串，而是变量`s`的“指向”。
+
+- 执行`String s = "hello";`时，JVM 虚拟机先创建字符串`"hello"`，然后，把字符串变量`s`指向它。
+- 紧接着，执行`s = "world";`时，JVM 虚拟机先创建字符串`"world"`，然后，把字符串变量`s`指向它。
+- 原来的字符串`"hello"`还在，只是我们无法通过变量`s`访问它而已。因此，字符串的不可变是指字符串内容不可变。至于变量，可以一会指向字符串`"hello"`，一会指向字符串`"world"`。
+
+理解了引用类型的“指向”后，就可以解释为什么最后打印出来的是 `"hello"`了。
+
+```java
+// 字符串不可变
+public class Main {
+    public static void main(String[] args) {
+        String s = "hello";
+        String t = s;
+        s = "world";
+        System.out.println(t); // t是"hello"还是"world"?
+    }
+}
+```
+
+##### 空值 null
+
+引用类型的变量可以指向一个空值 null，它表示不存在，即该变量不指向任何对象。例如：
+
+```java
+
+```
+
+注意要区分空值`null`和空字符串`""`，空字符串是一个有效的字符串对象，它不等于`null`。
+
 #### 数组 Array
+
+定义一个数组类型的变量，使用数组类型“类型[]”，例如，`int[]`。
+
+和单个基本类型变量不同，数组变量初始化必须使用特定方式。
+
+- 指定长度，元素使用默认值，`int[] ns = new int[5]`表示创建一个可容纳 5 个 int 元素的数组。
+- 也可以在定义数组时直接指定初始化的元素，这样就不必写出数组大小，而是由编译器自动推算数组大小。`int[] ns = new int[] { 68, 79, 91, 85, 62 };`，还可以进一步简写为：`int[] ns = { 68, 79, 91, 85, 62 };`
+
+##### Java 的数组有几个特点：
+
+- 数组所有元素初始化为默认值，整型都是 0，浮点型是 0.0，布尔型是 false；
+- 数组是同一数据类型的集合，数组一旦创建后，大小就不可变；
+- 可以通过索引访问数组元素，但索引超出范围将报错。数组索引从 0 开始，例如，5 个元素的数组，索引范围是 0~4。
+- 可以修改数组中的某一个元素，使用赋值语句，例如，`ns[1] = 79;`。
+- 可以用`数组变量.length` 获取数组大小
+- 数组元素可以是值类型（如 int）或引用类型（如 String），但数组本身是引用类型；
+
+##### 数组是引用类型，在使用索引访问数组元素时，如果索引超出范围，运行时将报错
+
+```java
+// 数组
+public class Main {
+    public static void main(String[] args) {
+        // 5位同学的成绩:
+        int[] ns = new int[5];
+        int n = 5;
+        System.out.println(ns[n]); // 索引n不能超出范围
+    }
+}
+```
+
+##### 字符串数组
+
+如果数组元素不是基本类型，而是一个引用类型，那么，修改数组元素会有哪些不同？
+
+字符串是引用类型，因此我们先定义一个字符串数组：
+
+```java
+// 对于String[]类型的数组变量names，它实际上包含3个元素，但每个元素都指向某个字符串对象：
+String[] names = {
+    "ABC", "XYZ", "zoo"
+};
+```
+
+对 names[1]进行赋值，例如`names[1] = "cat";`，注意原来 names[1]指向的字符串"XYZ"并没有改变，仅仅是将 names[1]的引用从指向"XYZ"改成了指向"cat"，其结果是字符串"XYZ"再也无法通过 names[1]访问到了。
 
 #### 类 class
 
