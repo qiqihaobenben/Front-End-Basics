@@ -22,7 +22,7 @@ public class Hello {
   public static void main(String[] args) {
     // 在控制台输出一串文字，双引号中的内容就是要输出的文字内容
     // System.out.println 是 Java 提供的内置功能，println 是 printline 的 缩写，如果没有参数，会输出一行空行。
-    // 方法体中的语句必须用 ; (英文分号)结尾
+    // 方法体中的语句必须用; (英文分号)结尾，在Java程序中，JVM默认总是顺序执行以分号;结束的语句。
     System.out.println("Hello, World!");
   }
 }
@@ -50,6 +50,39 @@ Java 源码本质上是一个文本文件，我们需要先用 javac 把 Hello.j
   - 每个 Java 文档注释都要和其后对应的类/方法/字段/包保持同样的缩进
   - Java 文档注释的内容，支持采用 HTML 语法规则书写，同时也支持一些额外的辅助标签
 - jab : Java 调试器，用于开发阶段的运行调试。
+
+### main 方法的参数
+
+Java 程序的入口是 `main` 方法，而 `main` 方法可以接受一个命令行参数，它是一个 `String[]` 数组。
+
+命令行参数由 JVM 接收用户输入并传给 main 方法：
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        for (String arg : args) {
+            System.out.println(arg);
+        }
+    }
+}
+```
+
+可以利用接收到的命令行参数，根据不同的参数执行不同的代码。
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        for (String arg : args) {
+            if ("-version".equals(arg)) {
+                System.out.println("v 1.0");
+                break;
+            }
+        }
+    }
+}
+```
+
+上面这个程序必须在命令行执行，先编译它 `javac Main.java`，然后，执行的时候，给它传递一个-version 参数 `java Main -version`，输出 v 1.0。这样，程序就可以根据传入的命令行参数，作出不同的响应。
 
 ### 使用 IDE 编写代码
 
@@ -494,7 +527,9 @@ public class Main {
 引用类型的变量可以指向一个空值 null，它表示不存在，即该变量不指向任何对象。例如：
 
 ```java
-
+String s1 = null; // s1是null
+String s2 = s1; // s2也是null
+String s3 = ""; // s3指向空字符串，不是null
 ```
 
 注意要区分空值`null`和空字符串`""`，空字符串是一个有效的字符串对象，它不等于`null`。
@@ -862,16 +897,31 @@ public class Main {
 }
 ```
 
-由于浮点数存在运算误差，所以比较两个浮点数是否相等常常会出现错误的结果。正确的比较方法是判断两个浮点数之差的绝对值是否小于一个很小的数：
+**由于浮点数存在运算误差，所以比较两个浮点数是否相等常常会出现错误的结果。正确的比较方法是判断两个浮点数之差的绝对值是否小于一个很小的数：**
 
 ```java
-// 比较x和y是否相等，先计算其差的绝对值:
-double r = Math.abs(x - y);
-// 再判断绝对值是否足够小:
-if (r < 0.00001) {
-    // 可以认为相等
-} else {
-    // 不相等
+// 错误
+public class Main {
+    public static void main(String[] args) {
+        double x = 1 - 9.0 / 10;
+        if (x == 0.1) {
+            System.out.println("x is 0.1");
+        } else {
+            System.out.println("x is NOT 0.1");
+        }
+    }
+}
+
+// 正确的方法是利用差值小于某个临界值来判断
+public class Main {
+    public static void main(String[] args) {
+        double x = 1 - 9.0 / 10;
+        if (Math.abs(x - 0.1) < 0.00001) {
+            System.out.println("x is 0.1");
+        } else {
+            System.out.println("x is NOT 0.1");
+        }
+    }
 }
 ```
 
@@ -932,6 +982,322 @@ int[] arr = {1, 2, 3, 4, 5};
 ### 初始化
 
 ### 特性
+
+## 流程控制
+
+### 输入输出
+
+#### 输入
+
+一个从控制台读取一个字符串和一个整数的例子：
+
+```java
+// 通过import语句导入java.util.Scanner，import是导入某个类的语句，必须放到Java源代码的开头
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        // System.out代表标准输出流，而System.in代表标准输入流。
+        // 创建Scanner对象并传入System.in。直接使用System.in读取用户输入虽然是可以的，但需要更复杂的代码，而通过Scanner就可以简化后续的代码。
+        Scanner scanner = new Scanner(System.in); // 创建Scanner对象
+        System.out.print("Input your name: "); // 打印提示
+        // 有了Scanner对象后
+        // 要读取用户输入的字符串，使用scanner.nextLine()
+        // 要读取用户输入的整数，使用scanner.nextInt()
+        // 此外还有 nextDouble() 等等。
+        String name = scanner.nextLine(); // 读取一行输入并获取字符串
+        System.out.print("Input your age: "); // 打印提示
+        int age = scanner.nextInt(); // 读取一行输入并获取整数
+        System.out.printf("Hi, %s, you are %d\n", name, age); // 格式化输出
+    }
+}
+```
+
+#### 输出
+
+##### System.out 的常用方法
+
+1. **`println()`**
+
+   - 全称：print line
+   - 功能：打印内容并换行
+   - 示例：`System.out.println("Hello World");`
+
+2. **`print()`**
+
+   - 全称：print
+   - 功能：打印内容但不换行
+   - 示例：`System.out.print("Hello");`
+
+3. **`printf()`**
+
+   - 全称：print formatted
+   - 功能：按指定格式打印
+   - 示例：`System.out.printf("名字：%s, 年龄：%d", name, age);`
+
+4. **`format()`**
+   - 功能：类似 printf，但返回格式化字符串而非直接打印
+   - 示例：`String message = String.format("总数：%d", total);`
+
+##### 详细解释 printf
+
+格式说明符
+
+| 格式符 | 含义                   | 示例                          |
+| ------ | ---------------------- | ----------------------------- |
+| `%s`   | 字符串                 | `"Hello %s", name`            |
+| `%d`   | 整数                   | `"年龄：%d", age`             |
+| `%f`   | 浮点数                 | `"价格：%.2f", price`         |
+| `%x`   | 格式化输出十六进制整数 |                               |
+| `%b`   | 布尔值                 | `"是否可用：%b", isAvailable` |
+| `%n`   | 平台无关换行           | `"结束%n"`                    |
+
+**注意，由于%表示占位符，因此，连续两个%%表示一个%字符本身。**
+
+##### 示例代码 1
+
+```java
+public class FormattedPrintDemo {
+    public static void main(String[] args) {
+        String name = "张三";
+        int age = 30;
+        double salary = 5000.75;
+
+        // 不同的格式化输出
+        System.out.printf("姓名：%s%n", name);
+        System.out.printf("年龄：%d%n", age);
+        System.out.printf("工资：%.2f%n", salary);
+
+        // 复合格式化
+        System.out.printf("员工信息：姓名=%s, 年龄=%d, 工资=%.2f%n", name, age, salary);
+    }
+}
+```
+
+##### 实例代码 2
+
+占位符本身还可以有更详细的格式化参数。下面的例子把一个整数格式化成十六进制，并用 0 补足 8 位（默认用空位补足）：
+
+```java
+// 格式化输出
+public class Main {
+    public static void main(String[] args) {
+        int n = 12345000;
+        System.out.printf("n=%d, hex=%08x", n, n); // 注意，两个%占位符必须传入两个数
+    }
+}
+```
+
+##### 小贴士和最佳实践
+
+1. 使用 `%n` 代替 `\n`，因为 `%n` 是跨平台的换行符
+2. 注意格式说明符要匹配实际数据类型
+3. 对于复杂的格式化，考虑使用 `String.format()`
+
+### 判断
+
+#### 浮点数在计算机中常常无法精确表示，并且计算可能出现误差，因此，判断浮点数相等用==判断不靠谱，正确的方法是利用差值小于某个临界值来判断。
+
+#### 判断引用类型相等
+
+在 Java 中，判断值类型的变量是否相等，可以使用==运算符。但是，判断引用类型的变量是否相等，==表示“引用是否相等”，或者说，是否指向同一个对象。例如，下面的两个 String 类型，它们的内容是相同的，但是，分别指向不同的对象，用==判断，结果为 false。
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        String s1 = "hello";
+        String s2 = "HELLO".toLowerCase();
+        System.out.println(s1);
+        System.out.println(s2);
+        if (s1 == s2) {
+            System.out.println("s1 == s2");
+        } else {
+            System.out.println("s1 != s2");
+        }
+    }
+}
+```
+
+要判断引用类型的变量内容是否相等，必须使用`equals()`方法：
+
+```java
+// 条件判断
+public class Main {
+    public static void main(String[] args) {
+        String s1 = "hello";
+        String s2 = "HELLO".toLowerCase();
+        System.out.println(s1);
+        System.out.println(s2);
+        if (s1.equals(s2)) {
+            System.out.println("s1 equals s2");
+        } else {
+            System.out.println("s1 not equals s2");
+        }
+    }
+}
+```
+
+注意：执行语句 `s1.equals(s2)` 时，如果变量 s1 为 `null`，会报 `NullPointerException`,要避免 `NullPointerException` 错误，可以利用短路运算符 `&&`，或者把一定不是 `null` 的对象`"hello"`放到前面：例如：`if ("hello".equals(s)) { ... }`。
+
+```java
+// 错误
+public class Main {
+    public static void main(String[] args) {
+        String s1 = null;
+        if (s1.equals("hello")) {
+            System.out.println("hello");
+        }
+    }
+}
+
+// 正确
+public class Main {
+    public static void main(String[] args) {
+        String s1 = null;
+        if (s1 != null && s1.equals("hello")) {
+            System.out.println("hello");
+        }
+    }
+}
+```
+
+#### switch 判断
+
+##### switch 特点
+
+- switch 语句可以做多重选择，然后执行匹配的 case 语句后续代码；
+- switch 的计算结果必须是整型、字符串或枚举类型；
+- 注意千万不要漏写 break，建议打开 fall-through 警告；
+- 总是写上 default，建议打开 missing default 警告；
+- 从 Java 14 开始，switch 语句正式升级为表达式，不再需要 break，并且允许使用 yield 返回值。
+
+##### switch 新表达式
+
+使用 switch 时，如果遗漏了 break，就会造成严重的逻辑错误，而且不易在源代码中发现错误。从 Java 12 开始，switch 语句升级为更简洁的表达式语法，使用类似模式匹配（Pattern Matching）的方法，保证只有一种路径会被执行，并且不需要 break 语句：
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        String fruit = "apple";
+        switch (fruit) {
+        case "apple" -> System.out.println("Selected apple");
+        case "pear" -> System.out.println("Selected pear");
+        case "mango" -> {
+            System.out.println("Selected mango");
+            System.out.println("Good choice!");
+        }
+        default -> System.out.println("No fruit selected");
+        }
+    }
+}
+```
+
+注意新语法使用->，如果有多条语句，需要用{}括起来。不要写 break 语句，因为新语法只会执行匹配的语句，没有穿透效应。
+
+使用新的 switch 语法，不但不需要 break，还可以直接返回值：
+
+```java
+// 旧语法
+int opt;
+switch (fruit) {
+case "apple":
+    opt = 1;
+    break;
+case "pear":
+case "mango":
+    opt = 2;
+    break;
+default:
+    opt = 0;
+    break;
+}
+
+// 新语法
+public class Main {
+    public static void main(String[] args) {
+        String fruit = "apple";
+        int opt = switch (fruit) {
+            case "apple" -> 1;
+            case "pear", "mango" -> 2; // 多个判断用逗号分隔
+            default -> 0;
+        }; // 注意赋值语句要以;结束
+        System.out.println("opt = " + opt);
+    }
+}
+```
+
+大多数时候，在 switch 表达式内部，我们会返回简单的值。
+
+但是，如果需要复杂的语句，我们也可以写很多语句，放到{...}里，然后，用 `yield` 返回一个值作为 switch 语句的返回值
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        String fruit = "orange";
+        int opt = switch (fruit) {
+            case "apple" -> 1;
+            case "pear", "mango" -> 2;
+            default -> {
+                int code = fruit.hashCode();
+                yield code; // switch语句返回值
+            }
+        };
+        System.out.println("opt = " + opt);
+    }
+}
+```
+
+### 循环
+
+for 循环的功能非常强大，它使用计数器实现循环。for 循环会先初始化计数器，然后，在每次循环前检测循环条件，在每次循环后更新计数器。计数器变量通常命名为 i。
+
+**注意 for 循环的初始化计数器总是会被执行，并且 for 循环也可能循环 0 次。**
+
+#### for each 循环
+
+很多时候，我们实际上真正想要访问的是数组每个元素的值。Java 还提供了另一种 for each 循环，它可以更简单地遍历数组。
+
+和 for 循环相比，for each 循环的变量 n 不再是计数器，而是直接对应到数组的每个元素。for each 循环的写法也更简洁。但是，for each 循环无法指定遍历顺序，也无法获取数组的索引。
+
+除了数组外，for each 循环能够遍历所有“可迭代”的数据类型，包括 List、Map 等。
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] ns = { 1, 4, 9, 16, 25 };
+        for (int n : ns) {
+            System.out.println(n);
+        }
+    }
+}
+```
+
+#### break ：跳出当前循环
+
+在循环过程中，可以使用 break 语句跳出当前循环。break 语句通常都是配合 if 语句使用。要特别注意，break 语句总是跳出自己所在的那一层循环
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int sum = 0;
+        //使用for循环计算从1到100时，我们并没有在for()中设置循环退出的检测条件。
+        for (int i=1; ; i++) {
+            sum = sum + i;
+            // 在循环内部，我们用if判断，如果i==100，就通过break退出循环。
+            if (i == 100) {
+                break;
+            }
+        }
+        System.out.println(sum);
+    }
+}
+```
+
+#### continue ：跳过本次循环，继续当前循环
+
+break 会跳出当前循环，也就是整个循环都不会执行了。而 continue 则是提前结束本次循环，直接继续执行下次循环。
+
+在多层嵌套的循环中，continue 语句同样是结束本次自己所在的循环。
 
 ## 方法（函数）
 
