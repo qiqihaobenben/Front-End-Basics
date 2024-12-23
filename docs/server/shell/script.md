@@ -1157,7 +1157,6 @@ wc -l < ./test.sh
 | >>     | 将输出已追加的方式重定向                                                      |
 | >&     | 将两个输出文件合并，需要在命令的最后使用                                      |
 | 2>     | 错误重定向                                                                    |
-| &>     | 正确和错误输出统一写入到一个文件中                                            |
 | <&     | 将两个输入文件合并                                                            |
 | <      | 重定向输入                                                                    |
 | <<     | Here 文档语法（见下文扩展），将开始标记 tag 和结束标记 tag 之间的内容作为输入 |
@@ -1171,9 +1170,14 @@ command 2 > file
 
 如果希望将 stdout 和 stderr 合并后重定向的 file，可以这样写：
 
+**`&[n]` 代表是已经存在的文件描述符，`&1` 代表输出 `&2` 代表错误输出 `&-` 代表关闭与它绑定的描述符**
+
 ```
-#&[n] 代表是已经存在的文件描述符，&1 代表输出 &2代表错误输出 &-代表关闭与它绑定的描述符
 command > file 2>&1
+
+# 推荐使用现代语法（等同于上面的命令）
+
+command &> file
 ```
 
 如果希望 stdin 和 stdout 都重定向，可以这样写：
@@ -1205,7 +1209,7 @@ ls test.sh test1.sh  2>/dev/null 1>/dev/null
 
 #将错误输出2 绑定给 正确输出 1，然后将 正确输出 发送给 /dev/null设备  这种常用
 ls test.sh test1.sh >/dev/null 2>&1
-# & 代表标准输出和错误输出 将所有标准输出与错误输出 输入到/dev/null文件
+# &> 代表标准输出和错误输出 将所有标准输出与错误输出 输入到/dev/null文件
 ls test.sh test1.sh &>/dev/null
 ```
 
@@ -1331,3 +1335,33 @@ https://github.com/guoriyue/LangCommand
 - [打造 Mac OS 最强终端利器 iTerm2](https://mp.weixin.qq.com/s?__biz=MzA5MjUyMzY0MA==&mid=2247483813&idx=1&sn=cba56cec12616415f7bcececcfacd79c&chksm=906a9cb2a71d15a411e6b6ff661b07b64b3b77454b1aee6c593646e4ba113a6daa9ea028f62c&token=166666239&lang=zh_CN#rd)
 - [Mac 终端增强技能](https://www.jianshu.com/p/0d4d5c0c31a1)
 - [iTerm 与 Zsh 篇](https://xiaozhou.net/learn-the-command-line-iterm-and-zsh-2017-06-23.html)
+
+set -eux
+
+cd /home/project/wanquan-ai
+
+if [ -d "frontend" ]; then
+rm -rf ./frontend
+echo "frontend 已删除！"
+fi
+
+if [ -d "backend" ]; then
+rm -rf ./frontend
+echo "backend 已删除！"
+fi
+
+echo "拉取 frontend 代码！"
+git clone --depth=1 https://${GIT_USERNAME}:${GIT_PASSWORD}@codeup.aliyun.com/676147a1721f4dc7be6c8c9c/wanquan-ai-frontend.git frontend
+
+echo "拉取 backend 代码！"
+git clone --depth=1 https://${GIT_USERNAME}:${GIT_PASSWORD}@codeup.aliyun.com/676147a1721f4dc7be6c8c9c/wanquan-ai-backend.git
+
+if [ -d "backend" ]; then
+cd backend
+docker-compose up --build -d
+else
+echo "没有 backend ！"
+fi
+
+echo "删除所有为 none 的镜像！"
+docker rmi $(docker images | grep "none" | awk '{print $3}')
