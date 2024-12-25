@@ -415,15 +415,15 @@ String s = "abc\\xyz"; // 包含7个字符: a, b, c, \, x, y, z
 - `\n` 表示换行符
 - `\r` 表示回车符
 - `\t` 表示 Tab
-- `\u`#### 表示一个 Unicode 编码的字符
+- `\u`#### 表示一个 Unicode 编码的字符，十六进制
 
 ```java
 String s = "ABC\n\u4e2d\u6587"; // 包含6个字符: A, B, C, 换行符, 中, 文
 ```
 
-Java 的编译器对字符串做了特殊照顾，可以使用+连接任意字符串和其他数据类型，这样极大地方便了字符串的处理。
+**Java 的编译器对字符串做了特殊照顾，可以使用+连接任意字符串和其他数据类型，这样极大地方便了字符串的处理。**
 
-如果用+连接字符串和其他数据类型，会将其他数据类型先自动转型为字符串，再连接。
+**如果用+连接字符串和其他数据类型，会将其他数据类型先自动转型为字符串，再连接。**
 
 ```java
 // 字符串连接
@@ -773,6 +773,14 @@ public class Main {
 }
 
 ```
+
+### 变量作用域
+
+#### 局部变量
+
+在方法内部定义的变量称为局部变量，局部变量作用域从变量声明处开始到对应的块结束。方法参数也是局部变量。
+
+使用局部变量时，应该尽可能把局部变量的作用域缩小，尽可能延后声明局部变量
 
 ## Java 常量
 
@@ -1420,14 +1428,26 @@ class Group {
 
 #### 访问修饰符
 
+Java 内建的访问权限包括 `public`、`protected`、`private` 和 `package` 权限；
+
 - public
+  - 定义为 public 的 class、interface 可以被其他任何类访问
+  - 定义为 public 的 field、method 可以被其他类访问，前提是首先有访问 class 的权限
+  - 如果不确定是否需要 public，就不声明为 public，即尽可能少地暴露对外的字段和方法。
+  - **一个`.java` 文件只能包含一个 `public` 类，但可以包含多个非 public 类。如果有 `public` 类，文件名必须和 `public` 类的名字相同。**
 - private
+  - 定义为 private 的 field、method 无法被其他类访问，即使是继承它的子类也不行
+  - 实际上，确切地说，private 访问权限被限定在 class 的内部，而且与方法声明顺序无关。推荐把 private 方法放到后面，因为 public 方法定义了类对外提供的功能，阅读代码的时候，应该先关注 public 方法
+  - 由于 Java 支持嵌套类，如果一个类内部还定义了嵌套类，那么，嵌套类拥有访问 private 的权限
 - protected
+  - protected 作用于继承关系。定义为 protected 的字段和方法可以被子类访问，以及子类的子类
+
+扩展：package 包作用域是指一个类允许访问同一个 `package` 的没有 `public`、`private` 修饰的 `class`，以及没有 `public`、`protected`、`private` 修饰的字段和方法。
 
 #### 非访问修饰符
 
-- static
-- final
+- static 静态字段/方法
+- final 最终
 - abstract
 - synchronized
 - volatile
@@ -1458,6 +1478,83 @@ final 修饰符在以下几种场景中可以具体使用：
 - 不要尝试继承一个 final 类，因为它不能被继承。
 - 尽量不要把一个类声明为 final，因为这样会限制类的扩展性。
 - 使用 final 修饰的引用类型的变量不能被重新赋值（仅仅保证变量的地址不变），但可以改变引用类型所引用对象的内容。
+
+##### 代码示例
+
+final 修饰的类不能被继承，如果一个类不希望任何其他类继承自它，那么可以把这个类本身标记为 final。用 final 修饰的类不能被继承：
+
+```java
+final class Person {
+    protected String name;
+}
+
+// compile error: 不允许继承自Person
+class Student extends Person {
+}
+```
+
+final 修饰的方法不能被 Override，继承可以允许子类覆写父类的方法。如果一个父类不允许子类对它的某个方法进行覆写，可以把该方法标记为 final。用 final 修饰的方法不能被 Override：
+
+```java
+class Person {
+    protected String name;
+    public final String hello() {
+        return "Hello, " + name;
+    }
+}
+
+class Student extends Person {
+    // compile error: 不允许覆写
+    @Override
+    public String hello() {
+    }
+}
+```
+
+对于一个类的实例字段，同样可以用 final 修饰。用 final 修饰的字段在初始化后不能被修改。
+
+```java
+class Person {
+    public final String name = "Unamed";
+}
+// 对final字段重新赋值会报错
+Person p = new Person();
+p.name = "New Name"; // compile error!
+
+// 可以在构造方法中初始化final字段,这种方法更为常用，因为可以保证实例一旦创建，其final字段就不可修改。
+class Person {
+    public final String name;
+    public Person(String name) {
+        this.name = name;
+    }
+}
+```
+
+##### 静态字段/方法
+
+实例字段在每个实例中都有自己的一个独立“空间”，但是静态字段只有一个共享“空间”，所有实例都会共享该字段
+
+对于静态字段，无论修改哪个实例的静态字段，效果都是一样的：所有实例的静态字段都被修改了，原因是静态字段并不属于实例
+
+虽然实例可以访问静态字段，但是它们指向的其实都是 Person class 的静态字段。所以，所有实例共享一个静态字段。
+
+因此，不推荐用实例变量.静态字段去访问静态字段，因为在 Java 程序中，实例对象并没有静态字段。在代码中，实例对象能访问静态字段只是因为编译器可以根据实例类型自动转换为类名.静态字段来访问静态对象。
+
+推荐用类名来访问静态字段。可以把静态字段理解为描述 class 本身的字段。
+
+有静态字段，就有静态方法。用 static 修饰的方法称为静态方法。
+
+调用实例方法必须通过一个实例变量，而调用静态方法则不需要实例变量，通过类名就可以调用。静态方法类似其它编程语言的函数。
+
+因为静态方法属于 class 而不属于实例，因此，静态方法内部，无法访问 this 变量，也无法访问实例字段，它只能访问静态字段和静态方法。
+
+通过实例也可以调用静态方法，但这只是编译器自动帮我们把实例改写成类名而已。
+
+通常情况下，通过实例访问静态字段和静态方法，会得到一个编译警告。
+
+静态方法常用于工具类和辅助方法。例如：Arrays.sort()、Math.random()
+
+静态方法也经常用于辅助方法。注意到 Java 程序的入口 main()也是静态方法。
 
 ### 构造方法
 
@@ -1504,39 +1601,308 @@ class Person {
 
 在一个类中，我们可以定义多个方法。如果有一系列方法，它们的功能都是类似的，只有参数有所不同，那么，可以把这一组方法名做成同名方法。
 
-这种方法名相同，但各自的参数不同，称为方法重载（Overload）。
+这种方法名相同，但各自的参数不同（个数、类型、顺序），称为方法重载（Overload）。
 
 #### 注意
 
 - 方法重载的返回值类型通常都是相同的。
+- 方法重载的目的是，功能类似的方法使用同一名字，更容易记住，因此，调用起来更简单。
+- 方法重载（Overload）是同名不同参，方法重写（Override）是同名同参
 
-### 继承（复习一下 JavaScript 的继承）
+### 继承
 
 #### 继承的特点
+
+- 继承是面向对象编程的一种强大的代码复用方式。
+- 子类自动获得了父类的所有字段，严禁定义与父类重名的字段！
+- 在 Java 中，没有明确写 `extends` 的类，编译器会自动加上 `extends Object`。所以，任何类，除了 `Object`，都会继承自某个类。
+- Java 只允许一个 class 继承自一个类，因此，一个类有且仅有一个父类。只有 Object 特殊，它没有父类。
+- `super` 关键字表示父类（超类）。子类引用父类的字段时，可以用 `super.fieldName`。如果这个字段只有父类中定义，例如 `name` 字段，那么使用 `super.name`，或者 `this.name`，或者 `name`，效果都是一样的。编译器会自动定位到父类的 `name` 字段。
+- 在某些时候，就必须使用 `super`，因为在 Java 继承中，任何 class 的构造方法，第一行语句必须是调用父类的构造方法。如果没有明确地调用父类的构造方法，编译器会帮我们自动加一句 `super()`;如果此时父类并没有无参数的构造方法，就会编译失败，解决方法是调用父类存在的某个构造方法。因此，如果父类没有默认的构造方法，子类就必须显式调用 `super()` 并给出参数以便让编译器定位到父类的一个合适的构造方法。
+- 子类不会继承任何父类的构造方法。子类默认的构造方法是编译器自动生成的，不是继承的。
+- 正常情况下，只要某个 class 没有 `final` 修饰符，那么任何类都可以从该 class 继承。
+- 从 Java 15 开始，允许使用 `sealed` 修饰 class，并通过 `permits` 明确写出能够从该 class 继承的子类名称。`sealed` 类在 Java 15 中目前是预览状态，要启用它，必须使用参数`--enable-preview` 和 `--source 15`。
+
+```java
+// Shape类就是一个sealed类，它只允许指定的3个类继承它
+public sealed class Shape permits Rect, Circle, Triangle {
+    ...
+}
+// Rect出现在Shape的permits列表中，运行正常
+public final class Rect extends Shape {...}
+// Ellipse会报错
+public final class Ellipse extends Shape {...}
+// Compile error: class is not allowed to extend sealed class: Shape
+```
+
+- 把一个子类类型安全地变为父类类型的赋值，被称为向上转型（upcasting），向上转型实际上是把一个子类型安全地变为更加抽象的父类型
+- 和向上转型相反，如果把一个父类类型强制转型为子类类型，就是向下转型（downcasting），向下转型很可能会失败。失败的时候，Java 虚拟机会报 ClassCastException。为了避免向下转型出错，Java 提供了 instanceof 操作符，可以先判断一个实例究竟是不是某种类型。`instanceof` 实际上判断一个变量所指向的实例是否是指定类型，或者这个类型的子类。如果一个引用变量为 `null`，那么对任何 `instanceof` 的判断都为 `false`。利用 instanceof，在向下转型前可以先判断：
+
+```java
+Person p = new Student();
+if (p instanceof Student) {
+    // 只有判断成功才会向下转型:
+    Student s = (Student) p; // 一定会成功
+}
+
+// 从Java 14开始，判断instanceof后，可以直接转型为指定变量，避免再次强制转型。
+Object obj = "hello";
+if (obj instanceof String) {
+    String s = (String) obj;
+    System.out.println(s.toUpperCase());
+}
+// 以下这种使用instanceof的写法更加简洁，可以改写为
+Object obj = "hello";
+if (obj instanceof String s) {
+    // 可以直接使用变量s:
+    System.out.println(s.toUpperCase());
+}
+```
 
 #### 父类、子类、局部变量名重复、冲突时的访问规则
 
 #### 继承中的权限
 
+- 继承中，子类无法访问父类的 `private` 字段或者 `private` 方法。
+- 为了让子类可以访问父类的字段，我们需要把 `private` 改为 `protected`。用 `protected` 修饰的字段可以被子类访问。`protected` 关键字可以把字段和方法的访问权限控制在继承树内部，一个 `protected` 字段和方法可以被其子类，以及子类的子类所访问
+
 ## 抽象（abstract）
 
 在 Java 中，`abstract` 是一个修饰符，用 `abstract` 修饰的类叫抽象类，用 `abstract` 修饰的方法叫作抽象方法。
 
+### 抽象方法的实际应用
+
+在多态的应用中，设想一个场景，从 Person 类派生的 Student 和 Teacher 都可以覆写 run()方法。
+
+```java
+class Person {
+    public void run() { … }
+}
+
+class Student extends Person {
+    @Override
+    public void run() { … }
+}
+
+class Teacher extends Person {
+    @Override
+    public void run() { … }
+}
+```
+
+如果父类 Person 的 run() 方法没有实际意义，能否去掉方法的执行语句？答案是不行，会导致编译错误，因为定义方法的时候，必须实现方法的语句。
+
+```java
+class Person {
+    public void run(); // Compile Error!
+}
+```
+
+能不能去掉父类的 run()方法？答案还是不行，因为去掉父类的 run()方法，就失去了多态的特性。例如，runTwice()就无法编译：
+
+```java
+public void runTwice(Person p) {
+    p.run(); // Person没有run()方法，会导致编译错误
+    p.run();
+}
+```
+
+如果父类的方法本身不需要实现任何功能，仅仅是为了定义方法，目的是让子类去覆写它，那么，可以把父类的方法声明为抽象方法：
+
+```java
+class Person {
+    public abstract void run();
+}
+```
+
+把一个方法声明为 `abstract`，表示它是一个抽象方法，本身没有实现任何方法语句。因为这个抽象方法本身是无法执行的，所以，`Person` 类也无法被实例化。编译器会告诉我们，无法编译 `Person` 类，因为它包含抽象方法。
+
+必须把 `Person` 类本身也声明为 `abstract`，才能正确编译它：
+
+```java
+abstract class Person {
+    public abstract void run();
+}
+```
+
 ### abstract 注意事项
+
+- 如果一个 `class` 定义了方法，但没有具体执行代码，这个方法就是抽象方法，抽象方法用 `abstract` 修饰。因为无法执行抽象方法，因此这个类也必须申明为抽象类（abstract class），即定义了抽象方法的 class 必须被定义为抽象类。
+- 使用 `abstract` 修饰的类就是抽象类。我们无法实例化一个抽象类,`Person p = new Person(); // 编译错误`
+- 无法实例化的抽象类有什么用？因为抽象类本身被设计成只能用于被继承，因此，抽象类可以强迫子类实现其定义的抽象方法，否则编译会报错。因此，抽象方法实际上相当于定义了“规范”。
+- 从抽象类继承的子类必须实现抽象方法，如果不实现抽象方法，则该子类仍是一个抽象类
+
+### 面向抽象编程
+
+当我们定义了抽象类 Person，以及具体的 Student、Teacher 子类的时候，我们可以通过抽象类 Person 类型去引用具体的子类的实例：
+
+```java
+Person s = new Student();
+Person t = new Teacher();
+```
+
+这种引用抽象类的好处在于，我们对其进行方法调用，并不关心 Person 类型变量的具体子类型：
+
+```java
+// 不关心Person变量的具体子类型:
+s.run();
+t.run();
+```
+
+同样的代码，如果引用的是一个新的子类，我们仍然不关心具体类型：
+
+```java
+// 同样不关心新的子类是如何实现run()方法的：
+Person e = new Employee();
+e.run();
+```
+
+**这种尽量引用高层类型，避免引用实际子类型的方式，称之为面向抽象编程。**
+
+#### 面向抽象编程的本质就是：
+
+- 上层代码只定义规范（例如：abstract class Person）；
+- 不需要子类就可以实现业务逻辑（正常编译）；
+- 具体的业务逻辑由不同的子类实现，调用者并不关心。
 
 ## 接口（interface）
 
 接口（interface）是一种公共的规范，是一种引用数据类型。
 
+在抽象类中，抽象方法本质上是定义接口规范：即规定高层次类的接口，从而保证所有子类都有相同的接口实现，这样，多态就能发挥出威力。
+
+如果一个抽象类没有字段，所有方法全部都是抽象方法,就可以把该抽象类改写为接口：interface。
+
+```java
+abstract class Person {
+    public abstract void run();
+    public abstract String getName();
+}
+
+// 在Java中，使用interface可以声明一个接口
+interface Person {
+    void run();
+    String getName();
+}
+
+//当一个具体的 class 去实现一个 interface 时，需要使用 implements 关键字。
+class Student implements Person {
+    private String name;
+
+    public Student(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void run() {
+        System.out.println(this.name + " run");
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+}
+```
+
 ### 接口的定义
+
+Java 的接口特指 interface 的定义，表示一个接口类型和一组方法签名，而编程接口泛指接口规范，如方法签名，数据格式，网络协议等。
+
+所谓 interface，就是比抽象类还要抽象的纯抽象接口，因为它连字段都不能有。因为接口定义的所有方法默认都是 public abstract 的，所以这两个修饰符不需要写出来（写不写效果都一样）。
+
+**注意：在 Java 中，一个类只能继承自另一个类，不能从多个类继承。但是，一个类可以实现多个 interface**
+
+```java
+class Student implements Person, Hello { // 实现了两个interface
+    ...
+}
+```
+
+### 接口继承
+
+一个 interface 可以继承自另一个 interface。interface 继承自 interface 使用 extends，它相当于扩展了接口的方法。
+
+```java
+interface Hello {
+    void hello();
+}
+
+interface Person extends Hello {
+    void run();
+    String getName();
+}
+```
+
+合理设计 interface 和 abstract class 的继承关系，可以充分复用代码。一般来说，公共逻辑适合放在 abstract class 中，具体逻辑放到各个子类，而接口层次代表抽象程度。
+
+接口也是数据类型，适用于向上转型和向下转型；
 
 ### 接口中的成员
 
 #### 接口中的常量
 
+因为 interface 是一个纯抽象类，所以它不能定义实例字段。但是，interface 是可以有静态字段的，并且静态字段必须为 final 类型。
+
+```java
+public interface Person {
+    public static final int MALE = 1;
+    public static final int FEMALE = 2;
+}
+```
+
+实际上，因为 interface 的字段只能是 public static final 类型，所以我们可以把这些修饰符都去掉，上述代码可以简写为：
+
+```java
+public interface Person {
+    // 编译器会自动加上public static final:
+    int MALE = 1;
+    int FEMALE = 2;
+}
+```
+
 #### 接口中的抽象方法
 
 #### 接口中的默认方法
+
+default 方法（JDK>=1.8）
+
+在接口中，可以定义 default 方法。实现类可以不必覆写 default 方法。
+
+default 方法的目的是，当我们需要给接口新增一个方法时，必然会涉及到修改全部子类。但是，如果新增的是 default 方法，那么子类就不必全部修改，只需要在需要覆写的地方去覆写新增方法。
+
+default 方法和抽象类的普通方法是有所不同的。因为 interface 没有字段，default 方法无法访问字段，而抽象类的普通方法可以访问实例字段。
+
+例如，把 Person 接口的 run()方法改为 default 方法：
+
+```java
+// interface
+public class Main {
+    public static void main(String[] args) {
+        Person p = new Student("Xiao Ming");
+        p.run();
+    }
+}
+
+interface Person {
+    String getName();
+    default void run() {
+        System.out.println(getName() + " run");
+    }
+}
+
+class Student implements Person {
+    private String name;
+
+    public Student(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+}
+```
 
 #### 接口中的静态方法
 
@@ -1546,9 +1912,234 @@ class Person {
 
 #### 实现接口的格式
 
+## 包
+
+如果写了一个 Arrays 类，恰好 JDK 也自带了一个 Arrays 类，如何解决类名冲突？
+
+在 Java 中，我们使用 package 来解决名字冲突。
+
+Java 定义了一种名字空间，称之为包：package。一个类总是属于某个包，类名（比如 Person）只是一个简写，真正的完整类名是包名.类名。
+
+```
+例如我写的的Arrays类存放在包my下面，因此，完整类名是my.Arrays；
+JDK的Arrays类存放在包java.util下面，因此，完整类名是java.util.Arrays。
+```
+
+在定义 class 的时候，我们需要在第一行声明这个 class 属于哪个包。
+
+```java
+package my; // 申明包名my
+
+public class Arrays {
+}
+```
+
+在 Java 虚拟机执行的时候，JVM 只看完整类名，因此，只要包名不同，类就不同。
+
+包可以是多层结构，用.隔开。例如：java.util。
+
+### 包作用域
+
+位于同一个包的类，可以访问包作用域的字段和方法。不用 public、protected、private 修饰的字段和方法就是包作用域。
+
+把方法定义为 package 权限有助于测试，因为测试类和被测试类只要位于同一个 package，测试代码就可以访问被测试类的 package 权限方法。
+
+### 包的导入
+
+在一个 class 中，我们总会引用其他的 class。有三种方法：
+
+#### 第一种，直接写出完整类名
+
+```java
+// Person.java
+package ming;
+
+public class Person {
+    public void run() {
+        // 写完整类名: mr.jun.Arrays，很显然，每次写完整类名比较痛苦。
+        mr.jun.Arrays arrays = new mr.jun.Arrays();
+    }
+}
+```
+
+#### 第二种写法是用 import 语句，然后写简单类名
+
+在写 import 的时候，可以使用 `*`，表示把这个包下面的所有 class 都导入进来（但不包括子包的 class），一般不推荐这种写法，因为在导入了多个包后，很难看出某个类属于哪个包。
+
+```java
+// Person.java
+package ming;
+
+// 导入完整类名:
+import mr.jun.Arrays;
+
+// 导入mr.jun包的所有class:
+// import mr.jun.*;
+
+public class Person {
+    public void run() {
+        // 写简单类名: Arrays
+        Arrays arrays = new Arrays();
+    }
+}
+```
+
+#### 还有一种 import static 的语法，它可以导入一个类的静态字段和静态方法
+
+import static 很少使用。
+
+```java
+package main;
+
+// 导入System类的所有静态字段和静态方法:
+import static java.lang.System.*;
+
+public class Main {
+    public static void main(String[] args) {
+        // 相当于调用System.out.println(…)
+        out.println("Hello, world!");
+    }
+}
+```
+
+### 包寻找的过程
+
+Java 编译器最终编译出的.class 文件只使用完整类名，因此，在代码中，当编译器遇到一个 class 名称时：
+
+- 如果是完整类名，就直接根据完整类名查找这个 class；
+- 如果是简单类名，按下面的顺序依次查找：
+  - 查找当前 package 是否存在这个 class；
+  - 查找 import 的包是否包含这个 class；
+  - 查找 java.lang 包是否包含这个 class。
+
+如果按照上面的规则还无法确定类名，则编译报错。
+
+例如：
+
+```java
+// Main.java
+package test;
+
+import java.text.Format;
+
+public class Main {
+    public static void main(String[] args) {
+        java.util.List list; // ok，使用完整类名 -> java.util.List
+        Format format = null; // ok，使用import的类 -> java.text.Format
+        String s = "hi"; // ok，使用java.lang包的String -> java.lang.String
+        System.out.println(s); // ok，使用java.lang包的System -> java.lang.System
+        MessageFormat mf = null; // 编译错误：无法找到MessageFormat: MessageFormat cannot be resolved to a type
+    }
+}
+```
+
+因此，编译为 `.class` 的时候，编译器会自动帮我们做两个 import 动作：
+
+- 默认自动 `import` 当前 `package` 的其他 `class`；
+- 默认自动 `import java.lang.*`。
+
+自动导入的是 `java.lang` 包，但类似 `java.lang.reflect` 这些包仍需要手动导入。
+
+如果有两个 `class` 名称相同，例如，`mr.jun.Arrays` 和 `java.util.Arrays`，那么只能 import 其中一个，另一个必须写完整类名。
+
+### 包命名最佳实践
+
+#### 为了避免名字冲突，我们需要确定唯一的包名。推荐的做法是使用倒置的域名来确保唯一性。例如：
+
+- org.apache
+- org.apache.commons.log
+- com.liaoxuefeng.sample
+
+子包就可以根据功能自行命名。
+
+#### 要注意不要和 java.lang 包的类重名，即自己的类不要使用这些名字：
+
+- String
+- System
+- Runtime
+
+...
+
+#### 要注意也不要和 JDK 常用类重名
+
+- java.util.List
+- java.text.Format
+- java.math.BigInteger
+
+...
+
+### 注意
+
+- 包没有父子关系。java.util 和 java.util.zip 是不同的包，两者没有任何继承关系。
+- 没有定义包名的 class，它使用的是默认包，非常容易引起名字冲突，因此，不推荐不写包名的做法。
+- 需要按照包结构把上面的 Java 文件组织起来，即所有 Java 文件对应的目录层次要和包的层次一致。
+
 ## 多态
 
+多态是指，针对某个类型的方法调用，其真正执行的方法取决于运行时期实际类型的方法。
+
+一个实例的实际类型为 `Student`，引用类型为 `Person` 的变量，调用其 `run()` 方法，调用的是 `Person` 还是 `Student` 的 `run()` 方法？
+
+实际上调用的方法是 `Student` 的 `run()` 方法。因此可得出结论：
+
+Java 的实例方法调用是基于运行时的实际类型的动态调用，而非变量的声明类型。
+
+这个非常重要的特性在面向对象编程中称之为多态。它的英文拼写非常复杂：Polymorphic。
+
+多态的特性就是，运行期才能动态决定调用的子类方法。对某个类型调用某个方法，执行的实际方法可能是某个子类的覆写方法。这种不确定性的方法调用，允许添加更多类型的子类实现功能扩展，却不需要修改基于父类的代码。
+
+### 覆写（Override）
+
+在继承关系中，子类如果定义了一个与父类方法参数和返回值完全相同的方法，被称为覆写（Override）。
+
+方法重载（Overload）是同名不同参，返回值类型通常都是相同的，Overload 方法是一个新方法，方法重写（Override）是同名同参，返回值类型也相同，Override 方法是一个覆盖方法。
+
+**注意：方法名相同，方法参数相同，但方法返回值不同，也是不同的方法。在 Java 程序中，出现这种情况，编译器会报错。**
+
+加上 `@Override` 可以让编译器帮助检查是否进行了正确的覆写。希望进行覆写，但是不小心写错了方法签名，编译器会报错。但是 `@Override` 不是必需的。
+
 ### 格式
+
+#### 调用 super
+
+在子类的覆写方法中，如果要调用父类的被覆写的方法，可以通过 super 来调用。
+
+```java
+class Person {
+    protected String name;
+    public String hello() {
+        return "Hello, " + name;
+    }
+}
+
+class Student extends Person {
+    @Override
+    public String hello() {
+        // 调用父类的hello()方法:
+        return super.hello() + "!";
+    }
+}
+```
+
+#### final 修饰的方法不能被 Override
+
+继承可以允许子类覆写父类的方法。如果一个父类不允许子类对它的某个方法进行覆写，可以把该方法标记为 final。用 final 修饰的方法不能被 Override：
+
+```java
+class Person {
+    protected String name;
+    public final String hello() {
+        return "Hello, " + name;
+    }
+}
+
+class Student extends Person {
+    // compile error: 不允许覆写
+    @Override
+    public String hello() {
+    }
+}
+```
 
 ### 多态调用成员方法
 
@@ -1558,7 +2149,7 @@ class Person {
 
 ## 内部类
 
-Java 中的内部类是一种特殊的类，它定义在另一个类的内部，即在一个类中定义另一个类，这个在类中定义的类就叫做内部类
+Java 中的内部类是一种特殊的类，它定义在另一个类的内部，即在一个类中定义另一个类，这个在类中定义的类就叫做内部类（Nested Class）
 
 内部类可以访问外部类的所有成员变量和方法，即使它们是私有的（private）、静态的（static）。
 
@@ -1566,7 +2157,118 @@ Java 中的内部类是一种特殊的类，它定义在另一个类的内部，
 
 ### 格式
 
+#### 命名内部类 Inner Class
+
+```java
+// inner class
+public class Main {
+    public static void main(String[] args) {
+        Outer outer = new Outer("Nested"); // 实例化一个Outer
+        Outer.Inner inner = outer.new Inner(); // 实例化一个Inner
+        inner.hello();
+    }
+}
+
+class Outer {
+    private String name;
+
+    Outer(String name) {
+        this.name = name;
+    }
+
+    class Inner {
+        void hello() {
+            System.out.println("Hello, " + Outer.this.name);
+        }
+    }
+}
+```
+
+要实例化一个 Inner，我们必须首先创建一个 Outer 的实例，然后，调用 Outer 实例的 new 来创建 Inner 实例：`Outer.Inner inner = outer.new Inner();`
+
+这是因为 Inner Class 除了有一个 this 指向它自己，还隐含地持有一个 Outer Class 实例，可以用 Outer.this 访问这个实例。所以，实例化一个 Inner Class 不能脱离 Outer 实例。
+
+观察 Java 编译器编译后的.class 文件可以发现，Outer 类被编译为 Outer.class，而 Inner 类被编译为 Outer$Inner.class。
+
+#### 匿名内部类 Anonymous Class
+
+还有一种定义 Inner Class 的方法，它不需要在 Outer Class 中明确地定义这个 Class，而是在方法内部，通过匿名类（Anonymous Class）来定义。示例代码如下：
+
+```java
+// Anonymous Class
+public class Main {
+    public static void main(String[] args) {
+        Outer outer = new Outer("Nested");
+        outer.asyncHello();
+    }
+}
+
+class Outer {
+    private String name;
+
+    Outer(String name) {
+        this.name = name;
+    }
+
+    void asyncHello() {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Hello, " + Outer.this.name);
+            }
+        };
+        new Thread(r).start();
+    }
+}
+```
+
+观察 asyncHello()方法，我们在方法内部实例化了一个 Runnable。Runnable 本身是接口，接口是不能实例化的，所以这里实际上是定义了一个实现了 Runnable 接口的匿名类，并且通过 new 实例化该匿名类，然后转型为 Runnable。在定义匿名类的时候就必须实例化它，定义匿名类的写法如下：
+
+```java
+Runnable r = new Runnable() {
+    // 实现必要的抽象方法...
+};
+```
+
+匿名类和 Inner Class 一样，可以访问 Outer Class 的 private 字段和方法。之所以我们要定义匿名类，是因为在这里我们通常不关心类名，比直接定义 Inner Class 可以少写很多代码。
+
+观察 Java 编译器编译后的.class 文件可以发现，Outer 类被编译为 Outer.class，而匿名类被编译为 Outer$1.class。如果有多个匿名类，Java 编译器会将每个匿名类依次命名为 Outer$1、Outer$2、Outer$3……
+
+#### 静态内部类 Static Nested Class
+
+最后一种内部类和 Inner Class 类似，但是使用 static 修饰，称为静态内部类（Static Nested Class）
+
+```java
+// Static Nested Class
+public class Main {
+    public static void main(String[] args) {
+        Outer.StaticNested sn = new Outer.StaticNested();
+        sn.hello();
+    }
+}
+
+class Outer {
+    private static String NAME = "OUTER";
+
+    private String name;
+
+    Outer(String name) {
+        this.name = name;
+    }
+
+    static class StaticNested {
+        void hello() {
+            System.out.println("Hello, " + Outer.NAME);
+        }
+    }
+}
+```
+
+用 static 修饰的内部类和 Inner Class 有很大的不同，它不再依附于 Outer 的实例，而是一个完全独立的类，因此无法引用 Outer.this，但它可以访问 Outer 的 private 静态字段和静态方法。如果把 StaticNested 移到 Outer 之外，就失去了访问 private 的权限。
+
 ### 内部类的访问特点
+
+Inner Class 和普通 Class 相比，除了能引用 Outer 实例外，还有一个额外的“特权”，就是可以修改 Outer Class 的 private 字段，因为 Inner Class 的作用域在 Outer Class 内部，所以能访问 Outer Class 的 private 字段和方法。
 
 ### 内部类的分类
 
@@ -1578,7 +2280,7 @@ Java 中的内部类是一种特殊的类，它定义在另一个类的内部，
 - 局部内部类 ： 在类的局部位置（在成员方法中）
 - 匿名内部类
 
-#### 静态成员内部类和非晶态成员内部类的区别
+#### 静态成员内部类和非静态成员内部类的区别
 
 还有其他的 https://blog.csdn.net/liuxiao723846/article/details/108006609
 
@@ -1593,6 +2295,89 @@ Java 中的内部类是一种特殊的类，它定义在另一个类的内部，
 #### 局部内部类
 
 局部内部类就像是方法里面的一个局部变量一样，是不能有 public、protected、private 以及 static 修饰符的。
+
+## classpath
+
+到底什么是 classpath？
+
+classpath 是 JVM 用到的一个环境变量，它用来指示 JVM 如何搜索 class。
+
+因为 Java 是编译型语言，源码文件是 `.java`，而编译后的 `.class` 文件才是真正可以被 JVM 执行的字节码。因此，JVM 需要知道，如果要加载一个 abc.xyz.Hello 的类，应该去哪搜索对应的 Hello.class 文件。
+
+classpath 就是一组目录的集合，它设置的搜索路径与操作系统相关。例如，
+
+- 在 Windows 系统上，用;分隔，带空格的目录用""括起来，可能长这样：`C:\work\project1\bin;C:\shared;"D:\My Documents\project1\bin"`
+- 在 Linux 系统上，用:分隔，可能长这样：`/usr/shared:/usr/local/bin:/home/fangxu/bin`
+
+现在我们假设 classpath 是`.;C:\work\project1\bin;C:\shared`，当 JVM 在加载`abc.xyz.Hello`这个类时，会依次查找：
+
+- `<当前目录>\abc\xyz\Hello.class`
+- `C:\work\project1\bin\abc\xyz\Hello.class`
+- `C:\shared\abc\xyz\Hello.class`
+
+注意到 `.` 代表当前目录。如果 JVM 在某个路径下找到了对应的 class 文件，就不再往后继续搜索。如果所有路径下都没有找到，就报错。
+
+### classpath 的设定方法有两种：
+
+- 在系统环境变量中设置 classpath 环境变量，不推荐；
+- 在启动 JVM 时设置 classpath 变量，推荐。
+
+强烈不推荐在系统环境变量中设置 classpath，那样会污染整个系统环境。在启动 JVM 时设置 classpath 才是推荐的做法。实际上就是给 java 命令传入 `-classpath` 参数：
+
+- `java -classpath .;C:\work\project1\bin;C:\shared abc.xyz.Hello`,
+- 使用-cp 的简写 `java -cp .;C:\work\project1\bin;C:\shared abc.xyz.Hello`
+
+没有设置系统环境变量，也没有传入-cp 参数，那么 JVM 默认的 classpath 为.，即当前目录
+
+在 IDE 中运行 Java 程序，IDE 自动传入的 `-cp` 参数是当前工程的 `bin` 目录和引入的 `jar` 包。
+
+通常，我们在自己编写的 class 中，会引用 Java 核心库的 class，例如，String、ArrayList 等。这些 class 应该上哪去找？
+
+有很多“如何设置 classpath”的文章会告诉你把 JVM 自带的 rt.jar 放入 classpath，但事实上，根本不需要告诉 JVM 如何去 Java 核心库查找 class，JVM 怎么可能笨到连自己的核心库在哪都不知道！
+
+更好的做法是，不要设置 classpath！默认的当前目录.对于绝大多数情况都够用了。
+
+**注意：不要把任何 Java 核心库添加到 classpath 中！JVM 根本不依赖 classpath 加载核心库！**
+
+## jar 包
+
+如果有很多.class 文件，散落在各层目录中，肯定不便于管理。如果能把目录打一个包，变成一个文件，就方便多了。
+
+jar 包就是用来干这个事的，它可以把 package 组织的目录层级，以及各个目录下的所有文件（包括.class 文件和其他文件）都打成一个 jar 文件，这样一来，无论是备份，还是发给客户，就简单多了。
+
+jar 包实际上就是一个 zip 格式的压缩文件，而 jar 包相当于目录。如果我们要执行一个 jar 包的 class，就可以把 jar 包放到 classpath 中：`java -cp ./hello.jar abc.xyz.Hello`，这样 JVM 会自动在 hello.jar 文件里去搜索某个类。
+
+### 如何创建 jar 包？
+
+因为 jar 包就是 zip 包，所以，直接在资源管理器中，找到正确的目录，点击右键，在弹出的快捷菜单中选择“发送到”，“压缩(zipped)文件夹”，就制作了一个 zip 文件。然后，把后缀从.zip 改为.jar，一个 jar 包就创建成功。
+
+这里需要特别注意的是，jar 包里的第一层目录，不能是 bin，而应该是 hong、ming、mr。
+
+上面的 hello.zip 包含有 bin 目录，说明打包打得有问题，JVM 仍然无法从 jar 包中查找正确的 class，原因是 hong.Person 必须按 `hong/Person.class` 存放，而不是 `bin/hong/Person.class`。
+
+jar 包还可以包含一个特殊的 `/META-INF/MANIFEST.MF` 文件，`MANIFEST.MF` 是纯文本，可以指定 Main-Class 和其它信息。JVM 会自动读取这个 MANIFEST.MF 文件，如果存在 Main-Class，我们就不必在命令行指定启动的类名，而是用更方便的命令：`java -jar hello.jar`
+
+在大型项目中，不可能手动编写 MANIFEST.MF 文件，再手动创建 jar 包。Java 社区提供了大量的开源构建工具，例如 Maven，可以非常方便地创建 jar 包。
+
+## 模块
+
+jar 只是用于存放 class 的容器，它并不关心 class 之间的依赖。
+
+从 Java 9 开始引入的模块，主要是为了解决“依赖”这个问题。如果 a.jar 必须依赖另一个 b.jar 才能运行，那我们应该给 a.jar 加点说明啥的，让程序在编译和运行的时候能自动定位到 b.jar，这种自带“依赖关系”的 class 容器就是模块。
+
+为了表明 Java 模块化的决心，从 Java 9 开始，原有的 Java 标准库已经由一个单一巨大的 rt.jar 分拆成了几十个模块，这些模块以.jmod 扩展名标识，可以在$JAVA_HOME/jmods 目录下找到它们：
+
+```
+java.base.jmod
+java.compiler.jmod
+java.datatransfer.jmod
+java.desktop.jmod
+...
+```
+
+这些.jmod 文件每一个都是一个模块，模块名就是文件名。例如：模块 java.base 对应的文件就是 java.base.jmod。模块之间的依赖关系已经被写入到模块内的 module-info.class 文件了。所有的模块都直接或间接地依赖 java.base 模块，只有 java.base 模块不依赖任何模块，它可以被看作是“根模块”，好比所有的类都是从 Object 直接或间接继承而来。
+
+把一堆 class 封装为 jar 仅仅是一个打包的过程，而把一堆 class 封装为模块则不但需要打包，还需要写入依赖关系，并且还可以包含二进制代码（通常是 JNI 扩展）。此外，模块支持多版本，即在同一个模块中可以为不同的 JVM 提供不同的版本。
 
 ## 常用类
 
