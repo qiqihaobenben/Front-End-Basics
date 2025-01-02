@@ -2524,6 +2524,60 @@ Java 8 的新日期/时间 API 比早期的 java.util 包更好，因为它提�
 
 ## 异常
 
+Java 内置了一套异常处理机制，总是使用异常来表示错误，通过 `try ... catch` 捕获异常。
+
+异常是一种 class，因此它本身带有类型信息。异常可以在任何地方抛出，但只需要在上层捕获。
+
+### 异常 class 的继承关系
+
+- Object
+  - Throwable
+    - Error 严重的错误
+      - OutOfMemoryError 内存耗尽
+      - NoClassDefFoundError 无法加载某个 Class
+      - StackOverflowError 栈溢出
+    - Exception 程序运行时的错误
+      - RuntimeException
+        - NullPointerException
+        - IndexOutOfBoundsException
+        - SecurityException
+        - IllegalArgumentException
+          - NumberFormatException
+      - IOException
+        - UnsupportedCharsetException
+        - FileNotFoundException
+        - SocketException
+      - ParseException
+      - GeneralSecurityException
+      - SQLException
+      - TimeoutException
+
+从继承关系可知：Throwable 是异常体系的根，它继承自 Object。Throwable 有两个体系：Error 和 Exception，Error 表示严重的错误，程序对此一般无能为力。而 Exception 则是程序运行时的错误，它可以被捕获并处理。
+
+Exception 又分为两大类：
+
+1. RuntimeException 以及它的子类（包括 NullPointerException、IllegalArgumentException）；
+2. 非 RuntimeException（包括 IOException、ReflectiveOperationException 等等）
+
+某些异常是应用程序逻辑处理的一部分，应该捕获并处理。例如：
+
+- NumberFormatException：数值类型的格式错误
+- FileNotFoundException：未找到文件
+- SocketException：读取网络失败
+
+还有一些异常是程序逻辑编写不对造成的，应该修复程序本身。例如：
+
+- NullPointerException：空指针异常，俗称 NPE，对某个 null 的对象调用方法或字段就会产生 NullPointerException，这个异常通常是由 JVM 抛出的
+- IndexOutOfBoundsException：数组索引越界
+
+#### Java 规定异常处理的方式
+
+- 必须捕获的异常，包括 Exception 及其子类，但不包括 RuntimeException 及其子类，这种类型的异常称为 Checked Exception。
+  - 只要是方法声明的 Checked Exception，不在调用层捕获，也必须在更高的调用层捕获。所有未捕获的异常，最终也必须在 main()方法中捕获，不会出现漏写 try 的情况。这是由编译器保证的。main()方法也是最后捕获 Exception 的机会。
+- 不需要捕获的异常，或者说无需强制捕获，包括 Error 及其子类，RuntimeException 及其子类。
+
+### 常见的异常种类
+
 - 空指针异常（NullPointerException）: 当程序试图在没有引用的对象上调用方法，或者试图访问或修改一个不存在的对象时，抛出此异常。
 
 - 类型转换异常（ClassCastException）: 当一个类型的对象转换成不兼容的类型时，抛出此异常。
@@ -2532,7 +2586,7 @@ Java 8 的新日期/时间 API 比早期的 java.util 包更好，因为它提�
 
 - 数学异常（ArithmeticException）: 数学运算异常时抛出此异常。
 
-- 算术异常（IllegalArgumentException）: 当传递给方法的参数不合法时，抛出此异常。
+- 参数异常（IllegalArgumentException）: 当传递给方法的参数不合法时，抛出此异常。
 
 - 违反安全原则异常（SecurityException）: 当一个程序违反安全原则时，抛出此异常。
 
@@ -2543,6 +2597,188 @@ Java 8 的新日期/时间 API 比早期的 java.util 包更好，因为它提�
 - 字符串解析异常（NumberFormatException）: 当程序试图将字符串转换成不支持的数字格式时，抛出此异常。
 
 - 运行时异常（RuntimeException）: 所有可能在 Java 程序运行时发生的异常的基类.
+
+### 抛出异常
+
+先看个示例，查看 Integer.java 源码可知，抛出异常的方法代码如下：
+
+```java
+public static int parseInt(String s, int radix) throws NumberFormatException {
+    if (s == null) {
+        throw new NumberFormatException("null");
+    }
+    ...
+}
+```
+
+如何抛出异常？参考 Integer.parseInt()方法，抛出异常分两步：
+
+- 创建某个 Exception 的实例；
+- 用 throw 语句抛出。
+
+```java
+void process2(String s) {
+    if (s==null) {
+        NullPointerException e = new NullPointerException();
+        throw e;
+        // 实际上，绝大部分抛出异常的代码都会合并写成一行：
+        // throw new NullPointerException();
+    }
+}
+```
+
+如果一个方法捕获了某个异常后，又在 catch 子句中抛出新的异常，就相当于把抛出的异常类型“转换”了，并且新的异常丢失了原始异常信息
+
+为了能追踪到完整的异常栈，在构造异常的时候，把原始的 Exception 实例传进去，新的 Exception 就可以持有原始 Exception 信息。
+
+```
+try {
+    ...
+} catch (NullPointerException e) {
+    throw new IllegalArgumentException(e);
+}
+```
+
+**在代码中获取原始异常可以使用 Throwable.getCause()方法。如果返回 null，说明已经是“根异常”了。**
+
+### 捕获之后的一些操作
+
+#### 多 catch 语句
+
+可以使用多个 catch 语句，每个 catch 分别捕获对应的 Exception 及其子类。JVM 在捕获到异常后，会从上到下匹配 catch 语句，匹配到某个 catch 后，执行 catch 代码块，然后不再继续匹配。
+
+**简单地说就是：多个 catch 语句只有一个能被执行。**
+
+**存在多个 catch 的时候，catch 的顺序非常重要：子类必须写在前面。**
+
+#### finally 语句
+
+finally 语句块保证有无错误都会执行。
+
+注意 finally 有几个特点：
+
+- finally 语句不是必须的，可写可不写；
+- finally 总是最后执行。
+
+如果没有发生异常，就正常执行 `try { ... }`语句块，然后执行 `finally`。如果发生了异常，就中断执行 `try { ... }`语句块，然后跳转执行匹配的 `catch` 语句块，最后执行 `finally`。
+
+可见，finally 是用来保证一些代码必须执行的。
+
+**注意：在 catch 中抛出异常，不会影响 finally 的执行。JVM 会先执行 finally，然后抛出异常。**
+
+某些情况下，可以没有 catch，只使用 try ... finally 结构。因为方法声明了可能抛出的异常，所以可以不写 catch。
+
+```java
+void process(String file) throws IOException {
+    try {
+        ...
+    } finally {
+        System.out.println("END");
+    }
+}
+```
+
+##### finally 的异常屏蔽
+
+如果在执行 finally 语句时抛出异常，那么，catch 语句的异常还能否继续抛出？答案是不能继续抛出。
+
+finally 抛出异常后，原来在 catch 中准备抛出的异常就“消失”了，因为只能抛出一个异常。没有被抛出的异常称为“被屏蔽”的异常（Suppressed Exception）。
+
+在极少数的情况下，我们需要获知所有的异常。如何保存所有的异常信息？方法是先用 origin 变量保存原始异常，然后调用 `Throwable.addSuppressed()`，把原始异常添加进来，最后在 finally 抛出。
+
+通过 `Throwable.getSuppressed()` 可以获取所有的 Suppressed Exception。
+
+绝大多数情况下，在 finally 中不要抛出异常。因此，我们通常不需要关心 Suppressed Exception。如果在 finally 中抛出异常，应该原始异常加入到原有异常中。调用方可通过 Throwable.getSuppressed()获取所有添加的 Suppressed Exception。
+
+#### 捕获多种异常
+
+如果某些异常的处理逻辑相同，但是异常本身不存在继承关系，为了避免编写多条 catch 子句，可以用`|`合并到一起
+
+```java
+public static void main(String[] args) {
+    try {
+        process1();
+        process2();
+        process3();
+    } catch (IOException | NumberFormatException e) {
+        // IOException或NumberFormatException
+        System.out.println("Bad input");
+    } catch (Exception e) {
+        System.out.println("Unknown error");
+    }
+}
+```
+
+#### e.printStackTrace()
+
+所有异常都可以调用 printStackTrace()方法打印异常栈，这是一个简单有用的快速打印异常的方法。
+
+#### 处理 NullPointerException
+
+如果遇到 NullPointerException，我们应该如何处理？首先，必须明确，NullPointerException 是一种代码逻辑错误，遇到 NullPointerException，遵循原则是早暴露，早修复，严禁使用 catch 来隐藏这种编码错误。
+
+可以启用 Java 14 的增强异常信息来查看 NullPointerException 的详细错误信息。这种增强的 NullPointerException 详细信息是 Java 14 新增的功能，但默认是关闭的，我们可以给 JVM 添加一个-XX:+ShowCodeDetailsInExceptionMessages 参数启用它：`java -XX:+ShowCodeDetailsInExceptionMessages Main.java`
+
+### 自定义异常
+
+在一个大型项目中，可以自定义新的异常类型，但是，保持一个合理的异常继承体系是非常重要的。
+
+一个常见的做法是自定义一个 BaseException 作为“根异常”，然后，派生出各种业务类型的异常。
+
+BaseException 需要从一个适合的 Exception 派生，通常建议从 RuntimeException 派生：
+
+```java
+public class BaseException extends RuntimeException {
+}
+```
+
+其他业务类型的异常就可以从 BaseException 派生：
+
+```java
+public class UserNotFoundException extends BaseException {
+}
+
+public class LoginFailedException extends BaseException {
+}
+```
+
+自定义的 BaseException 应该提供多个构造方法
+
+```java
+public class BaseException extends RuntimeException {
+    public BaseException() {
+        super();
+    }
+
+    public BaseException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public BaseException(String message) {
+        super(message);
+    }
+
+    public BaseException(Throwable cause) {
+        super(cause);
+    }
+}
+```
+
+上述构造方法实际上都是原样照抄 RuntimeException。这样，抛出异常的时候，就可以选择合适的构造方法。通过 IDE 可以根据父类快速生成子类的构造方法。
+
+### 使用断言
+
+断言（Assertion）是一种调试程序的方式。在 Java 中，使用 assert 关键字来实现断言。
+
+例如：语句`assert x >= 0;`即为断言，断言条件 x >= 0 预期为 true。如果计算结果为 false，则断言失败，抛出 AssertionError。
+
+使用 assert 语句时，还可以添加一个可选的断言消息：`assert x >= 0 : "x must >= 0";`，这样，断言失败的时候，AssertionError 会带上消息 x must >= 0，更加便于调试。
+
+**Java 断言的特点是：断言失败时会抛出 AssertionError，导致程序结束退出。因此，断言不能用于可恢复的程序错误，只应该用于开发和测试阶段。**
+
+JVM 默认关闭断言指令，即遇到 assert 语句就自动忽略了，不执行。
+
+要执行 assert 语句，必须给 Java 虚拟机传递-enableassertions（可简写为-ea）参数启用断言。所以，上述程序必须在命令行下运行才有效果：`java -ea Main.java`
 
 ## 集合
 
@@ -2707,7 +2943,278 @@ Java 中的字符流也称为字符输入/输出流，是把字符数据读入�
 
 ## 反射
 
-在 Java 的反射应用中，最常见的就是对 Class 类的相关操作，Class 类常用的反射接口。
+class（包括 interface）的本质是数据类型（Type）。所以无继承关系的 class 数据类型无法赋值。
+
+而 class 是由 JVM 在执行过程中动态加载的。JVM 在第一次读取到一种 class 类型时，将其加载进内存。
+
+每加载一种 class，JVM 就为其创建一个 Class 类型的实例，并关联起来。注意：这里的 Class 类型是一个名叫 Class 的 class。它长这样：
+
+```java
+public final class Class {
+    private Class() {}
+}
+```
+
+以 String 类为例，当 JVM 加载 String 类时，它首先读取 String.class 文件到内存，然后，为 String 类创建一个 Class 实例并关联起来：
+
+```java
+Class cls = new Class(String);
+```
+
+这个 Class 实例是 JVM 内部创建的，如果我们查看 JDK 源码，可以发现 Class 类的构造方法是 private，只有 JVM 能创建 Class 实例，我们自己的 Java 程序是无法创建 Class 实例的。
+
+所以，JVM 持有的每个 Class 实例都指向一个数据类型（class 或 interface）
+
+**由于 JVM 为每个加载的 class 创建了对应的 Class 实例，并在实例中保存了该 class 的所有信息，包括类名、包名、父类、实现的接口、所有方法、字段等，因此，如果获取了某个 Class 实例，我们就可以通过这个 Class 实例获取到该实例对应的 class 的所有信息。**
+
+**这种通过 Class 实例获取 class 信息的方法称为反射（Reflection）**
+
+### 如何获取一个 `class` 的 `Class` 实例？
+
+有三种方法
+
+#### 1、直接通过一个 class 的静态变量 class 获取
+
+```java
+Class cls = String.class;
+```
+
+#### 2、如果有一个实例，可以通过该实例提供的 getClass()方法获取
+
+```java
+String s = "Hello";
+Class cls = s.getClass();
+```
+
+#### 3、如果知道一个 class 的完整类名，可以通过静态方法 `Class.forName()` 获取
+
+```java
+Class cls = Class.forName("java.lang.String");
+```
+
+对任意的一个 Object 实例，只要我们获取了它的 Class，就可以获取它的一切信息或者对他进行操作。例如获取到了一个 Class 实例，我们就可以通过该 Class 实例来创建对应类型的实例：
+
+```java
+/ 获取String的Class实例:
+Class cls = String.class;
+// 创建一个String实例:
+String s = (String) cls.newInstance();
+```
+
+### class 的动态加载
+
+JVM 在执行 Java 程序的时候，并不是一次性把所有用到的 class 全部加载到内存，而是第一次需要用到 class 时才加载。
+
+### 常用的反射接口。
+
+#### 通过 Class 实例获取字段信息
+
+- Field getField(name)：根据字段名获取类的某个 public field（包括父类）
+- Field getDeclaredField(name)：根据字段名获取当前类的某个 field（包括 private field 但是不包括父类的 field）
+- Field[] getFields()：获取类的所有 public field（包括父类）
+- Field[] getDeclaredFields()：获取当前类的所有 field（包括 private field 但是不包括父类的 field）
+
+##### 一个 Field 对象包含了一个字段的所有信息：
+
+- getName()：返回字段名称，例如，"name"；
+- getType()：返回字段类型，也是一个 Class 实例，例如，String.class；
+- getModifiers()：返回字段的修饰符，它是一个 int，不同的 bit 表示不同的含义。
+
+以 String 类的 value 字段为例，它的定义是：
+
+```java
+public final class String {
+    private final byte[] value;
+}
+
+Field f = String.class.getDeclaredField("value");
+f.getName(); // "value"
+f.getType(); // class [B 表示byte[]类型
+int m = f.getModifiers();
+Modifier.isFinal(m); // true
+Modifier.isPublic(m); // false
+Modifier.isProtected(m); // false
+Modifier.isPrivate(m); // true
+Modifier.isStatic(m); // false
+```
+
+##### 获取字段值
+
+利用反射拿到字段的一个 Field 实例只是第一步，我们还可以拿到一个实例对应的该字段的值，`Field.get(Object)` 获取指定实例的指定字段的值。
+
+```java
+// reflection
+// 先获取Class实例，再获取Field实例，然后，用Field.get(Object)获取指定实例的指定字段的值。
+import java.lang.reflect.Field;
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Object p = new Person("Xiao Ming");
+        Class c = p.getClass();
+        Field f = c.getDeclaredField("name");
+        Object value = f.get(p);
+        System.out.println(value); // "Xiao Ming"
+    }
+}
+
+class Person {
+    private String name;
+
+    public Person(String name) {
+        this.name = name;
+    }
+}
+```
+
+运行代码，如果不出意外，会得到一个 IllegalAccessException，这是因为 name 被定义为一个 private 字段，正常情况下，Main 类无法访问 Person 类的 private 字段。要修复错误，可以将 private 改为 public，或者，在调用 Object value = f.get(p);前，先写一句：`f.setAccessible(true);`
+
+调用 Field.setAccessible(true)的意思是，别管这个字段是不是 public，一律允许访问。
+
+可以试着加上上述语句，再运行代码，就可以打印出 private 字段的值。
+
+有童鞋会问：如果使用反射可以获取 private 字段的值，那么类的封装还有什么意义？
+
+答案是正常情况下，我们总是通过 p.name 来访问 Person 的 name 字段，编译器会根据 public、protected 和 private 决定是否允许访问字段，这样就达到了数据封装的目的。
+
+而反射是一种非常规的用法，使用反射，首先代码非常繁琐，其次，它更多地是给工具或者底层框架来使用，目的是在不知道目标实例任何信息的情况下，获取特定字段的值。
+
+此外，setAccessible(true)可能会失败。如果 JVM 运行期存在 SecurityManager，那么它会根据规则进行检查，有可能阻止 setAccessible(true)。例如，某个 SecurityManager 可能不允许对 java 和 javax 开头的 package 的类调用 setAccessible(true)，这样可以保证 JVM 核心库的安全。
+
+##### 设置字段值
+
+通过 Field 实例既然可以获取到指定实例的字段值，自然也可以设置字段的值。
+
+设置字段值是通过 `Field.set(Object, Object)` 实现的，其中第一个 Object 参数是指定的实例，第二个 Object 参数是待修改的值。
+
+例如：`f.set(p, "Xiao Hong");`
+
+#### 调用方法
+
+- Method getMethod(name, Class...)：获取类的某个 public Method（包括父类）
+- Method getDeclaredMethod(name, Class...)：获取当前类的某个 Method（包括 private method 但是不包括父类的 method）
+- Method[] getMethods()：获取类的所有 public Method（包括父类）
+- Method[] getDeclaredMethods()：获取当前类的所有 Method（包括 private method 但是不包括父类的 method）
+
+一个 Method 对象包含一个方法的所有信息：
+
+- getName()：返回方法名称，例如："getScore"；
+- getReturnType()：返回方法返回值类型，也是一个 Class 实例，例如：String.class；
+- getParameterTypes()：返回方法的参数类型，是一个 Class 数组，例如：`{String.class, int.class}`；
+- getModifiers()：返回方法的修饰符，它是一个 int，不同的 bit 表示不同的含义。
+
+##### 调用实例方法
+
+当我们获取到一个 Method 对象时，就可以对它进行调用。
+
+对 Method 实例调用 invoke 就相当于调用该方法，invoke 的第一个参数是对象实例，即在哪个实例上调用该方法，后面的可变参数要与方法参数一致，否则将报错。
+
+```java
+// 用反射来调用substring方法
+// reflection
+import java.lang.reflect.Method;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // String对象:
+        String s = "Hello world";
+        // 获取String substring(int)方法，参数为int:
+        Method m = String.class.getMethod("substring", int.class);
+        // 在s对象上调用该方法并获取结果:
+        String r = (String) m.invoke(s, 6);
+        // 打印调用结果:
+        System.out.println(r); // "world"
+    }
+}
+```
+
+##### 调用静态方法
+
+如果获取到的 Method 表示一个静态方法，调用静态方法时，由于无需指定实例对象，所以 invoke 方法传入的第一个参数永远为 null。
+
+```java
+// 以 Integer.parseInt(String) 为例
+// reflection
+import java.lang.reflect.Method;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // 获取Integer.parseInt(String)方法，参数为String:
+        Method m = Integer.class.getMethod("parseInt", String.class);
+        // 调用该静态方法并获取结果:
+        Integer n = (Integer) m.invoke(null, "12345");
+        // 打印调用结果:
+        System.out.println(n);
+    }
+}
+```
+
+##### 调用非 public 方法
+
+和 Field 类似，对于非 public 方法，我们虽然可以通过 Class.getDeclaredMethod()获取该方法实例，但直接对其调用将得到一个 IllegalAccessException。为了调用非 public 方法，我们通过 Method.setAccessible(true)允许其调用
+
+```java
+// reflection
+import java.lang.reflect.Method;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        Person p = new Person();
+        Method m = p.getClass().getDeclaredMethod("setName", String.class);
+        m.setAccessible(true);
+        m.invoke(p, "Bob");
+        System.out.println(p.name);
+    }
+}
+
+class Person {
+    String name;
+    private void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+#### 调用构造方法
+
+通常使用 new 操作符创建新的实例：`Person p = new Person();`，如果通过反射来创建新的实例，可以调用 Class 提供的 newInstance()方法：
+
+```java
+Person p = Person.class.newInstance();
+```
+
+调用 Class.newInstance()的局限是，它只能调用该类的 public 无参数构造方法。如果构造方法带有参数，或者不是 public，就无法直接通过 Class.newInstance()来调用。
+
+为了调用任意的构造方法，Java 的反射 API 提供了 Constructor 对象，通过 `getConstructor()` 获取，它包含一个构造方法的所有信息，可以创建一个实例。Constructor 对象和 Method 非常类似，不同之处仅在于它是一个构造方法，并且，调用结果总是返回实例
+
+```java
+import java.lang.reflect.Constructor;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // 获取构造方法Integer(int):
+        Constructor cons1 = Integer.class.getConstructor(int.class);
+        // 调用构造方法:
+        Integer n1 = (Integer) cons1.newInstance(123);
+        System.out.println(n1);
+
+        // 获取构造方法Integer(String)
+        Constructor cons2 = Integer.class.getConstructor(String.class);
+        Integer n2 = (Integer) cons2.newInstance("456");
+        System.out.println(n2);
+    }
+}
+```
+
+通过 Class 实例获取 Constructor 的方法如下：
+
+- getConstructor(Class...)：获取某个 public 的 Constructor；
+- getDeclaredConstructor(Class...)：获取某个 Constructor；
+- getConstructors()：获取所有 public 的 Constructor；
+- getDeclaredConstructors()：获取所有 Constructor。
+
+**注意 Constructor 总是当前类定义的构造方法，和父类无关，因此不存在多态的问题。**
+
+**调用非 public 的 Constructor 时，必须首先通过 setAccessible(true)设置允许访问。setAccessible(true)可能会失败。**
 
 - String getName(): 返回类的完整名称，包括包名。
 
@@ -2718,8 +3225,6 @@ Java 中的字符流也称为字符输入/输出流，是把字符数据读入�
 - Class[] getInterfaces(): 返回当前类实现的接口 Class 对象数组。
 
 - int getModifiers(): 返回类的修饰符（public、private、protected 等）。
-
-- Field[] getFields(): 返回类的公共属性。
 
 - Method[] getMethods(): 返回类的公共方法。
 
