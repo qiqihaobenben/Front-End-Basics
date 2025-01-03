@@ -2782,6 +2782,18 @@ JVM 默认关闭断言指令，即遇到 assert 语句就自动忽略了，不�
 
 ## 集合
 
+Java 标准库自带的 `java.util` 包提供了集合类：`Collection`，它是除 Map 外所有其他集合类的根接口。Java 的 java.util 包主要提供了以下三种类型的集合：
+
+- List：一种有序列表的集合，例如，按索引排列的 Student 的 List；
+- Set：一种保证没有重复元素的集合，例如，所有无重复名称的 Student 的 Set；
+- Map：一种通过键值（key-value）查找的映射表集合，例如，根据 Student 的 name 查找对应 Student 的 Map。
+
+Java 集合的设计有几个特点：
+
+- 一是实现了接口和实现类相分离，例如，有序表的接口是 List，具体的实现类有 ArrayList，LinkedList 等
+- 二是支持泛型，我们可以限制在一个集合中只能放入同一种数据类型的元素，例如：`List<String> list = new ArrayList<>(); // 只能放入String类型`
+- 最后，Java 访问集合总是通过统一的方式——迭代器（Iterator）来实现，它最明显的好处在于无需知道集合内部元素是按什么方式存储的。
+
 ### 单列集合 Collection
 
 #### List
