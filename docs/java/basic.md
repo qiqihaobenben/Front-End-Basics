@@ -2794,32 +2794,164 @@ Java 集合的设计有几个特点：
 - 二是支持泛型，我们可以限制在一个集合中只能放入同一种数据类型的元素，例如：`List<String> list = new ArrayList<>(); // 只能放入String类型`
 - 最后，Java 访问集合总是通过统一的方式——迭代器（Iterator）来实现，它最明显的好处在于无需知道集合内部元素是按什么方式存储的。
 
-### 单列集合 Collection
+单列集合 Collection 有 List、Set、双列集合有 Map
 
-#### List
+### List
 
 Java 的 List 类型集合是指位于 java.util 包下的 List 接口，主要分类有两种，分别是 ArrayList 和 LinkedList 两个类
-
-值可以重复
 
 - ArrayList
 - LinkedList
 
-##### ArrayList
+使用 List 时，我们要关注 List 接口的规范。**List 接口允许我们添加重复的元素，即 List 内部的元素可以重复。**
+
+**List 还允许添加 `null`**
+
+#### ArrayList
 
 ArrayList 是基于数组实现的 List 集合，底层其实就是使用了一个数组进行的元素存储。
 
 当我们不断往 ArrayList 里面添加元素的时候，内部会有一个判断机制，判断数组的容量是否达到了一定阈值，如果达到了就会发生一个数组拷贝操作，将旧的数组的内容拷贝到新的数组里面去，这部分的操作会比较消耗性能，所以说它的插入和删除操作效率比较低。但是采用数组进行存储，底层会有数组的索引下标存在，因此当我们需要根据索引下标去检索数据的时候，其效率会非常高。
 
-##### LinkedList
+可见，ArrayList 把添加和删除的操作封装起来，让我们操作 List 类似于操作数组，却不用关心内部元素如何移动。
+
+我们考察 `List<E>` 接口，可以看到几个主要的接口方法：
+
+- 在末尾添加一个元素：`boolean add(E e)`
+- 在指定索引添加一个元素：`boolean add(int index, E e)`
+- 删除指定索引的元素：`E remove(int index)`
+- 删除某个元素：`boolean remove(Object e)`
+- 获取指定索引的元素：`E get(int index)`
+- 获取链表大小（包含元素的个数）：`int size()`
+
+#### LinkedList
 
 LinkedList 是基于双向链表实现的，当我们插入对象的时候，内部会创建一个新的节点对象，然后放入到一条链表的尾部，由于没有牵扯到类似于 ArrayList 那样的数组拷贝操作，所以它的插入和删除操作效率比较高。但是由于没有类似于数组的索引下标的存在，所以在进行数据检索的时候，效率会稍微弱一些。
 
-##### List 是否真的可以无限量添加元素？
+#### ArrayList 和 LinkedList 对比
+
+- 获取指定元素，ArrayList 速度很快，LinkedList 需要从头开始查找元素，速度相对慢
+- 添加元素到末尾，ArrayList 速度很快，LinkedList 速度也很快
+- 在指定位置添加/删除，ArrayList 需要移动元素，速度相对慢，速度很快，LinkedList 不需要移动元素，速度很快
+- 内存占用，ArrayList 较小，LinkedList 较大
+
+#### 创建 List
+
+有三种方式，除了使用 ArrayList 和 LinkedList，我们还可以通过 List 接口提供的 of()方法，根据给定元素快速创建 List。
+
+List.of Java 9 引入的新特性,代码更简洁
+
+- 创建不可变集合
+- 不能添加、删除或修改元素
+- 不允许 null 元素
+
+```java
+public class ListExample {
+    public static void main(String[] args) {
+        // ArrayList 示例
+        List<Integer> arrayList = new ArrayList<>();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+
+        // LinkedList 示例
+        List<Integer> linkedList = new LinkedList<>();
+        linkedList.add(1);
+        linkedList.add(2);
+        linkedList.add(3);
+
+        // List.of() 示例
+        List<Integer> immutableList = List.of(1, 2, 3);
+
+        // 打印结果
+        System.out.println("ArrayList: " + arrayList);
+        System.out.println("LinkedList: " + linkedList);
+        System.out.println("Immutable List: " + immutableList);
+    }
+}
+// 如果需要可变集合，使用 ArrayList 或 LinkedList
+// 如果需要频繁随机访问，选择 ArrayList
+// 如果需要频繁插入删除，选择 LinkedList
+// 如果需要不可变集合，使用 List.of()
+```
+
+#### 遍历 List
+
+和数组类型类似，我们要遍历一个 List，完全可以用 for 循环根据索引配合 get(int)方法遍历，但这种方式并不推荐，一是代码复杂，二是因为 get(int)方法只有 ArrayList 的实现是高效的，换成 LinkedList 后，索引越大，访问速度越慢。
+
+所以我们要始终坚持使用迭代器 Iterator 来访问 List。Iterator 本身也是一个对象，但它是由 List 的实例调用 iterator()方法的时候创建的。Iterator 对象知道如何遍历一个 List，并且不同的 List 类型，返回的 Iterator 对象实现也是不同的，但总是具有最高的访问效率。
+
+Iterator 对象有两个方法：boolean hasNext()判断是否有下一个元素，E next()返回下一个元素。因此，使用 Iterator 遍历 List 代码如下：
+
+```java
+import java.util.Iterator;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        List<String> list = List.of("apple", "pear", "banana");
+        for (Iterator<String> it = list.iterator(); it.hasNext(); ) {
+            String s = it.next();
+            System.out.println(s);
+        }
+    }
+}
+```
+
+可能觉得使用 Iterator 访问 List 的代码比使用索引更复杂。但是，要记住，通过 Iterator 遍历 List 永远是最高效的方式。并且，由于 Iterator 遍历是如此常用，所以，Java 的 for each 循环本身就可以帮我们使用 Iterator 遍历。把上面的代码再改写如下：
+
+```java
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        List<String> list = List.of("apple", "pear", "banana");
+        for (String s : list) {
+            System.out.println(s);
+        }
+    }
+}
+```
+
+实际上，只要实现了 Iterable 接口的集合类都可以直接用 for each 循环来遍历，Java 编译器本身并不知道如何遍历集合对象，但它会自动把 for each 循环变成 Iterator 的调用，原因就在于 Iterable 接口定义了一个 `Iterator<E> iterator()` 方法，强迫集合类必须返回一个 Iterator 实例。
+
+#### List 和 Array 转换
+
+##### 把 List 变为 Array 有三种方法
+
+- 第一种是调用 `toArray()` 方法直接返回一个 `Object[]` 数组
+- 第二种方式是给 `toArray(T[])` 传入一个类型相同的 Array，List 内部自动把元素复制到传入的 Array 中
+
+注意到这个 `toArray(T[])` 方法的泛型参数`<T>` 并不是 List 接口定义的泛型参数 `<E>` ，所以，我们实际上可以传入其他类型的数组，例如我们传入 Number 类型的数组，返回的仍然是 Number 类型
+
+但是，如果我们传入类型不匹配的数组，例如，String[]类型的数组，由于 List 的元素是 Integer，所以无法放入 String 数组，这个方法会抛出 ArrayStoreException。
+
+- 最后一种更简洁的写法是通过 List 接口定义的 `T[] toArray(IntFunction<T[]> generator)` 方法：`Integer[] array = list.toArray(Integer[]::new);`
+
+##### 如果我们传入的数组大小和 List 实际的元素个数不一致怎么办？
+
+根据 List 接口的文档，我们可以知道：
+
+如果传入的数组不够大，那么 List 内部会创建一个新的刚好够大的数组，填充后返回；如果传入的数组比 List 元素还要多，那么填充完元素后，剩下的数组元素一律填充 null。
+
+实际上，最常用的是传入一个“恰好”大小的数组 `Integer[] array = list.toArray(new Integer[list.size()]);`
+
+##### 把 Array 转换成 List
+
+反过来，把 Array 变为 List 就简单多了，通过 `List.of(T...)` 方法最简单：
+
+```java
+Integer[] array = { 1, 2, 3 };
+List<Integer> list = List.of(array);
+```
+
+对于 JDK 11 之前的版本，可以使用 Arrays.asList(T...)方法把数组转换成 List。
+
+#### List 是否真的可以无限量添加元素？
 
 不行，List 实际上有一个容量限制，即 List 的容量是受内存限制的，当内存的容量不够时，List 就不能无限量添加元素了。
 
-#### Set
+### Set
 
 值不可重复
 
@@ -2831,7 +2963,7 @@ Set 集合本身的定义是一个接口类型，但是其下可以使用 HashSe
 - LinkedHashSet
 - TreeSet
 
-#### HashSet
+### HashSet
 
 HashSet 是 Java 中的一种 Set 接口实现，它不允许集合中有重复的元素。它使用哈希表实现，允许插入和检索操作的时间复杂度为 O(1)。
 
@@ -2839,7 +2971,7 @@ HashSet 是 Java 中的一种 Set 接口实现，它不允许集合中有重复�
 
 它的一个优势是，它可以检测集合中的重复元素，因此不会出现重复的元素。另外，它也可以快速检索元素，因为它使用哈希函数来存储元素，因此可以快速检索元素。
 
-#### TreeSet
+### TreeSet
 
 TreeSet 是 java.util 包中的一个集合类，它继承自 AbstractSet，是基于 TreeMap 实现的，TreeSet 中的元素是按照元素的自然顺序排序的，或者根据构造函数传入的 Comparator 进行排序的。
 

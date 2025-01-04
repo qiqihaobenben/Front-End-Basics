@@ -113,3 +113,4 @@ Linux 软件包是一种软件的分发方式，软件包是一个压缩文件�
 - [Linux 各个版本介绍](https://blog.csdn.net/lixingshi/article/details/60890593)
 - [常见 Linux 的发行版及不同发行版之间的联系与区别](https://zhuanlan.zhihu.com/p/59867621)
 - [简单认识计算机系统](https://zhuanlan.zhihu.com/p/403919173)
+- [2024 年针对于不同场景的最佳 Linux 发行版](https://linuxiac.com/best-linux-distro-of-2024-there-is-no-such-thing/)
