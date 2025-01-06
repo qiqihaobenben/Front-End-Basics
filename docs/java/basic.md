@@ -2963,25 +2963,38 @@ Set 集合本身的定义是一个接口类型，但是其下可以使用 HashSe
 - LinkedHashSet
 - TreeSet
 
-### HashSet
+Set 用于存储不重复的元素集合，它主要提供以下几个方法：
 
-HashSet 是 Java 中的一种 Set 接口实现，它不允许集合中有重复的元素。它使用哈希表实现，允许插入和检索操作的时间复杂度为 O(1)。
+- 将元素添加进 `Set<E>` ： `boolean add(E e)`
+- 将元素从 `Set<E`>删除： `boolean remove(Object e)`
+- 判断是否包含元素： `boolean contains(Object e)`
+
+#### HashSet
+
+HashSet 是 Java 中的一种 Set 接口实现，它不允许集合中有重复的元素。它使用 Map 实现，允许插入和检索操作的时间复杂度为 O(1)。
 
 它的实现是基于哈希函数的，因此元素的存储次序与插入次序无关，而且比较两个元素时，不需要使用 equals()方法，只需要调用 hashCode()方法就可以判断两个元素是否相等。
 
 它的一个优势是，它可以检测集合中的重复元素，因此不会出现重复的元素。另外，它也可以快速检索元素，因为它使用哈希函数来存储元素，因此可以快速检索元素。
 
-### TreeSet
+#### TreeSet
 
 TreeSet 是 java.util 包中的一个集合类，它继承自 AbstractSet，是基于 TreeMap 实现的，TreeSet 中的元素是按照元素的自然顺序排序的，或者根据构造函数传入的 Comparator 进行排序的。
 
 TreeSet 不允许集合中存在重复元素，它提供了多种操作集合元素的方法，如添加、删除、查找等，还提供了多种不同的迭代器，可以用 Iterator 或 ListIterator 迭代 TreeSet 中的元素。
 
+#### Set 接口并不保证有序，而 SortedSet 接口则保证元素是有序的：
+
+HashSet 是无序的，因为它实现了 Set 接口，并没有实现 SortedSet 接口；
+TreeSet 是有序的，因为它实现了 SortedSet 接口。
+
 ### 双列集合 Map
 
 双列集合，就是常说的键值对集合，在存储的时候都是一个键对应一个值，键是不可以重复的，值是可以重复的。所以在 Map 集合中，键是具备唯一性的。
 
-哈希表是一种以键值对方式进行存储的数据结构，在 Java 体系中，所有的哈希表都会基于统一的 Map 接口去实现。
+Map 是一种映射表，可以通过 key 快速查找 value；
+
+Map 是一种以键值对方式进行存储的数据结构，在 Java 体系中，所有的 Map 都会基于统一的 Map 接口去实现。
 
 Java 中的 Map 接口位于 java.util 包路径下。
 
@@ -2992,21 +3005,50 @@ Java 中的 Map 接口位于 java.util 包路径下。
 
 #### HashMap
 
-HashMap 是一种常用的哈希表实现，它使用哈希算法存储键值对，允许使用 null 值和 null 键，提供快速的查找和插入操作。HashMap 是非线程安全的，不支持顺序遍历。
+HashMap 是一种常用的 Map 实现，它使用哈希算法存储键值对，允许使用 null 值和 null 键，提供快速的查找和插入操作。HashMap 是非线程安全的，不支持顺序遍历。
+
+可以通过 for each 遍历 keySet()，也可以通过 for each 遍历 entrySet()，直接获取 key-value；
+
+最常用的一种 Map 实现是 HashMap。
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Main {
+    public static void main(String[] args) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("apple", 123);
+        map.put("pear", 456);
+        map.put("banana", 789);
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println(key + " = " + value);
+        }
+    }
+}
+```
 
 #### HashTable
 
-HashTable 是一种古老的哈希表实现，它使用哈希算法存储键值对，不允许使用 null 值和 null 键，提供快速的查找和插入操作。HashTable 是线程安全的，不支持顺序遍历。
+HashTable 是一种古老的 Map 实现，它使用哈希算法存储键值对，不允许使用 null 值和 null 键，提供快速的查找和插入操作。HashTable 是线程安全的，不支持顺序遍历。
 
 #### LinkedHashMap
 
-LinkedHashMap 是一种哈希表实现，它使用哈希算法存储键值对，允许使用 null 值和 null 键，提供快速的查找和插入操作。LinkedHashMap 支持顺序遍历，但不是线程安全的。
+LinkedHashMap 是一种 Map 实现，它使用哈希算法存储键值对，允许使用 null 值和 null 键，提供快速的查找和插入操作。LinkedHashMap 支持顺序遍历，但不是线程安全的。
 
 #### TreeMap
 
-TreeMap 是一种基于红黑树实现的有序哈希表，它使用键的自然顺序或者比较器来排序键值对，提供快速的查找和插入操作。TreeMap 是非线程安全的，支持顺序遍历。
+TreeMap 是一种基于红黑树实现的有序 Map，它使用键的自然顺序或者比较器来排序键值对，提供快速的查找和插入操作。TreeMap 是非线程安全的，支持顺序遍历。
 
-根据实际情况，可以根据以下几点来选择不同的哈希表实现：
+**注意到 SortedMap 是接口，它的最常用的实现类是 TreeMap。**
+
+使用 TreeMap 时，放入的 Key 必须实现 Comparable 接口。String、Integer 这些类已经实现了 Comparable 接口，因此可以直接作为 Key 使用。作为 Value 的对象则没有任何要求。
+
+如果作为 Key 的 class 没有实现 Comparable 接口，那么，必须在创建 TreeMap 时同时指定一个自定义排序算法 Comparator
+
+#### 根据实际情况，可以根据以下几点来选择不同的 Map 实现：
 
 - 是否需要线程安全性：如果需要，则可以选择 HashTable；如果不需要，则可以选择 HashMap 或者 LinkedHashMap 等。
 
