@@ -3622,6 +3622,7 @@ public @interface Report {
     String value() default "";
 }
 
+// 容器注解（用于存储多个可重复注解）
 @Target(ElementType.TYPE)
 public @interface Reports {
     Report[] value();
@@ -3637,6 +3638,8 @@ public class Hello {
 - `@Inherited`
 
 使用 `@Inherited` 定义子类是否可继承父类定义的 Annotation。`@Inherited` 仅针对 `@Target(ElementType.TYPE)` 类型的 annotation 有效，并且仅针对 class 的继承，对 interface 的继承无效
+
+其他元注解还有： `@Documented`
 
 #### 如何定义 Annotation
 
