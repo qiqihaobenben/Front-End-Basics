@@ -1937,7 +1937,7 @@ class Student implements Person {
 
 在 Java 中，我们使用 package 来解决名字冲突。
 
-Java 定义了一种名字空间，称之为包：package。一个类总是属于某个包，类名（比如 Person）只是一个简写，真正的完整类名是包名.类名。
+Java 定义了一种名字空间，称之为包：package。一个类总是属于某个包，类名（比如 Person）只是一个简写，真正的完整类名是`包名.类名`。
 
 ```
 例如我写的的Arrays类存放在包my下面，因此，完整类名是my.Arrays；
@@ -1955,7 +1955,7 @@ public class Arrays {
 
 在 Java 虚拟机执行的时候，JVM 只看完整类名，因此，只要包名不同，类就不同。
 
-包可以是多层结构，用.隔开。例如：java.util。
+包可以是多层结构，用 `.` 隔开。例如：java.util。
 
 ### 包作用域
 
@@ -2059,7 +2059,13 @@ public class Main {
 
 自动导入的是 `java.lang` 包，但类似 `java.lang.reflect` 这些包仍需要手动导入。
 
-如果有两个 `class` 名称相同，例如，`mr.jun.Arrays` 和 `java.util.Arrays`，那么只能 import 其中一个，另一个必须写完整类名。
+```
+java.lang 是一个包，里面包含了一些 Java 最基础的类（如 String、System、Math 等）。
+
+java.lang.reflect 是 java.lang 包下的一个子包，里面包含了一些用于反射的类（如 Method、Field 等）。
+```
+
+**如果有两个 `class` 名称相同，例如，`mr.jun.Arrays` 和 `java.util.Arrays`，那么只能 import 其中一个，另一个必须写完整类名。**
 
 ### 包命名最佳实践
 
@@ -2575,7 +2581,9 @@ Exception 又分为两大类：
 
 - 必须捕获的异常，包括 Exception 及其子类，但不包括 RuntimeException 及其子类，这种类型的异常称为 Checked Exception。
   - 只要是方法声明的 Checked Exception，不在调用层捕获，也必须在更高的调用层捕获。所有未捕获的异常，最终也必须在 main()方法中捕获，不会出现漏写 try 的情况。这是由编译器保证的。main()方法也是最后捕获 Exception 的机会。
-- 不需要捕获的异常，或者说无需强制捕获，包括 Error 及其子类，RuntimeException 及其子类。
+- 不必须捕获的异常，或者说无需强制捕获，包括 Error 及其子类，RuntimeException 及其子类。
+
+通俗来讲，必须处理的异常(Checked Exception)，就像开车必须系安全带一样，这类异常 Java 强制你必须处理；可以不处理的异常(Unchecked Exception)，就像走路可能会摔倒，但你不需要每走一步都做特殊处理
 
 ### 常见的异常种类
 
@@ -2882,7 +2890,7 @@ public class ListExample {
 
 所以我们要始终坚持使用迭代器 Iterator 来访问 List。Iterator 本身也是一个对象，但它是由 List 的实例调用 iterator()方法的时候创建的。Iterator 对象知道如何遍历一个 List，并且不同的 List 类型，返回的 Iterator 对象实现也是不同的，但总是具有最高的访问效率。
 
-Iterator 对象有两个方法：boolean hasNext()判断是否有下一个元素，E next()返回下一个元素。因此，使用 Iterator 遍历 List 代码如下：
+Iterator 对象有两个方法：`boolean hasNext()` 判断是否有下一个元素，`E next()` 返回下一个元素。因此，使用 Iterator 遍历 List 代码如下：
 
 ```java
 import java.util.Iterator;
@@ -3130,7 +3138,7 @@ Java 中的字符流也称为字符输入/输出流，是把字符数据读入�
 
 ## 反射
 
-class（包括 interface）的本质是数据类型（Type）。所以无继承关系的 class 数据类型无法赋值。
+class（包括 interface）的本质是数据类型（Type）。所以无继承关系的 class 数据类型之间无法赋值。
 
 而 class 是由 JVM 在执行过程中动态加载的。JVM 在第一次读取到一种 class 类型时，将其加载进内存。
 
@@ -3478,9 +3486,11 @@ Integer.class.isAssignableFrom(Number.class); // false，因为Number不能赋�
 
 ## 注解
 
-什么是注解（Annotation）？注解是放在 Java 源码的类、方法、字段、参数前的一种特殊“注释”
+什么是注解（Annotation）？注解是放在 Java 源码的类、方法、字段、参数前的一种特殊“注释”，是给类，方法以及成员变量等元素增加元数据（metadata）的方式。
 
 注释会被编译器直接忽略，注解则可以被编译器打包进入 class 文件，因此，注解是一种用作标注的“元数据”。
+
+注解只是一种 metadata 传递的渠道，本身并没有实现功能，注解背后具体的功能，还是要开发者自己用代码读取注解，然后根据注解来实现相应的功能，所以每个注解的具体功能要分别学习。注解在 Spring 框架中应用非常广泛。
 
 ### 注解的分类
 

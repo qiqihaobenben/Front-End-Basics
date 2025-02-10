@@ -80,6 +80,17 @@ JavaScript 对象是动态的—可以新增属性也可以删除属性，但是
 
 不一定非要同时制定 getter 和 setter。只指定 getter 意味着属是不能写，尝试写入属性会被忽略，严格模式下会抛出错误。只指定 setter 函数的属性也不能读，非严格模式下读取属性会返回 undefined，在严格模式下会抛出错误。
 
+#### 注意
+
+1、 当 configurable 为 false 时：可以将 writable 从 true 改为 false。不能将 writable 从 false 改为 true。
+
+这种行为的原因：
+
+- 将 writable 从 true 改为 false 是一种限制性操作，不会破坏对象的不变性。
+- 将 writable 从 false 改为 true 是一种放宽操作，可能会破坏对象的不变性，因此被禁止。
+
+2、 `get` 和 `set` 不能与 `value` 或 `writable` 一起使用，可以与 `enumerable` 和 `configurable` 一起使用。
+
 ### 实际使用
 
 #### 创建对象字面量时直接定义属性
