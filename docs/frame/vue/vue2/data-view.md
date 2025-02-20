@@ -1,4 +1,4 @@
-# Vue.js 源码—数据驱动视图（模板和数据如何渲染成最终 DOM）
+# 【三】Vue2 源码—数据驱动视图（模板和数据如何渲染成最终 DOM）
 
 > Vue.js 版本为 v2.6.14
 
@@ -81,14 +81,14 @@ Vue.prototype._init = function (options?: Object) {
   }
   // expose real self
   vm._self = vm
-  initLifecycle(vm)
-  initEvents(vm)
-  initRender(vm)
-  callHook(vm, 'beforeCreate')
-  initInjections(vm) // resolve injections before data/props
-  initState(vm)
-  initProvide(vm) // resolve provide after data/props
-  callHook(vm, 'created')
+  initLifecycle(vm); // 初始化生命周期
+  initEvents(vm); // 初始化事件
+  initRender(vm); // 初始化渲染
+  callHook(vm, 'beforeCreate'); // 调用 beforeCreate 钩子
+  initInjections(vm); // 初始化注入
+  initState(vm); // 初始化状态（data、props、methods 等）
+  initProvide(vm); // 初始化提供
+  callHook(vm, 'created'); // 调用 created 钩子
 
   /* istanbul ignore if */
   if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
@@ -388,7 +388,28 @@ if (opts.watch && opts.watch !== nativeWatch) {
 }
 ```
 
-以上就是一个 Vue 实例对象所包含的属性和方法，除此之外要注意的是：在 `initEvents` 中除了添加属性之外，如果有 `vm.$options._parentListeners` 还要调用 `vm._updateListeners` 方法，而在 `initState` 中又调用了一些其他 init 方法。
+以上就是一个 Vue 实例对象所包含的属性和方法，除此之外要注意的是：在 `initEvents` 中除了添加属性之外，如果有 `vm.$options._parentListeners` 还要调用 `vm._updateListeners` 方法，而在 `initState` 中又调用了一些其他 init 方法，例如 `initProps`，`initMethods`，`initData`，`initComputed`，`initWatch`。
+
+initData 负责将 data 转换为响应式数据，源码位置：`src/core/instance/state.js`
+
+```js
+function initData(vm) {
+  let data = vm.$options.data;
+  data = vm._data = typeof data === 'function' ? getData(data, vm) : data || {};
+  if (!isPlainObject(data)) {
+    data = {};
+  }
+  // 代理 data 到 Vue 实例
+  const keys = Object.keys(data);
+  let i = keys.length;
+  while (i--) {
+    const key = keys[i];
+    proxy(vm, `_data`, key); // 将 data 的属性代理到 Vue 实例
+  }
+  // 观察 data
+  observe(data, true /* asRootData */); // 将 data 转换为响应式对象（通过 Object.defineProperty 实现）。
+}
+```
 
 `_init`执行到最后，如果有 `vm.$options.el` 还要调用 `vm.$mount(vm.$options.el)`，如下：
 
@@ -487,6 +508,41 @@ Vue.prototype.$mount = function (el?: string | Element, hydrating?: boolean): Co
   return mount.call(this, el, hydrating)
 }
 ```
+
+```js
+// 模板编译为渲染函数，源码位置：src/compiler/index.js
+export const createCompiler = createCompilerCreator(function baseCompile(
+  template,
+  options
+) {
+  const ast = parse(template.trim(), options); // 解析模板为 AST
+  optimize(ast, options); // 优化 AST
+  const code = generate(ast, options); // 生成渲染函数代码
+  return {
+    ast,
+    render: code.render, // 渲染函数
+    staticRenderFns: code.staticRenderFns, // 静态渲染函数
+  };
+});
+
+//渲染函数生成虚拟 DOM，源码位置：src/core/instance/render.js
+Vue.prototype._render = function () {
+  const vm = this;
+  const { render } = vm.$options;
+  // 调用渲染函数
+  let vnode;
+  try {
+    // 调用编译后的渲染函数，生成虚拟 DOM（VNode）。
+    // vm.$createElement：用于创建虚拟 DOM 节点的工具函数。
+    vnode = render.call(vm._renderProxy, vm.$createElement);
+  } catch (e) {
+    handleError(e, vm, `render`);
+  }
+  return vnode;
+};
+```
+
+
 
 分析以上代码的逻辑：
 
@@ -590,6 +646,24 @@ export function mountComponent(vm: Component, el: ?Element, hydrating?: boolean)
   }
   return vm
 }
+```
+
+```js
+// 将虚拟 DOM 转换为真实 DOM，源码位置：src/core/instance/lifecycle.js
+Vue.prototype._update = function (vnode, hydrating) {
+  const vm = this;
+  const prevEl = vm.$el;
+  const prevVnode = vm._vnode;
+  vm._vnode = vnode;
+  // 调用 patch 方法
+  if (!prevVnode) {
+    // 初次渲染
+    vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */);
+  } else {
+    // 更新渲染
+    vm.$el = vm.__patch__(prevVnode, vnode);
+  }
+};
 ```
 
 `mountComponent` 核心就是先实例化一个渲染 `Watcher`,在它的回调函数中会调用 `updateComponent` 方法，在此方法中调用 `vm._render` 方法，先生成虚拟 Node，最终调用 `vm._update` 更新 DOM。

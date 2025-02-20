@@ -220,16 +220,18 @@ git rebase --abort # 取消合并
 - 连接远程仓库
 
 ```
-git remote add origin1 git@github.com:yanhaijing/data.js.git # 添加远程仓库
+git remote add origin1 git@github.com:yanhaijing/data.js.git # 添加远程仓库 git remote add <name> <url> 此命令用于添加一个新的远程仓库。<name> 是远程仓库的名称，通常是origin，但也可以自定义。<url> 是远程仓库的URL。
 
 git remote # 显示全部源
 git remote -v # 显示全部源+详细信息
 
-git remote rename origin1 origin2 # 重命名
+git remote rename origin1 origin2 # 重命名 git remote rename <old-name> <new-name>
 
-git remote rm origin # 删除
+git remote rm origin # 删除，也可以是 git remote remove <name>
 
-git remote show origin # 查看指定源的全部信息
+git remote set-url origin https://github.com/user/new-repo.git # 更新远程仓库的URL git remote set-url <name> <new-url>
+
+git remote show origin # 查看指定源的全部信息 git remote show <name>
 
 # 远程分支删除后，清除还存在的本地分支
 git remote prune origin --dry-run # prune 是修剪的意思，–dry-run 表示模拟列出将要修剪的 local stale branch ，但不真的执行。
