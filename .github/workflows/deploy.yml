@@ -45,4 +45,4 @@ jobs:
           FOLDER: ./docs/.vuepress/dist
           SERVER_IP: ${{secrets.SSH_HOST}}
           USERNAME: ${{secrets.SSH_USERNAME}}
-          SERVER_DESTINATION: /home/www/docs.chenfangxu.com/
+          SERVER_DESTINATION: /home/chenfangxu/docs.chenfangxu.com/
