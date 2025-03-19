@@ -37,12 +37,11 @@ jobs:
       - name: Build VuePress site
         run: yarn build
       - name: Deploy to Server
-        uses: AEnterprise/rsync-deploy@v1.0.2
+        uses: easingthemes/ssh-deploy@main
         env:
-          DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
-          ARGS: -avz --delete
-          SERVER_PORT: '22'
-          FOLDER: ./docs/.vuepress/dist
-          SERVER_IP: ${{secrets.SSH_HOST}}
-          USERNAME: ${{secrets.SSH_USERNAME}}
-          SERVER_DESTINATION: /home/chenfangxu/docs.chenfangxu.com/
+          SSH_PRIVATE_KEY: ${{secrets.DEPLOY_KEY}}
+          ARGS: '-rlgoDzvc -i'
+          SOURCE: ./docs/.vuepress/dist
+          REMOTE_HOST: ${{secrets.SSH_HOST}}
+          REMOTE_USER: ${{secrets.SSH_USERNAME}}
+          TARGET: /home/chenfangxu/docs.chenfangxu.com/
