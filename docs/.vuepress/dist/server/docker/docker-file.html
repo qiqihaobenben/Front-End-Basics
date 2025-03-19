@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>dockerfile 详解 | Front-End-Basics</title>
-    <meta name="generator" content="VuePress 1.9.7">
+    <meta name="generator" content="VuePress 1.9.10">
     
     <meta name="description" content="陈方旭的个人文档">
     
-    <link rel="preload" href="/assets/css/0.styles.495d9abf.css" as="style"><link rel="preload" href="/assets/js/app.26ddf859.js" as="script"><link rel="preload" href="/assets/js/2.0a0a1bce.js" as="script"><link rel="preload" href="/assets/js/184.34cddded.js" as="script"><link rel="prefetch" href="/assets/js/10.7fd8ce8b.js"><link rel="prefetch" href="/assets/js/100.e2e655f5.js"><link rel="prefetch" href="/assets/js/101.03d0acad.js"><link rel="prefetch" href="/assets/js/102.2f60b5a6.js"><link rel="prefetch" href="/assets/js/103.c5e7eb0b.js"><link rel="prefetch" href="/assets/js/104.d493f2a3.js"><link rel="prefetch" href="/assets/js/105.c27b5e53.js"><link rel="prefetch" href="/assets/js/106.819ca6ce.js"><link rel="prefetch" href="/assets/js/107.d60fe526.js"><link rel="prefetch" href="/assets/js/108.33cfb7ed.js"><link rel="prefetch" href="/assets/js/109.004e3009.js"><link rel="prefetch" href="/assets/js/11.b58cc63a.js"><link rel="prefetch" href="/assets/js/110.ffa5fbbc.js"><link rel="prefetch" href="/assets/js/111.f3073fff.js"><link rel="prefetch" href="/assets/js/112.3c09cbc0.js"><link rel="prefetch" href="/assets/js/113.b19590e6.js"><link rel="prefetch" href="/assets/js/114.b802a814.js"><link rel="prefetch" href="/assets/js/115.ef4a42a7.js"><link rel="prefetch" href="/assets/js/116.ba312c6c.js"><link rel="prefetch" href="/assets/js/117.3c81d39e.js"><link rel="prefetch" href="/assets/js/118.06a46444.js"><link rel="prefetch" href="/assets/js/119.49125678.js"><link rel="prefetch" href="/assets/js/12.588d1122.js"><link rel="prefetch" href="/assets/js/120.6caa767c.js"><link rel="prefetch" href="/assets/js/121.cad653d5.js"><link rel="prefetch" href="/assets/js/122.b54e599c.js"><link rel="prefetch" href="/assets/js/123.bcf93ede.js"><link rel="prefetch" href="/assets/js/124.f7768fe4.js"><link rel="prefetch" href="/assets/js/125.2dc9e948.js"><link rel="prefetch" href="/assets/js/126.a0a3e110.js"><link rel="prefetch" href="/assets/js/127.32cae0cf.js"><link rel="prefetch" href="/assets/js/128.391dd8b6.js"><link rel="prefetch" href="/assets/js/129.d7ec7c07.js"><link rel="prefetch" href="/assets/js/13.f855b112.js"><link rel="prefetch" href="/assets/js/130.514a6b2e.js"><link rel="prefetch" href="/assets/js/131.af6e4770.js"><link rel="prefetch" href="/assets/js/132.b5eb4428.js"><link rel="prefetch" href="/assets/js/133.278c6032.js"><link rel="prefetch" href="/assets/js/134.8b4fbfea.js"><link rel="prefetch" href="/assets/js/135.af8c3010.js"><link rel="prefetch" href="/assets/js/136.e8d50939.js"><link rel="prefetch" href="/assets/js/137.062c9279.js"><link rel="prefetch" href="/assets/js/138.748f625e.js"><link rel="prefetch" href="/assets/js/139.c8d452ba.js"><link rel="prefetch" href="/assets/js/14.706c60f4.js"><link rel="prefetch" href="/assets/js/140.e3d090bc.js"><link rel="prefetch" href="/assets/js/141.76309f02.js"><link rel="prefetch" href="/assets/js/142.badcfbea.js"><link rel="prefetch" href="/assets/js/143.9444172a.js"><link rel="prefetch" href="/assets/js/144.6811b2cb.js"><link rel="prefetch" href="/assets/js/145.760e53a6.js"><link rel="prefetch" href="/assets/js/146.6a021bf1.js"><link rel="prefetch" href="/assets/js/147.1a09e987.js"><link rel="prefetch" href="/assets/js/148.4a2102a6.js"><link rel="prefetch" href="/assets/js/149.e4992bc8.js"><link rel="prefetch" href="/assets/js/15.dddbfaa5.js"><link rel="prefetch" href="/assets/js/150.bf99144d.js"><link rel="prefetch" href="/assets/js/151.6cae69ac.js"><link rel="prefetch" href="/assets/js/152.e5a32ff0.js"><link rel="prefetch" href="/assets/js/153.5ec16bda.js"><link rel="prefetch" href="/assets/js/154.b99016d2.js"><link rel="prefetch" href="/assets/js/155.330ba388.js"><link rel="prefetch" href="/assets/js/156.272c4fdd.js"><link rel="prefetch" href="/assets/js/157.37f7adc8.js"><link rel="prefetch" href="/assets/js/158.dd412e9f.js"><link rel="prefetch" href="/assets/js/159.92108a41.js"><link rel="prefetch" href="/assets/js/16.e52b2f0e.js"><link rel="prefetch" href="/assets/js/160.691be0a2.js"><link rel="prefetch" href="/assets/js/161.25591efd.js"><link rel="prefetch" href="/assets/js/162.d383ff2b.js"><link rel="prefetch" href="/assets/js/163.b086f272.js"><link rel="prefetch" href="/assets/js/164.51ec1769.js"><link rel="prefetch" href="/assets/js/165.5101617a.js"><link rel="prefetch" href="/assets/js/166.4adb994b.js"><link rel="prefetch" href="/assets/js/167.d0ab2ea3.js"><link rel="prefetch" href="/assets/js/168.57a9a221.js"><link rel="prefetch" href="/assets/js/169.d6830258.js"><link rel="prefetch" href="/assets/js/17.0668268a.js"><link rel="prefetch" href="/assets/js/170.a1c94b18.js"><link rel="prefetch" href="/assets/js/171.758c4100.js"><link rel="prefetch" href="/assets/js/172.a390e082.js"><link rel="prefetch" href="/assets/js/173.6a612dab.js"><link rel="prefetch" href="/assets/js/174.323cd630.js"><link rel="prefetch" href="/assets/js/175.d2d192f7.js"><link rel="prefetch" href="/assets/js/176.83699347.js"><link rel="prefetch" href="/assets/js/177.58e2a96f.js"><link rel="prefetch" href="/assets/js/178.f20d6711.js"><link rel="prefetch" href="/assets/js/179.246c5b5d.js"><link rel="prefetch" href="/assets/js/18.1ec934a2.js"><link rel="prefetch" href="/assets/js/180.99a7cd1a.js"><link rel="prefetch" href="/assets/js/181.8b2ed6c7.js"><link rel="prefetch" href="/assets/js/182.465f06b6.js"><link rel="prefetch" href="/assets/js/183.d5e9d2a9.js"><link rel="prefetch" href="/assets/js/185.c7a7ab75.js"><link rel="prefetch" href="/assets/js/186.dd1d0e7d.js"><link rel="prefetch" href="/assets/js/187.9655d4c4.js"><link rel="prefetch" href="/assets/js/188.e51e42cf.js"><link rel="prefetch" href="/assets/js/189.7107e215.js"><link rel="prefetch" href="/assets/js/19.b3a69aa1.js"><link rel="prefetch" href="/assets/js/190.aea451e0.js"><link rel="prefetch" href="/assets/js/191.4aa4329e.js"><link rel="prefetch" href="/assets/js/192.d1eb7eb6.js"><link rel="prefetch" href="/assets/js/193.84be6ed1.js"><link rel="prefetch" href="/assets/js/194.d27bdfcd.js"><link rel="prefetch" href="/assets/js/195.bd0371b6.js"><link rel="prefetch" href="/assets/js/20.4833415c.js"><link rel="prefetch" href="/assets/js/21.623aae45.js"><link rel="prefetch" href="/assets/js/22.0f922dba.js"><link rel="prefetch" href="/assets/js/23.c71d9286.js"><link rel="prefetch" href="/assets/js/24.6331e619.js"><link rel="prefetch" href="/assets/js/25.aebbd191.js"><link rel="prefetch" href="/assets/js/26.4a350a9e.js"><link rel="prefetch" href="/assets/js/27.f0593bbf.js"><link rel="prefetch" href="/assets/js/28.3a3be2a5.js"><link rel="prefetch" href="/assets/js/29.600006cd.js"><link rel="prefetch" href="/assets/js/3.de0ded1b.js"><link rel="prefetch" href="/assets/js/30.fd1bf4df.js"><link rel="prefetch" href="/assets/js/31.c17eec63.js"><link rel="prefetch" href="/assets/js/32.0beb9489.js"><link rel="prefetch" href="/assets/js/33.4b356132.js"><link rel="prefetch" href="/assets/js/34.426a3957.js"><link rel="prefetch" href="/assets/js/35.9e58f8ae.js"><link rel="prefetch" href="/assets/js/36.b304f65d.js"><link rel="prefetch" href="/assets/js/37.102918ae.js"><link rel="prefetch" href="/assets/js/38.b306427b.js"><link rel="prefetch" href="/assets/js/39.8a7ddc82.js"><link rel="prefetch" href="/assets/js/4.6aeff477.js"><link rel="prefetch" href="/assets/js/40.15b85e4a.js"><link rel="prefetch" href="/assets/js/41.7194c6a5.js"><link rel="prefetch" href="/assets/js/42.40d604fe.js"><link rel="prefetch" href="/assets/js/43.1308a197.js"><link rel="prefetch" href="/assets/js/44.a600e34c.js"><link rel="prefetch" href="/assets/js/45.07f1aea4.js"><link rel="prefetch" href="/assets/js/46.ef1cd999.js"><link rel="prefetch" href="/assets/js/47.31ae8f23.js"><link rel="prefetch" href="/assets/js/48.546ddc2b.js"><link rel="prefetch" href="/assets/js/49.6256155f.js"><link rel="prefetch" href="/assets/js/5.3017579e.js"><link rel="prefetch" href="/assets/js/50.9023bd20.js"><link rel="prefetch" href="/assets/js/51.9c0ab442.js"><link rel="prefetch" href="/assets/js/52.e2cc1558.js"><link rel="prefetch" href="/assets/js/53.2a34ee52.js"><link rel="prefetch" href="/assets/js/54.94919a07.js"><link rel="prefetch" href="/assets/js/55.cdcde14b.js"><link rel="prefetch" href="/assets/js/56.402b91d1.js"><link rel="prefetch" href="/assets/js/57.1c816075.js"><link rel="prefetch" href="/assets/js/58.7bc6c53a.js"><link rel="prefetch" href="/assets/js/59.98cd16d3.js"><link rel="prefetch" href="/assets/js/6.c66a9c0d.js"><link rel="prefetch" href="/assets/js/60.c6b1fedf.js"><link rel="prefetch" href="/assets/js/61.77a37644.js"><link rel="prefetch" href="/assets/js/62.33adbccc.js"><link rel="prefetch" href="/assets/js/63.46e827aa.js"><link rel="prefetch" href="/assets/js/64.fccc6652.js"><link rel="prefetch" href="/assets/js/65.784409bc.js"><link rel="prefetch" href="/assets/js/66.0ff33975.js"><link rel="prefetch" href="/assets/js/67.71025c8a.js"><link rel="prefetch" href="/assets/js/68.bc956963.js"><link rel="prefetch" href="/assets/js/69.0835dc3a.js"><link rel="prefetch" href="/assets/js/7.abbb8cf3.js"><link rel="prefetch" href="/assets/js/70.b4997331.js"><link rel="prefetch" href="/assets/js/71.c555d255.js"><link rel="prefetch" href="/assets/js/72.410045e4.js"><link rel="prefetch" href="/assets/js/73.f11bc054.js"><link rel="prefetch" href="/assets/js/74.b0b7f602.js"><link rel="prefetch" href="/assets/js/75.564b469f.js"><link rel="prefetch" href="/assets/js/76.dc701916.js"><link rel="prefetch" href="/assets/js/77.2f2e86ba.js"><link rel="prefetch" href="/assets/js/78.293c88ac.js"><link rel="prefetch" href="/assets/js/79.188e3f3f.js"><link rel="prefetch" href="/assets/js/8.5ca23337.js"><link rel="prefetch" href="/assets/js/80.12817fd5.js"><link rel="prefetch" href="/assets/js/81.20822295.js"><link rel="prefetch" href="/assets/js/82.827507e9.js"><link rel="prefetch" href="/assets/js/83.2669bc92.js"><link rel="prefetch" href="/assets/js/84.587c39a1.js"><link rel="prefetch" href="/assets/js/85.acc07148.js"><link rel="prefetch" href="/assets/js/86.b0c041c1.js"><link rel="prefetch" href="/assets/js/87.d437a0f0.js"><link rel="prefetch" href="/assets/js/88.6e542ac8.js"><link rel="prefetch" href="/assets/js/89.dc44df50.js"><link rel="prefetch" href="/assets/js/9.8b8ba95c.js"><link rel="prefetch" href="/assets/js/90.61a1b726.js"><link rel="prefetch" href="/assets/js/91.3f4b2a8a.js"><link rel="prefetch" href="/assets/js/92.cd3aa7ff.js"><link rel="prefetch" href="/assets/js/93.ce269678.js"><link rel="prefetch" href="/assets/js/94.b5bf35e9.js"><link rel="prefetch" href="/assets/js/95.412f527b.js"><link rel="prefetch" href="/assets/js/96.9af6b5f0.js"><link rel="prefetch" href="/assets/js/97.ffe88ff0.js"><link rel="prefetch" href="/assets/js/98.9c55d95f.js"><link rel="prefetch" href="/assets/js/99.b9b8c7f7.js">
-    <link rel="stylesheet" href="/assets/css/0.styles.495d9abf.css">
+    <link rel="preload" href="/assets/css/0.styles.8f3dca9f.css" as="style"><link rel="preload" href="/assets/js/app.f0c3bf6e.js" as="script"><link rel="preload" href="/assets/js/2.267df354.js" as="script"><link rel="preload" href="/assets/js/1.66cc43cf.js" as="script"><link rel="preload" href="/assets/js/246.d57006a7.js" as="script"><link rel="prefetch" href="/assets/js/10.8ed5e327.js"><link rel="prefetch" href="/assets/js/100.ae5b3443.js"><link rel="prefetch" href="/assets/js/101.cc73b0f5.js"><link rel="prefetch" href="/assets/js/102.3f3114fb.js"><link rel="prefetch" href="/assets/js/103.8ff5fdac.js"><link rel="prefetch" href="/assets/js/104.b5debdc3.js"><link rel="prefetch" href="/assets/js/105.8da11418.js"><link rel="prefetch" href="/assets/js/106.4dbe9edc.js"><link rel="prefetch" href="/assets/js/107.181bae05.js"><link rel="prefetch" href="/assets/js/108.89a63e22.js"><link rel="prefetch" href="/assets/js/109.ce54155a.js"><link rel="prefetch" href="/assets/js/11.066e1c25.js"><link rel="prefetch" href="/assets/js/110.f2e608ea.js"><link rel="prefetch" href="/assets/js/111.42921b66.js"><link rel="prefetch" href="/assets/js/112.8da31ceb.js"><link rel="prefetch" href="/assets/js/113.5ac3f0d4.js"><link rel="prefetch" href="/assets/js/114.e056e614.js"><link rel="prefetch" href="/assets/js/115.cebf7fde.js"><link rel="prefetch" href="/assets/js/116.2b434a84.js"><link rel="prefetch" href="/assets/js/117.100c132f.js"><link rel="prefetch" href="/assets/js/118.a4afed9a.js"><link rel="prefetch" href="/assets/js/119.f0f1a25d.js"><link rel="prefetch" href="/assets/js/12.9fe465cb.js"><link rel="prefetch" href="/assets/js/120.376850c5.js"><link rel="prefetch" href="/assets/js/121.5dc1a6a2.js"><link rel="prefetch" href="/assets/js/122.363693fb.js"><link rel="prefetch" href="/assets/js/123.7258fb95.js"><link rel="prefetch" href="/assets/js/124.a4bd3167.js"><link rel="prefetch" href="/assets/js/125.8aa8db7c.js"><link rel="prefetch" href="/assets/js/126.2caa71e3.js"><link rel="prefetch" href="/assets/js/127.220486dd.js"><link rel="prefetch" href="/assets/js/128.b01fb70e.js"><link rel="prefetch" href="/assets/js/129.bd8c1b32.js"><link rel="prefetch" href="/assets/js/13.ceec992d.js"><link rel="prefetch" href="/assets/js/130.9b3fd30c.js"><link rel="prefetch" href="/assets/js/131.c1e91c2d.js"><link rel="prefetch" href="/assets/js/132.6d39b36b.js"><link rel="prefetch" href="/assets/js/133.cc4ee14d.js"><link rel="prefetch" href="/assets/js/134.3b031de3.js"><link rel="prefetch" href="/assets/js/135.329aa943.js"><link rel="prefetch" href="/assets/js/136.e97d2b91.js"><link rel="prefetch" href="/assets/js/137.70ad5edc.js"><link rel="prefetch" href="/assets/js/138.b2388813.js"><link rel="prefetch" href="/assets/js/139.260e94e8.js"><link rel="prefetch" href="/assets/js/14.6b9e2f92.js"><link rel="prefetch" href="/assets/js/140.d0752482.js"><link rel="prefetch" href="/assets/js/141.c3809389.js"><link rel="prefetch" href="/assets/js/142.909571e7.js"><link rel="prefetch" href="/assets/js/143.9c55503a.js"><link rel="prefetch" href="/assets/js/144.037eb178.js"><link rel="prefetch" href="/assets/js/145.b15eb629.js"><link rel="prefetch" href="/assets/js/146.92f941e0.js"><link rel="prefetch" href="/assets/js/147.ee679e8f.js"><link rel="prefetch" href="/assets/js/148.259bd94c.js"><link rel="prefetch" href="/assets/js/149.0560570b.js"><link rel="prefetch" href="/assets/js/15.d25af981.js"><link rel="prefetch" href="/assets/js/150.e0970997.js"><link rel="prefetch" href="/assets/js/151.8c91c562.js"><link rel="prefetch" href="/assets/js/152.b2680c3d.js"><link rel="prefetch" href="/assets/js/153.43d5659d.js"><link rel="prefetch" href="/assets/js/154.41332198.js"><link rel="prefetch" href="/assets/js/155.36a0da41.js"><link rel="prefetch" href="/assets/js/156.8d9c6ad6.js"><link rel="prefetch" href="/assets/js/157.016cc281.js"><link rel="prefetch" href="/assets/js/158.c846bda8.js"><link rel="prefetch" href="/assets/js/159.60ef4fd7.js"><link rel="prefetch" href="/assets/js/16.fe68c618.js"><link rel="prefetch" href="/assets/js/160.e000f0e7.js"><link rel="prefetch" href="/assets/js/161.f67efc97.js"><link rel="prefetch" href="/assets/js/162.4eadc328.js"><link rel="prefetch" href="/assets/js/163.39e9bbe6.js"><link rel="prefetch" href="/assets/js/164.8e990d4c.js"><link rel="prefetch" href="/assets/js/165.9cc5569d.js"><link rel="prefetch" href="/assets/js/166.dcfd67ce.js"><link rel="prefetch" href="/assets/js/167.0a12942f.js"><link rel="prefetch" href="/assets/js/168.db0cf4d8.js"><link rel="prefetch" href="/assets/js/169.0177438a.js"><link rel="prefetch" href="/assets/js/17.de0b324b.js"><link rel="prefetch" href="/assets/js/170.799f7bf1.js"><link rel="prefetch" href="/assets/js/171.72b504b4.js"><link rel="prefetch" href="/assets/js/172.3fedbd3b.js"><link rel="prefetch" href="/assets/js/173.9d2d86ef.js"><link rel="prefetch" href="/assets/js/174.1a15c5a7.js"><link rel="prefetch" href="/assets/js/175.62da2bad.js"><link rel="prefetch" href="/assets/js/176.fa85299a.js"><link rel="prefetch" href="/assets/js/177.a4f8a83d.js"><link rel="prefetch" href="/assets/js/178.3da2977b.js"><link rel="prefetch" href="/assets/js/179.5a0698c9.js"><link rel="prefetch" href="/assets/js/18.75c085a9.js"><link rel="prefetch" href="/assets/js/180.b3c22f44.js"><link rel="prefetch" href="/assets/js/181.258acfab.js"><link rel="prefetch" href="/assets/js/182.3b612a1c.js"><link rel="prefetch" href="/assets/js/183.04d35baf.js"><link rel="prefetch" href="/assets/js/184.2f6ebfb6.js"><link rel="prefetch" href="/assets/js/185.3d2ba522.js"><link rel="prefetch" href="/assets/js/186.85211aa8.js"><link rel="prefetch" href="/assets/js/187.3a727290.js"><link rel="prefetch" href="/assets/js/188.39112337.js"><link rel="prefetch" href="/assets/js/189.160e194c.js"><link rel="prefetch" href="/assets/js/19.7d112bce.js"><link rel="prefetch" href="/assets/js/190.c053d7a2.js"><link rel="prefetch" href="/assets/js/191.22cefdac.js"><link rel="prefetch" href="/assets/js/192.964f5e88.js"><link rel="prefetch" href="/assets/js/193.700abf9f.js"><link rel="prefetch" href="/assets/js/194.e267a0f1.js"><link rel="prefetch" href="/assets/js/195.e49141be.js"><link rel="prefetch" href="/assets/js/196.abd378ac.js"><link rel="prefetch" href="/assets/js/197.49b8f519.js"><link rel="prefetch" href="/assets/js/198.f60281e1.js"><link rel="prefetch" href="/assets/js/199.2444da81.js"><link rel="prefetch" href="/assets/js/20.81f5b440.js"><link rel="prefetch" href="/assets/js/200.54f5e6d4.js"><link rel="prefetch" href="/assets/js/201.132bab0f.js"><link rel="prefetch" href="/assets/js/202.cd5ef700.js"><link rel="prefetch" href="/assets/js/203.6524ae1d.js"><link rel="prefetch" href="/assets/js/204.79049883.js"><link rel="prefetch" href="/assets/js/205.b453ac0d.js"><link rel="prefetch" href="/assets/js/206.8e68e3cb.js"><link rel="prefetch" href="/assets/js/207.0dbf0bb5.js"><link rel="prefetch" href="/assets/js/208.a6f0aa62.js"><link rel="prefetch" href="/assets/js/209.5eb00898.js"><link rel="prefetch" href="/assets/js/21.b8f03079.js"><link rel="prefetch" href="/assets/js/210.5394d572.js"><link rel="prefetch" href="/assets/js/211.4d73566d.js"><link rel="prefetch" href="/assets/js/212.01ea7dd7.js"><link rel="prefetch" href="/assets/js/213.80261d17.js"><link rel="prefetch" href="/assets/js/214.42974ae8.js"><link rel="prefetch" href="/assets/js/215.6a9aefd7.js"><link rel="prefetch" href="/assets/js/216.71698897.js"><link rel="prefetch" href="/assets/js/217.cbdb7908.js"><link rel="prefetch" href="/assets/js/218.e1ca46a4.js"><link rel="prefetch" href="/assets/js/219.4bff8927.js"><link rel="prefetch" href="/assets/js/22.ce37cd53.js"><link rel="prefetch" href="/assets/js/220.d29e2c08.js"><link rel="prefetch" href="/assets/js/221.6a2c607c.js"><link rel="prefetch" href="/assets/js/222.7209db02.js"><link rel="prefetch" href="/assets/js/223.18f8b9df.js"><link rel="prefetch" href="/assets/js/224.52b820e0.js"><link rel="prefetch" href="/assets/js/225.46e90caa.js"><link rel="prefetch" href="/assets/js/226.63ed554a.js"><link rel="prefetch" href="/assets/js/227.7fafc4da.js"><link rel="prefetch" href="/assets/js/228.7706dc54.js"><link rel="prefetch" href="/assets/js/229.842a1964.js"><link rel="prefetch" href="/assets/js/23.87e7e45e.js"><link rel="prefetch" href="/assets/js/230.ddc0f55a.js"><link rel="prefetch" href="/assets/js/231.e72fa0a7.js"><link rel="prefetch" href="/assets/js/232.e15e10a1.js"><link rel="prefetch" href="/assets/js/233.9001d006.js"><link rel="prefetch" href="/assets/js/234.c55b49d9.js"><link rel="prefetch" href="/assets/js/235.da1bf5f9.js"><link rel="prefetch" href="/assets/js/236.9efb932c.js"><link rel="prefetch" href="/assets/js/237.67412574.js"><link rel="prefetch" href="/assets/js/238.24ef619f.js"><link rel="prefetch" href="/assets/js/239.1f2a6298.js"><link rel="prefetch" href="/assets/js/24.5aa30e8d.js"><link rel="prefetch" href="/assets/js/240.9c9279b1.js"><link rel="prefetch" href="/assets/js/241.695630cd.js"><link rel="prefetch" href="/assets/js/242.891e7aef.js"><link rel="prefetch" href="/assets/js/243.edd26862.js"><link rel="prefetch" href="/assets/js/244.ed576d71.js"><link rel="prefetch" href="/assets/js/245.d10042cf.js"><link rel="prefetch" href="/assets/js/247.b2d6742e.js"><link rel="prefetch" href="/assets/js/248.8b56d853.js"><link rel="prefetch" href="/assets/js/249.b8fc1805.js"><link rel="prefetch" href="/assets/js/25.5c7b2cfe.js"><link rel="prefetch" href="/assets/js/250.1aad43ae.js"><link rel="prefetch" href="/assets/js/251.be9db929.js"><link rel="prefetch" href="/assets/js/252.afedca09.js"><link rel="prefetch" href="/assets/js/253.c6e86855.js"><link rel="prefetch" href="/assets/js/254.90b4f52a.js"><link rel="prefetch" href="/assets/js/255.227c9c47.js"><link rel="prefetch" href="/assets/js/256.fe3714d4.js"><link rel="prefetch" href="/assets/js/257.3e5db4f7.js"><link rel="prefetch" href="/assets/js/258.29013d06.js"><link rel="prefetch" href="/assets/js/259.e9af4b51.js"><link rel="prefetch" href="/assets/js/26.5a8e32e6.js"><link rel="prefetch" href="/assets/js/260.9555612d.js"><link rel="prefetch" href="/assets/js/261.e8e200a0.js"><link rel="prefetch" href="/assets/js/262.0f393806.js"><link rel="prefetch" href="/assets/js/263.42b99650.js"><link rel="prefetch" href="/assets/js/264.5e36cccd.js"><link rel="prefetch" href="/assets/js/265.e7759e0e.js"><link rel="prefetch" href="/assets/js/266.2bce58fa.js"><link rel="prefetch" href="/assets/js/267.6e2a5a40.js"><link rel="prefetch" href="/assets/js/27.997b1485.js"><link rel="prefetch" href="/assets/js/28.ef6638c6.js"><link rel="prefetch" href="/assets/js/29.c9d728b9.js"><link rel="prefetch" href="/assets/js/3.dc3407e1.js"><link rel="prefetch" href="/assets/js/30.d873fb03.js"><link rel="prefetch" href="/assets/js/31.2bf741ce.js"><link rel="prefetch" href="/assets/js/32.551ac32b.js"><link rel="prefetch" href="/assets/js/33.b6573b5c.js"><link rel="prefetch" href="/assets/js/34.b46900a8.js"><link rel="prefetch" href="/assets/js/35.f131466c.js"><link rel="prefetch" href="/assets/js/36.89942ede.js"><link rel="prefetch" href="/assets/js/37.0e54922b.js"><link rel="prefetch" href="/assets/js/38.36f714a1.js"><link rel="prefetch" href="/assets/js/39.2256d2d3.js"><link rel="prefetch" href="/assets/js/4.43d53c19.js"><link rel="prefetch" href="/assets/js/40.784c879e.js"><link rel="prefetch" href="/assets/js/41.8bac5a7b.js"><link rel="prefetch" href="/assets/js/42.b6e7fc8b.js"><link rel="prefetch" href="/assets/js/43.ab92dcea.js"><link rel="prefetch" href="/assets/js/44.666a8d67.js"><link rel="prefetch" href="/assets/js/45.23a7d54d.js"><link rel="prefetch" href="/assets/js/46.c90bff29.js"><link rel="prefetch" href="/assets/js/47.b109dec7.js"><link rel="prefetch" href="/assets/js/48.7f766765.js"><link rel="prefetch" href="/assets/js/49.0a8e763d.js"><link rel="prefetch" href="/assets/js/5.b6321aed.js"><link rel="prefetch" href="/assets/js/50.686d1521.js"><link rel="prefetch" href="/assets/js/51.9936e373.js"><link rel="prefetch" href="/assets/js/52.f0b789de.js"><link rel="prefetch" href="/assets/js/53.5438164d.js"><link rel="prefetch" href="/assets/js/54.ec6f1f74.js"><link rel="prefetch" href="/assets/js/55.002caceb.js"><link rel="prefetch" href="/assets/js/56.d7896533.js"><link rel="prefetch" href="/assets/js/57.560f886c.js"><link rel="prefetch" href="/assets/js/58.ede39d55.js"><link rel="prefetch" href="/assets/js/59.f8e25f0e.js"><link rel="prefetch" href="/assets/js/6.8dc86351.js"><link rel="prefetch" href="/assets/js/60.16e85fb0.js"><link rel="prefetch" href="/assets/js/61.c4a68cdb.js"><link rel="prefetch" href="/assets/js/62.b8285ec7.js"><link rel="prefetch" href="/assets/js/63.cea2c4d9.js"><link rel="prefetch" href="/assets/js/64.33d06366.js"><link rel="prefetch" href="/assets/js/65.7dacc788.js"><link rel="prefetch" href="/assets/js/66.1c982721.js"><link rel="prefetch" href="/assets/js/67.5509334e.js"><link rel="prefetch" href="/assets/js/68.f9deb190.js"><link rel="prefetch" href="/assets/js/69.fd052a09.js"><link rel="prefetch" href="/assets/js/7.4de4dc57.js"><link rel="prefetch" href="/assets/js/70.b36ecec1.js"><link rel="prefetch" href="/assets/js/71.09472ede.js"><link rel="prefetch" href="/assets/js/72.7fc03c28.js"><link rel="prefetch" href="/assets/js/73.1df4ed7b.js"><link rel="prefetch" href="/assets/js/74.eef842dd.js"><link rel="prefetch" href="/assets/js/75.a4642706.js"><link rel="prefetch" href="/assets/js/76.2921120f.js"><link rel="prefetch" href="/assets/js/77.8959d3b8.js"><link rel="prefetch" href="/assets/js/78.15af67c9.js"><link rel="prefetch" href="/assets/js/79.ca2b3995.js"><link rel="prefetch" href="/assets/js/80.86253068.js"><link rel="prefetch" href="/assets/js/81.4dfb5100.js"><link rel="prefetch" href="/assets/js/82.40f05690.js"><link rel="prefetch" href="/assets/js/83.ae59f017.js"><link rel="prefetch" href="/assets/js/84.a16c2086.js"><link rel="prefetch" href="/assets/js/85.78764153.js"><link rel="prefetch" href="/assets/js/86.6da75781.js"><link rel="prefetch" href="/assets/js/87.9093c83e.js"><link rel="prefetch" href="/assets/js/88.1b71ff61.js"><link rel="prefetch" href="/assets/js/89.c3298594.js"><link rel="prefetch" href="/assets/js/90.dbab72f7.js"><link rel="prefetch" href="/assets/js/91.201c3950.js"><link rel="prefetch" href="/assets/js/92.23d20e66.js"><link rel="prefetch" href="/assets/js/93.35dc98bf.js"><link rel="prefetch" href="/assets/js/94.da768453.js"><link rel="prefetch" href="/assets/js/95.9767a2ff.js"><link rel="prefetch" href="/assets/js/96.890fcdc4.js"><link rel="prefetch" href="/assets/js/97.4bdcd3d5.js"><link rel="prefetch" href="/assets/js/98.972a16fd.js"><link rel="prefetch" href="/assets/js/99.44f9b5d3.js"><link rel="prefetch" href="/assets/js/vendors~docsearch.a900b7e8.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.8f3dca9f.css">
   </head>
   <body>
     <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="Front-End-Basics" class="logo"> <span class="site-name can-hide">Front-End-Basics</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
@@ -24,34 +24,205 @@
   捡贝壳
 </a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
     GitHub
-    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Linux</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/linux/computer.html" class="sidebar-link">计算机基础和 Linux 基础</a></li><li><a href="/server/linux/basics.html" class="sidebar-link">Linux 版本详述</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Shell</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/shell/basics.html" class="sidebar-link">Shell 概览</a></li><li><a href="/server/shell/script.html" class="sidebar-link">Shell 脚本编程详解</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Nginx</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/nginx/introduction.html" class="sidebar-link">Nginx 介绍</a></li><li><a href="/server/nginx/install.html" class="sidebar-link">Nginx 安装</a></li><li><a href="/server/nginx/command.html" class="sidebar-link">Nginx 操作命令</a></li><li><a href="/server/nginx/config.html" class="sidebar-link">Nginx 基础配置和语法</a></li><li><a href="/server/nginx/static.html" class="sidebar-link">Nginx 实操-静态资源服务器</a></li><li><a href="/server/nginx/proxy.html" class="sidebar-link">Nginx 实操-代理相关</a></li><li><a href="/server/nginx/tips.html" class="sidebar-link">Nginx 实操-常用配置</a></li><li><a href="/server/nginx/advance.html" class="sidebar-link">Nginx 进阶</a></li><li><a href="/server/nginx/process.html" class="sidebar-link">Nginx 执行流程</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="dockerfile-详解"><a href="#dockerfile-详解" class="header-anchor">#</a> dockerfile 详解</h1> <h4 id="什么是-dockerfile"><a href="#什么是-dockerfile" class="header-anchor">#</a> 什么是 dockerfile?</h4> <p>Dockerfile 是一个包含用于组合镜像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker 通过读取 Dockerfile 中的指令自动生成镜像。</p> <p>docker build 命令用于从 Dockerfile 构建映像。可以在 docker build 命令中使用-f 标志指向文件系统中任何位置的 Dockerfile。</p> <p>例：</p> <div class="language- extra-class"><pre class="language-text"><code>docker build -f /path/to/a/Dockerfile
-</code></pre></div><h4 id="dockerfile-的基本结构"><a href="#dockerfile-的基本结构" class="header-anchor">#</a> Dockerfile 的基本结构</h4> <p>Dockerfile 一般分为四部分：基础镜像信息、维护者信息、镜像操作指令和容器启动时执行指令，’#’ 为 Dockerfile 中的注释。</p> <h4 id="dockerfile-文件说明"><a href="#dockerfile-文件说明" class="header-anchor">#</a> Dockerfile 文件说明</h4> <p>Docker 以从上到下的顺序运行 Dockerfile 的指令。为了指定基本映像，第一条指令必须是 FROM。一个声明以＃字符开头则被视为注释。可以在 Docker 文件中使用 RUN，CMD，FROM，EXPOSE，ENV 等指令。</p> <p>在这里列出了一些常用的指令。</p> <p><strong>FROM：</strong> 指定基础镜像，必须为第一个命令</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
-FROM &lt;image&gt;
-FROM &lt;image&gt;:&lt;tag&gt;
-FROM &lt;image&gt;@&lt;digest&gt;
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Linux</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/linux/computer.html" class="sidebar-link">计算机基础和 Linux 基础</a></li><li><a href="/server/linux/version.html" class="sidebar-link">Linux 版本详述</a></li><li><a href="/server/linux/centos.html" class="sidebar-link">CentOS 入门</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Shell</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/shell/basics.html" class="sidebar-link">Shell 概览</a></li><li><a href="/server/shell/script.html" class="sidebar-link">shell 脚本编程详解</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Nginx</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/nginx/introduction.html" class="sidebar-link">Nginx 介绍</a></li><li><a href="/server/nginx/install.html" class="sidebar-link">Nginx 安装</a></li><li><a href="/server/nginx/command.html" class="sidebar-link">Nginx 操作命令</a></li><li><a href="/server/nginx/config.html" class="sidebar-link">Nginx 基础配置和语法</a></li><li><a href="/server/nginx/static.html" class="sidebar-link">Nginx 实操-静态资源服务器</a></li><li><a href="/server/nginx/proxy.html" class="sidebar-link">Nginx 实操-代理相关</a></li><li><a href="/server/nginx/tips.html" class="sidebar-link">Nginx 实操-常用配置</a></li><li><a href="/server/nginx/advance.html" class="sidebar-link">Nginx 进阶</a></li><li><a href="/server/nginx/process.html" class="sidebar-link">Nginx 执行流程</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="dockerfile-详解"><a href="#dockerfile-详解" class="header-anchor">#</a> dockerfile 详解</h1> <h2 id="什么是-dockerfile"><a href="#什么是-dockerfile" class="header-anchor">#</a> 什么是 dockerfile?</h2> <ul><li>Dockerfile 是 Docker 中用于定义镜像自动化构建流程的配置文件，Docker 通过读取 Dockerfile 中的指令自动生成镜像。</li> <li>在 Dockerfile 中，包含了构建镜像过程中需要执行的命令和其他操作</li></ul> <h3 id="docker-build"><a href="#docker-build" class="header-anchor">#</a> docker build</h3> <p><code>docker build</code> 命令用于从 Dockerfile 构建 Docker 镜像。它提供了许多参数来控制构建过程。这些参数允许指定上下文、给镜像打标签、设定构建的选项等。</p> <h4 id="常用参数"><a href="#常用参数" class="header-anchor">#</a> 常用参数</h4> <ol><li><p><strong><code>-t, --tag</code></strong>: 为构建的镜像命名并打标签。</p> <ul><li>格式：<code>&lt;name&gt;:&lt;tag&gt;</code>，其中 <code>&lt;tag&gt;</code> 默认为 <code>latest</code>。</li> <li>示例：<code>docker build -t myapp:1.0 .</code></li></ul></li> <li><p><strong><code>-f, --file</code></strong>: 指定 Dockerfile 的路径。</p> <ul><li>示例：<code>docker build -f Dockerfile.dev .</code></li></ul></li> <li><p><strong><code>--build-arg</code></strong>: 传递构建时的变量，这些变量在 Dockerfile 中可以通过 <code>ARG</code> 指令引用。</p> <ul><li>示例：<code>docker build --build-arg VERSION=1.0 .</code></li></ul></li> <li><p><strong><code>--no-cache</code></strong>: 不使用缓存来构建镜像，强制每一层都重新构建。</p> <ul><li>示例：<code>docker build --no-cache -t myapp:1.0 .</code></li></ul></li> <li><p><strong><code>--rm</code></strong>: 构建成功后移除中间容器。默认是启用的，但可以使用 <code>--rm=false</code> 禁用。</p> <ul><li>示例：<code>docker build --rm -t myapp:1.0 .</code></li></ul></li> <li><p><strong><code>--pull</code></strong>: 总是尝试从注册表拉取最新版本的基础镜像。</p> <ul><li>示例：<code>docker build --pull -t myapp:1.0 .</code></li></ul></li> <li><p><strong><code>--target</code></strong>: 设置多阶段构建的目标构建阶段。</p> <ul><li>示例：<code>docker build --target build-env -t myapp:build .</code></li></ul></li> <li><p><strong><code>-q, --quiet</code></strong>: 安静模式，只输出镜像 ID。</p> <ul><li>示例：<code>docker build -q -t myapp:1.0 .</code></li></ul></li> <li><p><strong><code>-m, --memory</code></strong>: 设置构建过程中的内存限制。</p> <ul><li>示例：<code>docker build -m 2g -t myapp:1.0 .</code></li></ul></li> <li><p><strong><code>--platform</code></strong>: 指定构建镜像的平台。</p> <ul><li>示例：<code>docker build --platform linux/amd64 -t myapp:1.0 .</code></li></ul></li> <li><p><strong><code>--network</code></strong>: 设置构建过程使用的网络模式。</p> <ul><li>示例：<code>docker build --network host -t myapp:1.0 .</code></li></ul></li> <li><p><strong><code>--build-context</code></strong>: 指定额外的构建上下文，用于 <code>COPY --from=&lt;context&gt;</code> 语法。</p> <ul><li>示例：<code>docker build --build-context base=dir:/path/to/context -t myapp:1.0 .</code></li></ul></li> <li><p><strong><code>--secret</code></strong>: 传递构建时的机密信息，比如 SSH 密钥。</p> <ul><li>示例：<code>docker build --secret id=mysecret,src=/path/to/secret .</code></li></ul></li></ol> <h4 id="基本示例"><a href="#基本示例" class="header-anchor">#</a> 基本示例</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 构建 Docker 镜像，使用当前目录作为上下文，默认名称为 &quot;latest&quot;</span>
+<span class="token function">docker</span> build <span class="token parameter variable">-t</span> myapp <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 使用指定的 Dockerfile 构建镜像</span>
+<span class="token function">docker</span> build <span class="token parameter variable">-t</span> myapp:2.0 <span class="token parameter variable">-f</span> Dockerfile.production <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 构建镜像并传递构建参数</span>
+<span class="token function">docker</span> build --build-arg <span class="token assign-left variable">VERSION</span><span class="token operator">=</span><span class="token number">2.0</span> <span class="token parameter variable">-t</span> myapp:2.0 <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 构建时不使用缓存</span>
+<span class="token function">docker</span> build --no-cache <span class="token parameter variable">-t</span> myapp:2.0 <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 构建指定阶段的镜像</span>
+<span class="token function">docker</span> build <span class="token parameter variable">--target</span> build-env <span class="token parameter variable">-t</span> myapp:build <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 指定构建平台</span>
+<span class="token function">docker</span> build <span class="token parameter variable">--platform</span> linux/amd64 <span class="token parameter variable">-t</span> myapp:1.0 <span class="token builtin class-name">.</span>
+</code></pre></div><h4 id="多阶段构建示例"><a href="#多阶段构建示例" class="header-anchor">#</a> 多阶段构建示例</h4> <div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token comment"># 构建阶段</span>
+<span class="token instruction"><span class="token keyword">FROM</span> golang:1.18 <span class="token keyword">AS</span> build-env</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> /app</span>
+<span class="token instruction"><span class="token keyword">COPY</span> . .</span>
+<span class="token instruction"><span class="token keyword">RUN</span> go build -o myapp</span>
+
+<span class="token comment"># 运行阶段</span>
+<span class="token instruction"><span class="token keyword">FROM</span> alpine:latest</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> /app</span>
+<span class="token instruction"><span class="token keyword">COPY</span> <span class="token options"><span class="token property">--from</span><span class="token punctuation">=</span><span class="token string">build-env</span></span> /app/myapp /app/</span>
+<span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">&quot;./myapp&quot;</span>]</span>
+</code></pre></div><p>对应的构建命令：</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 构建最终的镜像（运行阶段）</span>
+<span class="token function">docker</span> build <span class="token parameter variable">-t</span> myapp:final <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 构建中间阶段的镜像（仅构建阶段）</span>
+<span class="token function">docker</span> build <span class="token parameter variable">--target</span> build-env <span class="token parameter variable">-t</span> myapp:build <span class="token builtin class-name">.</span>
+</code></pre></div><h4 id="注意事项"><a href="#注意事项" class="header-anchor">#</a> 注意事项</h4> <ol><li><p><strong>缓存问题</strong>: Docker 在构建时会缓存每一层，如果不希望使用缓存，可以使用 <code>--no-cache</code> 参数。但要小心，因为重新构建每一层可能会大大增加构建时间。</p></li> <li><p><strong>Dockerfile 最佳实践</strong>:</p> <ul><li>尽量减少镜像层数，合并类似的命令（如多个 <code>RUN</code> 指令）。</li> <li>使用多阶段构建来减小最终镜像的大小。</li> <li>定期更新基础镜像以获得最新的安全修复。</li></ul></li> <li><p><strong>命名与标记</strong>: 尽量为镜像添加有意义的标签（<code>&lt;tag&gt;</code>），便于版本管理和部署。</p></li> <li><p><strong>构建上下文</strong>: Docker 会将指定目录（上下文，默认为 <code>.</code> 当前目录）中的所有内容发送到 Docker 守护进程，这可能包括不需要的文件。使用 <code>.dockerignore</code> 文件来排除不必要的文件。</p></li> <li><p><strong>安全性</strong>: 在构建时传递机密信息（如密码、密钥）要特别小心，可以使用 <code>--secret</code> 或 <code>--build-arg</code> 来处理，但最好是避免在 Dockerfile 中直接包含这些信息。</p></li></ol> <h4 id="docker-build-原理示例"><a href="#docker-build-原理示例" class="header-anchor">#</a> docker build 原理示例</h4> <p><a href="https://www.cnblogs.com/poloyy/p/15451933.html" target="_blank" rel="noopener noreferrer">查看文章中间镜像的构建过程<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <h3 id="使用-dockerfile-构建镜像的步骤"><a href="#使用-dockerfile-构建镜像的步骤" class="header-anchor">#</a> 使用 Dockerfile 构建镜像的步骤</h3> <ul><li>编写一个 dockerfile 文件</li> <li>docker build 构建成为一个镜像</li> <li>docker run 运行镜像</li> <li>docker push 发布镜像（DockerHub 、阿里云仓库）</li></ul> <h3 id="dockerfile-规范"><a href="#dockerfile-规范" class="header-anchor">#</a> Dockerfile 规范</h3> <ul><li>每个保留关键字（指令）都是必须是大写字母</li> <li>执行从上到下顺序</li> <li>#表示注释</li> <li>每一个指令都会创建提交一个新的镜像层，并提交</li></ul> <h3 id="为什么要用-dockerfile"><a href="#为什么要用-dockerfile" class="header-anchor">#</a> 为什么要用 Dockerfile</h3> <ul><li>Dockerfile 是面向开发的，以后要发布项目，做镜像，就需要编写 dockerfile 文件</li> <li>DockerFile 构建镜像文件，定义了一切的步骤，源代码</li> <li>Dockerfile 的体积小，容易进行快速迁移部署</li> <li>环境构建流程记录在 Dockerfile 中，能够直观的看到镜像构建的顺序和逻辑-</li></ul> <h2 id="dockerfile-的基本结构"><a href="#dockerfile-的基本结构" class="header-anchor">#</a> Dockerfile 的基本结构</h2> <p>Dockerfile 一般分为四部分：基础镜像信息、维护者信息、镜像操作指令和容器启动时执行指令，<code>#</code>为 Dockerfile 中的注释。</p> <h2 id="dockerfile-文件说明"><a href="#dockerfile-文件说明" class="header-anchor">#</a> Dockerfile 文件说明</h2> <p>Docker 从上到下运行 Dockerfile 的指令。为了指定基本映像，<strong>第一条指令必须是 FROM</strong>。一个声明以＃字符开头则被视为注释。可以在 Docker 文件中使用 RUN，CMD，FROM，EXPOSE，ENV 等指令。</p> <h2 id="常用的指令"><a href="#常用的指令" class="header-anchor">#</a> 常用的指令</h2> <h3 id="from-指明当前的镜像基于哪个镜像构建-必须为第一个命令"><a href="#from-指明当前的镜像基于哪个镜像构建-必须为第一个命令" class="header-anchor">#</a> <strong>FROM：</strong> 指明当前的镜像基于哪个镜像构建，必须为第一个命令</h3> <div class="language- extra-class"><pre class="language-text"><code>格式：
+FROM [--platform=&lt;platform&gt;] &lt;image&gt; [AS &lt;name&gt;]
+FROM [--platform=&lt;platform&gt;] &lt;image&gt;[:&lt;tag&gt;] [AS &lt;name&gt;]
+FROM [--platform=&lt;platform&gt;] &lt;image&gt;[@&lt;digest&gt;] [AS &lt;name&gt;]
 示例：
 FROM mysql:5.6
 注：
 tag或digest是可选的，如果不使用这两个值时，会使用latest版本的基础镜像
-</code></pre></div><p><strong>MAINTAINER：</strong> 维护者信息</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
+</code></pre></div><p><strong>dockerfile 必须以 FROM 开头，不过 ARG 命令可以在 FROM 前面</strong></p> <h4 id="一个-dockerfile-可以有多个-from"><a href="#一个-dockerfile-可以有多个-from" class="header-anchor">#</a> 一个 dockerfile 可以有多个 FROM</h4> <ul><li>可以有多个 FROM 来创建多个镜像，或区分构建阶段，将一个构建阶段作为另一个构建阶段的依赖项</li> <li>AS <name> 就是命名当前构建阶段</name></li> <li>在后续构建阶段，可以给 FROM、COPY 指令用上，通过 --from=<name> 引用前面构建的镜像</name></li></ul> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 第一构建阶段:将仅用于生成 requirements.txt 文件</span>
+FROM tiangolo/uvicorn-gunicorn:python3.9 as requirements-stage
+
+<span class="token comment"># 将当前工作目录设置为 /tmp</span>
+WORKDIR /tmp
+
+<span class="token comment"># 生成 requirements.txt</span>
+RUN <span class="token function">touch</span> requirements.txt
+
+<span class="token comment"># 第二构建阶段，在这往后的任何内容都将保留在最终容器映像中</span>
+FROM python:3.9
+
+<span class="token comment"># 将当前工作目录设置为 /code</span>
+WORKDIR /code
+
+<span class="token comment"># 复制 requirements.txt;这个文件只存在于前一个 Docker 阶段，这就是使用 --from-requirements-stage 复制它的原因</span>
+COPY <span class="token parameter variable">--from</span><span class="token operator">=</span>requirements-stage /tmp/requirements.txt /code/requirements.txt
+
+<span class="token comment"># 运行命令</span>
+RUN pip <span class="token function">install</span> --no-cache-dir <span class="token parameter variable">--upgrade</span> <span class="token parameter variable">-r</span> /code/requirements.txt
+
+<span class="token comment"># 复制</span>
+COPY ./app /code/app
+</code></pre></div><h4 id="arg-和-from-交互"><a href="#arg-和-from-交互" class="header-anchor">#</a> ARG 和 FROM 交互</h4> <p>FROM 指令支持由出现在第一个 FROM 之前的任何 ARG 指令声明的变量</p> <div class="language- extra-class"><pre class="language-text"><code>ARG  CODE_VERSION=latest
+FROM base:${CODE_VERSION}
+CMD  /code/run-app
+
+FROM extras:${CODE_VERSION}
+CMD  /code/run-extras
+</code></pre></div><p>注意:</p> <ul><li>在 FROM 之前声明的 ARG 在构建阶段之外，因此不能在 FROM 之后的任何指令中使用</li> <li>要使用在第一个 FROM 之前声明的 ARG 的默认值，要在构建阶段内声明一次没有值的 ARG 指令</li></ul> <div class="language- extra-class"><pre class="language-text"><code>ARG VERSION=latest
+FROM busybox:$VERSION
+ARG VERSION
+RUN echo $VERSION &gt; image_version
+</code></pre></div><h3 id="maintainer-维护者信息-已弃用"><a href="#maintainer-维护者信息-已弃用" class="header-anchor">#</a> <strong>MAINTAINER：</strong> 维护者信息（已弃用）</h3> <div class="language- extra-class"><pre class="language-text"><code>格式：
 MAINTAINER &lt;name&gt;
 示例：
 MAINTAINER Jasper Xu
 MAINTAINER sorex@163.com
 MAINTAINER Jasper Xu &lt;sorex@163.com&gt;
-</code></pre></div><p>**RUN：**构建竟像是执行的命令</p> <div class="language- extra-class"><pre class="language-text"><code>RUN用于在镜像容器中执行命令，其有以下两种命令执行方式：
-shell执行
-格式：
-RUN &lt;command&gt;
-exec执行
-格式：
-RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]
+</code></pre></div><h3 id="user-指定运行容器时的用户名或-uid-后续的-run-也会使用指定用户"><a href="#user-指定运行容器时的用户名或-uid-后续的-run-也会使用指定用户" class="header-anchor">#</a> <strong>USER：</strong> 指定运行容器时的用户名或 UID，后续的 RUN 也会使用指定用户</h3> <ul><li>使用 USER 指定用户时，可以使用用户名、UID 或 GID，或是两者的组合</li> <li>使用 USER 指定用户后，Dockerfile 中后续的命令 RUN、CMD、ENTRYPOINT 都将使用该用户</li></ul> <div class="language- extra-class"><pre class="language-text"><code>格式：
+USER user
+USER user:group
+USER uid
+USER uid:gid
+USER user:gid
+USER uid:group
+
 示例：
-RUN apk update
-RUN [&quot;/etc/execfile&quot;, &quot;arg1&quot;, &quot;arg2&quot;]
-注：
-RUN 指令创建的中间镜像会被缓存，并会在下次构建中使用，如果不想使用这些缓存镜像，可以再构建时指定--no-cache参数，如：docker build --no-cache
-</code></pre></div><p>**ADD：**将本地文件添加到容器中，tar 类型文件会自动解压(网络压缩资源不会被解压),可以访问网络资源，类似 wget</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
+USER www
+</code></pre></div><h4 id="也可以使用-docker-run-u-指定用户"><a href="#也可以使用-docker-run-u-指定用户" class="header-anchor">#</a> 也可以使用 docker run -u 指定用户</h4> <ul><li>替代默认设置的用户</li> <li>可以使用 uid 来指定用户</li></ul> <p><code>docker run -i -t -u 1001 busybox sh</code></p> <h3 id="arg-定义创建镜像过程中使用的变量"><a href="#arg-定义创建镜像过程中使用的变量" class="header-anchor">#</a> <strong>ARG：</strong> 定义创建镜像过程中使用的变量</h3> <div class="language- extra-class"><pre class="language-text"><code>格式：
+ARG &lt;name&gt; [=&lt;default value&gt;]
+
+示例：
+ARG site
+ARG build_user=www
+</code></pre></div><h4 id="arg-详解"><a href="#arg-详解" class="header-anchor">#</a> ARG 详解</h4> <ul><li>在执行 docker build 时，可以通过 --build-arg &lt;参数名&gt;=&lt;值&gt; 来为声明的变量赋值</li> <li>当镜像编译成功后，ARG 指定的变量将不再存在（ENV 指定的变量将在镜像中保留）</li> <li>Docker 内置了一些镜像创建变量，用户可以直接使用而无须声明，包括（不区分大小写）HTTP_PROXY、HTTPS_PROXY、FTP_PROXY、NO_PROXY</li> <li>不要通过 ARG 保存密码之类的信息，因为 docker history 还是可以看到所有值的</li></ul> <h4 id="arg-指令有生效范围"><a href="#arg-指令有生效范围" class="header-anchor">#</a> ARG 指令有生效范围</h4> <h5 id="如果在-from-指令之前指定-那么只能用于-from-指令中"><a href="#如果在-from-指令之前指定-那么只能用于-from-指令中" class="header-anchor">#</a> 如果在 FROM 指令之前指定，那么只能用于 FROM 指令中</h5> <div class="language-bash extra-class"><pre class="language-bash"><code>ARG <span class="token assign-left variable">DOCKER_USERNAME</span><span class="token operator">=</span>library
+
+FROM <span class="token variable">${DOCKER_USERNAME}</span>/alpine
+
+RUN <span class="token builtin class-name">set</span> <span class="token parameter variable">-x</span> <span class="token punctuation">;</span> <span class="token builtin class-name">echo</span> <span class="token variable">${DOCKER_USERNAME}</span> <span class="token comment"># 无法输出 ${DOCKER_USERNAME} 变量的值</span>
+</code></pre></div><p>使用上述 Dockerfile 会发现无法输出 ${DOCKER_USERNAME} 变量的值，要想正常输出，必须在 FROM 之后再次指定 ARG</p> <div class="language-Dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token comment"># 只在 FROM 中生效</span>
+<span class="token instruction"><span class="token keyword">ARG</span> DOCKER_USERNAME=library</span>
+
+<span class="token instruction"><span class="token keyword">FROM</span> <span class="token variable">${DOCKER_USERNAME}</span>/alpine</span>
+
+<span class="token comment"># 要想在 FROM 之后使用，必须再次指定</span>
+<span class="token instruction"><span class="token keyword">ARG</span> DOCKER_USERNAME=library</span>
+
+<span class="token instruction"><span class="token keyword">RUN</span> set -x ; echo <span class="token variable">${DOCKER_USERNAME}</span></span>
+</code></pre></div><h5 id="多阶段构建的时候-arg-定义的变量-每个-from-都能用"><a href="#多阶段构建的时候-arg-定义的变量-每个-from-都能用" class="header-anchor">#</a> 多阶段构建的时候，ARG 定义的变量，每个 FROM 都能用</h5> <div class="language-Dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token comment"># 这个变量在每个 FROM 中都生效</span>
+<span class="token instruction"><span class="token keyword">ARG</span> DOCKER_USERNAME=library</span>
+
+<span class="token instruction"><span class="token keyword">FROM</span> <span class="token variable">${DOCKER_USERNAME}</span>/alpine</span>
+
+<span class="token instruction"><span class="token keyword">RUN</span> set -x ; echo 1</span>
+
+<span class="token instruction"><span class="token keyword">FROM</span> <span class="token variable">${DOCKER_USERNAME}</span>/alpine</span>
+
+<span class="token instruction"><span class="token keyword">RUN</span> set -x ; echo 2</span>
+</code></pre></div><h3 id="env-设置环境变量"><a href="#env-设置环境变量" class="header-anchor">#</a> <strong>ENV：</strong> 设置环境变量</h3> <div class="language- extra-class"><pre class="language-text"><code>两种格式
+ENV&lt;key&gt;&lt;value&gt; #&lt;key&gt;之后的所有内容均被视为其&lt;value&gt;组成部分，因此，一次只能设置一个变量
+
+ENV &lt;key&gt;=&lt;value&gt;...#可以设置多个变量，每个变量为一个&lt;key&gt;=&lt;value&gt;键值对，，如果&lt;key&gt;中包含空格，可以使用\来进行转义，也可以通过&quot;&quot;来进行标示；另外，反斜线也可以用于续行
+
+示例：
+ENV myName John Doe
+ENV myCat=fluffy
+</code></pre></div><h4 id="使用环境变量"><a href="#使用环境变量" class="header-anchor">#</a> 使用环境变量</h4> <h5 id="通过-env-指令可以声明环境变量-可以在以下指令中使用环境变量"><a href="#通过-env-指令可以声明环境变量-可以在以下指令中使用环境变量" class="header-anchor">#</a> 通过 ENV 指令可以声明环境变量，可以在以下指令中使用环境变量</h5> <div class="language- extra-class"><pre class="language-text"><code>ADD
+COPY
+ENV
+EXPOSE
+FROM
+LABEL
+STOPSIGNAL
+USER
+VOLUME
+WORKDIR
+ONBUILD
+</code></pre></div><h5 id="使用环境变量的方式有两种"><a href="#使用环境变量的方式有两种" class="header-anchor">#</a> 使用环境变量的方式有两种</h5> <div class="language- extra-class"><pre class="language-text"><code>$variable_name
+${variable_name}
+</code></pre></div><p>${variable_name} 语法还支持以下指定的一些标准 bash 修饰符：</p> <ul><li>${variable:-word}：表示如果设置了 variable，那么结果就是那个值；如果未设置变量，则结果将是 word</li> <li>${variable:+word}：表示如果设置了 variable，则结果为 word，否则为空字符串</li> <li>在所有情况下， word 可以是任何字符串，包括额外的环境变量</li></ul> <h4 id="arg-和-env-的区别"><a href="#arg-和-env-的区别" class="header-anchor">#</a> ARG 和 ENV 的区别</h4> <ul><li>ARG 定义的变量只会存在于镜像构建过程，启动容器后并不保留这些变量</li> <li>ENV 定义的变量在启动容器后仍然保留</li></ul> <h4 id="注意"><a href="#注意" class="header-anchor">#</a> 注意</h4> <ul><li>当容器从生成的镜像运行时，使用 ENV 设置的环境变量将持续存在</li> <li>可以使用 docker inspect 查看值，并使用 docker run --env <key>=<value> 更改它们</value></key></li></ul> <h3 id="label-用户为镜像添加元数据"><a href="#label-用户为镜像添加元数据" class="header-anchor">#</a> <strong>LABEL：</strong> 用户为镜像添加元数据</h3> <p>可以为生成的镜像添加元数据标签信息，这些信息可以用来辅助过滤出特定镜像</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
+LABEL &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt;...
+
+示例：
+LABEL version=&quot;1.0&quot; description=&quot;这是一个web服务器&quot;
+</code></pre></div><div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token comment"># key 加了双引号 &quot;</span>
+<span class="token instruction"><span class="token keyword">LABEL</span> <span class="token string">&quot;com.example.vendor&quot;</span>=<span class="token string">&quot;ACME Incorporated&quot;</span></span>
+
+<span class="token comment"># key 没有双引号 &quot;</span>
+<span class="token instruction"><span class="token keyword">LABEL</span> com.example.label-with-value=<span class="token string">&quot;foo&quot;</span></span>
+<span class="token instruction"><span class="token keyword">LABEL</span> version=<span class="token string">&quot;1.0&quot;</span></span>
+
+<span class="token comment"># 换行</span>
+<span class="token instruction"><span class="token keyword">LABEL</span> description=<span class="token string">&quot;This text illustrates \
+that label-values can span multiple lines.&quot;</span></span>
+
+<span class="token comment"># 一行添加多个 key=value</span>
+<span class="token instruction"><span class="token keyword">LABEL</span> multi.label1=<span class="token string">&quot;value1&quot;</span> multi.label2=<span class="token string">&quot;value2&quot;</span> other=<span class="token string">&quot;value3&quot;</span></span>
+<span class="token comment"># 等价写法</span>
+<span class="token instruction"><span class="token keyword">LABEL</span> multi.label1=<span class="token string">&quot;value1&quot;</span> <span class="token operator">\</span>
+      multi.label2=<span class="token string">&quot;value2&quot;</span> <span class="token operator">\</span>
+      other=<span class="token string">&quot;value3&quot;</span></span>
+</code></pre></div><p>注:使用 LABEL 指定元数据时，一条 LABEL 可以指定一条或多条元数据，指定多条元数据时，不同元数据直接通过空格分割。推荐将所有的元数据通过一条 LABEL 指令指定，以免生成过多的中间镜像</p> <h4 id="通过-docker-inspect-查看添加的元数据"><a href="#通过-docker-inspect-查看添加的元数据" class="header-anchor">#</a> 通过 docker inspect 查看添加的元数据</h4> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">docker</span> image inspect <span class="token parameter variable">--format</span><span class="token operator">=</span><span class="token string">''</span> myimage
+<span class="token punctuation">{</span>
+  <span class="token string">&quot;com.example.vendor&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;ACME Incorporated&quot;</span>,
+  <span class="token string">&quot;com.example.label-with-value&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;foo&quot;</span>,
+  <span class="token string">&quot;version&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;1.0&quot;</span>,
+  <span class="token string">&quot;description&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;This text illustrates that label-values can span multiple lines.&quot;</span>,
+  <span class="token string">&quot;multi.label1&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;value1&quot;</span>,
+  <span class="token string">&quot;multi.label2&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;value2&quot;</span>,
+  <span class="token string">&quot;other&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;value3&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="expose-通知-docker-容器在运行时监听指定的网络端口"><a href="#expose-通知-docker-容器在运行时监听指定的网络端口" class="header-anchor">#</a> <strong>EXPOSE：</strong> 通知 Docker 容器在运行时监听指定的网络端口</h3> <div class="language- extra-class"><pre class="language-text"><code>格式：
+EXPOSE &lt;port&gt;[&lt;port&gt;...]
+EXPOSE 端口号
+EXPOSE 端口号/协议
+
+示例：
+EXPOSE 80 443
+EXPOSE 8080
+EXPOSE 11211/tcp 11211/udp
+</code></pre></div><h4 id="expose-原理"><a href="#expose-原理" class="header-anchor">#</a> EXPOSE 原理</h4> <ul><li>EXPOSE 并不会让容器的端口访问到主机，要使其可访问，需要在 docker run 运行时通过 -p 来映射这些端口，或通过 -P 参数来自动映射 EXPOSE 导出的所有端口</li> <li>个人理解：EXPOSE 暴露的端口更像是指明了该容器提供的服务需要用到的端口</li> <li>EXPOSE 并不会直接将端口自动和宿主机某个端口建立映射关系</li> <li>如果 docker run，指定了自动映射 -P，那么会将所有暴露的端口随机映射到宿主机的高阶端口（比较大的端口号）</li> <li>如果 docker run，指定了 --net=host 宿主机网络模式，容器中 EXPOSE 指令暴露的端口会直接使用宿主机对应的端口，不存在映射关系</li> <li>如果 EXPOSE 暴露的端口确定要和某个宿主机端口建立映射关系，还是要用到 docker run -p 参数</li> <li>EXPOSE 显式地标明镜像开放端口，一定程度上提供了操作的便利，也提高了 Dockerfile 的可读性和可维护性</li></ul> <h3 id="worddir-工作目录-类似于-cd-命令"><a href="#worddir-工作目录-类似于-cd-命令" class="header-anchor">#</a> <strong>WORDDIR：</strong> 工作目录，类似于 cd 命令</h3> <ul><li>切换到镜像中的指定路径，设置工作目录</li> <li>为了避免出错，推荐 WORKDIR 指令中只使用绝对路径，如果镜像中对应的路径不存在，会自动创建此目录</li> <li>一般用 WORKDIR 来替代 RUN cd <path> &amp;&amp; <do something=""> 切换目录进行操作的指令</do></path></li> <li>通过 WORKDIR 设置工作目录后，Dockerfile 中其后的命令 RUN、CMD、ENTRYPOINT、ADD、COPY 等命令都会在该目录下执行。</li> <li>在使用 docker run 运行容器时，可以通过-w 参数覆盖构建时所设置的工作目录</li> <li>如果不指定 WORKDIR 指令，默认情况下容器启动时的工作目录是 /（根目录）。</li></ul> <div class="language- extra-class"><pre class="language-text"><code>格式：
+WORKDIR /path/to/workdir
+
+示例：
+WORKDIR /a (这时工作目录为a)
+WORKDIR b  (这时工作目录为/a/b)
+</code></pre></div><div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token comment"># 将宿主机的 test.txt 文件复制到 镜像的 /tmp/test.txt</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> /tmp</span>
+<span class="token instruction"><span class="token keyword">COPY</span> test.txt .</span>
+
+<span class="token comment"># WORKDIR 指令可以在 Dockerfile 中多次使用，如果提供了相对路径，它将相对于前一个 WORKDIR 指令的路径</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> /a</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> b</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> c</span>
+<span class="token instruction"><span class="token keyword">RUN</span> pwd</span>
+<span class="token comment"># pwd 的输出将会是 /a/b/c</span>
+</code></pre></div><h3 id="add-将本地文件添加到容器中"><a href="#add-将本地文件添加到容器中" class="header-anchor">#</a> <strong>ADD：</strong> 将本地文件添加到容器中</h3> <p>tar 类型文件会自动解压(网络压缩资源不会被解压),可以访问网络资源，类似 wget</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
 ADD &lt;src&gt; ... &lt;dest&gt;
 ADD [&quot;&lt;src&gt;&quot;,... &quot;&lt;dest&gt;&quot;] 用于支持包含空格的路径
 示例：
@@ -59,87 +230,110 @@ ADD hom* /mydir/	#添加所有已&quot;hom&quot;开头的文件
 ADD hom?.txt /mydir/      # ? 替代一个单字符,例如：&quot;home.txt&quot;
 ADD test relativeDir/     # 添加 &quot;test&quot; 到 `WORKDIR`/relativeDir/
 ADD test /absoluteDir/    # 添加 &quot;test&quot; 到 /absoluteDir/
-</code></pre></div><p>**COPY：**功能类似 ADD，但是不会自动解压文件，也不能访问网络资源</p> <p>**CMD：**构建容器后调用，也就是在容器启东市才进行调用</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
+</code></pre></div><h3 id="copy-复制内容到镜像"><a href="#copy-复制内容到镜像" class="header-anchor">#</a> <strong>COPY：</strong> 复制内容到镜像</h3> <p>功能类似 ADD，但是不会自动解压文件，也不能访问网络资源</p> <ul><li>格式： <code>COPY [--chown=&lt;user&gt;:&lt;group&gt;] &lt;src&gt;... &lt;dest&gt;</code> <ul><li><code>--chown=&lt;user&gt;:&lt;group&gt;</code> : 可选参数，用于设置复制后文件的所有者（用户和组）。例如，--chown=user:group。</li></ul></li> <li>复制本地主机的 <code>&lt;src&gt;</code>下内容到镜像中的 <code>&lt;dest&gt;</code>，目标路径不存在时，会自动创建。
+<ul><li><code>&lt;src&gt;</code>：是相对于构建上下文的路径，不能使用相对于 Dockerfile 的相对路径（因为 Dockerfile 可能不在上下文中）</li> <li><code>&lt;dest&gt;</code>：可以是镜像内绝对路径，或者相对于工作目录（WORKDIR）的相对路径</li></ul></li> <li>路径：支持正则表达式， <code>COPY test* /tmp</code></li></ul> <h4 id="copy-作用详解"><a href="#copy-作用详解" class="header-anchor">#</a> COPY 作用详解</h4> <ul><li>COPY 指令从 <code>&lt;src&gt;</code> 复制文件、目录或远程文件 URL，并将它们添加到路径 <code>&lt;dest&gt;</code></li> <li>可以指定多个 <code>&lt;src&gt;</code> 资源，但如果它们是文件或目录，则它们的路径被解析为相对于构建上下文的路径</li> <li>每个 <code>&lt;src&gt;</code> 可能包含通配符，匹配将使用 Go 的 filepath.Match 规则完成</li></ul> <h4 id="示例"><a href="#示例" class="header-anchor">#</a> 示例</h4> <div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token comment"># * 通配符，把所有 hom 开头的文件复制到镜像文件系统的 /mydir/ 目录下</span>
+<span class="token instruction"><span class="token keyword">COPY</span> hom* /mydir/</span>
+
+<span class="token comment"># ? 匹配 0 或 1 个字符，比如会把 home.txt 文件复制到 /mydir/ 目录下</span>
+<span class="token instruction"><span class="token keyword">COPY</span> hom?.txt /mydir/</span>
+
+<span class="token comment"># 使用相对路径的栗子</span>
+<span class="token instruction"><span class="token keyword">COPY</span> test.txt relativeDir/</span>
+<span class="token comment"># 等价于</span>
+<span class="token instruction"><span class="token keyword">COPY</span> test.txt &lt;WORKDIR&gt;/relativeDir/</span>
+
+<span class="token comment"># 使用绝对路径，将 test.txt 添加到 /absoluteDir/ 目录下</span>
+<span class="token instruction"><span class="token keyword">COPY</span> test.txt /absoluteDir/</span>
+</code></pre></div><h4 id="from-示例"><a href="#from-示例" class="header-anchor">#</a> --from=<name> 示例</name></h4> <p>将从 from 指定的构建阶段中寻找源文件 <code>&lt;src&gt;</code></p> <div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token comment"># 第一构建阶段:将仅用于生成 requirements.txt 文件</span>
+<span class="token instruction"><span class="token keyword">FROM</span> tiangolo/uvicorn-gunicorn:python3.9 <span class="token keyword">as</span> requirements-stage</span>
+
+<span class="token comment"># 将当前工作目录设置为 /tmp</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> /tmp</span>
+
+<span class="token comment"># 生成 requirements.txt</span>
+<span class="token instruction"><span class="token keyword">RUN</span> touch requirements.txt</span>
+
+<span class="token comment"># 第二构建阶段，在这往后的任何内容都将保留在最终容器映像中</span>
+<span class="token instruction"><span class="token keyword">FROM</span> python:3.9</span>
+
+<span class="token comment"># 将当前工作目录设置为 /code</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> /code</span>
+
+<span class="token comment"># 从第一个阶段复制 requirements.txt;这个文件只存在于前一个 Docker 阶段，这就是使用 --from-requirements-stage 复制它的原因</span>
+<span class="token instruction"><span class="token keyword">COPY</span> <span class="token options"><span class="token property">--from</span><span class="token punctuation">=</span><span class="token string">requirements-stage</span></span> /tmp/requirements.txt /code/requirements.txt</span>
+
+<span class="token comment"># 运行命令</span>
+<span class="token instruction"><span class="token keyword">RUN</span> pip install --no-cache-dir --upgrade -r /code/requirements.txt</span>
+</code></pre></div><h4 id="copy-src-详解"><a href="#copy-src-详解" class="header-anchor">#</a> COPY <code>&lt;src&gt;</code> 详解</h4> <h4 id="src-路径必须在构建的上下文中"><a href="#src-路径必须在构建的上下文中" class="header-anchor">#</a> <code>&lt;src&gt;</code> 路径必须在构建的上下文中</h4> <ul><li>COPY 指令只能访问构建上下文中的文件和目录。确保构建上下文包含所需的所有文件。</li> <li>使用 .dockerignore 文件排除不需要的文件，可以减少构建上下文的大小和构建时间。</li></ul> <div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token comment"># test.txt 是相对路径，相对于构建上下文</span>
+<span class="token instruction"><span class="token keyword">COPY</span> test.txt /mkdir/</span>
+
+<span class="token comment"># 以下错误写法，文件均不在上下文目录中，并不会被找到</span>
+<span class="token comment"># 这个找的就是构建上下文的上级目录的 test.txt</span>
+<span class="token instruction"><span class="token keyword">COPY</span> ../test.txt /mkdir/</span>
+<span class="token comment"># 这个找的是本机根目录下的 test.txt</span>
+<span class="token instruction"><span class="token keyword">COPY</span> /test.txt /mkdir/</span>
+
+<span class="token comment"># 不能添加  ../something 、 /something ，因为 docker 构建的第一步是将上下文目录（和子目录）发送到 docker 守护进程</span>
+</code></pre></div><h5 id="src-是目录"><a href="#src-是目录" class="header-anchor">#</a> <code>&lt;src&gt;</code> 是目录</h5> <ul><li>则复制目录的全部内容，包括文件系统元数据</li> <li>不会复制目录本身，只会复制其内容，并保持目录结构。</li></ul> <div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token instruction"><span class="token keyword">COPY</span> dir /mydir/</span>
+</code></pre></div><h5 id="src-是任何其他类型的文件"><a href="#src-是任何其他类型的文件" class="header-anchor">#</a> <code>&lt;src&gt;</code> 是任何其他类型的文件</h5> <ul><li>则将其与其元数据一起单独复制</li> <li><code>&lt;dest&gt;</code> 以斜杠 / 结尾，它将被视为一个目录，并且 <code>&lt;src&gt;</code> 的内容将写入 <code>&lt;dest&gt;</code>/base(<code>&lt;src&gt;</code>)</li></ul> <h5 id="指定了多个-src-资源-或者由于使用了通配符"><a href="#指定了多个-src-资源-或者由于使用了通配符" class="header-anchor">#</a> 指定了多个 <code>&lt;src&gt;</code> 资源，或者由于使用了通配符</h5> <p>则 <code>&lt;dest&gt;</code> 必须是一个目录，并且必须以斜杠 / 结尾</p> <div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token instruction"><span class="token keyword">COPY</span> test1.txt test2.txt /mydir/</span>
+</code></pre></div><h4 id="copy-dest-详解"><a href="#copy-dest-详解" class="header-anchor">#</a> COPY <code>&lt;dest&gt;</code> 详解</h4> <h5 id="dest-不以斜杠结尾"><a href="#dest-不以斜杠结尾" class="header-anchor">#</a> <code>&lt;dest&gt;</code> 不以斜杠结尾</h5> <p>它将被视为常规文件，并且 <code>&lt;src&gt;</code> 的内容将写入 <code>&lt;dest&gt;</code></p> <div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token instruction"><span class="token keyword">COPY</span> test.txt /mytext</span>
+</code></pre></div><h5 id="如果-dest-是一个已存在的目录-copy-指令会将-src-文件或目录复制到-dest-目录中。"><a href="#如果-dest-是一个已存在的目录-copy-指令会将-src-文件或目录复制到-dest-目录中。" class="header-anchor">#</a> 如果 <code>&lt;dest&gt;</code> 是一个已存在的目录，COPY 指令会将 <code>&lt;src&gt;</code> 文件或目录复制到 <code>&lt;dest&gt;</code> 目录中。</h5> <h5 id="dest-不存在"><a href="#dest-不存在" class="header-anchor">#</a> <code>&lt;dest&gt;</code> 不存在</h5> <p>路径中所有缺失的目录都会自动创建</p> <div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token instruction"><span class="token keyword">COPY</span> test.txt /dir/test/my/</span>
+</code></pre></div><h4 id="add-和-copy-的区别和使用场景"><a href="#add-和-copy-的区别和使用场景" class="header-anchor">#</a> ADD 和 COPY 的区别和使用场景</h4> <ul><li>ADD 支持添加远程 url 和自动提取压缩格式的文件，COPY 只允许从本机中复制文件
+<ul><li>ADD 从远程 url 获取文件和复制的效果并不理想，因为该文件会增加 Docker Image 最终的大小，相反，应该使用 curl huo wget 来获取远程文件，然后在不需要它时进行删除</li></ul></li> <li>COPY 支持从其他构建阶段中复制源文件（--from）</li> <li>根据官方 Dockerfile 最佳实践，除非真的需要从远程 url 添加文件或自动提取压缩文件才用 ADD，其他情况一律使用 COPY</li></ul> <h3 id="volume-用户指定持久化目录"><a href="#volume-用户指定持久化目录" class="header-anchor">#</a> <strong>VOLUME：</strong> 用户指定持久化目录</h3> <p>用于定义匿名的数据卷（volume）。数据卷是 Docker 中的持久存储解决方案，允许你将数据从容器中分离出来并存储在宿主系统中或 Docker 管理的存储中。这样可以确保数据的持久性，即使容器被删除或重新创建，数据仍然存在。</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
+VOLUME [&quot;/path/to/dir&quot;]
+
+示例:
+# 必须时双引号
+VOLUME [&quot;/data&quot;]
+VALUME [&quot;/var/www&quot;, &quot;/var/log/apache2&quot;]
+</code></pre></div><div class="language-dockerfile extra-class"><pre class="language-dockerfile"><code><span class="token comment"># 使用官方的 nginx 镜像作为基础镜像</span>
+<span class="token instruction"><span class="token keyword">FROM</span> nginx:latest</span>
+
+<span class="token comment"># 定义一个数据卷</span>
+<span class="token instruction"><span class="token keyword">VOLUME</span> [<span class="token string">&quot;/var/log/nginx&quot;</span>]</span>
+
+<span class="token comment"># 将本地的 nginx 配置文件复制到容器中</span>
+<span class="token instruction"><span class="token keyword">COPY</span> nginx.conf /etc/nginx/nginx.conf</span>
+</code></pre></div><p>在这个例子中，<code>VOLUME [&quot;/var/log/nginx&quot;]</code> 指令告诉 Docker 将 <code>/var/log/nginx</code> 目录映射到宿主系统的某个存储位置。这意味着：</p> <ul><li>当 Nginx 写入日志到 /var/log/nginx 时，日志实际上存储在宿主系统上。</li> <li>即使删除或重新创建容器，日志数据仍然保持不变。</li></ul> <h4 id="一个卷可以存在于一个或多个容器的指定目录-改目录可以绕过联合文件系统-并具有以下功能"><a href="#一个卷可以存在于一个或多个容器的指定目录-改目录可以绕过联合文件系统-并具有以下功能" class="header-anchor">#</a> 一个卷可以存在于一个或多个容器的指定目录，改目录可以绕过联合文件系统，并具有以下功能:</h4> <ol><li>可以容器间共享和重用</li> <li>容器并不一定要和其它容器共享卷</li> <li>修改卷后会立即生效</li> <li>对卷的修改不会对镜像产生影响</li> <li>卷会一直存在，直到没有任何容器在使用它</li></ol> <h4 id="注意-2"><a href="#注意-2" class="header-anchor">#</a> 注意</h4> <ol><li><p>默认权限:</p> <ul><li>VOLUME 指定的卷在容器中默认具有读写权限。</li> <li>如果需要只读权限，可以在启动容器时使用 docker run 的 --mount 或 -v 选项进行配置。</li></ul></li> <li><p>匿名卷 vs 命名卷:</p> <ul><li>使用 VOLUME 创建的是匿名卷，Docker 会自动生成一个随机名称。</li> <li>如果希望明确控制卷的名称和位置，建议使用 docker run 的 -v 或 --mount 选项手动挂载命名卷。（比如像 docker run -v &lt;主机目录&gt;:&lt;容器目录&gt; 是可以指定主机目录的）</li></ul></li> <li><p>卷的数据管理:</p> <ul><li>卷的数据不会随着容器的删除而删除。要清理卷数据，需要手动删除。</li> <li>可以使用 docker volume ls 列出所有卷，docker volume rm 删除特定卷，docker volume prune 删除所有未使用的卷。</li></ul></li> <li><p>卷与 COPY / ADD 的交互:</p></li></ol> <ul><li>如果 COPY 或 ADD 指令的目标路径是一个 VOLUME 定义的路径，文件会被复制到卷中。</li> <li>但需要注意，<strong>创建卷时，如果路径已经存在数据，卷的内容会覆盖路径上的已有数据。</strong></li></ul> <ol start="5"><li>卷的挂载位置:</li></ol> <ul><li>在启动容器时，卷的挂载位置可以指定为宿主系统上的绝对路径或 Docker 管理的默认位置。</li> <li>例如：docker run -v /host/data:/container/data 会将宿主系统的 /host/data 目录挂载到容器的 /container/data 目录。</li></ul> <ol start="6"><li>保持数据安全和一致性:</li></ol> <ul><li>在处理敏感数据时，确保卷的权限设置正确，防止未经授权的访问。</li> <li>使用卷时，确保容器中访问和修改卷数据的进程正确处理文件系统的并发和锁定问题，以避免数据一致性问题。</li></ul> <ol start="7"><li>性能问题:</li></ol> <ul><li>在高 I/O 场景下，卷的性能可能成为瓶颈。可以考虑将数据存储在性能更高的存储介质上，比如 SSD。</li></ul> <h3 id="run-构建镜像时执行的命令"><a href="#run-构建镜像时执行的命令" class="header-anchor">#</a> <strong>RUN：</strong> 构建镜像时执行的命令</h3> <p>RUN 用于在镜像容器中执行命令，其有以下两种命令执行方式：shell 执行和 exec 执行</p> <div class="language- extra-class"><pre class="language-text"><code>shell执行
+  命令在 shell 中运行
+  Linux 上默认为 /bin/sh -c
+  Windows 上 cmd /S /C
+格式：RUN &lt;command&gt;
+
+exec执行
+必须双引号，不能是单引号
+格式：RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]
+
+示例：
+RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME'
+RUN [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;echo hello&quot;]
+</code></pre></div><p>注：RUN 指令创建的中间镜像会被缓存，并会在下次构建中使用，如果不想使用这些缓存镜像，可以再构建时指定--no-cache 参数，如：<code>docker build --no-cache .</code></p> <h4 id="run-指令的原理"><a href="#run-指令的原理" class="header-anchor">#</a> RUN 指令的原理</h4> <ul><li>RUN 指令将在当前镜像上加新的一层，并执行任何命令和提交结果，生成的提交镜像将用于 Dockfile 中的后续步骤</li> <li>分层 RUN 指令和生成提交符合 Docker 核心概念，提交成本低，并且可以通过 docker history 中的任意步骤创建容器，像 git 代码控制一样</li></ul> <h3 id="cmd-指定容器默认执行的命令-构建容器后调用-也就是在容器启动时才进行调用"><a href="#cmd-指定容器默认执行的命令-构建容器后调用-也就是在容器启动时才进行调用" class="header-anchor">#</a> <strong>CMD：</strong> 指定容器默认执行的命令，构建容器后调用，也就是在容器启动时才进行调用</h3> <div class="language- extra-class"><pre class="language-text"><code>格式：
 CMD[&quot;excutable&quot;,&quot;param1&quot;,&quot;param2&quot;](执行可执行文件，优先)
 CMD[&quot;param1&quot;,&quot;param2&quot;]（设置了ENTRYPOINT，则直接调用ENTRYPOINT添加参数）
 CMD command param1 param2 (执行shell内部命令)
+
 示例：
 CMD echo &quot;This is a test.&quot;
 CMD [&quot;/user/bin/wc&quot;, &quot;--help&quot;]
-注：
-CMD 不同于RUN，CMD用于指定在容器启动时所要执行的命令，而RUN用于指定镜像构建时所要执行的命令。
-</code></pre></div><p>**ENTRYPOINT：**配置容器，使其可执行化。配合 CMD 可省去&quot;application&quot;，只使用参数。</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
+</code></pre></div><h4 id="注意-3"><a href="#注意-3" class="header-anchor">#</a> 注意</h4> <ul><li>一个 Dockerfile 只有一个 CMD 指令，若有多个，只有最后一个 CMD 指令生效</li> <li>CMD 主要目的：为容器提供默认执行的命令，这个默认值可以包含可执行文件，也可以不包含可执行文件，如果不包含可执行文件，意味着必须指定 ENTRYPOINT 指令（第二种写法）</li> <li>exec 模式下不能单独使用环境变量，必须要跟命令一起用</li></ul> <div class="language- extra-class"><pre class="language-text"><code># 错误写法，不会使用 HOME 环境变量
+CMD [ &quot;echo&quot;, &quot;$HOME&quot; ]
+
+# 正确写法，需要将 echo 和使用环境变量放一起
+CMD [ &quot;sh&quot;, &quot;-c&quot;, &quot;echo $HOME&quot; ]
+</code></pre></div><h4 id="run-和-cmd-的区别"><a href="#run-和-cmd-的区别" class="header-anchor">#</a> RUN 和 CMD 的区别</h4> <ul><li>RUN 可以在构建阶段运行很多个命令，而且每运行一个命令都会单独提交结果</li> <li>CMD 在构建阶段不执行任何操作，而是指定镜像默认执行的命令</li></ul> <h3 id="entrypoint-指定镜像的默认入口命令-该入口命令会在启动容器时作为根命令执行"><a href="#entrypoint-指定镜像的默认入口命令-该入口命令会在启动容器时作为根命令执行" class="header-anchor">#</a> <strong>ENTRYPOINT：</strong> 指定镜像的默认入口命令，该入口命令会在启动容器时作为根命令执行</h3> <ul><li>ENTRYPOINT 指定镜像的默认入口命令，该入口命令会在启动容器时作为根命令执行，所有其他传入值作为该命令的参数</li> <li>ENTRYPOINT 的值可以通过 docker run --entrypoint 来覆盖掉</li> <li>Dockerfile 中只允许有一个 ENTRYPOINT 命令，多指定时会覆盖前面的设置，而只执行最后的 ENTRYPOINT 指令</li></ul> <div class="language- extra-class"><pre class="language-text"><code>格式：
 ENTRYPOINT [&quot;executable&quot;,&quot;param1&quot;,&quot;param2&quot;](可执行文件，优先)
 ENTRYPOINT command param1 param2 (shell 内部命令)
+
 示例:
 FROM ubuntu
 ENTRYPOINT[&quot;top&quot;,&quot;-b&quot;]
 CMD['-c']
-注：
-ENTRYPOINT与CMD非常类似，不同的是通过docker run执行的命令不会覆盖ENTRYPOINT，而docker run命令中指定的任何参数，都会被当做参数再次传递给ENTRYPOINT，Dockerfile中只允许有一个ENTRYPOINT命令，多指定时会覆盖前面的设置，而只执行最后的ENTRYPOINT指令
-</code></pre></div><p><strong>LABEL：</strong> 用户为镜像添加元数据</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
-LABEL &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt;...
-示例：
-LABEL version=&quot;1.0&quot; description=&quot;这是一个web服务器&quot;
-注:
-使用LABEL指定元数据是，一条LABEL指定可以之定义或多条元数据，指定多条元数据时不同元数据直接通过空格分割。推荐将所有的元数据通过一条LABEL指令指定，以免生成过多的中间镜像
-</code></pre></div><p>**ENV：**设置环境变量</p> <div class="language- extra-class"><pre class="language-text"><code>格式
-ENV&lt;key&gt;&lt;value&gt; #&lt;key&gt;之后的所有内容均被视为其&lt;value&gt;组成部分，因此，一次只能设置一个变量
-ENV &lt;key&gt;=&lt;value&gt;...#可以设置多个变量，每个变量为一个&lt;key&gt;=&lt;value&gt;键值对，，如果&lt;key&gt;中包含空格，可以使用\来进行转义，也可以通过&quot;&quot;来进行标示；另外，反斜线也可以用于续行
-示例：
-ENV myName John Doe
-ENV myCat=fluffy
-</code></pre></div><p>**EXPOSE：**指定与外界交互的端口</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
-EXPOSE &lt;port&gt;[&lt;port&gt;...]
-示例：
-EXPOSE 80 443
-EXPOSE 8080
-EXPOSE 11211/tcp 11211/udp
-注：
-EXPOSE 并不会让容器的端口访问到主机，要是其他可访问，需要在docker run 运行时通过-p来发布这些端口，或通过-P参数来发布EXPOSE导出的所有端口
-</code></pre></div><p>**VOLUME：**用户指定持久化目录</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
-VOLUME [&quot;/path/to/dir&quot;]
-示例:
-VOLUME [&quot;/data&quot;]
-VALUME [&quot;/var/www&quot;, &quot;/var/log/apache2&quot;]
-注:
-一个卷可以存在于一个或多个容器的指定目录，改目录可以绕过联合文件系统，并具有以下功能:
-
-1. 可以容器间共享和重用
-2. 容器并不一定要和其它容器共享卷
-3. 修改卷后会立即生效
-4. 对卷的修改不会对镜像产生影响
-5. 卷会一直存在，直到没有任何容器在使用它
-</code></pre></div><p>**WORDDIR：**工作目录，类似于 cd 命令</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
-WORKDIR /path/to/workdir
-示例：
-WORKDIR /a (这时工作目录为a)
-WORKDIR b  (这时工作目录为/a/b)
-注：
-通过WORKDIR设置工作目录后，Dockerfile中其后的命令RUN、CMD、ENTRYPOINT、ADD、COPY等命令都会在该目录下执行。在使用docker run 运行容器是，可以通过-w参数覆盖构建时所设置的工作目录
-</code></pre></div><p>**USER：**制动运行容器室的用户名或 UID，后续的 RUN 也会使用指定用户，使用 USER 指定用户是，可以使用用户名，UID 或 GID，或者是两者组合，当服务器不需要管理员权限是，可以通过该命令指定运行用户，并且可以再之前创建所需要的用户</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
-USER user
-USER user:group
-USER uid
-USER uid:gid
-USER user:gid
-USER uid:group
-实例：
-USER www
-注：
-使用USER指定用户后，Dockerfile中其后的命令RUN,CMD,ENTRYPOINT都将使用该用户，镜像构建完成后，通过docker run运行容器室，可以通过-u来覆盖所指定的用户
-</code></pre></div><p>**ARG：**用户指定传递给构建运行时的变量</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
-ARG &lt;name&gt; [=&lt;default value&gt;]
-示例：
-ARG site
-ARG build_user=www
-</code></pre></div><p>**ONBUILD：**用于设置镜像触发器</p> <div class="language- extra-class"><pre class="language-text"><code>格式：
+</code></pre></div><h4 id="cmd-和-entrypoint-区别"><a href="#cmd-和-entrypoint-区别" class="header-anchor">#</a> CMD 和 ENTRYPOINT 区别</h4> <ul><li>CMD 指定这个容器启动的时候要运行的命令，不可以追加命令</li> <li>ENTRYPOINT 指定这个容器启动的时候要运行的命令，可以追加命令</li></ul> <h4 id="entrypoint-和-cmd-联合使用"><a href="#entrypoint-和-cmd-联合使用" class="header-anchor">#</a> ENTRYPOINT 和 CMD 联合使用</h4> <ul><li>当指定了 ENTRYPOINT 后，CMD 的含义就发生了改变，不再是直接的运行其命令，而是将 CMD 的内容作为参数传给 ENTRYPOINT 指令</li> <li>换句话说实际执行时，会变成 <code>&lt;ENTRYPOINT&gt; &quot;&lt;CMD&gt;&quot;</code></li></ul> <h4 id="entrypoint-应用场景"><a href="#entrypoint-应用场景" class="header-anchor">#</a> ENTRYPOINT 应用场景</h4> <ul><li>启动容器就是启动主进程，但启动主进程前，可能需要一些准备工作，比如 mysql 可能需要一些数据库配置、初始化的工作，这些工作要在最终的 mysql 服务器运行之前解决</li> <li>还可能希望避免使用 root 用户去启动服务，从而提高安全性，而在启动服务前还需要以 root 身份执行一些必要的准备工作，最后切换到服务用户身份启动服务</li> <li>这些准备工作是和容器 CMD 无关的，无论 CMD 是什么，都需要事先进行一个预处理的工作，这种情况下，可以写一个脚本，然后放入 ENTRYPOINT 中去执行，而这个脚本会将接到的参数（也就是 <CMD>）作为命令，在脚本最后执行</CMD></li></ul> <h3 id="onbuild-用于设置镜像触发器"><a href="#onbuild-用于设置镜像触发器" class="header-anchor">#</a> <strong>ONBUILD：</strong> 用于设置镜像触发器</h3> <ul><li>ONBUILD 是一个特殊的指令，它后面跟的是其它指令，比如 RUN, COPY 等，而这些指令，在当前镜像构建时并不会被执行</li> <li>只有当以当前镜像为基础镜像，去构建下一级镜像的时候才会被执行</li> <li>Dockerfile 中的其它指令都是为了定制当前镜像而准备的，唯有 ONBUILD 是为了帮助别人定制自己而准备的</li></ul> <div class="language- extra-class"><pre class="language-text"><code>格式：
 ONBUILD [INSTRUCTION]
+
 示例：
 ONBUILD ADD . /app/src
 ONBULD RUN /usr/local/bin/python-build --dir /app/src
-注:
-当缩构建的镜像被用作其他镜像的基础镜像，改镜像中的触发器将会被触发
 </code></pre></div><p>小例子：</p> <div class="language- extra-class"><pre class="language-text"><code># This my first nginx Dockerfile
 # Version 1.0
 
@@ -181,7 +375,7 @@ EXPOSE 80
 #CMD 运行以下命令
 CMD [&quot;nginx&quot;]
 
-</code></pre></div><p>待看：https://www.leeks.info/zh_CN/latest/Linux_Notes/index.html#docker</p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/server/docker/docker-file.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">6/25/2023, 6:45:40 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
-    <script src="/assets/js/app.26ddf859.js" defer></script><script src="/assets/js/2.0a0a1bce.js" defer></script><script src="/assets/js/184.34cddded.js" defer></script>
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/server/docker/docker-file.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">6/13/2024, 8:30:25 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.f0c3bf6e.js" defer></script><script src="/assets/js/2.267df354.js" defer></script><script src="/assets/js/1.66cc43cf.js" defer></script><script src="/assets/js/246.d57006a7.js" defer></script>
   </body>
 </html>

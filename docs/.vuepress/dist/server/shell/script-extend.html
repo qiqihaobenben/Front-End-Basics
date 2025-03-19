@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>shell 脚本编程扩展 | Front-End-Basics</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    
+    <meta name="description" content="陈方旭的个人文档">
+    
+    <link rel="preload" href="/assets/css/0.styles.8f3dca9f.css" as="style"><link rel="preload" href="/assets/js/app.f0c3bf6e.js" as="script"><link rel="preload" href="/assets/js/2.267df354.js" as="script"><link rel="preload" href="/assets/js/1.66cc43cf.js" as="script"><link rel="preload" href="/assets/js/34.b46900a8.js" as="script"><link rel="prefetch" href="/assets/js/10.8ed5e327.js"><link rel="prefetch" href="/assets/js/100.ae5b3443.js"><link rel="prefetch" href="/assets/js/101.cc73b0f5.js"><link rel="prefetch" href="/assets/js/102.3f3114fb.js"><link rel="prefetch" href="/assets/js/103.8ff5fdac.js"><link rel="prefetch" href="/assets/js/104.b5debdc3.js"><link rel="prefetch" href="/assets/js/105.8da11418.js"><link rel="prefetch" href="/assets/js/106.4dbe9edc.js"><link rel="prefetch" href="/assets/js/107.181bae05.js"><link rel="prefetch" href="/assets/js/108.89a63e22.js"><link rel="prefetch" href="/assets/js/109.ce54155a.js"><link rel="prefetch" href="/assets/js/11.066e1c25.js"><link rel="prefetch" href="/assets/js/110.f2e608ea.js"><link rel="prefetch" href="/assets/js/111.42921b66.js"><link rel="prefetch" href="/assets/js/112.8da31ceb.js"><link rel="prefetch" href="/assets/js/113.5ac3f0d4.js"><link rel="prefetch" href="/assets/js/114.e056e614.js"><link rel="prefetch" href="/assets/js/115.cebf7fde.js"><link rel="prefetch" href="/assets/js/116.2b434a84.js"><link rel="prefetch" href="/assets/js/117.100c132f.js"><link rel="prefetch" href="/assets/js/118.a4afed9a.js"><link rel="prefetch" href="/assets/js/119.f0f1a25d.js"><link rel="prefetch" href="/assets/js/12.9fe465cb.js"><link rel="prefetch" href="/assets/js/120.376850c5.js"><link rel="prefetch" href="/assets/js/121.5dc1a6a2.js"><link rel="prefetch" href="/assets/js/122.363693fb.js"><link rel="prefetch" href="/assets/js/123.7258fb95.js"><link rel="prefetch" href="/assets/js/124.a4bd3167.js"><link rel="prefetch" href="/assets/js/125.8aa8db7c.js"><link rel="prefetch" href="/assets/js/126.2caa71e3.js"><link rel="prefetch" href="/assets/js/127.220486dd.js"><link rel="prefetch" href="/assets/js/128.b01fb70e.js"><link rel="prefetch" href="/assets/js/129.bd8c1b32.js"><link rel="prefetch" href="/assets/js/13.ceec992d.js"><link rel="prefetch" href="/assets/js/130.9b3fd30c.js"><link rel="prefetch" href="/assets/js/131.c1e91c2d.js"><link rel="prefetch" href="/assets/js/132.6d39b36b.js"><link rel="prefetch" href="/assets/js/133.cc4ee14d.js"><link rel="prefetch" href="/assets/js/134.3b031de3.js"><link rel="prefetch" href="/assets/js/135.329aa943.js"><link rel="prefetch" href="/assets/js/136.e97d2b91.js"><link rel="prefetch" href="/assets/js/137.70ad5edc.js"><link rel="prefetch" href="/assets/js/138.b2388813.js"><link rel="prefetch" href="/assets/js/139.260e94e8.js"><link rel="prefetch" href="/assets/js/14.6b9e2f92.js"><link rel="prefetch" href="/assets/js/140.d0752482.js"><link rel="prefetch" href="/assets/js/141.c3809389.js"><link rel="prefetch" href="/assets/js/142.909571e7.js"><link rel="prefetch" href="/assets/js/143.9c55503a.js"><link rel="prefetch" href="/assets/js/144.037eb178.js"><link rel="prefetch" href="/assets/js/145.b15eb629.js"><link rel="prefetch" href="/assets/js/146.92f941e0.js"><link rel="prefetch" href="/assets/js/147.ee679e8f.js"><link rel="prefetch" href="/assets/js/148.259bd94c.js"><link rel="prefetch" href="/assets/js/149.0560570b.js"><link rel="prefetch" href="/assets/js/15.d25af981.js"><link rel="prefetch" href="/assets/js/150.e0970997.js"><link rel="prefetch" href="/assets/js/151.8c91c562.js"><link rel="prefetch" href="/assets/js/152.b2680c3d.js"><link rel="prefetch" href="/assets/js/153.43d5659d.js"><link rel="prefetch" href="/assets/js/154.41332198.js"><link rel="prefetch" href="/assets/js/155.36a0da41.js"><link rel="prefetch" href="/assets/js/156.8d9c6ad6.js"><link rel="prefetch" href="/assets/js/157.016cc281.js"><link rel="prefetch" href="/assets/js/158.c846bda8.js"><link rel="prefetch" href="/assets/js/159.60ef4fd7.js"><link rel="prefetch" href="/assets/js/16.fe68c618.js"><link rel="prefetch" href="/assets/js/160.e000f0e7.js"><link rel="prefetch" href="/assets/js/161.f67efc97.js"><link rel="prefetch" href="/assets/js/162.4eadc328.js"><link rel="prefetch" href="/assets/js/163.39e9bbe6.js"><link rel="prefetch" href="/assets/js/164.8e990d4c.js"><link rel="prefetch" href="/assets/js/165.9cc5569d.js"><link rel="prefetch" href="/assets/js/166.dcfd67ce.js"><link rel="prefetch" href="/assets/js/167.0a12942f.js"><link rel="prefetch" href="/assets/js/168.db0cf4d8.js"><link rel="prefetch" href="/assets/js/169.0177438a.js"><link rel="prefetch" href="/assets/js/17.de0b324b.js"><link rel="prefetch" href="/assets/js/170.799f7bf1.js"><link rel="prefetch" href="/assets/js/171.72b504b4.js"><link rel="prefetch" href="/assets/js/172.3fedbd3b.js"><link rel="prefetch" href="/assets/js/173.9d2d86ef.js"><link rel="prefetch" href="/assets/js/174.1a15c5a7.js"><link rel="prefetch" href="/assets/js/175.62da2bad.js"><link rel="prefetch" href="/assets/js/176.fa85299a.js"><link rel="prefetch" href="/assets/js/177.a4f8a83d.js"><link rel="prefetch" href="/assets/js/178.3da2977b.js"><link rel="prefetch" href="/assets/js/179.5a0698c9.js"><link rel="prefetch" href="/assets/js/18.75c085a9.js"><link rel="prefetch" href="/assets/js/180.b3c22f44.js"><link rel="prefetch" href="/assets/js/181.258acfab.js"><link rel="prefetch" href="/assets/js/182.3b612a1c.js"><link rel="prefetch" href="/assets/js/183.04d35baf.js"><link rel="prefetch" href="/assets/js/184.2f6ebfb6.js"><link rel="prefetch" href="/assets/js/185.3d2ba522.js"><link rel="prefetch" href="/assets/js/186.85211aa8.js"><link rel="prefetch" href="/assets/js/187.3a727290.js"><link rel="prefetch" href="/assets/js/188.39112337.js"><link rel="prefetch" href="/assets/js/189.160e194c.js"><link rel="prefetch" href="/assets/js/19.7d112bce.js"><link rel="prefetch" href="/assets/js/190.c053d7a2.js"><link rel="prefetch" href="/assets/js/191.22cefdac.js"><link rel="prefetch" href="/assets/js/192.964f5e88.js"><link rel="prefetch" href="/assets/js/193.700abf9f.js"><link rel="prefetch" href="/assets/js/194.e267a0f1.js"><link rel="prefetch" href="/assets/js/195.e49141be.js"><link rel="prefetch" href="/assets/js/196.abd378ac.js"><link rel="prefetch" href="/assets/js/197.49b8f519.js"><link rel="prefetch" href="/assets/js/198.f60281e1.js"><link rel="prefetch" href="/assets/js/199.2444da81.js"><link rel="prefetch" href="/assets/js/20.81f5b440.js"><link rel="prefetch" href="/assets/js/200.54f5e6d4.js"><link rel="prefetch" href="/assets/js/201.132bab0f.js"><link rel="prefetch" href="/assets/js/202.cd5ef700.js"><link rel="prefetch" href="/assets/js/203.6524ae1d.js"><link rel="prefetch" href="/assets/js/204.79049883.js"><link rel="prefetch" href="/assets/js/205.b453ac0d.js"><link rel="prefetch" href="/assets/js/206.8e68e3cb.js"><link rel="prefetch" href="/assets/js/207.0dbf0bb5.js"><link rel="prefetch" href="/assets/js/208.a6f0aa62.js"><link rel="prefetch" href="/assets/js/209.5eb00898.js"><link rel="prefetch" href="/assets/js/21.b8f03079.js"><link rel="prefetch" href="/assets/js/210.5394d572.js"><link rel="prefetch" href="/assets/js/211.4d73566d.js"><link rel="prefetch" href="/assets/js/212.01ea7dd7.js"><link rel="prefetch" href="/assets/js/213.80261d17.js"><link rel="prefetch" href="/assets/js/214.42974ae8.js"><link rel="prefetch" href="/assets/js/215.6a9aefd7.js"><link rel="prefetch" href="/assets/js/216.71698897.js"><link rel="prefetch" href="/assets/js/217.cbdb7908.js"><link rel="prefetch" href="/assets/js/218.e1ca46a4.js"><link rel="prefetch" href="/assets/js/219.4bff8927.js"><link rel="prefetch" href="/assets/js/22.ce37cd53.js"><link rel="prefetch" href="/assets/js/220.d29e2c08.js"><link rel="prefetch" href="/assets/js/221.6a2c607c.js"><link rel="prefetch" href="/assets/js/222.7209db02.js"><link rel="prefetch" href="/assets/js/223.18f8b9df.js"><link rel="prefetch" href="/assets/js/224.52b820e0.js"><link rel="prefetch" href="/assets/js/225.46e90caa.js"><link rel="prefetch" href="/assets/js/226.63ed554a.js"><link rel="prefetch" href="/assets/js/227.7fafc4da.js"><link rel="prefetch" href="/assets/js/228.7706dc54.js"><link rel="prefetch" href="/assets/js/229.842a1964.js"><link rel="prefetch" href="/assets/js/23.87e7e45e.js"><link rel="prefetch" href="/assets/js/230.ddc0f55a.js"><link rel="prefetch" href="/assets/js/231.e72fa0a7.js"><link rel="prefetch" href="/assets/js/232.e15e10a1.js"><link rel="prefetch" href="/assets/js/233.9001d006.js"><link rel="prefetch" href="/assets/js/234.c55b49d9.js"><link rel="prefetch" href="/assets/js/235.da1bf5f9.js"><link rel="prefetch" href="/assets/js/236.9efb932c.js"><link rel="prefetch" href="/assets/js/237.67412574.js"><link rel="prefetch" href="/assets/js/238.24ef619f.js"><link rel="prefetch" href="/assets/js/239.1f2a6298.js"><link rel="prefetch" href="/assets/js/24.5aa30e8d.js"><link rel="prefetch" href="/assets/js/240.9c9279b1.js"><link rel="prefetch" href="/assets/js/241.695630cd.js"><link rel="prefetch" href="/assets/js/242.891e7aef.js"><link rel="prefetch" href="/assets/js/243.edd26862.js"><link rel="prefetch" href="/assets/js/244.ed576d71.js"><link rel="prefetch" href="/assets/js/245.d10042cf.js"><link rel="prefetch" href="/assets/js/246.d57006a7.js"><link rel="prefetch" href="/assets/js/247.b2d6742e.js"><link rel="prefetch" href="/assets/js/248.8b56d853.js"><link rel="prefetch" href="/assets/js/249.b8fc1805.js"><link rel="prefetch" href="/assets/js/25.5c7b2cfe.js"><link rel="prefetch" href="/assets/js/250.1aad43ae.js"><link rel="prefetch" href="/assets/js/251.be9db929.js"><link rel="prefetch" href="/assets/js/252.afedca09.js"><link rel="prefetch" href="/assets/js/253.c6e86855.js"><link rel="prefetch" href="/assets/js/254.90b4f52a.js"><link rel="prefetch" href="/assets/js/255.227c9c47.js"><link rel="prefetch" href="/assets/js/256.fe3714d4.js"><link rel="prefetch" href="/assets/js/257.3e5db4f7.js"><link rel="prefetch" href="/assets/js/258.29013d06.js"><link rel="prefetch" href="/assets/js/259.e9af4b51.js"><link rel="prefetch" href="/assets/js/26.5a8e32e6.js"><link rel="prefetch" href="/assets/js/260.9555612d.js"><link rel="prefetch" href="/assets/js/261.e8e200a0.js"><link rel="prefetch" href="/assets/js/262.0f393806.js"><link rel="prefetch" href="/assets/js/263.42b99650.js"><link rel="prefetch" href="/assets/js/264.5e36cccd.js"><link rel="prefetch" href="/assets/js/265.e7759e0e.js"><link rel="prefetch" href="/assets/js/266.2bce58fa.js"><link rel="prefetch" href="/assets/js/267.6e2a5a40.js"><link rel="prefetch" href="/assets/js/27.997b1485.js"><link rel="prefetch" href="/assets/js/28.ef6638c6.js"><link rel="prefetch" href="/assets/js/29.c9d728b9.js"><link rel="prefetch" href="/assets/js/3.dc3407e1.js"><link rel="prefetch" href="/assets/js/30.d873fb03.js"><link rel="prefetch" href="/assets/js/31.2bf741ce.js"><link rel="prefetch" href="/assets/js/32.551ac32b.js"><link rel="prefetch" href="/assets/js/33.b6573b5c.js"><link rel="prefetch" href="/assets/js/35.f131466c.js"><link rel="prefetch" href="/assets/js/36.89942ede.js"><link rel="prefetch" href="/assets/js/37.0e54922b.js"><link rel="prefetch" href="/assets/js/38.36f714a1.js"><link rel="prefetch" href="/assets/js/39.2256d2d3.js"><link rel="prefetch" href="/assets/js/4.43d53c19.js"><link rel="prefetch" href="/assets/js/40.784c879e.js"><link rel="prefetch" href="/assets/js/41.8bac5a7b.js"><link rel="prefetch" href="/assets/js/42.b6e7fc8b.js"><link rel="prefetch" href="/assets/js/43.ab92dcea.js"><link rel="prefetch" href="/assets/js/44.666a8d67.js"><link rel="prefetch" href="/assets/js/45.23a7d54d.js"><link rel="prefetch" href="/assets/js/46.c90bff29.js"><link rel="prefetch" href="/assets/js/47.b109dec7.js"><link rel="prefetch" href="/assets/js/48.7f766765.js"><link rel="prefetch" href="/assets/js/49.0a8e763d.js"><link rel="prefetch" href="/assets/js/5.b6321aed.js"><link rel="prefetch" href="/assets/js/50.686d1521.js"><link rel="prefetch" href="/assets/js/51.9936e373.js"><link rel="prefetch" href="/assets/js/52.f0b789de.js"><link rel="prefetch" href="/assets/js/53.5438164d.js"><link rel="prefetch" href="/assets/js/54.ec6f1f74.js"><link rel="prefetch" href="/assets/js/55.002caceb.js"><link rel="prefetch" href="/assets/js/56.d7896533.js"><link rel="prefetch" href="/assets/js/57.560f886c.js"><link rel="prefetch" href="/assets/js/58.ede39d55.js"><link rel="prefetch" href="/assets/js/59.f8e25f0e.js"><link rel="prefetch" href="/assets/js/6.8dc86351.js"><link rel="prefetch" href="/assets/js/60.16e85fb0.js"><link rel="prefetch" href="/assets/js/61.c4a68cdb.js"><link rel="prefetch" href="/assets/js/62.b8285ec7.js"><link rel="prefetch" href="/assets/js/63.cea2c4d9.js"><link rel="prefetch" href="/assets/js/64.33d06366.js"><link rel="prefetch" href="/assets/js/65.7dacc788.js"><link rel="prefetch" href="/assets/js/66.1c982721.js"><link rel="prefetch" href="/assets/js/67.5509334e.js"><link rel="prefetch" href="/assets/js/68.f9deb190.js"><link rel="prefetch" href="/assets/js/69.fd052a09.js"><link rel="prefetch" href="/assets/js/7.4de4dc57.js"><link rel="prefetch" href="/assets/js/70.b36ecec1.js"><link rel="prefetch" href="/assets/js/71.09472ede.js"><link rel="prefetch" href="/assets/js/72.7fc03c28.js"><link rel="prefetch" href="/assets/js/73.1df4ed7b.js"><link rel="prefetch" href="/assets/js/74.eef842dd.js"><link rel="prefetch" href="/assets/js/75.a4642706.js"><link rel="prefetch" href="/assets/js/76.2921120f.js"><link rel="prefetch" href="/assets/js/77.8959d3b8.js"><link rel="prefetch" href="/assets/js/78.15af67c9.js"><link rel="prefetch" href="/assets/js/79.ca2b3995.js"><link rel="prefetch" href="/assets/js/80.86253068.js"><link rel="prefetch" href="/assets/js/81.4dfb5100.js"><link rel="prefetch" href="/assets/js/82.40f05690.js"><link rel="prefetch" href="/assets/js/83.ae59f017.js"><link rel="prefetch" href="/assets/js/84.a16c2086.js"><link rel="prefetch" href="/assets/js/85.78764153.js"><link rel="prefetch" href="/assets/js/86.6da75781.js"><link rel="prefetch" href="/assets/js/87.9093c83e.js"><link rel="prefetch" href="/assets/js/88.1b71ff61.js"><link rel="prefetch" href="/assets/js/89.c3298594.js"><link rel="prefetch" href="/assets/js/90.dbab72f7.js"><link rel="prefetch" href="/assets/js/91.201c3950.js"><link rel="prefetch" href="/assets/js/92.23d20e66.js"><link rel="prefetch" href="/assets/js/93.35dc98bf.js"><link rel="prefetch" href="/assets/js/94.da768453.js"><link rel="prefetch" href="/assets/js/95.9767a2ff.js"><link rel="prefetch" href="/assets/js/96.890fcdc4.js"><link rel="prefetch" href="/assets/js/97.4bdcd3d5.js"><link rel="prefetch" href="/assets/js/98.972a16fd.js"><link rel="prefetch" href="/assets/js/99.44f9b5d3.js"><link rel="prefetch" href="/assets/js/vendors~docsearch.a900b7e8.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.8f3dca9f.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="Front-End-Basics" class="logo"> <span class="site-name can-hide">Front-End-Basics</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Linux</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/linux/computer.html" class="sidebar-link">计算机基础和 Linux 基础</a></li><li><a href="/server/linux/version.html" class="sidebar-link">Linux 版本详述</a></li><li><a href="/server/linux/centos.html" class="sidebar-link">CentOS 入门</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Shell</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/shell/basics.html" class="sidebar-link">Shell 概览</a></li><li><a href="/server/shell/script.html" class="sidebar-link">shell 脚本编程详解</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Nginx</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/server/nginx/introduction.html" class="sidebar-link">Nginx 介绍</a></li><li><a href="/server/nginx/install.html" class="sidebar-link">Nginx 安装</a></li><li><a href="/server/nginx/command.html" class="sidebar-link">Nginx 操作命令</a></li><li><a href="/server/nginx/config.html" class="sidebar-link">Nginx 基础配置和语法</a></li><li><a href="/server/nginx/static.html" class="sidebar-link">Nginx 实操-静态资源服务器</a></li><li><a href="/server/nginx/proxy.html" class="sidebar-link">Nginx 实操-代理相关</a></li><li><a href="/server/nginx/tips.html" class="sidebar-link">Nginx 实操-常用配置</a></li><li><a href="/server/nginx/advance.html" class="sidebar-link">Nginx 进阶</a></li><li><a href="/server/nginx/process.html" class="sidebar-link">Nginx 执行流程</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="shell-脚本编程扩展"><a href="#shell-脚本编程扩展" class="header-anchor">#</a> shell 脚本编程扩展</h1> <h2 id="shell-中的常用命令"><a href="#shell-中的常用命令" class="header-anchor">#</a> shell 中的常用命令</h2> <p><img src="/assets/img/usual-command.7e5ea895.png" alt=""></p> <h2 id="脚本解释器在环境变量中指定"><a href="#脚本解释器在环境变量中指定" class="header-anchor">#</a> 脚本解释器在环境变量中指定</h2> <p>除了比较常见的用路径指定脚本解释器的方式，还有一种是指定环境变量中的脚本解释器。</p> <div class="language- extra-class"><pre class="language-text"><code>指定脚本解释器的路径
+#!/bin/bash`
+
+指定环境变量中的脚本解释器
+#!/usr/bin/env bash
+</code></pre></div><p>这样做的好处是，系统会自动在 <code>PATH</code> 环境变量中查找指定的程序（如例子中的 bash）。因为程序的路径是不确定的，比如安装完新版本的 bash 后，我们有可能会把这个新的路径添加到<code>PATH</code>中，来“隐藏”老版本的 bash。所以操作系统的<code>PATH</code>变量有可能被配置为指向程序的另一个版本，如果还是直接用 <code>#!/bin/bash</code>，那么系统还是会选择老版本的 bash 来执行脚本，如果用<code>#!/usr/bin/env bash</code>，就会使用新版本了。</p> <h2 id="shell-命令执行过程"><a href="#shell-命令执行过程" class="header-anchor">#</a> Shell 命令执行过程</h2> <h3 id="_1-字符解析"><a href="#_1-字符解析" class="header-anchor">#</a> 1. 字符解析：</h3> <ul><li>识别换行符、分号（;）做行的分割</li> <li>识别命令连接符（||、&amp;&amp;、管道）做命令的分割</li> <li>识别空格、tab 符，做命令和参数的分割</li></ul> <h3 id="_2-shell-展开"><a href="#_2-shell-展开" class="header-anchor">#</a> 2. shell 展开</h3> <ul><li>大括号展开：一般由三部分构成，前缀，一对大括号，后缀，大括号内可以是逗号分隔的字符串序列，也可以是序列表达式<code>{x..y[..incr]}</code></li></ul> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token comment"># 字符串序列</span>
+a<span class="token punctuation">{</span>b,c,d<span class="token punctuation">}</span>e <span class="token comment"># =&gt;abc,ace,ade</span>
+
+
+<span class="token comment"># 表达式序列，数字可以用 incr 调整增量，字母不行</span>
+<span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">..</span><span class="token number">5</span><span class="token punctuation">}</span> <span class="token comment"># =&gt; 1,2,3,4,5</span>
+
+<span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">..</span><span class="token number">5</span><span class="token punctuation">..</span><span class="token number">2</span><span class="token punctuation">}</span> <span class="token comment"># =&gt; 1,3,5</span>
+
+<span class="token punctuation">{</span>a<span class="token punctuation">..</span>e<span class="token punctuation">}</span> <span class="token comment"># =&gt; a,b,c,d,e</span>
+</code></pre></div><ul><li>波浪号展开</li></ul> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token comment"># 当前用户的主目录</span>
+~ <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token environment constant">$HOME</span>
+
+<span class="token comment"># 指定用户的主目录</span>
+~tom/foo <span class="token operator">=</span><span class="token operator">&gt;</span> 用户 tom 的 <span class="token environment constant">$HOME</span>/foo
+
+<span class="token comment"># 当前工作目录</span>
+~+/foo <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token environment constant">$PWD</span>/foo
+
+<span class="token comment"># 上一个工作目录</span>
+~-/foo <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token variable">${$OLDPWD}</span>/foo
+</code></pre></div><ul><li>参数展开</li></ul> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token comment"># 主要说一下 间接参数扩展</span>
+<span class="token assign-left variable">parameter</span><span class="token operator">=</span><span class="token string">&quot;var&quot;</span>
+<span class="token assign-left variable">var</span><span class="token operator">=</span><span class="token string">&quot;hello&quot;</span>
+<span class="token builtin class-name">echo</span> <span class="token variable">${<span class="token operator">!</span>parameter}</span> <span class="token comment"># 输出 hello</span>
+
+<span class="token comment"># 参数长度 ${#parameter} 等前面有介绍</span>
+</code></pre></div><ul><li>命令替换：在子进程中执行命令，并用得到的结果替换包裹的内容，形式上有两种：<code>$(...)</code> 和反引号``</li> <li>数学计算：使用 <code>$(())</code> 包裹数学运算表达式，得到结果并替换</li> <li>文件名展开：当有单词没有被引号包裹，且其中出现了 <code>*</code> 、 <code>?</code> 、 <code>[]</code> 等字符，则 shell 会去按照正则匹配的方式查找文件名进行替换，如果没有找到则保持不变</li></ul> <h3 id="_3-重定向-将-stdin、stdout、stderr-的文件描述符进行指向变更"><a href="#_3-重定向-将-stdin、stdout、stderr-的文件描述符进行指向变更" class="header-anchor">#</a> 3. 重定向，将 stdin、stdout、stderr 的文件描述符进行指向变更</h3> <h3 id="_4-执行命令"><a href="#_4-执行命令" class="header-anchor">#</a> 4. 执行命令</h3> <ul><li>builtin 命令，直接执行</li> <li>非 builtin 命令，使用 <code>$PATH</code> 查找，然后启动子进程执行</li></ul> <h3 id="_5-命令执行完成后-收集状态并返回"><a href="#_5-命令执行完成后-收集状态并返回" class="header-anchor">#</a> 5. 命令执行完成后，收集状态并返回</h3> <p><img src="/assets/img/execute-process.7bc2aa7b.png" alt=""></p> <h2 id="环境变量"><a href="#环境变量" class="header-anchor">#</a> 环境变量</h2> <p>所有的程序，包括 Shell 启动的程序运行时都可以访问的变量就是环境变量。在 shell 脚本中使用 <code>export</code> 可以定义环境变量，但是只在当前运行的 shell 进程中有效，结束进程就没了。如果想持久化，需要将环境变量定义在一些列配置文件中。</p> <p>配置文件的加载顺序和 shell 进程是否运行在 Interactive 和 Login 模式有关。</p> <h3 id="交互和非交互模式-interactive-non-interactive"><a href="#交互和非交互模式-interactive-non-interactive" class="header-anchor">#</a> 交互和非交互模式（Interactive &amp; Non-Interactive）</h3> <ul><li>Interactive 模式：通常是指读写数据都是从用户的命令行终端（terminal），用户输入命令，并在回车后立即执行的 shell。</li> <li>Non-Interactive 模式：通常是指执行一个 shell 脚本，或 <code>bash -c</code> 执行命令</li></ul> <p>检测当前 shell 运行的环境是不是 Interactive 模式</p> <div class="language- extra-class"><pre class="language-text"><code>[[ $- == *i* ]] &amp;&amp; echo &quot;Interactive&quot; || echo &quot;Non-interactive&quot;
+</code></pre></div><h3 id="登录和非登录模式-login-non-login"><a href="#登录和非登录模式-login-non-login" class="header-anchor">#</a> 登录和非登录模式（Login &amp; Non-Login）</h3> <ul><li>Login 模式：应用在终端登陆时，ssh 连接时，<code>su --login &lt;username&gt;</code> 切换用户时，指的是用户成功登录后开启的 Shell 进程，此时会读取 <code>/etc/passwd</code> 下用户所属的 shell 执行。</li> <li>Non-Login 模式：应用在直接运行 bash 时，su <code>&lt;username&gt;</code> 切换用户时（前面没有加 --login）。指的是非登录用户状态下开启的 shell 进程。</li></ul> <p>检测当前 shell 运行的环境是不是 Login 模式</p> <div class="language- extra-class"><pre class="language-text"><code>shopt -q login_shell &amp;&amp; echo &quot;Login shell&quot; || echo &quot;Not login shell&quot;
+
+#如果是zsh，没有shopt命令
+[[ -o login ]] &amp;&amp; echo &quot;Login shell&quot; || echo &quot;Not login shell&quot;
+</code></pre></div><p>进入 bash 交互模式时也可以用 <code>--login</code> 参数来决定是否是登录模式：</p> <div class="language- extra-class"><pre class="language-text"><code>$&gt; bash
+$&gt; shopt -q login_shell &amp;&amp; echo &quot;Login shell&quot; || echo &quot;Not login shell&quot;
+Not login shell
+$&gt; exit
+$&gt; bash --login
+$&gt; shopt -q login_shell &amp;&amp; echo &quot;Login shell&quot; || echo &quot;Not login shell&quot;
+Login shell
+$&gt; exit
+</code></pre></div><p>Login 模式模式下可以用 logout 和 exit 退出，Non-Login 模式下只能用 exit 退出。</p> <h3 id="配置文件-启动文件-加载顺序"><a href="#配置文件-启动文件-加载顺序" class="header-anchor">#</a> 配置文件（启动文件）加载顺序</h3> <p>bash 支持的配置文件有 /etc/profile、~/.bash.rc 等。</p> <p><img src="/assets/img/shell2.c03c91b8.png" alt="配置文件加载顺序"></p> <p>如上图加载顺序所示</p> <ul><li>Interactive&amp;Login 模式：/etc/profile —&gt;( ~/.bash_profile, ~/.bash_login, ~/.profile)其中之一 （应该还包括 -&gt; ~/.bashrc -&gt; /etc/bashrc）—&gt;~/.bash_loginout(退出 shell 时调用)</li> <li>Interactive&amp;Non-Login 模式：/etc/bash.bashrc —&gt;~/.bashrc</li> <li>Non-Interactive 模式：通常就是执行脚本（script）的时候，此时配置项是从环境变量中读取和执行的，也就是 <code>env</code> 或者 <code>printenv</code> 命令输出的配置项。</li></ul> <p><strong>现在的系统一般都没有 ~/.bash_profile 文件了，只保留 ~/.bashrc 文件,所有的系统里，~/.bash_profile 都会有这样的逻辑，避免登陆时 ~/.bashrc 被跳过的情况：</strong></p> <div class="language- extra-class"><pre class="language-text"><code># login shell will execute this
+if [ -n &quot;$BASH_VERSION&quot; ]; then
+	# include .bashrc if it exists
+	if [ -f &quot;$HOME/.bashrc&quot; ]; then
+		. &quot;$HOME/.bashrc&quot;
+	fi
+fi
+</code></pre></div><p>在发行版的 Linux 系统中，Interactive&amp;Login 模式下的 ~/.bash_profile, ~/.bash_login， ~/.profile 并不一定是三选一，看一下这三个脚本的内容会发现他们会继续调用下一个它想调用的配置文件，这样就可以避免配置项可能需要在不同的配置文件多次配置。如 centos7.2 中 ~/.bash_profile 文件中实际调用了 ~/.bashrc 文件。</p> <div class="language- extra-class"><pre class="language-text"><code># .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+export PATH
+</code></pre></div><p><img src="/assets/img/shell3.dcaf959e.png" alt=""></p> <p>如上图所示，开启一个 Shell 进程时，有一些参数的值也会影响到配置文件的加载。如<code>--rcfile</code>，<code>--norc</code> 等。</p> <p>常用的 shell 环境变量：</p> <table><thead><tr><th style="text-align:left;">变量名</th> <th style="text-align:left;">描述</th></tr></thead> <tbody><tr><td style="text-align:left;">$PATH</td> <td style="text-align:left;">命令搜索路径，以冒号为分隔符</td></tr> <tr><td style="text-align:left;">$HOME</td> <td style="text-align:left;">用户主目录的路径名，是 cd 命令的默认参数</td></tr> <tr><td style="text-align:left;">$SHELL</td> <td style="text-align:left;">当前运行的 Shell 的全路径名</td></tr> <tr><td style="text-align:left;">$TERM</td> <td style="text-align:left;">终端类型</td></tr> <tr><td style="text-align:left;">$LOGNAME</td> <td style="text-align:left;">当前的登录名</td></tr> <tr><td style="text-align:left;">$PWD</td> <td style="text-align:left;">当前工作目录</td></tr></tbody></table> <div class="language- extra-class"><pre class="language-text"><code>#输出个别的环境变量值的两种方式
+
+printenv HOME
+
+echo $HOME
+</code></pre></div><p>全局变量是对所有用户都需要使用的变量，可以将新的变量或修改过的变量设置放在<code>/etc/profile</code>文件中，但升级了发行版该文件也会更新，所以这点要注意 （对所有用户）。</p> <p>最好是在<code>/etc/profile.d</code>目录中创建一个以<code>.sh</code>结尾的文件，把所有新的变量或修改过的变量全部放在此文件中（对所有用户）。</p> <p>对于存储个人用户永久性 bash shell 变量的地方是<code>$HOME/.bashrc</code>文件。这一点适用于所有类型的 Shell 进程（仅对当前用户）。</p> <h2 id="和-的区别"><a href="#和-的区别" class="header-anchor">#</a> <code>$*</code> 和 <code>$@</code> 的区别</h2> <p><code>$*</code> 和 <code>$@</code> 都表示传递给函数或脚本的所有参数，不被双引号<code>&quot;&quot;</code>包含时，都是以<code>&quot;$1&quot; &quot;$2&quot; ... &quot;\$n&quot;</code>形式把所有参数一个一个单独输出。</p> <p>但是当他们被双引号包含是，<code>&quot;$*&quot;</code> 会将所有的参数作为一个整体，以<code>&quot;$1 $2 ... $n&quot;</code>的形式输出所有参数。<code>&quot;$@&quot;</code> 还是跟之前一样，把所有参数分开，一个一个的输出。</p> <p>例如：<code>./test.sh a b c d</code></p> <div class="language- extra-class"><pre class="language-text"><code>
+#/bin/bash
+
+echo &quot;打印出没有引号的 $*&quot;
+for var in $*
+do
+echo &quot;$var&quot;
+done
+#输出：打印出没有引号的 $*
+# a
+# b
+# c
+# d
+
+echo &quot;打印出有引号的 \&quot;$*\&quot;&quot;
+for var in &quot;$*&quot;
+do
+echo &quot;$var&quot;
+done
+#输出：打印出有引号的 &quot;$*&quot;
+# a b c d
+
+
+echo &quot;打印出没有引号的 $@&quot;
+for var in $@
+do
+echo &quot;$var&quot;
+done
+#输出：打印出没有引号的 $@
+# a
+# b
+# c
+# d
+
+echo &quot;打印出有引号的 \&quot;$@\&quot;&quot;
+for var in &quot;$@&quot;
+do
+echo &quot;$var&quot;
+done
+#输出：打印出有引号的 &quot;$@&quot;
+# a
+# b
+# c
+# d
+</code></pre></div><h2 id="shell-中的替换"><a href="#shell-中的替换" class="header-anchor">#</a> Shell 中的替换</h2> <h3 id="转义字符替换"><a href="#转义字符替换" class="header-anchor">#</a> 转义字符替换</h3> <p>使用 <code>echo</code> 命令时，使用 <code>-e</code> 可以对转义字符进行替换。使用 <code>-E</code> 可以禁止转义，默认也是不转义的；使用 <code>-n</code> 选项可以禁止插入换行符。</p> <table><thead><tr><th style="text-align:left;">转义字符</th> <th style="text-align:left;">含义</th></tr></thead> <tbody><tr><td style="text-align:left;">\b</td> <td style="text-align:left;">退格（删除键）</td></tr> <tr><td style="text-align:left;">\f</td> <td style="text-align:left;">换页（FF），将当前位置移到下页开头</td></tr> <tr><td style="text-align:left;">\n</td> <td style="text-align:left;">换行</td></tr> <tr><td style="text-align:left;">\c</td> <td style="text-align:left;">显示不换行</td></tr> <tr><td style="text-align:left;">\r</td> <td style="text-align:left;">回车</td></tr> <tr><td style="text-align:left;">\t</td> <td style="text-align:left;">水平制表符（tab 键）</td></tr> <tr><td style="text-align:left;">\v</td> <td style="text-align:left;">垂直制表符</td></tr></tbody></table> <div class="language- extra-class"><pre class="language-text"><code>
+#/bin/bash
+
+a=1
+b=2
+
+echo -e &quot;${a}\n${b}&quot; #输出：1
+
+# 2
+
+</code></pre></div><h3 id="命令替换"><a href="#命令替换" class="header-anchor">#</a> 命令替换</h3> <p>命令替换是指 Shell 可以先执行命令，将输出结果暂时保存，在适当的地方输出。</p> <p>命令替换的语法是：反引号 ``。</p> <div class="language- extra-class"><pre class="language-text"><code>
+#!/bin/bash
+
+DATE=`date`
+echo &quot;日期是：\$DATE&quot; #输出：日期是：Sun Oct 18 16:27:42 CST 2020
+
+</code></pre></div><h2 id="和"><a href="#和" class="header-anchor">#</a> () 和 (())</h2> <h3 id="先说一下"><a href="#先说一下" class="header-anchor">#</a> 先说一下 ()</h3> <p>在 bash 中，<code>$()</code>与 ``（反引号）都是用来作命令替换的。先完成引号里的命令行，然后将其结果替换出来，再重组成新的命令行。</p> <p>相同点：<code>$()</code> 与 `` 在操作上，这两者都是达到相应的效果</p> <p>不同点：</p> <p>`` 很容易与''搞混乱，尤其对初学者来说。</p> <p>而<code>$()</code> 比较直观；不过 <code>$()</code> 有兼容性问题，有些类 Unix 系统不支持。</p> <div class="language- extra-class"><pre class="language-text"><code>echo $(expr 1 + 2)
+</code></pre></div><h3 id="再说"><a href="#再说" class="header-anchor">#</a> 再说 (())</h3> <p>1、(()) 可直接用于整数计算</p> <div class="language- extra-class"><pre class="language-text"><code>echo $((1 + 2))
+</code></pre></div><p>2、(()) 可重新定义变量值，用于判断条件或计算等</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+a=10
+b=50
+
+((a++))
+echo $a
+#输出：11
+
+((a &gt; b)) &amp;&amp; echo &quot;a &gt; b&quot;
+
+((a &lt; b)) &amp;&amp; echo &quot;a &lt; b&quot;
+
+# 输出：a &lt; b
+</code></pre></div><p>3、(()) 可用于进制转换</p> <p>$(())可以将其他进制转成十进制数显示出来。语法：<code>$((N#xx))</code>，其中，N 为进制，xx 为该进制下某个数值，命令执行后可以得到该进制数转成十进制后的值。</p> <div class="language- extra-class"><pre class="language-text"><code>echo $((2#110))
+#输出：6
+echo $((8#11))
+#输出：9
+echo $((16#1a))
+#输出：26
+</code></pre></div><h2 id="test-、-和"><a href="#test-、-和" class="header-anchor">#</a> test 、[] 和 [[]]</h2> <p>type 命令检查</p> <div class="language- extra-class"><pre class="language-text"><code>type &quot;test&quot; &quot;[&quot; &quot;[[&quot;
+#输出：
+#test is a shell builtin
+#[ is a shell builtin
+#[[ is a reserved word
+</code></pre></div><p>从上面可以看出，<code>test</code>和<code>[</code>属于 Shell 的内置命令，<code>[[</code>属于 Shell 的保留关键字。</p> <p>在使用上，<code>test</code>和<code>[</code>是等价的，因为是命令，所以需要跟它的参数使用空格隔开。</p> <div class="language- extra-class"><pre class="language-text"><code>test -f /etc/hosts &amp;&amp; echo True
+#输出：True
+
+[ -f /etc/hosts ] &amp;&amp; echo True
+#输出：True
+</code></pre></div><p>因为 <code>]</code> 作为最后一个参数表示条件结束，而像<code>&lt;</code>、<code>&gt;</code>符号会被理解为重定向，且重定向优先级高于命令的优先级，所以下面的例子，会解析为 [1] &lt; 2，并且 2 文件没有，导致错误</p> <div class="language- extra-class"><pre class="language-text"><code>[ 1 &lt; 2 ]
+#输出：line 13: 2: No such file or directory
+</code></pre></div><p><code>[[</code>是关键字，能够按照常规的语义理解其中的内容，双中括号中的表达式看作一个单独的语句，并返回其状态码。</p> <div class="language- extra-class"><pre class="language-text"><code>[[ 1 &lt; 2 ]] &amp;&amp; echo True || echo False
+#输出：True
+</code></pre></div><p>推荐使用<code>[[</code> 来进行各种判断，可以避免很多错误。</p> <p>如下展示单中括号会引发的错误</p> <div class="language- extra-class"><pre class="language-text"><code>[ $a == 1 &amp;&amp; $b == 1 ] &amp;&amp; echo True || echo False
+#输出：[: missing `]'
+
+#例如$a为空，就会报语法错误，因为 [ 命令拿到的实际上只有 ==、1、] 三个参数
+[ $a == 1 ]
+#输出：[: ==: unary operator expected
+</code></pre></div><h4 id="中括号中的变量-最好都是用引号括起来"><a href="#中括号中的变量-最好都是用引号括起来" class="header-anchor">#</a> 中括号中的变量，最好都是用引号括起来</h4> <h2 id="here-document"><a href="#here-document" class="header-anchor">#</a> Here Document</h2> <p><a href="https://tldp.org/LDP/abs/html/here-docs.html" target="_blank" rel="noopener noreferrer">Here Document<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> 可以理解为“嵌入文档”。Here Document 是 Shell 中的一种特殊的重定向方式，它的基本形式如下：</p> <div class="language- extra-class"><pre class="language-text"><code>
+command &lt;&lt;delimiter
+document
+delimiter
+
+</code></pre></div><p>作用是将两个 delimiter 之间的内容(document)作为输入传递给 command。</p> <p><strong>注意：</strong></p> <ul><li>结尾的 delimiter 一定要顶格写，前面不能有任何字符，后面也不能有任何字符，包括空格和 tab 缩进。</li> <li>开始的 delimiter 前后的空格会被忽略掉。</li></ul> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+
+wc -l &lt;&lt; EOF
+line 1
+line 2
+line 3
+EOF #输出：3
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/server/shell/script-extend.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">12/23/2024, 6:35:43 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.f0c3bf6e.js" defer></script><script src="/assets/js/2.267df354.js" defer></script><script src="/assets/js/1.66cc43cf.js" defer></script><script src="/assets/js/34.b46900a8.js" defer></script>
+  </body>
+</html>

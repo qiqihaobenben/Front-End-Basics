@@ -19,7 +19,7 @@
 - 数据链路层
 - 物理层
 
-![](./images/osi七层模型2.png)
+![](./images/osi-seven2.png)
 
 ![](./images/osi-model-detail.png)
 

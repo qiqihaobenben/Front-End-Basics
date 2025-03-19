@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>React scheduler 协调器 | Front-End-Basics</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    
+    <meta name="description" content="陈方旭的个人文档">
+    
+    <link rel="preload" href="/assets/css/0.styles.8f3dca9f.css" as="style"><link rel="preload" href="/assets/js/app.f0c3bf6e.js" as="script"><link rel="preload" href="/assets/js/2.267df354.js" as="script"><link rel="preload" href="/assets/js/1.66cc43cf.js" as="script"><link rel="preload" href="/assets/js/141.c3809389.js" as="script"><link rel="prefetch" href="/assets/js/10.8ed5e327.js"><link rel="prefetch" href="/assets/js/100.ae5b3443.js"><link rel="prefetch" href="/assets/js/101.cc73b0f5.js"><link rel="prefetch" href="/assets/js/102.3f3114fb.js"><link rel="prefetch" href="/assets/js/103.8ff5fdac.js"><link rel="prefetch" href="/assets/js/104.b5debdc3.js"><link rel="prefetch" href="/assets/js/105.8da11418.js"><link rel="prefetch" href="/assets/js/106.4dbe9edc.js"><link rel="prefetch" href="/assets/js/107.181bae05.js"><link rel="prefetch" href="/assets/js/108.89a63e22.js"><link rel="prefetch" href="/assets/js/109.ce54155a.js"><link rel="prefetch" href="/assets/js/11.066e1c25.js"><link rel="prefetch" href="/assets/js/110.f2e608ea.js"><link rel="prefetch" href="/assets/js/111.42921b66.js"><link rel="prefetch" href="/assets/js/112.8da31ceb.js"><link rel="prefetch" href="/assets/js/113.5ac3f0d4.js"><link rel="prefetch" href="/assets/js/114.e056e614.js"><link rel="prefetch" href="/assets/js/115.cebf7fde.js"><link rel="prefetch" href="/assets/js/116.2b434a84.js"><link rel="prefetch" href="/assets/js/117.100c132f.js"><link rel="prefetch" href="/assets/js/118.a4afed9a.js"><link rel="prefetch" href="/assets/js/119.f0f1a25d.js"><link rel="prefetch" href="/assets/js/12.9fe465cb.js"><link rel="prefetch" href="/assets/js/120.376850c5.js"><link rel="prefetch" href="/assets/js/121.5dc1a6a2.js"><link rel="prefetch" href="/assets/js/122.363693fb.js"><link rel="prefetch" href="/assets/js/123.7258fb95.js"><link rel="prefetch" href="/assets/js/124.a4bd3167.js"><link rel="prefetch" href="/assets/js/125.8aa8db7c.js"><link rel="prefetch" href="/assets/js/126.2caa71e3.js"><link rel="prefetch" href="/assets/js/127.220486dd.js"><link rel="prefetch" href="/assets/js/128.b01fb70e.js"><link rel="prefetch" href="/assets/js/129.bd8c1b32.js"><link rel="prefetch" href="/assets/js/13.ceec992d.js"><link rel="prefetch" href="/assets/js/130.9b3fd30c.js"><link rel="prefetch" href="/assets/js/131.c1e91c2d.js"><link rel="prefetch" href="/assets/js/132.6d39b36b.js"><link rel="prefetch" href="/assets/js/133.cc4ee14d.js"><link rel="prefetch" href="/assets/js/134.3b031de3.js"><link rel="prefetch" href="/assets/js/135.329aa943.js"><link rel="prefetch" href="/assets/js/136.e97d2b91.js"><link rel="prefetch" href="/assets/js/137.70ad5edc.js"><link rel="prefetch" href="/assets/js/138.b2388813.js"><link rel="prefetch" href="/assets/js/139.260e94e8.js"><link rel="prefetch" href="/assets/js/14.6b9e2f92.js"><link rel="prefetch" href="/assets/js/140.d0752482.js"><link rel="prefetch" href="/assets/js/142.909571e7.js"><link rel="prefetch" href="/assets/js/143.9c55503a.js"><link rel="prefetch" href="/assets/js/144.037eb178.js"><link rel="prefetch" href="/assets/js/145.b15eb629.js"><link rel="prefetch" href="/assets/js/146.92f941e0.js"><link rel="prefetch" href="/assets/js/147.ee679e8f.js"><link rel="prefetch" href="/assets/js/148.259bd94c.js"><link rel="prefetch" href="/assets/js/149.0560570b.js"><link rel="prefetch" href="/assets/js/15.d25af981.js"><link rel="prefetch" href="/assets/js/150.e0970997.js"><link rel="prefetch" href="/assets/js/151.8c91c562.js"><link rel="prefetch" href="/assets/js/152.b2680c3d.js"><link rel="prefetch" href="/assets/js/153.43d5659d.js"><link rel="prefetch" href="/assets/js/154.41332198.js"><link rel="prefetch" href="/assets/js/155.36a0da41.js"><link rel="prefetch" href="/assets/js/156.8d9c6ad6.js"><link rel="prefetch" href="/assets/js/157.016cc281.js"><link rel="prefetch" href="/assets/js/158.c846bda8.js"><link rel="prefetch" href="/assets/js/159.60ef4fd7.js"><link rel="prefetch" href="/assets/js/16.fe68c618.js"><link rel="prefetch" href="/assets/js/160.e000f0e7.js"><link rel="prefetch" href="/assets/js/161.f67efc97.js"><link rel="prefetch" href="/assets/js/162.4eadc328.js"><link rel="prefetch" href="/assets/js/163.39e9bbe6.js"><link rel="prefetch" href="/assets/js/164.8e990d4c.js"><link rel="prefetch" href="/assets/js/165.9cc5569d.js"><link rel="prefetch" href="/assets/js/166.dcfd67ce.js"><link rel="prefetch" href="/assets/js/167.0a12942f.js"><link rel="prefetch" href="/assets/js/168.db0cf4d8.js"><link rel="prefetch" href="/assets/js/169.0177438a.js"><link rel="prefetch" href="/assets/js/17.de0b324b.js"><link rel="prefetch" href="/assets/js/170.799f7bf1.js"><link rel="prefetch" href="/assets/js/171.72b504b4.js"><link rel="prefetch" href="/assets/js/172.3fedbd3b.js"><link rel="prefetch" href="/assets/js/173.9d2d86ef.js"><link rel="prefetch" href="/assets/js/174.1a15c5a7.js"><link rel="prefetch" href="/assets/js/175.62da2bad.js"><link rel="prefetch" href="/assets/js/176.fa85299a.js"><link rel="prefetch" href="/assets/js/177.a4f8a83d.js"><link rel="prefetch" href="/assets/js/178.3da2977b.js"><link rel="prefetch" href="/assets/js/179.5a0698c9.js"><link rel="prefetch" href="/assets/js/18.75c085a9.js"><link rel="prefetch" href="/assets/js/180.b3c22f44.js"><link rel="prefetch" href="/assets/js/181.258acfab.js"><link rel="prefetch" href="/assets/js/182.3b612a1c.js"><link rel="prefetch" href="/assets/js/183.04d35baf.js"><link rel="prefetch" href="/assets/js/184.2f6ebfb6.js"><link rel="prefetch" href="/assets/js/185.3d2ba522.js"><link rel="prefetch" href="/assets/js/186.85211aa8.js"><link rel="prefetch" href="/assets/js/187.3a727290.js"><link rel="prefetch" href="/assets/js/188.39112337.js"><link rel="prefetch" href="/assets/js/189.160e194c.js"><link rel="prefetch" href="/assets/js/19.7d112bce.js"><link rel="prefetch" href="/assets/js/190.c053d7a2.js"><link rel="prefetch" href="/assets/js/191.22cefdac.js"><link rel="prefetch" href="/assets/js/192.964f5e88.js"><link rel="prefetch" href="/assets/js/193.700abf9f.js"><link rel="prefetch" href="/assets/js/194.e267a0f1.js"><link rel="prefetch" href="/assets/js/195.e49141be.js"><link rel="prefetch" href="/assets/js/196.abd378ac.js"><link rel="prefetch" href="/assets/js/197.49b8f519.js"><link rel="prefetch" href="/assets/js/198.f60281e1.js"><link rel="prefetch" href="/assets/js/199.2444da81.js"><link rel="prefetch" href="/assets/js/20.81f5b440.js"><link rel="prefetch" href="/assets/js/200.54f5e6d4.js"><link rel="prefetch" href="/assets/js/201.132bab0f.js"><link rel="prefetch" href="/assets/js/202.cd5ef700.js"><link rel="prefetch" href="/assets/js/203.6524ae1d.js"><link rel="prefetch" href="/assets/js/204.79049883.js"><link rel="prefetch" href="/assets/js/205.b453ac0d.js"><link rel="prefetch" href="/assets/js/206.8e68e3cb.js"><link rel="prefetch" href="/assets/js/207.0dbf0bb5.js"><link rel="prefetch" href="/assets/js/208.a6f0aa62.js"><link rel="prefetch" href="/assets/js/209.5eb00898.js"><link rel="prefetch" href="/assets/js/21.b8f03079.js"><link rel="prefetch" href="/assets/js/210.5394d572.js"><link rel="prefetch" href="/assets/js/211.4d73566d.js"><link rel="prefetch" href="/assets/js/212.01ea7dd7.js"><link rel="prefetch" href="/assets/js/213.80261d17.js"><link rel="prefetch" href="/assets/js/214.42974ae8.js"><link rel="prefetch" href="/assets/js/215.6a9aefd7.js"><link rel="prefetch" href="/assets/js/216.71698897.js"><link rel="prefetch" href="/assets/js/217.cbdb7908.js"><link rel="prefetch" href="/assets/js/218.e1ca46a4.js"><link rel="prefetch" href="/assets/js/219.4bff8927.js"><link rel="prefetch" href="/assets/js/22.ce37cd53.js"><link rel="prefetch" href="/assets/js/220.d29e2c08.js"><link rel="prefetch" href="/assets/js/221.6a2c607c.js"><link rel="prefetch" href="/assets/js/222.7209db02.js"><link rel="prefetch" href="/assets/js/223.18f8b9df.js"><link rel="prefetch" href="/assets/js/224.52b820e0.js"><link rel="prefetch" href="/assets/js/225.46e90caa.js"><link rel="prefetch" href="/assets/js/226.63ed554a.js"><link rel="prefetch" href="/assets/js/227.7fafc4da.js"><link rel="prefetch" href="/assets/js/228.7706dc54.js"><link rel="prefetch" href="/assets/js/229.842a1964.js"><link rel="prefetch" href="/assets/js/23.87e7e45e.js"><link rel="prefetch" href="/assets/js/230.ddc0f55a.js"><link rel="prefetch" href="/assets/js/231.e72fa0a7.js"><link rel="prefetch" href="/assets/js/232.e15e10a1.js"><link rel="prefetch" href="/assets/js/233.9001d006.js"><link rel="prefetch" href="/assets/js/234.c55b49d9.js"><link rel="prefetch" href="/assets/js/235.da1bf5f9.js"><link rel="prefetch" href="/assets/js/236.9efb932c.js"><link rel="prefetch" href="/assets/js/237.67412574.js"><link rel="prefetch" href="/assets/js/238.24ef619f.js"><link rel="prefetch" href="/assets/js/239.1f2a6298.js"><link rel="prefetch" href="/assets/js/24.5aa30e8d.js"><link rel="prefetch" href="/assets/js/240.9c9279b1.js"><link rel="prefetch" href="/assets/js/241.695630cd.js"><link rel="prefetch" href="/assets/js/242.891e7aef.js"><link rel="prefetch" href="/assets/js/243.edd26862.js"><link rel="prefetch" href="/assets/js/244.ed576d71.js"><link rel="prefetch" href="/assets/js/245.d10042cf.js"><link rel="prefetch" href="/assets/js/246.d57006a7.js"><link rel="prefetch" href="/assets/js/247.b2d6742e.js"><link rel="prefetch" href="/assets/js/248.8b56d853.js"><link rel="prefetch" href="/assets/js/249.b8fc1805.js"><link rel="prefetch" href="/assets/js/25.5c7b2cfe.js"><link rel="prefetch" href="/assets/js/250.1aad43ae.js"><link rel="prefetch" href="/assets/js/251.be9db929.js"><link rel="prefetch" href="/assets/js/252.afedca09.js"><link rel="prefetch" href="/assets/js/253.c6e86855.js"><link rel="prefetch" href="/assets/js/254.90b4f52a.js"><link rel="prefetch" href="/assets/js/255.227c9c47.js"><link rel="prefetch" href="/assets/js/256.fe3714d4.js"><link rel="prefetch" href="/assets/js/257.3e5db4f7.js"><link rel="prefetch" href="/assets/js/258.29013d06.js"><link rel="prefetch" href="/assets/js/259.e9af4b51.js"><link rel="prefetch" href="/assets/js/26.5a8e32e6.js"><link rel="prefetch" href="/assets/js/260.9555612d.js"><link rel="prefetch" href="/assets/js/261.e8e200a0.js"><link rel="prefetch" href="/assets/js/262.0f393806.js"><link rel="prefetch" href="/assets/js/263.42b99650.js"><link rel="prefetch" href="/assets/js/264.5e36cccd.js"><link rel="prefetch" href="/assets/js/265.e7759e0e.js"><link rel="prefetch" href="/assets/js/266.2bce58fa.js"><link rel="prefetch" href="/assets/js/267.6e2a5a40.js"><link rel="prefetch" href="/assets/js/27.997b1485.js"><link rel="prefetch" href="/assets/js/28.ef6638c6.js"><link rel="prefetch" href="/assets/js/29.c9d728b9.js"><link rel="prefetch" href="/assets/js/3.dc3407e1.js"><link rel="prefetch" href="/assets/js/30.d873fb03.js"><link rel="prefetch" href="/assets/js/31.2bf741ce.js"><link rel="prefetch" href="/assets/js/32.551ac32b.js"><link rel="prefetch" href="/assets/js/33.b6573b5c.js"><link rel="prefetch" href="/assets/js/34.b46900a8.js"><link rel="prefetch" href="/assets/js/35.f131466c.js"><link rel="prefetch" href="/assets/js/36.89942ede.js"><link rel="prefetch" href="/assets/js/37.0e54922b.js"><link rel="prefetch" href="/assets/js/38.36f714a1.js"><link rel="prefetch" href="/assets/js/39.2256d2d3.js"><link rel="prefetch" href="/assets/js/4.43d53c19.js"><link rel="prefetch" href="/assets/js/40.784c879e.js"><link rel="prefetch" href="/assets/js/41.8bac5a7b.js"><link rel="prefetch" href="/assets/js/42.b6e7fc8b.js"><link rel="prefetch" href="/assets/js/43.ab92dcea.js"><link rel="prefetch" href="/assets/js/44.666a8d67.js"><link rel="prefetch" href="/assets/js/45.23a7d54d.js"><link rel="prefetch" href="/assets/js/46.c90bff29.js"><link rel="prefetch" href="/assets/js/47.b109dec7.js"><link rel="prefetch" href="/assets/js/48.7f766765.js"><link rel="prefetch" href="/assets/js/49.0a8e763d.js"><link rel="prefetch" href="/assets/js/5.b6321aed.js"><link rel="prefetch" href="/assets/js/50.686d1521.js"><link rel="prefetch" href="/assets/js/51.9936e373.js"><link rel="prefetch" href="/assets/js/52.f0b789de.js"><link rel="prefetch" href="/assets/js/53.5438164d.js"><link rel="prefetch" href="/assets/js/54.ec6f1f74.js"><link rel="prefetch" href="/assets/js/55.002caceb.js"><link rel="prefetch" href="/assets/js/56.d7896533.js"><link rel="prefetch" href="/assets/js/57.560f886c.js"><link rel="prefetch" href="/assets/js/58.ede39d55.js"><link rel="prefetch" href="/assets/js/59.f8e25f0e.js"><link rel="prefetch" href="/assets/js/6.8dc86351.js"><link rel="prefetch" href="/assets/js/60.16e85fb0.js"><link rel="prefetch" href="/assets/js/61.c4a68cdb.js"><link rel="prefetch" href="/assets/js/62.b8285ec7.js"><link rel="prefetch" href="/assets/js/63.cea2c4d9.js"><link rel="prefetch" href="/assets/js/64.33d06366.js"><link rel="prefetch" href="/assets/js/65.7dacc788.js"><link rel="prefetch" href="/assets/js/66.1c982721.js"><link rel="prefetch" href="/assets/js/67.5509334e.js"><link rel="prefetch" href="/assets/js/68.f9deb190.js"><link rel="prefetch" href="/assets/js/69.fd052a09.js"><link rel="prefetch" href="/assets/js/7.4de4dc57.js"><link rel="prefetch" href="/assets/js/70.b36ecec1.js"><link rel="prefetch" href="/assets/js/71.09472ede.js"><link rel="prefetch" href="/assets/js/72.7fc03c28.js"><link rel="prefetch" href="/assets/js/73.1df4ed7b.js"><link rel="prefetch" href="/assets/js/74.eef842dd.js"><link rel="prefetch" href="/assets/js/75.a4642706.js"><link rel="prefetch" href="/assets/js/76.2921120f.js"><link rel="prefetch" href="/assets/js/77.8959d3b8.js"><link rel="prefetch" href="/assets/js/78.15af67c9.js"><link rel="prefetch" href="/assets/js/79.ca2b3995.js"><link rel="prefetch" href="/assets/js/80.86253068.js"><link rel="prefetch" href="/assets/js/81.4dfb5100.js"><link rel="prefetch" href="/assets/js/82.40f05690.js"><link rel="prefetch" href="/assets/js/83.ae59f017.js"><link rel="prefetch" href="/assets/js/84.a16c2086.js"><link rel="prefetch" href="/assets/js/85.78764153.js"><link rel="prefetch" href="/assets/js/86.6da75781.js"><link rel="prefetch" href="/assets/js/87.9093c83e.js"><link rel="prefetch" href="/assets/js/88.1b71ff61.js"><link rel="prefetch" href="/assets/js/89.c3298594.js"><link rel="prefetch" href="/assets/js/90.dbab72f7.js"><link rel="prefetch" href="/assets/js/91.201c3950.js"><link rel="prefetch" href="/assets/js/92.23d20e66.js"><link rel="prefetch" href="/assets/js/93.35dc98bf.js"><link rel="prefetch" href="/assets/js/94.da768453.js"><link rel="prefetch" href="/assets/js/95.9767a2ff.js"><link rel="prefetch" href="/assets/js/96.890fcdc4.js"><link rel="prefetch" href="/assets/js/97.4bdcd3d5.js"><link rel="prefetch" href="/assets/js/98.972a16fd.js"><link rel="prefetch" href="/assets/js/99.44f9b5d3.js"><link rel="prefetch" href="/assets/js/vendors~docsearch.a900b7e8.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.8f3dca9f.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="Front-End-Basics" class="logo"> <span class="site-name can-hide">Front-End-Basics</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/article/" class="nav-link">
+  捡贝壳
+</a></div> <a href="https://github.com/qiqihaobenben/Front-End-Basics" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>前端</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/html/global-attr.html" class="sidebar-link">HTML</a></li><li><a href="/css/theory/typesetting.html" class="sidebar-link">CSS</a></li><li><a href="/javascript/utility/lexical-grammar.html" class="sidebar-link">JavaScript</a></li><li><a href="/infrastructure/vscode-code-format.html" class="sidebar-link">基础建设和工程化</a></li><li><a href="/career/plan-2022.html" class="sidebar-link">职业发展</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>框架</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>移动端</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>服务端</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/nodejs/basic.html" class="sidebar-link">NodeJS</a></li><li><a href="/network-basics/http/into.html" class="sidebar-link">网络基础</a></li><li><a href="/database/mysql/mysql.html" class="sidebar-link">数据存储</a></li><li><a href="/server/linux/computer.html" class="sidebar-link">服务器运维</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>开发工具</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>认知</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="react-scheduler-协调器"><a href="#react-scheduler-协调器" class="header-anchor">#</a> React scheduler 协调器</h1> <h2 id="总览"><a href="#总览" class="header-anchor">#</a> 总览</h2> <ol><li>Fiber 架构支持 Time Slice 的实现</li> <li>Time Slice 分割出的一个个短宏任务需要 Scheduler（调度器）来具体调度执行</li> <li>为了更灵活地控制宏任务的执行时机和任务调用的优先级，React 实现了一套基于 Lane 模型的优先级算法</li> <li>基于 Lane 模型优先级算法实现了 <strong>Batched Updates（批量更新）</strong>、<strong>任务打断/恢复机制</strong>等低级特性，这些特性不适合开发者直接控制，一般由 React 统一管理</li> <li>基于低级特性，React 实现了“面向开发者”的高级特性（并发特性），例如 Concurrent Suspense、useTransition 等</li></ol> <h2 id="scheduler-与-react-的优先级对应"><a href="#scheduler-与-react-的优先级对应" class="header-anchor">#</a> Scheduler 与 React 的优先级对应</h2> <h3 id="react-的优先级"><a href="#react-的优先级" class="header-anchor">#</a> React 的优先级</h3> <p>React 的优先级 lane 有 31 个，以下展示的是 10 进制，运算的时候是参与二进制运算的。</p> <p>例如：<code>var SyncDefaultLanes = InputContinuousHydrationLane | InputContinuousLane | DefaultHydrationLane | DefaultLane</code></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">var</span> TotalLanes <span class="token operator">=</span> <span class="token number">31</span>
+<span class="token keyword">var</span> NoLanes <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">0</span>
+<span class="token keyword">var</span> NoLane <span class="token operator">=</span>
+  <span class="token comment">/*                          */</span>
+  <span class="token number">0</span>
+<span class="token keyword">var</span> SyncLane <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">1</span>
+<span class="token keyword">var</span> InputContinuousHydrationLane <span class="token operator">=</span>
+  <span class="token comment">/*    */</span>
+  <span class="token number">2</span>
+<span class="token keyword">var</span> InputContinuousLane <span class="token operator">=</span>
+  <span class="token comment">/*            */</span>
+  <span class="token number">4</span>
+<span class="token keyword">var</span> DefaultHydrationLane <span class="token operator">=</span>
+  <span class="token comment">/*            */</span>
+  <span class="token number">8</span>
+<span class="token keyword">var</span> DefaultLane <span class="token operator">=</span>
+  <span class="token comment">/*                    */</span>
+  <span class="token number">16</span>
+<span class="token keyword">var</span> TransitionHydrationLane <span class="token operator">=</span>
+  <span class="token comment">/*                */</span>
+  <span class="token number">32</span>
+<span class="token keyword">var</span> TransitionLanes <span class="token operator">=</span>
+  <span class="token comment">/*                       */</span>
+  <span class="token number">4194240</span>
+<span class="token keyword">var</span> TransitionLane1 <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">64</span>
+<span class="token keyword">var</span> TransitionLane2 <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">128</span>
+<span class="token keyword">var</span> TransitionLane3 <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">256</span>
+<span class="token keyword">var</span> TransitionLane4 <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">512</span>
+<span class="token keyword">var</span> TransitionLane5 <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">1024</span>
+<span class="token keyword">var</span> TransitionLane6 <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">2048</span>
+<span class="token keyword">var</span> TransitionLane7 <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">4096</span>
+<span class="token keyword">var</span> TransitionLane8 <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">8192</span>
+<span class="token keyword">var</span> TransitionLane9 <span class="token operator">=</span>
+  <span class="token comment">/*                        */</span>
+  <span class="token number">16384</span>
+<span class="token keyword">var</span> TransitionLane10 <span class="token operator">=</span>
+  <span class="token comment">/*                       */</span>
+  <span class="token number">32768</span>
+<span class="token keyword">var</span> TransitionLane11 <span class="token operator">=</span>
+  <span class="token comment">/*                       */</span>
+  <span class="token number">65536</span>
+<span class="token keyword">var</span> TransitionLane12 <span class="token operator">=</span>
+  <span class="token comment">/*                       */</span>
+  <span class="token number">131072</span>
+<span class="token keyword">var</span> TransitionLane13 <span class="token operator">=</span>
+  <span class="token comment">/*                       */</span>
+  <span class="token number">262144</span>
+<span class="token keyword">var</span> TransitionLane14 <span class="token operator">=</span>
+  <span class="token comment">/*                       */</span>
+  <span class="token number">524288</span>
+<span class="token keyword">var</span> TransitionLane15 <span class="token operator">=</span>
+  <span class="token comment">/*                       */</span>
+  <span class="token number">1048576</span>
+<span class="token keyword">var</span> TransitionLane16 <span class="token operator">=</span>
+  <span class="token comment">/*                       */</span>
+  <span class="token number">2097152</span>
+<span class="token keyword">var</span> RetryLanes <span class="token operator">=</span>
+  <span class="token comment">/*                            */</span>
+  <span class="token number">130023424</span>
+<span class="token keyword">var</span> RetryLane1 <span class="token operator">=</span>
+  <span class="token comment">/*                             */</span>
+  <span class="token number">4194304</span>
+<span class="token keyword">var</span> RetryLane2 <span class="token operator">=</span>
+  <span class="token comment">/*                             */</span>
+  <span class="token number">8388608</span>
+<span class="token keyword">var</span> RetryLane3 <span class="token operator">=</span>
+  <span class="token comment">/*                             */</span>
+  <span class="token number">16777216</span>
+<span class="token keyword">var</span> RetryLane4 <span class="token operator">=</span>
+  <span class="token comment">/*                             */</span>
+  <span class="token number">33554432</span>
+<span class="token keyword">var</span> RetryLane5 <span class="token operator">=</span>
+  <span class="token comment">/*                             */</span>
+  <span class="token number">67108864</span>
+<span class="token keyword">var</span> SomeRetryLane <span class="token operator">=</span> RetryLane1
+<span class="token keyword">var</span> SelectiveHydrationLane <span class="token operator">=</span>
+  <span class="token comment">/*          */</span>
+  <span class="token number">134217728</span>
+<span class="token keyword">var</span> NonIdleLanes <span class="token operator">=</span>
+  <span class="token comment">/*                                 */</span>
+  <span class="token number">268435455</span>
+<span class="token keyword">var</span> IdleHydrationLane <span class="token operator">=</span>
+  <span class="token comment">/*               */</span>
+  <span class="token number">268435456</span>
+<span class="token keyword">var</span> IdleLane <span class="token operator">=</span>
+  <span class="token comment">/*                       */</span>
+  <span class="token number">536870912</span>
+<span class="token keyword">var</span> OffscreenLane <span class="token operator">=</span>
+  <span class="token comment">/*                   */</span>
+  <span class="token number">1073741824</span>
+</code></pre></div><h3 id="react-事件优先级"><a href="#react-事件优先级" class="header-anchor">#</a> React 事件优先级</h3> <p>React 中不同交互对应的事件回调中产生的 update 会拥有不同的优先级，由于优先级与“事件”相关，所以被称为 EventPriority（事件优先级）</p> <ul><li>DiscreteEventPriority ：离散事件优先级，指的是那些需要立即响应的用户交互，如点击和键盘事件。这些事件通常关联着 UI 的直接反馈，因此用户期望它们有即时的响应。对应 React 优先级中的 <code>SyncLane</code>，具体值为 1</li> <li>ContinuousEventPriority ：连续事件优先级，指的是那些需要连续响应的交互，如滚动和鼠标移动事件。这些事件虽然也很重要，但相对于 discrete 事件，它们可以稍微延迟处理（例如在几个帧之内）。对应 React 优先级中的 <code>InputContinuousLane</code>，具体值为 4，二进制为 “100”</li> <li>DefaultEventPriority ：默认事件优先级，指的是那些不需要立即响应的事件，如数据请求和渲染，计时器周期性触发更新。这些事件可以稍微延迟处理，以便更好地响应用户交互。对应 React 优先级中的 <code>DefaultLane</code>，具体值为 16，二进制为 “10000”</li> <li>IdleEventPriority ：空闲事件优先级，指的是那些完全不急的任务，比如离屏渲染或者是非必须的维护任务。这些任务只有在主线程完全空闲时才会被处理。对应 React 优先级中的 <code>IdleLane</code>，具体值为 536870912，二进制为“100000000000000000000000000000”</li> <li>currentUpdatePriority ：表示当前没有任何更新正在进行，或者说没有为当前更新分配具体的优先级。对应 React 优先级中的 <code>NoLane</code>，具体值为 0</li></ul> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">getEventPriority</span><span class="token punctuation">(</span><span class="token parameter">domEventName</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>domEventName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">'cancel'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'click'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'close'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'contextmenu'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'copy'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'cut'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'auxclick'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'dblclick'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'dragend'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'dragstart'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'drop'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'focusin'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'focusout'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'input'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'invalid'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'keydown'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'keypress'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'keyup'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'mousedown'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'mouseup'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'paste'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'pause'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'play'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'pointercancel'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'pointerdown'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'pointerup'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'ratechange'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'reset'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'resize'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'seeked'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'submit'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'touchcancel'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'touchend'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'touchstart'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'volumechange'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'change'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'selectionchange'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'textInput'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'compositionstart'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'compositionend'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'compositionupdate'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'beforeblur'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'afterblur'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'beforeinput'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'blur'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'fullscreenchange'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'focus'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'hashchange'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'popstate'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'select'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'selectstart'</span><span class="token operator">:</span>
+      <span class="token keyword">return</span> DiscreteEventPriority
+
+    <span class="token keyword">case</span> <span class="token string">'drag'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'dragenter'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'dragexit'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'dragleave'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'dragover'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'mousemove'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'mouseout'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'mouseover'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'pointermove'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'pointerout'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'pointerover'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'scroll'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'toggle'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'touchmove'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'wheel'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'mouseenter'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'mouseleave'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'pointerenter'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'pointerleave'</span><span class="token operator">:</span>
+      <span class="token keyword">return</span> ContinuousEventPriority
+
+    <span class="token keyword">case</span> <span class="token string">'message'</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token comment">// Scheduler 优先级转换为 React 事件优先级</span>
+      <span class="token keyword">var</span> schedulerPriority <span class="token operator">=</span> <span class="token function">getCurrentPriorityLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+      <span class="token keyword">switch</span> <span class="token punctuation">(</span>schedulerPriority<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token literal-property property">ImmediatePriority</span><span class="token operator">:</span>
+          <span class="token keyword">return</span> DiscreteEventPriority
+
+        <span class="token keyword">case</span> <span class="token literal-property property">UserBlockingPriority</span><span class="token operator">:</span>
+          <span class="token keyword">return</span> ContinuousEventPriority
+
+        <span class="token keyword">case</span> <span class="token literal-property property">NormalPriority</span><span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token literal-property property">LowPriority</span><span class="token operator">:</span>
+          <span class="token keyword">return</span> DefaultEventPriority
+
+        <span class="token keyword">case</span> <span class="token literal-property property">IdlePriority</span><span class="token operator">:</span>
+          <span class="token keyword">return</span> IdleEventPriority
+
+        <span class="token keyword">default</span><span class="token operator">:</span>
+          <span class="token keyword">return</span> DefaultEventPriority
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">default</span><span class="token operator">:</span>
+      <span class="token keyword">return</span> DefaultEventPriority
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="scheduler-优先级"><a href="#scheduler-优先级" class="header-anchor">#</a> Scheduler 优先级</h3> <p>Scheduler 预置了五种优先级，从上到下，优先级依次降低：</p> <ul><li>ImmediatePriority （最高优先级，同步执行）具体值为 1</li> <li>UserBlockingPriority （用户阻塞优先级）具体值为 2</li> <li>NormalPriority （正常优先级）具体值为 3</li> <li>LowPriority （低优先级）具体值为 4</li> <li>IdlePriority （空闲优先级）具体值为 5</li></ul> <h3 id="react-优先级到-scheduler-优先级的转换"><a href="#react-优先级到-scheduler-优先级的转换" class="header-anchor">#</a> React 优先级到 Scheduler 优先级的转换</h3> <h4 id="lane-转换为-eventpriority"><a href="#lane-转换为-eventpriority" class="header-anchor">#</a> lane 转换为 EventPriority</h4> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">lanesToEventPriority</span><span class="token punctuation">(</span><span class="token parameter">lanes</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> lane <span class="token operator">=</span> <span class="token function">getHighestPriorityLane</span><span class="token punctuation">(</span>lanes<span class="token punctuation">)</span>
+  <span class="token comment">// DiscreteEventPriority = SyncLane，如果 lane 比 SyncLane 优先级高，则返回 DiscreteEventPriority</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isHigherEventPriority</span><span class="token punctuation">(</span>DiscreteEventPriority<span class="token punctuation">,</span> lane<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> DiscreteEventPriority
+  <span class="token punctuation">}</span>
+  <span class="token comment">// ContinuousEventPriority = InputContinuousLane，如果 lane 比 InputContinuousLane 优先级高，则返回 ContinuousEventPriority</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isHigherEventPriority</span><span class="token punctuation">(</span>ContinuousEventPriority<span class="token punctuation">,</span> lane<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> ContinuousEventPriority
+  <span class="token punctuation">}</span>
+  <span class="token comment">// (lanes &amp; NonIdleLanes) !== NoLanes，NonIdleLanes = 268435455（即1111111111111111111111111111），简单说就是 lanes 中包含非空闲优先级的 lane，则返回 DefaultEventPriority</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">includesNonIdleWork</span><span class="token punctuation">(</span>lane<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> DefaultEventPriority
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> IdleEventPriority
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="eventpriority-转换为-schedulerpriority"><a href="#eventpriority-转换为-schedulerpriority" class="header-anchor">#</a> EventPriority 转换为 SchedulerPriority</h4> <ul><li>DiscreteEventPriority 对应 ImmediatePriority</li> <li>ContinuousEventPriority 对应 UserBlockingPriority</li> <li>DefaultEventPriority 对应 NormalPriority</li> <li>IdleEventPriority 对应 IdlePriority</li></ul> <h4 id="scheduler-优先级到-react-优先级的转换"><a href="#scheduler-优先级到-react-优先级的转换" class="header-anchor">#</a> Scheduler 优先级到 React 优先级的转换</h4> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">var</span> schedulerPriority <span class="token operator">=</span> <span class="token function">getCurrentPriorityLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">switch</span> <span class="token punctuation">(</span>schedulerPriority<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">case</span> <span class="token literal-property property">ImmediatePriority</span><span class="token operator">:</span>
+    <span class="token keyword">return</span> DiscreteEventPriority
+
+  <span class="token keyword">case</span> <span class="token literal-property property">UserBlockingPriority</span><span class="token operator">:</span>
+    <span class="token keyword">return</span> ContinuousEventPriority
+
+  <span class="token keyword">case</span> <span class="token literal-property property">NormalPriority</span><span class="token operator">:</span>
+  <span class="token keyword">case</span> <span class="token literal-property property">LowPriority</span><span class="token operator">:</span>
+    <span class="token keyword">return</span> DefaultEventPriority
+
+  <span class="token keyword">case</span> <span class="token literal-property property">IdlePriority</span><span class="token operator">:</span>
+    <span class="token keyword">return</span> IdleEventPriority
+
+  <span class="token keyword">default</span><span class="token operator">:</span>
+    <span class="token keyword">return</span> DefaultEventPriority
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="lane-模型的实现原理"><a href="#lane-模型的实现原理" class="header-anchor">#</a> Lane 模型的实现原理</h2> <h3 id="lane-模型的工作流程"><a href="#lane-模型的工作流程" class="header-anchor">#</a> Lane 模型的工作流程</h3> <h4 id="总流程"><a href="#总流程" class="header-anchor">#</a> 总流程</h4> <p>“各种交互”会引发更新，初始化更新相关信息（会从 FiberNode 冒泡到 FiberRootNode），然后会调度 FiberRootNode，根据调度策略（同步执行或异步执行）进入 render 阶段，render 阶段完成后进入 commit 阶段，commit 阶段完成后继续调度 FiberRootNode。</p> <h4 id="具体流程"><a href="#具体流程" class="header-anchor">#</a> 具体流程</h4> <ul><li><p>同步流程</p> <p>“各种交互”会引发更新，初始化更新相关信息（会从 FiberNode 冒泡到 FiberRootNode），然后会调度 FiberRootNode，进入 render 阶段同步执行，render 阶段完成后进入 commit 阶段同步执行，commit 阶段完成后继续调度 FiberRootNode。</p></li> <li><p>并发流程</p> <p>“各种交互”会引发更新，初始化更新相关信息（会从 FiberNode 冒泡到 FiberRootNode），然后会调度 FiberRootNode，进入 render 阶段并发执行，并发执行过程可能发生中断，中断发生则重新调度 FiberRootNode（即小循环和大循环），render 阶段完成后进入 commit 阶段，commit 阶段完成后继续调度 FiberRootNode。</p></li> <li><p>render 阶段更新流程</p> <p>render 阶段进行过程中触发新的交互，产生更新</p></li> <li><p>commit 阶段更新流程</p> <p>commit 阶段进行过程中触发新的交互，产生更新</p></li></ul> <h3 id="react-产生的-更新-结构是-update"><a href="#react-产生的-更新-结构是-update" class="header-anchor">#</a> React 产生的“更新”结构是 update</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">createUpdate</span><span class="token punctuation">(</span><span class="token parameter">eventTime<span class="token punctuation">,</span> lane</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> update <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">eventTime</span><span class="token operator">:</span> eventTime<span class="token punctuation">,</span>
+    <span class="token literal-property property">lane</span><span class="token operator">:</span> lane<span class="token punctuation">,</span>
+    <span class="token literal-property property">tag</span><span class="token operator">:</span> UpdateState<span class="token punctuation">,</span>
+    <span class="token literal-property property">payload</span><span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">callback</span><span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">next</span><span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> update
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="初始化更新相关信息"><a href="#初始化更新相关信息" class="header-anchor">#</a> 初始化更新相关信息</h3> <p>上面的流程中，交互使得初始化更新相关信息，主要包括以下三类信息：</p> <ul><li>lane 优先级信息，会在 requestUpdateLane 中初始化</li> <li>&quot;更新&quot; 对应的数据结构 Update</li> <li>交互发生的时间，会在 markRootUpdated 中初始化</li></ul> <h4 id="updatecontainer"><a href="#updatecontainer" class="header-anchor">#</a> updateContainer</h4> <p>ReactDOM 的 render 方法会调用 updateContainer</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">updateContainer</span><span class="token punctuation">(</span><span class="token parameter">element<span class="token punctuation">,</span> container<span class="token punctuation">,</span> parentComponent<span class="token punctuation">,</span> callback</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 省略</span>
+
+  <span class="token keyword">var</span> current$1 <span class="token operator">=</span> container<span class="token punctuation">.</span>current
+  <span class="token keyword">var</span> eventTime <span class="token operator">=</span> <span class="token function">requestEventTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token comment">// current$1 为 HostRootFiber</span>
+  <span class="token keyword">var</span> lane <span class="token operator">=</span> <span class="token function">requestUpdateLane</span><span class="token punctuation">(</span><span class="token parameter">current$1</span><span class="token punctuation">)</span>
+
+  <span class="token punctuation">{</span>
+    <span class="token function">markRenderScheduled</span><span class="token punctuation">(</span>lane<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// 省略</span>
+
+  <span class="token keyword">var</span> update <span class="token operator">=</span> <span class="token function">createUpdate</span><span class="token punctuation">(</span>eventTime<span class="token punctuation">,</span> lane<span class="token punctuation">)</span>
+
+  update<span class="token punctuation">.</span>payload <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">element</span><span class="token operator">:</span> element<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span>
+  callback <span class="token operator">=</span> callback <span class="token operator">===</span> <span class="token keyword">undefined</span> <span class="token operator">?</span> <span class="token keyword">null</span> <span class="token operator">:</span> callback
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>callback <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> callback <span class="token operator">!==</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'render(...): Expected the last optional `callback` argument to be a '</span> <span class="token operator">+</span> <span class="token string">'function. Instead received: %s.'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    update<span class="token punctuation">.</span>callback <span class="token operator">=</span> callback
+  <span class="token punctuation">}</span>
+
+  <span class="token function">enqueueUpdate</span><span class="token punctuation">(</span>current$1<span class="token punctuation">,</span> update<span class="token punctuation">)</span>
+  <span class="token keyword">var</span> root <span class="token operator">=</span> <span class="token function">scheduleUpdateOnFiber</span><span class="token punctuation">(</span>current$1<span class="token punctuation">,</span> lane<span class="token punctuation">,</span> eventTime<span class="token punctuation">)</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>root <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">entangleTransitions</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> current$1<span class="token punctuation">,</span> lane<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> lane
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="requestupdatelane"><a href="#requestupdatelane" class="header-anchor">#</a> requestUpdateLane</h4> <p>updateContainer 会调用 requestUpdateLane 初始化 lane</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">requestUpdateLane</span><span class="token punctuation">(</span><span class="token parameter">fiber</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> mode <span class="token operator">=</span> fiber<span class="token punctuation">.</span>mode
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>mode <span class="token operator">&amp;</span> ConcurrentMode<span class="token punctuation">)</span> <span class="token operator">===</span> NoMode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 如果当前应用未开启并发模式，则返回 SyncLane，对应“同步优先级”</span>
+    <span class="token keyword">return</span> SyncLane
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>executionContext <span class="token operator">&amp;</span> RenderContext<span class="token punctuation">)</span> <span class="token operator">!==</span> NoContext <span class="token operator">&amp;&amp;</span> workInProgressRootRenderLanes <span class="token operator">!==</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 是否是 render 阶段更新</span>
+    <span class="token comment">// executionContext 用来标记“React 内部的不同运行阶段”</span>
+    <span class="token comment">// - NoContext：0 无上下文</span>
+    <span class="token comment">// - BatchedContext：1 代表当前处在“批量更新”上下文</span>
+    <span class="token comment">// - RenderContext：2 代表当前处在“render 阶段”上下文</span>
+    <span class="token comment">// - CommitContext：4 代表当前处在“commit 阶段”上下文</span>
+
+    <span class="token comment">// workInProgressRootRenderLanes 代表“当前应用 render 阶段需要处理的 lanes”，选出一批优先级的流程中，选出的 lanes 就保存在 workInProgressRootRenderLanes 中</span>
+    <span class="token comment">// 从 workInProgressRootRenderLanes 中选择“最高优先级的 lane”作为本次更新的优先级</span>
+    <span class="token keyword">return</span> <span class="token function">pickArbitraryLane</span><span class="token punctuation">(</span>workInProgressRootRenderLanes<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">var</span> isTransition <span class="token operator">=</span> <span class="token function">requestCurrentTransition</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!==</span> NoTransition
+  <span class="token comment">//  是否与 transition 相关</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>isTransition<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>currentEventTransitionLane <span class="token operator">===</span> NoLane<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      currentEventTransitionLane <span class="token operator">=</span> <span class="token function">claimNextTransitionLane</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> currentEventTransitionLane
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">var</span> updateLane <span class="token operator">=</span> <span class="token function">getCurrentUpdatePriority</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 返回 currentUpdatePriority</span>
+  <span class="token comment">// 是否有“手动设置的优先级”，例如 Scheduler 提供的 runWithPriority 方法可以设置回调函数上下文的优先级</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>updateLane <span class="token operator">!==</span> NoLane<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> updateLane
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 如果以上情况都没有命中，则默认是“事件中产生的更新”。React 通过 window.event.type 获取当前事件类型，然后根据事件类型返回对应的优先级，具体会走到 getEventPriority 方法</span>
+  <span class="token comment">// var DiscreteEventPriority = SyncLane</span>
+  <span class="token comment">// var ContinuousEventPriority = InputContinuousLane</span>
+  <span class="token comment">// var DefaultEventPriority = DefaultLane</span>
+  <span class="token comment">// var IdleEventPriority = IdleLane</span>
+  <span class="token comment">// var currentUpdatePriority = NoLane</span>
+  <span class="token comment">// 例如：click、input、change 等事件，就是 DiscreteEventPriority，scroll、mousemove 等事件，就是 ContinuousEventPriority</span>
+  <span class="token keyword">var</span> eventLane <span class="token operator">=</span> <span class="token function">getCurrentEventPriority</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">return</span> eventLane
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="markupdatelanefromfibertoroot"><a href="#markupdatelanefromfibertoroot" class="header-anchor">#</a> markUpdateLaneFromFiberToRoot</h4> <p>由于参与调度的是 FiberRootNode，而产生 update 的是某一个 FiberNode（例如初始化时就是 HostFiberNode），因此需要从“产生 update 的 FiberNode”向上遍历直到 FiberRootNode，执行该逻辑的方法是 markUpdateLaneFromFiberToRoot</p> <p>markUpdateLaneFromFiberToRoot 是在 scheduleUpdateOnFiber 方法中调用的。</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">markUpdateLaneFromFiberToRoot</span><span class="token punctuation">(</span><span class="token parameter">sourceFiber<span class="token punctuation">,</span> lane</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 选定的 lane 附加在 源 FiberNode 上，例如应用初始化的时候 sourceFiber 为 HostRootFiber</span>
+  sourceFiber<span class="token punctuation">.</span>lanes <span class="token operator">=</span> <span class="token function">mergeLanes</span><span class="token punctuation">(</span>sourceFiber<span class="token punctuation">.</span>lanes<span class="token punctuation">,</span> lane<span class="token punctuation">)</span>
+  <span class="token keyword">var</span> alternate <span class="token operator">=</span> sourceFiber<span class="token punctuation">.</span>alternate
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>alternate <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    alternate<span class="token punctuation">.</span>lanes <span class="token operator">=</span> <span class="token function">mergeLanes</span><span class="token punctuation">(</span>alternate<span class="token punctuation">.</span>lanes<span class="token punctuation">,</span> lane<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>alternate <span class="token operator">===</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>sourceFiber<span class="token punctuation">.</span>flags <span class="token operator">&amp;</span> <span class="token punctuation">(</span>Placement <span class="token operator">|</span> Hydrating<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!==</span> NoFlags<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">warnAboutUpdateOnNotYetMountedFiberInDEV</span><span class="token punctuation">(</span>sourceFiber<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token comment">// Walk the parent path to the root and update the child lanes.</span>
+
+  <span class="token keyword">var</span> node <span class="token operator">=</span> sourceFiber
+  <span class="token keyword">var</span> parent <span class="token operator">=</span> sourceFiber<span class="token punctuation">.</span>return
+
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>parent <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 选定的 lane 附加在每一级父 fiberNode 的 childLanes 上</span>
+    parent<span class="token punctuation">.</span>childLanes <span class="token operator">=</span> <span class="token function">mergeLanes</span><span class="token punctuation">(</span>parent<span class="token punctuation">.</span>childLanes<span class="token punctuation">,</span> lane<span class="token punctuation">)</span>
+    alternate <span class="token operator">=</span> parent<span class="token punctuation">.</span>alternate
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>alternate <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      alternate<span class="token punctuation">.</span>childLanes <span class="token operator">=</span> <span class="token function">mergeLanes</span><span class="token punctuation">(</span>alternate<span class="token punctuation">.</span>childLanes<span class="token punctuation">,</span> lane<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>parent<span class="token punctuation">.</span>flags <span class="token operator">&amp;</span> <span class="token punctuation">(</span>Placement <span class="token operator">|</span> Hydrating<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!==</span> NoFlags<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">warnAboutUpdateOnNotYetMountedFiberInDEV</span><span class="token punctuation">(</span>sourceFiber<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    node <span class="token operator">=</span> parent
+    parent <span class="token operator">=</span> parent<span class="token punctuation">.</span>return
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// 向上遍历的流程会进行到 HostRootFiber，最终返回 HostRootFiber.stateNode，即 FiberRootNode。</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>tag <span class="token operator">===</span> HostRoot<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> root <span class="token operator">=</span> node<span class="token punctuation">.</span>stateNode
+    <span class="token keyword">return</span> root
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>随着遍历流程层层向上，每个祖先 fiberNode 的 childLanes 中都会附加“源 fiberNode 通过 requestUpdateLane 方法选定的 lane”，这一过程可以称作 “lane 冒泡”。</p> <p>lane 冒泡的意义是服务于“render 阶段一项重要的优化策略”，简单来说，在 beginWork 中，如果 renderLanes 不包含 workInProgress.childLanes，代表“该 fiberNode 的子孙 fiberNode 中不存在本次 render 阶段选定的 lanes”，可以跳过子孙 fiberNode 的 render 流程。</p> <h4 id="markrootupdated"><a href="#markrootupdated" class="header-anchor">#</a> markRootUpdated</h4> <p>markRootUpdated 是在 scheduleUpdateOnFiber 方法中调用的。</p> <p>markRootUpdated 会在 FiberRootNode.pendingLanes 中附加上“本次更新对应的 lane”，并且会在 FiberRootNode.eventTimes 中记录“交互发生的时间”</p> <h3 id="调度-fiberrootnode"><a href="#调度-fiberrootnode" class="header-anchor">#</a> 调度 FiberRootNode</h3> <p>这个过程，需要首先确定 workInProgressRootRenderLanes ，即“参与本次 render 阶段的 lanes”;然后执行一些调度策略，最后执行“同步更新流程（React 调度）”或“并发更新流程（Scheduler 调度）”</p> <h4 id="ensurerootisscheduled"><a href="#ensurerootisscheduled" class="header-anchor">#</a> ensureRootIsScheduled</h4> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">ensureRootIsScheduled</span><span class="token punctuation">(</span><span class="token parameter">root<span class="token punctuation">,</span> currentTime</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> existingCallbackNode <span class="token operator">=</span> root<span class="token punctuation">.</span>callbackNode
+
+  <span class="token function">markStarvedLanesAsExpired</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> currentTime<span class="token punctuation">)</span>
+
+  <span class="token comment">// 选定 workInProgressRootRenderLanes</span>
+  <span class="token keyword">var</span> nextLanes <span class="token operator">=</span> <span class="token function">getNextLanes</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> root <span class="token operator">===</span> workInProgressRoot <span class="token operator">?</span> workInProgressRootRenderLanes <span class="token operator">:</span> NoLanes<span class="token punctuation">)</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>nextLanes <span class="token operator">===</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>existingCallbackNode <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">cancelCallback$1</span><span class="token punctuation">(</span>existingCallbackNode<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    root<span class="token punctuation">.</span>callbackNode <span class="token operator">=</span> <span class="token keyword">null</span>
+    root<span class="token punctuation">.</span>callbackPriority <span class="token operator">=</span> NoLane
+    <span class="token keyword">return</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">var</span> newCallbackPriority <span class="token operator">=</span> <span class="token function">getHighestPriorityLane</span><span class="token punctuation">(</span>nextLanes<span class="token punctuation">)</span>
+
+  <span class="token keyword">var</span> existingCallbackPriority <span class="token operator">=</span> root<span class="token punctuation">.</span>callbackPriority
+  <span class="token comment">// 如果当前调度的回调与新调度的回调具有相同的优先级，则不需要重新调度，还是使用之前的调度任务继续执行</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>existingCallbackPriority <span class="token operator">===</span> newCallbackPriority <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>ReactCurrentActQueue$1<span class="token punctuation">.</span>current <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> existingCallbackNode <span class="token operator">!==</span> fakeActCallbackNode<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 如果前后两次调度的优先级不同，新调度的优先级高于之前的调度优先级，则取消之前的调度任务，重新调度</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>existingCallbackNode <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">cancelCallback$1</span><span class="token punctuation">(</span>existingCallbackNode<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">var</span> newCallbackNode
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>newCallbackPriority <span class="token operator">===</span> SyncLane<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 如果本次调度的 workInProgressRootRenderLanes 中优先级最高的 lane 为 SyncLane，则会进入“同步调度”的逻辑</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">.</span>tag <span class="token operator">===</span> LegacyRoot<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 省略 LegacyRoot 的同步调度逻辑</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token comment">// scheduleSyncCallback 的具体逻辑会向数组 SyncQueue 中保存回调函数，然后调用 scheduleMicrotask</span>
+      <span class="token function">scheduleSyncCallback</span><span class="token punctuation">(</span><span class="token function">performSyncWorkOnRoot</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> root<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>ReactCurrentActQueue$1<span class="token punctuation">.</span>current <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ReactCurrentActQueue$1<span class="token punctuation">.</span>current<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>flushSyncCallbacks<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token comment">// scheduleMicrotask 用于在微任务中执行 flushSyncCallbacks</span>
+        <span class="token comment">// flushSyncCallbacks 会遍历 SyncQueue 并执行回调函数，即执行 performSyncWorkOnRoot</span>
+        <span class="token function">scheduleMicrotask</span><span class="token punctuation">(</span>flushSyncCallbacks<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    newCallbackNode <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 如果本次调度的 workInProgressRootRenderLanes 中优先级最高的 lane 不是 SyncLane，则会进入“并发调度”的逻辑</span>
+    <span class="token keyword">var</span> schedulerPriorityLevel
+    <span class="token comment">// 需要根据 lanesToEventPriority 转换，将“最高优先级的lane”调整为“Scheduler 使用的优先级”，并使用 Scheduler 提供的 scheduleCallback 方法调度会掉函数</span>
+    <span class="token keyword">switch</span> <span class="token punctuation">(</span><span class="token function">lanesToEventPriority</span><span class="token punctuation">(</span>nextLanes<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">case</span> <span class="token literal-property property">DiscreteEventPriority</span><span class="token operator">:</span>
+        schedulerPriorityLevel <span class="token operator">=</span> ImmediatePriority
+        <span class="token keyword">break</span>
+
+      <span class="token keyword">case</span> <span class="token literal-property property">ContinuousEventPriority</span><span class="token operator">:</span>
+        schedulerPriorityLevel <span class="token operator">=</span> UserBlockingPriority
+        <span class="token keyword">break</span>
+
+      <span class="token keyword">case</span> <span class="token literal-property property">DefaultEventPriority</span><span class="token operator">:</span>
+        schedulerPriorityLevel <span class="token operator">=</span> NormalPriority
+        <span class="token keyword">break</span>
+
+      <span class="token keyword">case</span> <span class="token literal-property property">IdleEventPriority</span><span class="token operator">:</span>
+        schedulerPriorityLevel <span class="token operator">=</span> IdlePriority
+        <span class="token keyword">break</span>
+
+      <span class="token keyword">default</span><span class="token operator">:</span>
+        schedulerPriorityLevel <span class="token operator">=</span> NormalPriority
+        <span class="token keyword">break</span>
+    <span class="token punctuation">}</span>
+    newCallbackNode <span class="token operator">=</span> <span class="token function">scheduleCallback$1</span><span class="token punctuation">(</span>schedulerPriorityLevel<span class="token punctuation">,</span> <span class="token function">performConcurrentWorkOnRoot</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> root<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  root<span class="token punctuation">.</span>callbackPriority <span class="token operator">=</span> newCallbackPriority
+  root<span class="token punctuation">.</span>callbackNode <span class="token operator">=</span> newCallbackNode
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="getnextlanes"><a href="#getnextlanes" class="header-anchor">#</a> getNextLanes</h4> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">getNextLanes</span><span class="token punctuation">(</span><span class="token parameter">root<span class="token punctuation">,</span> wipLanes</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> pendingLanes <span class="token operator">=</span> root<span class="token punctuation">.</span>pendingLanes
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>pendingLanes <span class="token operator">===</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 没有“未完成的 lane”</span>
+    <span class="token keyword">return</span> NoLanes
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">var</span> nextLanes <span class="token operator">=</span> NoLanes
+  <span class="token comment">// 由于请求导致 Suspense 挂起，标记的 lanes</span>
+  <span class="token keyword">var</span> suspendedLanes <span class="token operator">=</span> root<span class="token punctuation">.</span>suspendedLanes
+  <span class="token comment">// Suspense 请求完毕后，解锁之前挂起的流程，标记的 lanes</span>
+  <span class="token keyword">var</span> pingedLanes <span class="token operator">=</span> root<span class="token punctuation">.</span>pingedLanes
+  <span class="token comment">// 非空闲的 lanes</span>
+  <span class="token keyword">var</span> nonIdlePendingLanes <span class="token operator">=</span> pendingLanes <span class="token operator">&amp;</span> NonIdleLanes
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>nonIdlePendingLanes <span class="token operator">!==</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 非空闲的 lanes 中，排除挂起的 lanes</span>
+    <span class="token keyword">var</span> nonIdleUnblockedLanes <span class="token operator">=</span> nonIdlePendingLanes <span class="token operator">&amp;</span> <span class="token operator">~</span>suspendedLanes
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nonIdleUnblockedLanes <span class="token operator">!==</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 获取非空闲的 lanes 中，优先级最高的 lanes</span>
+      nextLanes <span class="token operator">=</span> <span class="token function">getHighestPriorityLanes</span><span class="token punctuation">(</span>nonIdleUnblockedLanes<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">var</span> nonIdlePingedLanes <span class="token operator">=</span> nonIdlePendingLanes <span class="token operator">&amp;</span> pingedLanes
+
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>nonIdlePingedLanes <span class="token operator">!==</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 获取被解锁的 lanes 中，优先级最高的 lanes</span>
+        nextLanes <span class="token operator">=</span> <span class="token function">getHighestPriorityLanes</span><span class="token punctuation">(</span>nonIdlePingedLanes<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 省略获取空闲 lanes 中优先级最高的 lanes</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>nextLanes <span class="token operator">===</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> NoLanes
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>wipLanes <span class="token operator">!==</span> NoLanes <span class="token operator">&amp;&amp;</span> wipLanes <span class="token operator">!==</span> nextLanes <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>wipLanes <span class="token operator">&amp;</span> suspendedLanes<span class="token punctuation">)</span> <span class="token operator">===</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 省略 Suspense 挂起相关情况</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>nextLanes <span class="token operator">&amp;</span> InputContinuousLane<span class="token punctuation">)</span> <span class="token operator">!==</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 将 InputContinuousLane 与 DefaultLane 纠缠在一起</span>
+    nextLanes <span class="token operator">|=</span> pendingLanes <span class="token operator">&amp;</span> DefaultLane
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">var</span> entangledLanes <span class="token operator">=</span> root<span class="token punctuation">.</span>entangledLanes
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>entangledLanes <span class="token operator">!==</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 省略处理其他纠缠的 lane</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> nextLanes
+<span class="token punctuation">}</span>
+</code></pre></div><p>以上代码主要包括三部分逻辑：</p> <ul><li>选择 root.pendingLanes 中的高优先级 lane（或 lanes）组成基础 lanes</li> <li>处理 Suspense 相关情况</li> <li>处理“纠缠的 lane”相关情况，纠缠到基础 lanes 中</li></ul> <p>所以，workInProgressRootRenderLanes 为两类 lanes 的并集：</p> <div class="language- extra-class"><pre class="language-text"><code>workInProgressRootRenderLanes = 基础 lanes | 额外情况附加的 lanes
+</code></pre></div><p>选定了 workInProgressRootRenderLanes 后，就可以执行调度策略了。</p> <h4 id="同步调度策略"><a href="#同步调度策略" class="header-anchor">#</a> 同步调度策略</h4> <p>scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root))</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">scheduleSyncCallback</span><span class="token punctuation">(</span><span class="token parameter">callback</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>syncQueue <span class="token operator">===</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    syncQueue <span class="token operator">=</span> <span class="token punctuation">[</span>callback<span class="token punctuation">]</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    syncQueue<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>callback<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>在“同步调度”逻辑中， scheduleMicrotask 会在微任务中遍历 SyncQueue 并同步执行所有回调函数，即 performSyncWorkOnRoot.bind(null, root)，然后会调用 renderRootSync 执行同步的 render 阶段和 commit 阶段。</p> <p>不过，虽然是“同步调度”的更新，即使后续 render 阶段和 commit 阶段是同步执行，但由于是在“微任务中批量处理同步更新”，使得触发后无法立即获取更新的值。例如 this.setState 后立即获取 state 的值，是无法立即获取到更新的值的。</p> <p>performSyncWorkOnRoot 会调用 renderRootSync， renderRootSync 会调用 workLoopSync，由此开启的 render 阶段不会被打断</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">workLoopSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>workInProgress <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">performUnitOfWork</span><span class="token punctuation">(</span>workInProgress<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="并发更新策略"><a href="#并发更新策略" class="header-anchor">#</a> 并发更新策略</h4> <p>scheduleCallback$1(schedulerPriorityLevel, performConcurrentWorkOnRoot.bind(null, root))，scheduleCallback$1 是 Scheduler.unstable_scheduleCallback。</p> <p>所以并发更新是需要 Scheduler 协调器进行调度的。</p> <p>回调函数 performConcurrentWorkOnRoot 方法会根据“当前是否需要开启 Time Slice” 来决定“render 阶段是否可中断”</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">var</span> shouldTimeSlice <span class="token operator">=</span> <span class="token operator">!</span><span class="token function">includesBlockingLane</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> lanes<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token function">includesExpiredLane</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> lanes<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>didTimeout
+<span class="token keyword">var</span> exitStatus <span class="token operator">=</span> shouldTimeSlice <span class="token operator">?</span> <span class="token function">renderRootConcurrent</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> lanes<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">renderRootSync</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> lanes<span class="token punctuation">)</span>
+</code></pre></div><p>未开启 Time Slice 时，执行 renderRootSync 的 workLoopSync，开启时，执行 renderRootConcurrent 的 workLoopConcurrent</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">workLoopConcurrent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>workInProgress <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token function">shouldYield</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">performUnitOfWork</span><span class="token punctuation">(</span>workInProgress<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="react-产生的-update-更新-的饥饿问题"><a href="#react-产生的-update-更新-的饥饿问题" class="header-anchor">#</a> React 产生的 update（更新）的饥饿问题</h4> <p>每次产生更新，调用 ensureRootIsScheduled 确定调度方案时，会在最前面调用 markStarvedLanesAsExpired ，会判断 lane 是否过期，会根据“交互发生的时间”为“更新对应的 lane” 设置过期时间。</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">markStarvedLanesAsExpired</span><span class="token punctuation">(</span><span class="token parameter">root<span class="token punctuation">,</span> currentTime</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> pendingLanes <span class="token operator">=</span> root<span class="token punctuation">.</span>pendingLanes
+  <span class="token keyword">var</span> suspendedLanes <span class="token operator">=</span> root<span class="token punctuation">.</span>suspendedLanes
+  <span class="token keyword">var</span> pingedLanes <span class="token operator">=</span> root<span class="token punctuation">.</span>pingedLanes
+  <span class="token keyword">var</span> expirationTimes <span class="token operator">=</span> root<span class="token punctuation">.</span>expirationTimes
+
+  <span class="token keyword">var</span> lanes <span class="token operator">=</span> pendingLanes
+  <span class="token comment">// 遍历 root.pendingLanes</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>lanes <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> index <span class="token operator">=</span> <span class="token function">pickArbitraryLaneIndex</span><span class="token punctuation">(</span>lanes<span class="token punctuation">)</span>
+    <span class="token keyword">var</span> lane <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">&lt;&lt;</span> index
+    <span class="token keyword">var</span> expirationTime <span class="token operator">=</span> expirationTimes<span class="token punctuation">[</span>index<span class="token punctuation">]</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>expirationTime <span class="token operator">===</span> NoTimestamp<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 为未设置过期时间的 lane 设置过期时间</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>lane <span class="token operator">&amp;</span> suspendedLanes<span class="token punctuation">)</span> <span class="token operator">===</span> NoLanes <span class="token operator">||</span> <span class="token punctuation">(</span>lane <span class="token operator">&amp;</span> pingedLanes<span class="token punctuation">)</span> <span class="token operator">!==</span> NoLanes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 为 pendingLanes 中“非挂起的 lane” 或“解除挂起的 lane” 设置过期时间</span>
+        <span class="token comment">// 具体的过期时间保存在 root.expirationTimes 中，作为一个长度为 31 的数组，可以保存 31 个 lane 的过期时间</span>
+        expirationTimes<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">computeExpirationTime</span><span class="token punctuation">(</span>lane<span class="token punctuation">,</span> currentTime<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>expirationTime <span class="token operator">&lt;=</span> currentTime<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 如果过期时间小于当前时间，将 lane 记录在 root.expiredLanes 中</span>
+      root<span class="token punctuation">.</span>expiredLanes <span class="token operator">|=</span> lane
+    <span class="token punctuation">}</span>
+
+    lanes <span class="token operator">&amp;=</span> <span class="token operator">~</span>lane
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="root-pendinglanes-工作流程"><a href="#root-pendinglanes-工作流程" class="header-anchor">#</a> root.pendingLanes 工作流程</h3> <p>root.pendingLanes 代表“当前 FiberRootNode”下，未执行的更新，对应的 lane 的集合。</p> <p>与 root.pendingLanes 相关的工作流程可以理解为“本次更新对应的 lane 的产生、消费、重置流程”，完整流程如下：</p> <ul><li>各种交互，首先调用 requestUpdateLane 获取合适的 lane，然后生成 update，将 lane 设置为 update 的 lane，然后调用 enqueueUpdate 将 update 加入到 FiberNode 的更新队列中</li> <li>schedule 阶段
+<ul><li>scheduleUpdateOnFiber 调用 markUpdateLaneFromFiberToRoot，将 update 的 lane 冒泡到 FiberRootNode，即更新 fiberNode.lanes 与 childLanes</li> <li>scheduleUpdateOnFiber 调用 markRootUpdated，将本次 update 的 lane 附加到 root.pendingLanes 中，即更新 root.pendingLanes</li></ul></li> <li>render 阶段
+<ul><li>beginWork 重置 fiberNode.lanes，调用 createFiberFromXXX 的时候，初始化 fiberNode.lanes</li> <li>completeWork 在 bubbleProperties 中，更新 fiberNode.childLanes</li></ul></li> <li>commit 阶段
+<ul><li>markRootFinished 重置 root.pendingLanes，即 root.pendingLanes = NoLanes</li></ul></li></ul> <h2 id="scheduler-的实现原理"><a href="#scheduler-的实现原理" class="header-anchor">#</a> Scheduler 的实现原理</h2> <p>React 如果是并发更新（或者说是非同步更新），会使用 Scheduler 进行调度。</p> <h3 id="scheduler-调度的是任务-task-数据结构"><a href="#scheduler-调度的是任务-task-数据结构" class="header-anchor">#</a> Scheduler 调度的是任务, task 数据结构</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">var</span> newTask <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">id</span><span class="token operator">:</span> taskIdCounter<span class="token operator">++</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">callback</span><span class="token operator">:</span> callback<span class="token punctuation">,</span>
+  <span class="token literal-property property">priorityLevel</span><span class="token operator">:</span> priorityLevel<span class="token punctuation">,</span>
+  <span class="token literal-property property">startTime</span><span class="token operator">:</span> startTime<span class="token punctuation">,</span>
+  <span class="token literal-property property">expirationTime</span><span class="token operator">:</span> expirationTime<span class="token punctuation">,</span>
+  <span class="token literal-property property">sortIndex</span><span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="scheduler-的工作流程"><a href="#scheduler-的工作流程" class="header-anchor">#</a> Scheduler 的工作流程</h3> <h4 id="完整流程"><a href="#完整流程" class="header-anchor">#</a> 完整流程</h4> <ul><li>在 ensureRootIsScheduled 中，判断如果本地更新不是同步模式，就进入并发模型，调用 newCallbackNode = scheduleCallback(schedulerPriorityLevel, performConcurrentWorkOnRoot.bind(null, root))，进行任务调度，创建 task，并把 performConcurrentWorkOnRoot.bind(null, root) 设置为 task 的 callback</li> <li>根据“是否传递 delay 参数”，执行 scheduleCallback 方法生成的 task 会进入 timerQueue 或者 taskQueue，其中：
+<ul><li>timerQueue 中的 task 以 currentTime + delay 为排序依据</li> <li>taskQueue 中的 task 以 expirationTime 为排序依据</li></ul></li> <li>如果 taskQueue 为空，timerQueue 不为空，会不断的调用 setTimeout，直到 taskQueue 不为空</li> <li>如果 taskQueue 不为空，会调用 requestHostCallback，将 scheduledHostCallback 设置为 flushWork，并执行 schedulePerformWorkUntilDeadline。
+<ul><li>schedulePerformWorkUntilDeadline 是用来创建下一次宏任务的，根据环境不同，依次判断采用 setImmediate、MessageChannel、setTimeout。</li></ul></li> <li>schedulePerformWorkUntilDeadline 创建的宏任务会调用 performWorkUntilDeadline，performWorkUntilDeadline 会调用 scheduledHostCallback，即 flushWork</li> <li>flushWork 会调用 workLoop 逐个执行 task 的 callback，还会调用 advanceTimers 刷新 timerQueue，然后返回是否还有待调度的任务</li> <li>如果还有待调度的任务，继续调用 schedulePerformWorkUntilDeadline 创建下一次宏任务</li></ul> <h3 id="taskqueue-与-timerqueue-优先级队列的选择"><a href="#taskqueue-与-timerqueue-优先级队列的选择" class="header-anchor">#</a> taskQueue 与 timerQueue 优先级队列的选择</h3> <p>采用小顶堆数据结构实现的优先级队列。</p> <ul><li>timerQueue 中的 task 以 currentTime + delay 为排序依据</li> <li>taskQueue 中的 task 以 expirationTime 为排序依据</li></ul> <h4 id="小顶堆的特点"><a href="#小顶堆的特点" class="header-anchor">#</a> 小顶堆的特点</h4> <ul><li>是一颗完全二叉树（除最后一层外，其他层的节点个数都是满的，且最后一层节点靠左排列）</li> <li>堆中每一个节点值都小于等于其子节点的每一个值。</li></ul> <h3 id="宏任务的选择"><a href="#宏任务的选择" class="header-anchor">#</a> 宏任务的选择</h3> <h4 id="放弃的方案-requestidlecallback"><a href="#放弃的方案-requestidlecallback" class="header-anchor">#</a> 放弃的方案——requestIdleCallback</h4> <p>requestIdleCallback （简称 rIC），rIC 是一个实验性质的 API，会在每一帧的空闲时期执行</p> <p>以下缺点使得 Scheduler 放弃了 rIC</p> <ul><li><p>浏览器兼容性</p></li> <li><p>执行频率不稳定，受很多因素的影响</p> <ul><li>每一帧的空闲时期执行，但是每一帧的空闲时期是不固定的</li> <li>当切换浏览器标签页时，浏览器会降低当前标签页的帧率，导致 rIC 的执行频率降低</li></ul></li> <li><p>应用场景局限
+rIC 的设计初衷是“能够在事件循环中执行低优先级工作，减少对动画、用户输入等高优先级事件的影响”，这就意味着 rIC 的应用场景局限在低优先级的工作中，这与 Scheduler 中“多种优先级的调度策略”不符</p> <h4 id="放弃的方案-requestanimationframe"><a href="#放弃的方案-requestanimationframe" class="header-anchor">#</a> 放弃的方案——requestAnimationFrame</h4> <p>requestAnimationFrame （简称 rAF），rAF 定义的回调函数会在浏览器下次 Paint 前执行，一般用于更新动画。</p> <p>由于 rAF 的执行取决于“每一帧 Paint 前的时机”，即“它的执行与帧相关”，执行频率不高，因此 Scheduler 放弃了 rAF</p> <h4 id="选择的方案-setimmediate、messagechannel、settimeout"><a href="#选择的方案-setimmediate、messagechannel、settimeout" class="header-anchor">#</a> 选择的方案——setImmediate、MessageChannel、setTimeout</h4> <p>Scheduler 的调度应该在一帧的时间内可以执行多次，并且执行时机越早越好。</p> <p>在支持 setImmediate 的环境中（Node.js，旧版本的 IE），Scheduler 会优先使用 setImmediate 调度宏任务</p> <p>特点：</p> <ul><li>不同于 MessageChannel，它不会阻止 Node.js 进程退出</li> <li>相比于 MessageChannel，执行时机更早</li></ul> <p>在支持 MessageChannel 的环境中（浏览器、Worker），使用 MessageChannel 调度宏任务</p> <p>其余的情况则使用 setTimeout 调度宏任务</p></li></ul> <h2 id="两个饥饿问题-影响是否开启-time-slice"><a href="#两个饥饿问题-影响是否开启-time-slice" class="header-anchor">#</a> 两个饥饿问题，影响是否开启 Time Slice</h2> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// 是否开启 Time Slice</span>
+<span class="token keyword">var</span> shouldTimeSlice <span class="token operator">=</span> <span class="token operator">!</span><span class="token function">includesBlockingLane</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> lanes<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token function">includesExpiredLane</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> lanes<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>didTimeout
+</code></pre></div><p>shouldTimeSlice 由三个条件决定：</p> <ul><li>是否包含阻塞的 lane，如果不包含，则可以开启 Time Slice</li> <li>是否包含过期的 lane，如果不包含，则可以开启 Time Slice</li> <li>Scheduler 调度的任务是否超时，如果没有超时，则可以开启 Time Slice</li></ul> <h3 id="是否包含阻塞的-lane"><a href="#是否包含阻塞的-lane" class="header-anchor">#</a> 是否包含阻塞的 lane</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">includesBlockingLane</span><span class="token punctuation">(</span><span class="token parameter">root<span class="token punctuation">,</span> lanes</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 以下的几个 lane 被认为是同步执行的 lane</span>
+  <span class="token keyword">var</span> SyncDefaultLanes <span class="token operator">=</span> InputContinuousHydrationLane <span class="token operator">|</span> InputContinuousLane <span class="token operator">|</span> DefaultHydrationLane <span class="token operator">|</span> DefaultLane
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>lanes <span class="token operator">&amp;</span> SyncDefaultLanes<span class="token punctuation">)</span> <span class="token operator">!==</span> NoLanes
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="是否包含过期的-lane"><a href="#是否包含过期的-lane" class="header-anchor">#</a> 是否包含过期的 lane</h3> <p>存在与 root.expiredLanes 中的 lane 为过期的 lane</p> <h3 id="scheduler-调度的任务是否超时"><a href="#scheduler-调度的任务是否超时" class="header-anchor">#</a> Scheduler 调度的任务是否超时</h3> <p>Scheduler 生成调度任务的时候，会根据 schedulerPriority 的不同，设置不同的 expirationTime，expirationTime 为任务的过期时间。</p> <p>在 Scheduler 的 workLoop 方法中，会根据当前时间和任务的过期时间，判断任务是否超时</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">var</span> didUserCallbackTimeout <span class="token operator">=</span> currentTask<span class="token punctuation">.</span>expirationTime <span class="token operator">&lt;=</span> currentTime
+<span class="token comment">// 此处的 callback 即为 performConcurrentWorkOnRoot.bind(null, root)</span>
+<span class="token keyword">var</span> continuationCallback <span class="token operator">=</span> <span class="token function">callback</span><span class="token punctuation">(</span>didUserCallbackTimeout<span class="token punctuation">)</span>
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/qiqihaobenben/Front-End-Basics/edit/master/docs/frame/react/scheduler.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">4/19/2024, 8:16:07 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.f0c3bf6e.js" defer></script><script src="/assets/js/2.267df354.js" defer></script><script src="/assets/js/1.66cc43cf.js" defer></script><script src="/assets/js/141.c3809389.js" defer></script>
+  </body>
+</html>

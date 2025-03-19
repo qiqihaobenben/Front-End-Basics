@@ -16,12 +16,14 @@
     "@commitlint/config-conventional": "^17.0.2",
     "cz-git": "^1.2.8",
     "cz-relax": "0.0.1",
-    "husky": "^7.0.0",
-    "vuepress": "^1.9.7"
+    "husky": "^7.0.0"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-git"
     }
+  },
+  "dependencies": {
+    "vuepress": "^1.9.10"
   }
 }
