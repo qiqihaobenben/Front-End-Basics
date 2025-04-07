@@ -44,4 +44,4 @@ jobs:
           SOURCE: ./docs/.vuepress/dist/
           REMOTE_HOST: ${{secrets.SSH_HOST}}
           REMOTE_USER: ${{secrets.SSH_USERNAME}}
-          TARGET: /home/chenfangxu/docs.chenfangxu.com/
+          TARGET: /home/chenfangxu/docs.chenfangxu.com/dist/
