@@ -41,7 +41,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{secrets.DEPLOY_KEY}}
           ARGS: '-rlgoDzvc -i'
-          SOURCE: ./docs/.vuepress/dist
+          SOURCE: ./docs/.vuepress/dist/
           REMOTE_HOST: ${{secrets.SSH_HOST}}
           REMOTE_USER: ${{secrets.SSH_USERNAME}}
           TARGET: /home/chenfangxu/docs.chenfangxu.com/
