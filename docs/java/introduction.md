@@ -186,6 +186,105 @@ Java 提供了稳定的基础，Kotlin 带来了现代化的简洁性和高效�
 - [Java 版本和 JDK 版本](https://cloud.tencent.com/developer/article/2128820)
 - [JDK 的版本号解惑](https://cloud.tencent.com/developer/article/1873446)
 
+## JDK 的常用命令
+
+### javac
+
+javac 命令是 Java 编译器的命令行工具，用于将 Java 源代码编译成字节码。以下是一些常用参数及其示例：
+
+1. `-d` - 指定编译后类文件的存放目录
+   `javac -d classes src/Main.java`
+
+2. `-cp/-classpath` - 指定查找用户类文件和注解处理器的位置
+   `javac -cp lib/dependency.jar:classes src/Main.java`
+
+3. `-sourcepath` - 指定查找输入源文件的位置
+   `javac -sourcepath src src/com/example/Main.java`
+
+4. `-source` - 指定使用的 Java 版本
+   `javac -source 11 Main.java`
+
+5. `-target` - 指定生成的类文件兼容的 JVM 版本
+   `javac -target 11 Main.java`
+
+6. `-encoding` - 指定源文件编码
+   `javac -encoding UTF-8 Main.java`
+
+7. `-g` - 生成所有调试信息
+   `javac -g Main.java`
+
+8. `-verbose` - 输出有关编译的详细信息
+   `javac -verbose Main.java`
+
+9. `-Xlint` - 启用警告
+   `javac -Xlint:all Main.java`
+
+10. `-Werror` - 将警告视为错误
+    `javac -Werror Main.java`
+
+11. `-deprecation` - 显示使用已过时 API 的源位置
+    `javac -deprecation Main.java`
+
+12. `-nowarn` - 禁用警告
+    `javac -nowarn Main.java`
+
+### java
+
+java 是 jvm 的入口，jvm 是 java 的运行环境。
+
+java 命令是用于启动 Java 应用程序的命令行工具，以下是一些常用参数及示例：
+
+1. `-cp/-classpath` - 指定查找类文件的路径
+   `java -cp classes:lib/dependency.jar com.example.Main`
+
+2. `-D` - 设置系统属性
+   `java -Dapp.env=production com.example.Main`
+
+3. `-Xms` - 设置初始堆大小
+   `java -Xms512m com.example.Main`
+
+4. `-Xmx` - 设置最大堆大小
+   `java -Xmx2g com.example.Main`
+
+5. `-jar` - 运行 JAR 文件
+   `java -jar app.jar`
+
+6. `-verbose` - 启用详细输出
+   `java -verbose:gc com.example.Main`
+
+7. `-ea/-enableassertions` - 启用断言
+   `java -ea com.example.Main`
+
+8. `-javaagent` - 加载 Java 编程语言代理
+   `java -javaagent:agent.jar com.example.Main`
+
+9. `--module-path/-p` - 指定模块路径(Java 9+)
+   `java --module-path mods -m myapp/com.example.Main`
+
+10. `-XX:+UseG1GC` - 使用 G1 垃圾收集器
+    `java -XX:+UseG1GC com.example.Main`
+
+11. `-XX:+HeapDumpOnOutOfMemoryError` - 内存溢出时生成堆转储
+    `java -XX:+HeapDumpOnOutOfMemoryError com.example.Main`
+
+12. `-version` - 显示版本信息
+    `java -version`
+
+### 类路径（Classpath）的核心概念
+
+​​ 类路径是 JVM 查找资源的路径。
+
+1. JVM 会在类路径中查找：
+
+- 编译后的 .class 文件（如 com/example/App.class）
+- 资源文件（如 config/applicationContext.xml）
+- 第三方库（JAR 文件中的类）
+
+2. 路径分隔符 ​​
+
+- Windows 使用 ; 分隔不同路径。
+- Linux/Mac 使用 : 分隔。
+
 ## IDEA
 
 [IDEA 激活教程](https://ziby0nwxdov.feishu.cn/wiki/OyLBwBd9oiVFTykXrHvcEB91nyb)

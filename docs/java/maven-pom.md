@@ -191,12 +191,6 @@ maven 在版本管理时候可以使用几个特殊的字符串 SNAPSHOT、LATES
 
 - `modules`: 定义项目的模块，可以编译多个模块。
 
-```xml
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      https://maven.apache.org/x
-
 ## 构建配置
 
 - `build`: 定义项目的构建配置，例如编译器版本、插件等。
@@ -245,4 +239,7 @@ Maven 支持模块化管理，可以把一个大项目拆成几个模块：
 
 - 可以通过继承在 parent 的 pom.xml 统一定义重复配置；
 - 可以通过<modules>编译多个模块。
+
+```
+
 ```
