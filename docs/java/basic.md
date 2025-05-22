@@ -1931,6 +1931,41 @@ class Student implements Person {
 
 #### 实现接口的格式
 
+### 函数式接口
+
+#### 定义
+
+函数式接口必须满足以下条件：
+
+- 是一个接口（不是类或抽象类）
+- 有且仅有一个抽象方法（不包括默认方法和静态方法）
+- 可以包含默认方法（带有实现的方法）
+- 可以包含静态方法
+- 可以从 Object 类继承的公共方法
+
+#### 使用示例
+
+```java
+@FunctionalInterface
+public interface Calculator {
+    // 唯一的抽象方法
+    int calculate(int a, int b);
+
+    // 可以有默认方法
+    default void printInfo() {
+        System.out.println("这是一个计算器接口");
+    }
+
+    // 可以有静态方法
+    static Calculator addition() {
+        return (a, b) -> a + b;
+    }
+
+    // 从Object类继承的方法不计入抽象方法数量
+    boolean equals(Object obj);
+}
+```
+
 ## 包
 
 如果写了一个 Arrays 类，恰好 JDK 也自带了一个 Arrays 类，如何解决类名冲突？
@@ -3804,3 +3839,186 @@ void check(Person person) throws IllegalArgumentException, ReflectiveOperationEx
 这样一来，我们通过@Range 注解，配合 check()方法，就可以完成 Person 实例的检查。
 
 **注意检查逻辑完全是我们自己编写的，JVM 不会自动给注解添加任何额外的逻辑。**
+
+## Lambda 语法中四种方法引用
+
+### **一、`User::getAge` 的含义与原始写法**
+
+#### **1. 背景说明**
+
+`lambdaQuery().eq(User::getAge, 30).one()` 来自 MyBatis-Plus 等 ORM 框架的查询 API。其中：
+
+- `lambdaQuery()` 表示使用 Lambda 风格的查询（避免硬编码字段名）；
+- `eq(User::getAge, 30)` 表示“查询 `age` 字段等于 30 的记录”；
+- `User::getAge` 是方法引用，作用是**告诉框架：这里要操作的是 `User` 类的 `age` 字段对应的 getter 方法**（从而自动解析出数据库的列名）。
+
+#### **2. `User::getAge` 的本质**
+
+`User::getAge` 是 **特定类的实例方法的方法引用**，等价于一个 Lambda 表达式。它的完整逻辑是：**用 `User` 对象调用其 `getAge()` 方法**。
+
+#### **3. 还原成原始写法**
+
+在 Java 中，方法引用可以看作 Lambda 表达式的简化形式，而 Lambda 表达式本质是**函数式接口的实例**。因此，`User::getAge` 可以按以下步骤还原：
+
+##### **步骤 1：确定函数式接口**
+
+MyBatis-Plus 的 `eq` 方法需要一个 `SFunction<T, R>` 类型的参数（MyBatis-Plus 自定义的函数式接口），定义如下：
+
+```java
+@FunctionalInterface
+public interface SFunction<T, R> extends Serializable {
+    R apply(T t); // 唯一抽象方法：输入 T 类型对象，返回 R 类型结果
+}
+```
+
+##### **步骤 2：用 Lambda 表达式实现 `SFunction`**
+
+`User::getAge` 对应的 Lambda 表达式是：
+
+```java
+(user) -> user.getAge()
+```
+
+它表示：接收一个 `User` 类型的参数 `user`，调用其 `getAge()` 方法，返回结果（即 `age` 字段的值）。
+
+##### **步骤 3：还原为匿名内部类（最原始写法）**
+
+Lambda 表达式可以进一步还原为匿名内部类（虽然实际编译时不会生成，但逻辑等价）：
+
+```java
+new SFunction<User, Integer>() {
+    @Override
+    public Integer apply(User user) {
+        return user.getAge(); // 最原始的写法：显式调用 getAge()
+    }
+};
+```
+
+#### **总结**
+
+`User::getAge` 是 `(user) -> user.getAge()` 的简化，本质是实现了 `SFunction` 接口的 Lambda 表达式，用于告诉 MyBatis-Plus：要操作 `User` 类的 `age` 字段。
+
+### **二、`Integer[]::new` 的含义与原始写法**
+
+#### **1. 背景说明**
+
+`Integer[]::new` 是 **数组构造函数引用**，常见于 Java 流（Stream）操作中，用于创建指定类型和长度的数组。例如：
+
+```java
+List<Integer> list = List.of(1, 2, 3);
+Integer[] array = list.stream().toArray(Integer[]::new); // 转换为 Integer 数组
+```
+
+#### **2. `Integer[]::new` 的本质**
+
+它表示“调用 `Integer` 数组的构造函数”，等价于一个 Lambda 表达式，作用是**根据指定的长度创建 `Integer` 数组**。
+
+#### **3. 还原成原始写法**
+
+数组构造函数引用可以还原为 Lambda 表达式，甚至更原始的匿名内部类（虽然实际很少这么写）。
+
+##### **步骤 1：确定函数式接口**
+
+`Stream.toArray()` 方法需要一个 `IntFunction<T[]>` 类型的参数，定义如下：
+
+```java
+@FunctionalInterface
+public interface IntFunction<R> {
+    R apply(int value); // 唯一抽象方法：输入一个 int（数组长度），返回 R 类型数组
+}
+```
+
+##### **步骤 2：用 Lambda 表达式实现 `IntFunction`**
+
+`Integer[]::new` 对应的 Lambda 表达式是：
+
+```java
+(length) -> new Integer[length]
+```
+
+它表示：接收一个 `int` 类型的长度参数 `length`，创建一个长度为 `length` 的 `Integer` 数组。
+
+##### **步骤 3：还原为匿名内部类**
+
+```java
+new IntFunction<Integer[]>() {
+    @Override
+    public Integer[] apply(int length) {
+        return new Integer[length]; // 最原始的写法：显式创建数组
+    }
+};
+```
+
+#### **总结**
+
+`Integer[]::new` 是 `(length) -> new Integer[length]` 的简化，本质是实现了 `IntFunction` 接口的 Lambda 表达式，用于创建指定长度的 `Integer` 数组。
+
+### **三、`System.out::println` 的含义与原始写法**
+
+#### **1. 背景说明**
+
+`System.out::println` 是 **实例方法引用**，常见于 Lambda 表达式中，用于简化对象方法的调用。例如：
+
+```java
+List<String> names = List.of("Alice", "Bob");
+names.forEach(System.out::println); // 遍历打印每个元素
+```
+
+#### **2. `System.out::println` 的本质**
+
+`System.out` 是 `PrintStream` 类型的实例，`println` 是它的方法。`System.out::println` 表示“用 `System.out` 实例调用 `println` 方法”，等价于一个 Lambda 表达式。
+
+#### **3. 还原成原始写法**
+
+##### **步骤 1：确定函数式接口**
+
+`List.forEach()` 方法需要一个 `Consumer<T>` 类型的参数，定义如下：
+
+```java
+@FunctionalInterface
+public interface Consumer<T> {
+    void accept(T t); // 唯一抽象方法：接收 T 类型参数，无返回值
+}
+```
+
+##### **步骤 2：用 Lambda 表达式实现 `Consumer`**
+
+`System.out::println` 对应的 Lambda 表达式是：
+
+```java
+(str) -> System.out.println(str)
+```
+
+它表示：接收一个 `String` 类型的参数 `str`，调用 `System.out.println(str)` 打印。
+
+##### **步骤 3：还原为匿名内部类**
+
+```java
+new Consumer<String>() {
+    @Override
+    public void accept(String str) {
+        System.out.println(str); // 最原始的写法：显式调用 println
+    }
+};
+```
+
+#### **总结**
+
+`System.out::println` 是 `(str) -> System.out.println(str)` 的简化，本质是实现了 `Consumer` 接口的 Lambda 表达式，用于打印输入的参数。
+
+### **四、方法引用的四种类型总结**
+
+Java 的方法引用共有 4 种类型，你提到的三个例子分别对应其中三种：
+
+| 类型                       | 语法形式                   | 示例                  | 等价 Lambda 表达式                 |
+| -------------------------- | -------------------------- | --------------------- | ---------------------------------- |
+| 静态方法引用               | `类名::静态方法`           | `Integer::parseInt`   | `(str) -> Integer.parseInt(str)`   |
+| 实例方法引用（实例已存在） | `实例::实例方法`           | `System.out::println` | `(str) -> System.out.println(str)` |
+| 特定类的实例方法引用       | `类名::实例方法`           | `User::getAge`        | `(user) -> user.getAge()`          |
+| 构造函数引用               | `类名::new` 或 `数组::new` | `Integer[]::new`      | `(length) -> new Integer[length]`  |
+
+### **五、关键总结**
+
+- **方法引用是 Lambda 的简化**：所有方法引用都可以还原为 Lambda 表达式，而 Lambda 表达式本质是函数式接口的实例。
+- **核心作用**：简化代码，避免重复的参数传递（如 `user -> user.getAge()` 简化为 `User::getAge`）。
+- **学习建议**：先理解函数式接口（只有一个抽象方法的接口），再通过 Lambda 表达式过渡到方法引用，更容易掌握。

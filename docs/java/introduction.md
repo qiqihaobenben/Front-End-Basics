@@ -18,6 +18,20 @@
 
 - 把 JVM 想象成一台虚拟的咖啡机，它知道如何读取和理解咖啡豆（Java 字节码），并将其转换为咖啡粉（机器代码），然后冲泡出一杯杯可口的咖啡（运行程序）。不论是在公寓、咖啡厅还是在公司里（不同的操作系统），JVM 都能制作出原味的咖啡。
 
+#### **包含的内容：**
+
+- 类加载器（Class Loader）
+- 字节码验证器（Bytecode Verifier）
+- 执行引擎（Execution Engine）
+- 垃圾回收器（Garbage Collector）
+- JIT 编译器（Just-In-Time Compiler）
+
+JVM 是运行 Java 字节码的虚拟机，JVM 本身不直接提供 API 给应用程序使用，它是一个执行环境。但它实现了如下规范：
+
+- JVM 规范（定义类文件格式、指令集等）
+- 内存管理接口
+- 线程同步原语（如 monitorenter、monitorexit 指令）
+
 ### JRE (Java Runtime Environment) - Java 运行环境
 
 #### **JRE 是什么？**
@@ -34,6 +48,28 @@
 
 - 想象 JRE 是一个咖啡工作台，不仅包含了虚拟的咖啡机（JVM），还包含了制作咖啡所需的各种工具和材料，例如牛奶，焦糖，咖啡杯（Java 类库）。用户在这个工作台上就可以运行咖啡机，做出各种口味的咖啡。
 
+#### **包含的内容：**
+
+JRE 包含基础的 Java API，主要包括：
+
+核心包（由 JVM 实现的 API）：
+
+- java.lang：语言基础类（String, Object, Thread 等）
+- java.util：实用工具类（集合框架、日期时间等）
+- java.io：输入输出
+- java.net：网络操作
+- java.math：数学操作
+- java.text：文本处理
+- java.sql：数据库访问
+- java.awt：抽象窗口工具包
+- javax.swing：Swing 图形界面
+- java.security：安全框架
+- java.beans：JavaBeans 组件模型
+
+扩展 API：
+
+- `javax.*`：标准扩展，如 javax.xml、javax.crypto 等
+
 ### JDK (Java Development Kit) - Java 开发工具包
 
 #### **JDK 是什么？**
@@ -49,6 +85,21 @@
 #### **通俗的比喻：**
 
 - JDK 就像是一个完整的咖啡工作室，里面不仅有虚拟的咖啡机（JVM）和咖啡工作台（JRE），还有烘焙咖啡豆的所有工具（开发工具）。它提供了你需要的所有工具，让你可以从头开始制作自己的咖啡豆（开发 Java 程序），再用它们来制作咖啡。
+
+#### **包含的内容：**
+
+JDK 除了包含 JRE 的所有内容外，还包括：
+
+开发工具 API：
+
+- `com.sun.tools.*`：编译器 API
+- `com.sun.jdi.*`：调试接口
+- `tools.jar`：包含 javac, javadoc 等工具的 API
+
+JDK 特有包：
+
+- `jdk.*`：JDK 特有的实用工具
+- `sun.*`：Sun/Oracle 实现特有（非标准）API
 
 ### 总结
 
@@ -285,6 +336,165 @@ java 命令是用于启动 Java 应用程序的命令行工具，以下是一些
 - Windows 使用 ; 分隔不同路径。
 - Linux/Mac 使用 : 分隔。
 
+## 疑问：运行 java 命令时，为什么需要 JRE？
+
+### Java 编译和运行机制
+
+您的理解有一部分是对的，但也有一些概念需要澄清：
+
+#### 编译过程
+
+1. **编译器作用**：
+
+   - `javac` 命令（编译器）将 `.java` 源文件编译成 `.class` 字节码文件
+   - 编译器只是将源代码转换为字节码，并不会将 JDK 或 JRE 的代码编译到您的程序中
+
+2. **字节码内容**：
+   - 编译后的 `.class` 文件只包含您的程序逻辑
+   - 它包含对 JDK/JRE 中类的引用（如 `java.lang.String`），但不包含这些类的实现
+
+#### 运行过程
+
+1. **`java` 命令**：
+
+   - `java` 命令启动 JVM (Java 虚拟机)
+   - JVM 加载并执行您的 `.class` 文件
+   - JVM **必须**能够访问标准库（JRE 的一部分）才能运行程序
+
+2. **运行时类加载**：
+   - 当您的程序引用 `String`、`System` 等类时
+   - JVM 会从 JRE 的库中加载这些类
+   - 这些标准库类**不在**您的 `.class` 文件中
+
+### JRE 的必要性
+
+**运行 Java 程序必须有 JRE**，因为：
+
+1. **标准库依赖**：
+
+   - 几乎所有 Java 程序都使用标准库（如 `String`、`ArrayList`、`System` 等）
+   - 这些类的实现在 JRE 中，不在您的编译代码中
+
+2. **动态链接**：
+
+   - Java 使用动态链接机制，运行时才解析对标准库的引用
+   - 类似于 C/C++ 中的动态链接库（.dll/.so）
+
+3. **JVM 本身**：
+   - `java` 命令本身是 JRE 的一部分
+   - 没有 JRE，就没有 JVM 来执行字节码
+
+### 一个简单的比喻
+
+把这个过程想象成烹饪：
+
+- 您的源代码（`.java` 文件）是食谱
+- 编译器（`javac`）将食谱转换成厨师能理解的指令（`.class` 文件）
+- 这些指令包含"使用锅"、"使用刀"等步骤，但没有包含实际的锅和刀
+- JVM（`java` 命令）是厨师，它需要厨房（JRE）里的工具（标准库）才能执行这些指令
+
+### JDK vs JRE 在运行时的角色
+
+1. **运行时只需要 JRE**：
+
+   - 编译好的 Java 程序只需要 JRE 即可运行
+   - JDK 中的开发工具（如 `javac`、`javadoc` 等）在运行时不需要
+
+2. **为什么有时看起来不需要 JRE**：
+   - 如果您的计算机上安装了 JDK，它已经包含了 JRE
+   - 许多 Java 应用程序会捆绑自己的 JRE（如嵌入式 JRE）
+   - 某些工具可以创建"自包含"的 Java 应用（如 jlink、GraalVM native-image），但这些实际上是将部分 JRE 与应用打包在一起
+
+### 实际例子
+
+让我们看一个简单的例子来说明这个过程：
+
+```java
+// HelloWorld.java
+public class HelloWorld {
+    public static void main(String[] args) {
+        String message = "Hello, World!";
+        System.out.println(message);
+    }
+}
+```
+
+当您编译这个程序时：
+
+```
+javac HelloWorld.java
+```
+
+编译器会生成 `HelloWorld.class` 文件。这个文件包含：
+
+- 您定义的 `main` 方法的字节码
+- 对 `java.lang.String` 和 `java.lang.System` 的引用
+- 但**不包含** `String` 类或 `System` 类的实现
+
+当您运行这个程序时：
+
+```
+java HelloWorld
+```
+
+以下过程发生：
+
+1. JVM 启动并加载 `HelloWorld.class`
+2. JVM 发现对 `String` 和 `System` 的引用
+3. JVM 从 JRE 的标准库（通常在 `rt.jar` 或模块系统中）加载这些类
+4. 然后才能执行您的程序
+
+### 验证实验
+
+您可以做一个简单的实验来验证这一点：
+
+1. 编译一个 Java 程序
+2. 尝试在没有 JRE 的环境中运行它
+3. 您会得到错误消息，因为 JVM 找不到必要的运行时库
+
+### 总结
+
+1. **编译后的 Java 程序**：
+
+   - 只包含您的代码逻辑
+   - 包含对标准库的引用，但不包含标准库本身
+
+2. **运行 Java 程序**：
+
+   - 必须有 JRE，因为它提供了 JVM 和标准库
+   - JDK 在运行时不是必需的
+
+3. **`java` 命令**：
+   - 是 JRE 的一部分，启动 JVM
+   - 不是独立于 JRE 的组件
+
+所以，编译不会将 JDK/JRE 的代码编译到您的程序中，运行时仍然需要 JRE。这是 Java "一次编写，到处运行"理念的核心：字节码是可移植的，但需要在目标平台上有适当的 JRE 来执行。
+
+## Java 的不同版本共存切换
+
+```bash
+# 配置JDK路径
+export JAVA_8_HOME=/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home
+export JAVA_17_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home
+# 设置默认JDK版本
+export JAVA_HOME=$JAVA_17_HOME
+# 更新 PATH 变量（避免重复添加）
+export PATH=$JAVA_HOME/bin:$(echo $PATH | sed "s|:[^:]*\/java[^:]*\/bin||g")
+
+# 为不同 JDK 版本创建 alias
+alias jdk8='export JAVA_HOME=$JAVA_8_HOME; export PATH=$JAVA_HOME/bin:$(echo $PATH | sed "s|:[^:]*\/java[^:]*\/bin||g"); java -version'
+alias jdk17='export JAVA_HOME=$JAVA_17_HOME; export PATH=$JAVA_HOME/bin:$(echo $PATH | sed "s|:[^:]*\/java[^:]*\/bin||g"); java -version'
+
+# Java 8 仍使用 CLASSPATH（可选）
+alias jdk8_with_classpath='export JAVA_HOME=$JAVA_8_HOME; export CLASSPATH=$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar:.; export PATH=$JAVA_HOME/bin:$(echo $PATH | sed "s|:[^:]*\/java[^:]*\/bin||g"); java -version'
+
+# 查看当前 Java 版本的快捷命令
+alias javaversion='echo "JAVA_HOME: $JAVA_HOME"; java -version'
+```
+
+- 将上述配置添加到 ~/.bashrc 或 ~/.zshrc（取决于您使用的 shell）
+- 应用更改：source ~/.bashrc 或打开新终端
+
 ## IDEA
 
 [IDEA 激活教程](https://ziby0nwxdov.feishu.cn/wiki/OyLBwBd9oiVFTykXrHvcEB91nyb)
@@ -297,3 +507,178 @@ java 命令是用于启动 Java 应用程序的命令行工具，以下是一些
 涵盖 Python、Php、Script 等各类编程语言最新教程
 
 请添加客服 v 有任何问题可以及时联系：lkjhgfdsa06730
+
+### idea 中给 java 程序传启动参数的说明
+
+- VM 参数
+- 环境变量参数
+- 程序参数
+
+```java
+public class MyTest {
+    public static void main(String[] args) {
+        //获取vm options传递的参数
+        String param1 = System.getProperty("vm.param1");
+        System.out.println(param1);
+        //获取环境变量,包括系统上设置的环境变量和在idea的Run Config界面上设置的环境变量
+        String param2 = System.getenv().get("env.param2");
+        System.out.println(param2);
+        //程序参数会直接传递到main方法的形参里，多个参数用空格隔开
+        for (String arg : args) {
+            System.out.println(arg);
+        }
+        System.out.println(System.getenv().get("JAVA_HOME"));
+    }
+}
+
+```
+
+#### 一、VM 参数（JVM 参数）
+
+##### 传递方式
+
+- 定义：JVM 启动时通过命令行指定的参数，用于配置 JVM 或设置系统属性。
+
+- 格式：以 `-` 开头（如 `-Xmx512m`）或 `-Dkey=value`（设置系统属性）。
+
+- 示例命令：
+
+  ```bash
+  java -Xmx512m -Dapp.name=MyApp -Duser.timezone=Asia/Shanghai MainClass arg1 arg2
+  ```
+
+##### 代码中获取方式
+
+- 系统属性（通过 `-Dkey=value` 设置）：
+
+  ```java
+  String appName = System.getProperty("app.name");        // 输出 "MyApp"
+  String timezone = System.getProperty("user.timezone");  // 输出 "Asia/Shanghai"
+  ```
+
+- 纯 JVM 参数（如 `-Xmx`）：
+
+  这些参数由 JVM 内部处理，无法直接在代码中获取，仅影响 JVM 行为（如内存分配）。
+
+#### 二、环境变量参数
+
+##### 传递方式
+
+- 定义：操作系统或启动脚本中定义的环境变量，全局作用于所有程序。
+
+- 设置方式：
+
+  - Linux/Mac：
+
+    ```bash
+    export DB_URL=jdbc:mysql://localhost:3306/test
+    java MainClass
+    ```
+
+  - Windows：
+
+    ```cmd
+    set DB_URL=jdbc:mysql://localhost:3306/test
+    java MainClass
+    ```
+
+##### 代码中获取方式
+
+- 通过 `System.getenv()` 获取：
+
+  ```java
+  String dbUrl = System.getenv("DB_URL");  // 输出 "jdbc:mysql://localhost:3306/test"
+  ```
+
+---
+
+#### 三、程序参数（命令行参数）
+
+##### 传递方式
+
+- 定义：在命令行中跟在主类名后的参数，直接传递给 `main` 方法。
+
+- 示例命令：
+
+  ```bash
+  java MainClass arg1 arg2
+  ```
+
+##### 代码中获取方式
+
+- 通过 `main` 方法的 `String[] args` 获取：
+
+  ```java
+  public static void main(String[] args) {
+      String arg1 = args[0];  // 输出 "arg1"
+      String arg2 = args[1];  // 输出 "arg2"
+  }
+  ```
+
+---
+
+#### 四、三者的区别与使用场景
+
+| 参数类型     | 传递方式                         | 代码获取 API                | 典型用途                                       |
+| ------------ | -------------------------------- | --------------------------- | ---------------------------------------------- |
+| VM 参数      | 以 `-` 或 `-D` 开头的命令行参数  | `System.getProperty("key")` | 配置 JVM 内存、日志路径、系统级参数            |
+| 环境变量参数 | 操作系统或启动脚本设置的环境变量 | `System.getenv("VAR_NAME")` | 数据库连接、外部服务 URL、环境标识（dev/prod） |
+| 程序参数     | 命令行中主类名后的参数           | `main` 方法的 `args` 数组   | 动态输入文件名、操作模式（如 `--debug`）       |
+
+#### 五、关键注意事项
+
+1. 作用域差异：
+
+   - VM 参数（系统属性）仅在当前 JVM 进程内生效。
+
+   - 环境变量是全局的，同一机器上所有程序共享。
+
+2. 覆盖优先级：
+
+   - 系统属性（`-Dkey=value`）优先于环境变量。例如：
+
+     ```bash
+     export app.name=EnvApp
+     java -Dapp.name=VMApp MainClass  # 代码中获取的 app.name 是 "VMApp"
+     ```
+
+3. 安全性：
+   - 敏感信息（如密码）不建议通过程序参数传递（可能被 `ps` 命令暴露），推荐使用环境变量或配置文件。
+
+#### 六、完整示例
+
+启动命令
+
+```bash
+java -Xmx256m -Dapp.mode=production MainClass input.txt --verbose
+```
+
+代码示例
+
+```java
+public class MainClass {
+    public static void main(String[] args) {
+        // 获取程序参数（命令行参数）
+        String fileName = args[0];        // "input.txt"
+        String flag = args[1];            // "--verbose"
+
+        // 获取系统属性（VM 参数）
+        String appMode = System.getProperty("app.mode");  // "production"
+
+        // 获取环境变量
+        String javaHome = System.getenv("JAVA_HOME");      // 如 "/usr/lib/jvm/java-11"
+    }
+}
+```
+
+---
+
+#### 总结
+
+- VM 参数：通过 `-D` 设置系统属性，用 `System.getProperty()` 获取。
+
+- 环境变量：通过操作系统设置，用 `System.getenv()` 获取。
+
+- 程序参数：通过 `main` 方法的 `args` 数组传递。
+
+具体参考：https://www.cnblogs.com/chengxuxiaoyuan/p/18249559
