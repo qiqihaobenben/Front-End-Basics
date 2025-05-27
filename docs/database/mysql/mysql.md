@@ -580,45 +580,6 @@ SELECT prod_name FROM products LIMIT 1,1;
 
 <br>
 
-## 排序检索数据 ( ORDER BY )
-
-不使用排序时，其实检索出的数据并不是以纯粹的随机顺序显示的，数据一般将以它在底层表中出现的顺序显示。这可以是数据最初添加到表中的顺序，但是，如果数据后来进行过更新或者删除，则此顺序将会受到 MySQL 重用回收存储空间的影响。因此，如果不明确控制的话，不能（也不应该）依赖该排序顺序。
-
-**关系数据库设计理论认为：如果不明确规定排序顺序，则不应该假定检索出的数据的顺序有意义。**
-
-ORDER BY 子句，可以给 SELECT 语句检索出来的数据进行排序。 ORDER BY 子句取一个或多个列的名字。据此对输出进行排序。
-
-```sql
-# 没有排序
-SELECT prod_name FROM products;
-
-# 对 prod_name 列以字母顺序排序数据
-SELECT prod_name FROM products ORDER BY prod_name;
-
-# 按多个列排序：如下会先按照 prod_price 排序，
-# 只有出现相同的 prod_price 时，才会再按照 prod_name 排序。
-SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price, prod_name;
-
-# 指定排序方向，默认是升序，例如按照 prod_price 降序排序（最贵的排在最前面）
-SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price DESC;
-# 多个列排序，例如按照 prod_price 降序，最贵的在最前面，然后在对产品名排序
-SELECT prod_id, prod_price, prod_name FROM products ORDER BY prod_price DESC, prod_name;
-
-# ORDER BY 和 LIMIT 搭配，可以找出一个列中最高或最低的值。
-SELECT prod_price FROM products ORDER BY prod_price DESC LIMIT 1;
-```
-
-### 注意：
-
-- ORDER BY 子句中使用的列不一定非得是检索的列，用非检索的列排序也是完全合法的。
-- 如果想在多个列上进行降序排序，必须对每个列指定 DESC 关键字。
-- ASC 是升序排序，升序是默认的，不指定 DESC ，那就是按照 ASC 升序排序。
-- ORDER BY 子句必须位于 FROM 子句之后，如果使用 LIMIT ，它必须位于 ORDER BY 之后。
-
----
-
-<br>
-
 ## 过滤数据 （ WHERE ）
 
 数据库包含大量的数据，但是我们很少需要检索表中所有的行。只检索所需数据需要指定过滤条件，在 SELECT 语句中，数据根据 WHERE 子句中指定的搜索条件进行过滤。
@@ -1171,7 +1132,83 @@ SELECT order_num, SUM(quantity*item_price) AS ordertotal FROM orderitems GROUP B
 
 ### SELECT 子句顺序
 
-SELECT > FROM > WHERE > GROUP BY > HAVING > ORDER BY > LIMIT
+#### 粗略版（[参考链接](https://segmentfault.com/a/1190000015572505)）
+
+以下是 JOIN 查询的通用结构
+
+```sql
+SELECT <row_list>
+  FROM <left_table>
+    <inner|left|right> JOIN <right_table>
+      ON <join condition>
+        WHERE <where_condition>
+```
+
+它的执行顺序如下(SQL 语句里第一个被执行的总是 FROM 子句)：
+
+1. FROM:对左右两张表执行笛卡尔积，产生第一张表 vt1。行数为 n\*m（n 为左表的行数，m 为右表的行数
+2. ON:根据 ON 的条件逐行筛选 vt1，将结果插入 vt2 中
+3. JOIN:添加外部行，如果指定了 LEFT JOIN(LEFT OUTER JOIN)，则先遍历一遍左表的每一行，其中不在 vt2 的行会被插入到 vt2，该行的剩余字段将被填充为 NULL，形成 vt3；如果指定了 RIGHT JOIN 也是同理。但如果指定的是 INNER JOIN，则不会添加外部行，上述插入过程被忽略，vt2=vt3（所以 INNER JOIN 的过滤条件放在 ON 或 WHERE 里 执行结果是没有区别的，下文会细说）
+4. WHERE:对 vt3 进行条件过滤，满足条件的行被输出到 vt4
+5. SELECT:取出 vt4 的指定字段到 vt5
+
+#### 详细版
+
+```sql
+SELECT
+    [DISTINCT]
+    columns,
+    [聚合函数],
+    [CASE 表达式],
+    ...
+FROM
+    table
+[JOIN ... ON ...]
+[WHERE ...]
+[GROUP BY ...]
+[HAVING ...]
+[ORDER BY ...]
+[LIMIT ...];
+
+1. FROM：
+```
+
+首先，数据库会处理 FROM 子句。它会确定从哪些表中获取数据，如果涉及到多个表，还会进行连接操作（如 INNER JOIN 等）此时的结果集是原始数据集，包含了所有与查询条件相关的表数据
+
+注意：如果有子查询或视图，子查询的执行也发生在 FROM 这一阶段
+
+2. ON：
+
+用于定义连接条件，它会影响连接表时如何匹配记录。使用 INNER JOIN 时，ON 子句指定了连接条件，数据库会根据这个条件选择匹配的记录。
+
+注意：ON 子句是在连接时被使用，并且通常与 JOIN 一块用。
+
+3. JOIN：
+
+在 FROM 和 ON 子句之后，数据库会执行表的连接操作。根据不同的连接类型（如 INNER JOIN,等）它会生成新的数据集，将各个表的相关数据结合在一起
+
+4. WHERE：
+
+接着，数据库会应用 WHERE 子句中的筛选条件。WHERE 子句用于从连接后的数据集中筛选出符合条件的行。所有不符合条件的记录都会被排除
+
+5. GROUP BY：
+
+如果查询包含了 GROUP BY 子句，数据库会根据指定的列将结果集分组。此时，每个组内的数据会被视为一个整体，之后可以对这些分组应用聚合函数（如 COUNT(), SUM(), AVG() 等）
+
+6. HAVING：
+
+HAVING 子句用于过滤分组后的数据，它与 WHERE 类似，但 WHERE 是在分组前对行进行过滤，而 HAVING 是在分组后对组进行过滤
+
+7. SELECT：
+
+在所有的表连接、数据过滤、分组和聚合之后，数据库会执行 SELECT 子句。此时，数据库会选择和返回你指定的列或表达式。如果有列别名（AS），也会在这一步生成
+
+8. ORDER BY：
+
+ORDER BY 子句用于对最终结果集进行排序。排序会根据一个或多个指定的列进行，可以选择升序 ASC 或降序 DESC 排序。ORDER BY 会在所有其他操作之后执行，确保结果集按预期顺序排列
+
+9. LIMIT：
+   如果查询中包含了 LIMIT，它会在所有其他操作完成之后，控制返回的行数
 
 ---
 

@@ -682,3 +682,176 @@ public class MainClass {
 - 程序参数：通过 `main` 方法的 `args` 数组传递。
 
 具体参考：https://www.cnblogs.com/chengxuxiaoyuan/p/18249559
+
+## Java 的 jar 包和 war 包
+
+### **一、JAR 文件**
+
+#### **1. 什么是 JAR？**
+
+- **JAR**（Java Archive）是 Java 的压缩包格式，用于将 `.class` 文件、资源文件（如图片、配置文件）和元数据打包成一个文件。
+- **用途**：分发库、工具或独立应用。
+
+#### **2. JAR 的结构**
+
+一个典型的可执行 JAR 结构如下：
+
+```
+myapp.jar
+├── META-INF/
+│   └── MANIFEST.MF     # 清单文件，定义入口类
+├── com/
+│   └── example/
+│       └── Main.class  # 主类
+└── lib/
+    └── dependency.jar  # 依赖库（可选）
+```
+
+#### **3. 可执行 JAR 的关键**
+
+- **`MANIFEST.MF` 文件**：必须包含 `Main-Class` 属性，指定程序入口。
+  ```plaintext
+  Manifest-Version: 1.0
+  Main-Class: com.example.Main
+  ```
+
+#### **4. 如何执行 JAR？**
+
+- **命令**：
+  ```bash
+  java -jar myapp.jar
+  ```
+- **原理**：JVM 读取 `MANIFEST.MF` 中的 `Main-Class`，加载并执行该类的 `main` 方法。
+
+#### **5. 示例：创建可执行 JAR**
+
+假设有以下简单 Java 程序：
+
+```java
+// src/main/java/com/example/Main.java
+package com.example;
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, JAR!");
+    }
+}
+```
+
+**步骤**：
+
+1. 编译代码：
+   ```bash
+   javac -d target src/main/java/com/example/Main.java
+   ```
+2. 创建 `MANIFEST.MF`：
+   ```plaintext
+   Manifest-Version: 1.0
+   Main-Class: com.example.Main
+   ```
+3. 打包 JAR：
+   ```bash
+   jar cvfm myapp.jar META-INF/MANIFEST.MF -C target/ .
+   ```
+4. 运行：
+   ```bash
+   java -jar myapp.jar
+   # 输出：Hello, JAR!
+   ```
+
+---
+
+### **二、WAR 文件**
+
+#### **1. 什么是 WAR？**
+
+- **WAR**（Web Application Archive）是用于打包 Web 应用的标准格式。
+- **用途**：部署到 Servlet 容器（如 Tomcat、Jetty）。
+
+#### **2. WAR 的结构**
+
+一个典型 WAR 文件结构如下：
+
+```
+mywebapp.war
+├── WEB-INF/
+│   ├── classes/        # 编译后的 .class 文件
+│   ├── lib/            # 依赖库（如 JDBC 驱动）
+│   └── web.xml         # Web 应用配置文件
+├── index.jsp           # JSP 页面
+└── static/
+    └── style.css       # 静态资源
+```
+
+#### **3. 如何执行 WAR？**
+
+- **部署到 Servlet 容器**：
+  1. 将 `mywebapp.war` 放入 Tomcat 的 `webapps/` 目录。
+  2. 启动 Tomcat，容器会自动解压 WAR 并加载应用。
+- **访问应用**：
+  ```bash
+  http://localhost:8080/mywebapp/
+  ```
+
+#### **4. 示例：创建 WAR**
+
+假设有一个简单的 Servlet：
+
+```java
+// src/main/java/com/example/HelloServlet.java
+package com.example;
+@WebServlet("/hello")
+public class HelloServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) {
+        res.getWriter().print("Hello, WAR!");
+    }
+}
+```
+
+**步骤**：
+
+1. 编译代码并将 `.class` 文件放入 `WEB-INF/classes`。
+2. 创建 `web.xml`（或使用注解 `@WebServlet`）：
+   ```xml
+   <web-app>
+     <display-name>My Web App</display-name>
+   </web-app>
+   ```
+3. 打包 WAR：
+   ```bash
+   jar cvf mywebapp.war WEB-INF/ index.jsp static/
+   ```
+4. 部署到 Tomcat 并访问：
+   ```bash
+   http://localhost:8080/mywebapp/hello
+   # 输出：Hello, WAR!
+   ```
+
+---
+
+### **三、为什么 JAR/WAR 可以执行？**
+
+#### **1. JAR 的执行原理**
+
+- **入口点**：`MANIFEST.MF` 中定义的 `Main-Class` 指定了程序入口。
+- **类加载机制**：JVM 自动加载 JAR 内的类及其依赖（如果配置了 `Class-Path`）。
+
+#### **2. WAR 的执行原理**
+
+- **Servlet 容器的职责**：
+  - 解压 WAR 文件。
+  - 根据 `web.xml` 或注解加载 Servlet、Filter 等组件。
+  - 处理 HTTP 请求并将响应返回给客户端。
+
+#### **3. 依赖管理**
+
+- **JAR**：通过 `MANIFEST.MF` 的 `Class-Path` 指定外部依赖，或使用 **Fat JAR**（将所有依赖打包进一个 JAR）。
+- **WAR**：依赖库放在 `WEB-INF/lib` 目录，容器自动加载。
+
+---
+
+### **四、总结**
+
+| **打包格式** | **用途**     | **执行方式**                     | **关键文件**      |
+| ------------ | ------------ | -------------------------------- | ----------------- |
+| JAR          | 独立应用或库 | `java -jar` + `Main-Class`       | `MANIFEST.MF`     |
+| WAR          | Web 应用     | 部署到 Servlet 容器（如 Tomcat） | `WEB-INF/web.xml` |

@@ -137,10 +137,119 @@ maven 在版本管理时候可以使用几个特殊的字符串 SNAPSHOT、LATES
 此元素指的是生效的类路径（编译和运行时，测试等）以及如何限制依赖关系的传递性。有 5 种可用的限定范围：
 
 - compile - 如果没有指定 scope 标签，maven 默认为这个范围。编译依赖关系在所有 classpath 中都可用。此外，这些依赖关系被传播到依赖项目。
-  provided - 与 compile 类似，但是表示 jdk 或容器在运行时提供它。它只适用于编译和测试 classpath，不可传递。
-  runtime - 此范围表示编译不需要依赖关系，而是用于执行。它是在运行时和测试 classpath，但不是编译 classpath。
-  test - 此范围表示正常使用应用程序不需要依赖关系，仅适用于测试编译和执行阶段。它不是传递的。
-  system - 此范围与 provided 类似，除了必须提供明确包含它的 jar。该 artifact 始终可用，并且不是在仓库中查找
+- provided - 与 compile 类似，但是表示 jdk 或容器在运行时提供它。它只适用于编译和测试 classpath，不可传递。
+- runtime - 此范围表示编译不需要依赖关系，而是用于执行。它是在运行时和测试 classpath，但不是编译 classpath。
+- test - 此范围表示正常使用应用程序不需要依赖关系，仅适用于测试编译和执行阶段。它不是传递的。
+- system - 此范围与 provided 类似，除了必须提供明确包含它的 jar。该 artifact 始终可用，并且不是在仓库中查找
+
+在 Maven 中，`<scope>` 用于控制依赖项在不同阶段（编译、测试、运行）的生效范围，以及依赖的传递性。以下是 **5 种 Scope** 的详细说明和示例：
+
+---
+
+##### 1️⃣ **`compile`（默认）**
+
+- **生效范围**：编译、测试、运行时均有效。
+- **传递性**：会传递给依赖当前项目的其他项目。
+- **示例**：
+  ```xml
+  <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-core</artifactId>
+    <version>5.3.39</version>
+    <!-- 默认 scope 是 compile -->
+  </dependency>
+  ```
+  - **场景**：核心依赖（如 Spring Core），主代码和测试代码都需要它，且运行时必须存在。
+
+---
+
+##### 2️⃣ **`provided`**
+
+- **生效范围**：仅在编译和测试阶段有效，运行时由 JDK 或容器提供，或者已经在编译阶段把代码生成了（例如 lombok）。
+- **传递性**：不会传递给其他项目。
+- **示例**：
+  ```xml
+  <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>4.0.1</version>
+    <scope>provided</scope>
+  </dependency>
+  ```
+  - **场景**：Servlet API，开发时需要编译，但部署到 Tomcat 时容器会提供该依赖，避免打包冲突。
+
+---
+
+##### 3️⃣ **`runtime`**
+
+- **生效范围**：仅在测试和运行时有效，编译阶段不需要。
+- **传递性**：会传递给其他项目。
+- **示例**：
+  ```xml
+  <dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.33</version>
+    <scope>runtime</scope>
+  </dependency>
+  ```
+  - **场景**：JDBC 驱动，编译时只需接口（如 `java.sql`），运行时才需要具体实现。
+
+---
+
+##### 4️⃣ **`test`**
+
+- **生效范围**：仅在测试阶段有效（编译和运行测试代码）。
+- **传递性**：不会传递给其他项目。
+- **示例**：
+  ```xml
+  <dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13.2</version>
+    <scope>test</scope>
+  </dependency>
+  ```
+  - **场景**：测试框架（如 JUnit），主代码不需要这些依赖。
+
+---
+
+##### 5️⃣ **`system`**
+
+- **生效范围**：与 `provided` 类似，但需显式指定本地 JAR 路径。
+- **传递性**：不会传递给其他项目。
+- **示例**：
+  ```xml
+  <dependency>
+    <groupId>com.example</groupId>
+    <artifactId>internal-lib</artifactId>
+    <version>1.0.0</version>
+    <scope>system</scope>
+    <systemPath>${project.basedir}/lib/internal-lib.jar</systemPath>
+  </dependency>
+  ```
+  - **场景**：未发布到 Maven 仓库的内部库，需手动指定路径（不推荐，破坏可移植性）。
+
+---
+
+### **Scope 的传递性规则**
+
+| Scope      | 编译时传递 | 测试时传递 | 运行时传递 |
+| ---------- | ---------- | ---------- | ---------- |
+| `compile`  | ✅         | ✅         | ✅         |
+| `provided` | ❌         | ❌         | ❌         |
+| `runtime`  | ❌         | ✅         | ✅         |
+| `test`     | ❌         | ❌         | ❌         |
+| `system`   | ❌         | ❌         | ❌         |
+
+---
+
+### **关键总结**
+
+- **优先使用 `compile` 或 `runtime`**：适用于大多数依赖。
+- **`provided` 用于容器提供依赖**：避免打包冲突（如 Servlet API）。
+- **`test` 隔离测试依赖**：减少主代码的依赖污染。
+- **避免使用 `system`**：依赖本地路径，破坏项目可移植性。
 
 ### dependencyManagement
 
