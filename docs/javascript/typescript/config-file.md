@@ -214,9 +214,26 @@ react：会生成 `React.createElement`（`React` 标识符是写死的硬编码
 
 react-native 模式相当于 preserve 它也保留了所有的 JSX，但是输出文件的扩展名是 `.js`
 
-react-jsx：改为 `__jsx` 调用，输出文件的扩展名是 `.js`
+react-jsx：改为 `_jsx` 调用，输出文件的扩展名是 `.js`
 
-react-jsxdev：改为 `__jsxDEV` 调用，输出文件的扩展名是 `.js`
+react-jsxdev：改为 `_jsxDEV` 调用，输出文件的扩展名是 `.js`
+
+#### 为什么现在推荐使用 react-jsx？
+
+在 React 17 及以上版本中，引入了新的 JSX 转换方式（不需要在每个文件中导入 React）。使用 "react-jsx" 表示编译器会将 JSX 转换为 \_jsx 函数的调用，而不是 React.createElement。这样你就不必在每个使用 JSX 的文件中导入 React 了。例如，
+
+转换前：
+
+```tsx
+const element = <div>Hello</div>
+```
+
+转换后（使用 "react-jsx"）：
+
+```tsx
+import { jsx as _jsx } from 'react/jsx-runtime'
+const element = _jsx('div', { children: 'Hello' })
+```
 
 ### module
 
@@ -273,6 +290,7 @@ yarn add typescript@3.9.10
 - [Typescript 4.5 —— 浅谈模块能力增强](https://zhuanlan.zhihu.com/p/425740447)
 - [Typescript confusion: tsconfig.json module, moduleResolution, target & lib explained](https://medium.com/@tommedema/typescript-confusion-tsconfig-json-module-moduleresolution-target-lib-explained-65db2c44b491)
 - [理解 TypeScript 的模块系统](https://pengfeixc.com/blogs/javascript/typescript-module-system)
+- [tsconfig 的魔鬼——module 和 moduleResolution](https://juejin.cn/post/7276408879364948028)
 - [TypeScript 中的多种 import 解义](https://tasaid.com/posts/688d139e/)
 - [ESM 的 TS 的 module 配置 nodenext](https://mp.weixin.qq.com/s/_RmAH6p2lyzkhqLWw8cIKw)
 

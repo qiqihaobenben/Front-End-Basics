@@ -487,11 +487,49 @@ interface Obj {
 }
 
 type ReadonlyObj = Readonly<Obj>
+/*
+type Readonly<T> = { readonly [P in keyof T]: T[P] }
+ReadonlyObj 结果如下
+{
+    readonly a: string;
+    readonly b: number;
+    readonly c: boolean;
+}
+*/
+
 type PartialObj = Partial<Obj>
+/* type Partial<T> = { [P in keyof T]?: T[P] | undefined; }
+PartialObj 结果如下
+{
+    a?: string | undefined;
+    b?: number | undefined;
+    c?: boolean | undefined;
+}
+*/
+
+type RequiredObj = Required<PartialObj>
+/* type Required<T> = { [P in keyof T]-?: T[P] }
+RequiredObj 结果如下
+{
+    a: string;
+    b: number;
+    c: boolean;
+}
+*/
+
 type PickObj = Pick<Obj, 'a' | 'b'>
 type OmitObj = Omit<Obj, 'a' | 'b'>
 
 type RecordObj = Record<'x' | 'y', Obj>
+/* Record 创建一个具有特定键类型和值类型的对象类型，
+keyof any 表示可以作为对象键的属性，因为 keyof any 生成的类型是 string | number | symbol，目前，JavaScript 仅支持 string、number、symbol 的值作为对象的键值
+type Record<K extends keyof any, T> = { [P in K]: T }
+RecordObj 结果如下
+{
+    x: Obj;
+    y: Obj;
+}
+*/
 ```
 
 **注意：映射类型使用索引签名语法（即属性用 [] 括起来）和 in 关键字限定对象属性的范围，特别注意，只能在类型别名定义中使用 in 和 keyof，如果在接口中使用，则会提示一个 ts(1169) 的错误**

@@ -59,15 +59,17 @@ $ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
 #### **一、命令原理与工作流程**
 
 1. **别名与底层逻辑**
-   • `npm create` 是 `npm init` 的别名，与 `npm init` 完全等价。
-   • 执行 `npm create <initializer>` 时，实际会动态查找并安装名为 `create-<initializer>` 的包（例如 `npm create vite` → `create-vite`），然后运行该包中定义的 `bin` 文件。
+
+   - `npm create` 是 `npm init` 的别名，与 `npm init` 完全等价。
+   - 执行 `npm create <initializer>` 时，实际会动态查找并安装名为 `create-<initializer>` 的包（例如 `npm create vite` → `create-vite`），然后运行该包中定义的 `bin` 文件。
 
 2. **依赖 `npm exec` 执行**
-   • 底层通过 `npm exec` 调用目标包的命令行接口（CLI），例如 `npm create vue@latest` 转换为 `npm exec create-vue@latest`。
+
+   - 底层通过 `npm exec` 调用目标包的命令行接口（CLI），例如 `npm create vue@latest` 转换为 `npm exec create-vue@latest`。
 
 3. **版本控制与包解析**
-   • 支持指定版本号（如 `@latest`），若未指定则默认使用最新版本。
-   • 若本地已存在同名包，优先使用本地缓存；否则从 npm 仓库下载并临时安装。
+   - 支持指定版本号（如 `@latest`），若未指定则默认使用最新版本。
+   - 若本地已存在同名包，优先使用本地缓存；否则从 npm 仓库下载并临时安装。
 
 ---
 
@@ -79,7 +81,7 @@ $ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
    npm create <initializer> [项目名称] [选项]
    ```
 
-   • **示例**：
+   - **示例**：
 
    ```bash
    npm create vite@latest my-app -- --template react-ts
@@ -88,8 +90,9 @@ $ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
    此命令会安装 `create-vite@latest`，生成名为 `my-app` 的项目，并通过 `--template` 参数指定模板。
 
 2. **参数传递规则**
-   • **双横线 `--` 分隔符**：
-   在 npm 7+ 中，需用 `--` 分隔 `npm create` 的选项和目标包的参数。例如：
+
+   - **双横线 `--` 分隔符**：
+     在 npm 7+ 中，需用 `--` 分隔 `npm create` 的选项和目标包的参数。例如：
 
    ```bash
    npm create vite my-app -- --template vue
@@ -97,28 +100,29 @@ $ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
 
    `--template vue` 是传递给 `create-vite` 的参数。
 
-   • **版本兼容性**：
-   npm 6.x 无需 `--`，参数直接拼接（如 `npm create vite my-app --template vue`）。
+   - **版本兼容性**：
+     npm 6.x 无需 `--`，参数直接拼接（如 `npm create vite my-app --template vue`）。
 
 ---
 
 #### **三、典型应用场景**
 
 1. **快速创建项目模板**
-   • **常见框架示例**：
-   ◦ Vue：`npm create vue@latest`
-   ◦ React：`npm create vite@latest -- --template react`
-   ◦ Svelte：`npm create svelte@latest`
-   • **流程**：
+
+   - **常见框架示例**：
+     - Vue：`npm create vue@latest`
+     - React：`npm create vite@latest -- --template react`
+     - Svelte：`npm create svelte@latest`
+   - **流程**：
 
    1. 下载并执行 `create-*` 包。
    2. 通过命令行交互（如选择模板、语言、工具链）生成项目文件。
    3. 自动安装基础依赖并生成配置文件（如 `package.json`、`tsconfig.json`）。
 
 2. **自定义模板发布**
-   • **开发规范**：
-   发布一个名为 `create-<your-tool>` 的包，并在 `package.json` 中定义 `bin` 入口文件（如 `index.js`）。
-   • **用户使用**：
+   - **开发规范**：
+     发布一个名为 `create-<your-tool>` 的包，并在 `package.json` 中定义 `bin` 入口文件（如 `index.js`）。
+   - **用户使用**：
    ```bash
    npm create your-tool@latest
    ```
@@ -138,17 +142,18 @@ $ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
    避免因网络问题导致安装失败。
 
 2. **覆盖默认行为**
-   • **跳过提问**：使用 `--yes` 或 `-y` 参数以默认配置快速初始化：
+
+   - **跳过提问**：使用 `--yes` 或 `-y` 参数以默认配置快速初始化：
 
    ```bash
    npm create vite@latest my-app --yes
    ```
 
-   • **指定包管理器**：某些工具（如 `create-vue`）会根据 `npm_config_user_agent` 自动检测包管理器（pnpm/yarn/npm）。
+   - **指定包管理器**：某些工具（如 `create-vue`）会根据 `npm_config_user_agent` 自动检测包管理器（pnpm/yarn/npm）。
 
 3. **版本锁定与依赖管理**
-   • 在 `package.json` 中通过 `dependencies` 和 `devDependencies` 精确控制依赖版本。
-   • 定期运行 `npm update` 更新依赖树。
+   - 在 `package.json` 中通过 `dependencies` 和 `devDependencies` 精确控制依赖版本。
+   - 定期运行 `npm update` 更新依赖树。
 
 ---
 
@@ -175,22 +180,6 @@ $ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
 
 ## npm exec
 
-好的，用户的问题是询问 npm exec 的作用以及它是否可以替代 npx。我需要结合提供的搜索结果来解答这个问题。首先，我需要回顾一下之前用户提供的搜索内容，看看有哪些相关的信息。
-
-根据搜索结果，网页 1 提到 npx 是 npm 的一个包执行器，允许用户在不全局安装的情况下运行包。网页 3 解释了 npx 的工作原理，包括临时安装包并执行。网页 5 则详细说明了 npm exec 和 npx 的关系，指出 npm exec 和 npm x 是等价的，而 npx 在 npm v7.0.0 后被重写为使用 npm exec。此外，网页 6 的对比表中也提到 npx 实际上是基于 npm exec 实现的，用于临时执行包。
-
-接下来，我需要确认 npm exec 的功能是否与 npx 相同。根据网页 5 的内容，npm exec 和 npx 在功能上是等价的，npx 现在只是 npm exec 的一个别名。因此，npm exec 完全可以实现 npx 的目的，包括临时安装和运行包，检查本地和全局安装的包，以及处理不同版本的情况。
-
-然后，需要分析 npm exec 的具体工作流程。根据网页 3 和网页 5 的信息，npm exec 会先查找本地 node_modules 中的包，如果没有找到则下载远程包，执行后删除。这解释了为什么它可以替代 npx，因为 npx 的行为也是类似的。
-
-另外，用户可能关心如何使用 npm exec 替代 npx 的命令。比如，用户常用的 npx create-react-app，换成 npm exec 的话应该是 npm exec create-react-app，或者使用别名 npm x create-react-app。网页 5 中的例子也验证了这一点，比如 npm create vite 会被转换为 npm exec create-vite。
-
-还需要注意版本兼容性问题。网页 5 提到 npx 在 npm v7.0.0 之后被重写为使用 npm exec，因此对于较新的 npm 版本，两者功能是一致的。但旧版本可能仍有差异，需要用户检查自己的 npm 版本。
-
-最后，总结两者的关系，指出 npm exec 是更底层的命令，而 npx 是其简化版，适用于不同的使用习惯。同时，提醒用户在使用时需要注意参数传递的语法差异，比如是否需要使用--来分隔参数。
-
-这样综合多个搜索结果的信息，就能全面回答用户的问题，说明 npm exec 的作用及其与 npx 的关系，确保用户理解如何正确使用这两个命令。
-
 `npm exec` 是 npm 提供的用于执行 Node.js 包的命令行工具，其核心功能与 `npx` 高度重叠，但两者在实现细节和使用场景上有细微差异。以下是详细解析：
 
 ---
@@ -199,12 +188,14 @@ $ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
 
 1. **执行本地或远程包的命令**
    `npm exec` 会先检查本地 `node_modules` 中是否存在目标包：
-   • **若存在**：直接执行包中 `package.json` 的 `bin` 字段对应的可执行文件；
-   • **若不存在**：临时从 npm 仓库下载包，执行后自动删除，避免长期占用磁盘空间。
+
+   - **若存在**：直接执行包中 `package.json` 的 `bin` 字段对应的可执行文件；
+   - **若不存在**：临时从 npm 仓库下载包，执行后自动删除，避免长期占用磁盘空间。
 
 2. **支持跨版本与参数传递**
-   • 可指定包版本（如 `npm exec create-react-app@5`）；
-   • 通过 `--` 分隔参数（例如 `npm exec create-vite my-app -- --template react-ts`）。
+
+   - 可指定包版本（如 `npm exec create-react-app@5`）；
+   - 通过 `--` 分隔参数（例如 `npm exec create-vite my-app -- --template react-ts`）。
 
 3. **替代全局安装**
    无需全局安装工具即可运行一次性命令（如脚手架 `create-react-app`），减少全局环境污染。
@@ -215,8 +206,8 @@ $ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
 
 #### **1. 功能等价性**
 
-• `npx` 本质上是 `npm exec` 的别名。从 npm v7.0.0 开始，`npx` 底层完全依赖 `npm exec` 实现，两者功能完全一致。
-• **示例等价命令**：
+- `npx` 本质上是 `npm exec` 的别名。从 npm v7.0.0 开始，`npx` 底层完全依赖 `npm exec` 实现，两者功能完全一致。
+- **示例等价命令**：
 
 ```bash
 npx create-react-app my-app
@@ -226,8 +217,8 @@ npm x create-react-app my-app  # npm x 是 npm exec 的别名
 
 #### **2. 实现差异**
 
-• **历史背景**：早期 `npx` 是独立工具，后来被集成到 npm 中并重构为 `npm exec`；
-• **参数解析**：`npx` 对旧版参数格式有兼容性支持，而 `npm exec` 更严格（需用 `--` 分隔参数）。
+- **历史背景**：早期 `npx` 是独立工具，后来被集成到 npm 中并重构为 `npm exec`；
+- **参数解析**：`npx` 对旧版参数格式有兼容性支持，而 `npm exec` 更严格（需用 `--` 分隔参数）。
 
 ---
 
@@ -252,11 +243,11 @@ npm x create-react-app my-app  # npm x 是 npm exec 的别名
 
 ### **四、`npm exec` 能否替代 `npx`？**
 
-• **完全替代**：在 npm v7+ 中，`npm exec` 是 `npx` 的底层实现，所有 `npx` 功能均可通过 `npm exec` 实现；
-• **语法差异**：`npx` 更简洁（无需 `--` 分隔参数），适合习惯旧版命令的用户；
-• **推荐策略**：
-• **新项目**：统一使用 `npm exec` 或 `npm x`，保持命令一致性；
-• **旧脚本兼容**：保留 `npx` 语法以兼容历史脚本。
+- **完全替代**：在 npm v7+ 中，`npm exec` 是 `npx` 的底层实现，所有 `npx` 功能均可通过 `npm exec` 实现；
+- **语法差异**：`npx` 更简洁（无需 `--` 分隔参数），适合习惯旧版命令的用户；
+- **推荐策略**：
+  - **新项目**：统一使用 `npm exec` 或 `npm x`，保持命令一致性；
+  - **旧脚本兼容**：保留 `npx` 语法以兼容历史脚本。
 
 ---
 

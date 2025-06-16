@@ -250,6 +250,145 @@ browser 字段可以定义 npm 包在 browser 环境下的入口文件。如果 
 }
 ```
 
+#### type
+
+在 Node.js 的 package.json 文件中，type 字段用于指定项目中 JavaScript 文件的模块系统类型。这个字段有两个有效值，它们直接影响 Node.js 如何解析模块：
+
+##### 1. "commonjs" (默认值)
+
+作用：
+
+- 将 .js 文件视为 CommonJS 模块
+- 使用 require() 导入模块
+- 使用 module.exports 或 exports 导出模块
+
+特点：
+
+```js
+// 导入模块
+const fs = require('fs')
+
+// 导出模块
+module.exports = myFunction
+exports.myFunction = myFunction
+```
+
+使用场景：
+
+- Node.js 传统项目
+- 不使用 ES6 模块语法的项目
+- 当未指定 type 字段时的默认行为
+
+##### 2. "module"
+
+作用：
+
+- 将 .js 文件视为 ES 模块 (ECMAScript Modules)
+- 使用 import/export 语法
+- 支持顶级 await
+
+特点：
+
+```js
+// 导入模块
+import fs from 'fs';
+import { readFile } from 'fs/promises';
+
+// 导出模块
+export default myFunction;
+export const helper = () => {...};
+```
+
+使用场景：
+
+- 现代 JavaScript/TypeScript 项目
+- 需要浏览器兼容性的项目
+- 使用前端框架（如 React, Vue）的项目
+- 需要静态模块分析的项目
+
+##### 文件扩展名的特殊处理
+
+无论 type 设置如何，Node.js 都会根据文件扩展名特殊处理：
+
+扩展名 模块类型 说明
+
+- .js 取决于 type 遵循 package.json 的 type 设置
+- .cjs 总是 CommonJS 强制 CommonJS 模块
+- .mjs 总是 ES Module 强制 ES 模块
+
+##### 混合模块示例
+
+```json
+"name": "my-project",
+
+"type": "module", // 主要使用 ES 模块
+"scripts": {
+"start": "node main.js" // main.js 将被视为 ES 模块
+}
+```
+
+```js
+// 在 ES 模块中导入 CommonJS 模块
+import cjsModule from './legacy.cjs' // 显式 .cjs 扩展名
+
+// 在 ES 模块中使用动态导入
+const commonJsModule = await import('./legacy.js') // 动态导入 CommonJS
+```
+
+##### 最佳实践
+
+TypeScript 项目：
+
+```json
+"type": "module",
+"module": "ESNext" // 在 tsconfig.json 中对应设置
+```
+
+双模式包（同时支持 CommonJS 和 ES）：
+
+```json
+"exports": {
+  "import": "./esm/index.js",   // ES 模块入口
+  "require": "./cjs/index.js"   // CommonJS 入口
+}
+```
+
+常见错误解决：
+
+```json
+// 当需要在 ES 模块项目中使用 CommonJS 时
+
+"type": "module",
+"dependencies": {
+  "commonjs-package": "^1.0.0"
+
+}
+```
+
+```js
+// 使用动态导入
+
+import('commonjs-package').then((pkg) => {
+  pkg.doSomething()
+})
+```
+
+##### 性能注意事项
+
+ES 模块：
+
+- 支持静态分析，利于 tree-shaking
+- 异步加载，更适合浏览器环境
+- 支持顶级 await
+
+CommonJS：
+
+- 同步加载，更适合服务器环境
+- 动态加载更灵活
+- 更成熟的生态系统支持
+
+根据 Node.js 官方文档，在 Node.js v14+ 环境中，ES 模块已成为稳定功能，建议新项目优先使用 "type": "module"，特别是结合 TypeScript 开发时。
+
 #### private
 
 - 定义私有模块
