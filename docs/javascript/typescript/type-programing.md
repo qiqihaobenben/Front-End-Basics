@@ -1,6 +1,117 @@
 # TypeScript 类型编程
 
-## 一、实现一个 subType 函数，参数只接受对象的子对象
+## 初级类型扩展
+
+### `KeyOf<T>` - 获取类型 T 的所有键名的联合类型
+
+```ts
+declare type KeyOf<T> = keyof T
+
+type T = {
+  name: string
+  age: number
+}
+
+type TKey = KeyOf<T> // 'name' | 'age'
+```
+
+### `ValueOf<T>` - 获取类型 T 的所有值的联合类型
+
+```ts
+declare type ValueOf<T> = T[keyof T]
+
+type T = {
+  name: string
+  age: number
+}
+
+type TValue = ValueOf<T> // string | number
+```
+
+### `Awaitable<T>` - 获取异步函数的返回值类型
+
+```ts
+declare type Awaitable<T> = T | Promise<T>
+
+const a: Awaitable<number> = 42
+const b: Awaitable<number> = Promise.resolve(42)
+```
+
+### `ElementType<T>` - 获取数组类型的元素类型
+
+```ts
+declare type ElementType<T> = T extends Array<infer U> ? U : never
+
+type A = ElementType<string[]> // string
+type B = ElementType<number> // never
+```
+
+### `ToArray<T>` - 将类型 T 转换为数组类型，如果已经是数组则保持不变
+
+```ts
+declare type ToArray<T> = T extends (infer U)[] ? U[] : T[]
+
+type A = ToArray<string> // string[]
+type B = ToArray<number[]> // number[]
+```
+
+### `Shift<T>` - 移除元组类型的第一个元素
+
+```ts
+declare type Shift<T> = T extends [unknown, ...args: infer Rest] ? Rest : never
+
+type A = Shift<[number, string, boolean]> // [string, boolean]
+```
+
+### `Pop<T>` - 移除元组类型的最后一个元素
+
+```ts
+declare type Shift<T> = T extends [...args: infer Rest, unknown] ? Rest : never
+
+type A = Shift<[number, string, boolean]> // [number, string]
+```
+
+## 中级类型扩展
+
+### `AssertEqual<T, U>` - 断言两个类型是否相等
+
+```ts
+declare type AssertEqual<T, U> = [T] extends [U] ? ([U] extends [T] ? true : false) : false
+```
+
+### `DeepPartial<T>` - 深度可选类型，递归地将所有属性设为可选
+
+```ts
+declare type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> }
+
+type IObj = { a: { b: number; c: string } }
+type PartialObj = DeepPartial<IObj> // { a?: { b?: number; c?: string } };
+```
+
+### `PartialByKeys<T, K>` - 部分属性可选类型
+
+```ts
+//FlatObjectTuple<T> - 扁平化对象元组类型，用于解决交叉类型显示问题，否则会显示交叉类型原来的样子
+declare type FlatObjectTuple<T> = { [K in keyof T]: T[K] }
+
+declare type PartialByKeys<T, K extends keyof T = keyof T> = FlatObjectTuple<Partial<Pick<T, Extract<keyof T, K>>> & Omit<T, K>>
+
+type IObj = { a: number; b: string; c: boolean }
+type PartialA = PartialByKeys<Obj, 'a' | 'b'> // { a?: number; b?: string; c: boolean };
+```
+
+### `RequiredByKey<T, K>` - 部分属性必需类型
+
+```ts
+declare type RequiredByKey<T, K extends keyof T = keyof T> = FlatObjectTuple<Required<Pick<T, Extract<keyof T, K>>> & Omit<T, K>>
+
+type Obj = { a?: number; b?: string; c?: boolean }
+type RequiredA = RequiredByKey<Obj, 'a' | 'b'> // { a: number; b: string; c?: boolean };
+```
+
+## 高级类型扩展
+
+### 一、实现一个 subType 函数，参数只接受对象的子对象
 
 ```ts
 type T = {
@@ -20,7 +131,7 @@ subType({ name: 'tom', age: 10, gender: 'male' }) // 报错 对象文字可以�
 1. 因为 `keyof T = 'name' | 'age'`， `K` 是 `keyof T` 的子类型，可能为 `'name' | 'age' | ('name' | 'age')`
 2. 所以 `Pick<T, K>` 类型为 `{ name: string } | { age: number} | { name: string, age: number}`
 
-## 二、下划线字符串转驼峰式
+### 二、下划线字符串转驼峰式
 
 实现一个泛型 `Underscore`，对于给定的下划线形式的字符串类型 `T`，返回驼峰形式的类型 `G`
 
@@ -32,7 +143,7 @@ type Result = Underscore<'hello_world_with_types'> // Result 的类型为 'hello
 
 实现思路：模板字符串类型 + 递归类型
 
-## 三、链式调用
+### 三、链式调用
 
 ```ts
 declare const a: Chainable // 完善 Chainable 类型
@@ -59,7 +170,7 @@ type Chainable<T = {}> = {
 }
 ```
 
-## 四、对 Readonly 工具类型进行扩展
+### 四、对 Readonly 工具类型进行扩展
 
 TypeScript 提供了 `Readonly` 工具类型，可以把泛型 T 的所有属性设为 `readonly`：
 
@@ -67,7 +178,7 @@ TypeScript 提供了 `Readonly` 工具类型，可以把泛型 T 的所有属性
 type Readonly<T> = { readonly [key in keyof T]: T[key] }
 ```
 
-### 1、实现一个通用的 `PartialReadonly<T, K>`
+#### 1、实现一个通用的 `PartialReadonly<T, K>`
 
 它有两个类型参数 `T` 和 `K`，`K` 指定应设置为 `T` 的属性集。如果未提供 `K`，则应使所有属性都变为只读，就像普通的 `Readonly<T>` 一样。
 
@@ -75,7 +186,7 @@ type Readonly<T> = { readonly [key in keyof T]: T[key] }
 type PartialReadonly<T, K extends keyof T = keyof T> = { readonly [key in K]: T[key] } & { [key in Exclude<keyof T, K>]: T[key] }
 ```
 
-### 2、实现一个通用的 `DeepReadonly<T>`
+#### 2、实现一个通用的 `DeepReadonly<T>`
 
 它将泛型 `T` 的每个属性机器子类型递归设置为只读。
 
@@ -83,7 +194,7 @@ type PartialReadonly<T, K extends keyof T = keyof T> = { readonly [key in K]: T[
 type DeepReadonly<T> = T extends Record<string, any> ? { readonly [key in keyof T]: DeepReadonly<T[key]> } : T
 ```
 
-## 五、扩展 keyof 实现一个通用的 `DeepKeyOf<T>`
+### 五、扩展 keyof 实现一个通用的 `DeepKeyOf<T>`
 
 泛型 T 是一个任意的 interface，输出是它的各级 key 连接以后的一个 union。
 
@@ -111,7 +222,7 @@ type DeepKeyOf<T> = T extends Record<string, any>
   : never
 ```
 
-### 涉及 never 类型的一些特性
+#### 涉及 never 类型的一些特性
 
 1. never 类型是所有类型的子类型，所以 union 类型中，never 会被忽略。
 
@@ -128,7 +239,7 @@ type key = `get${A}` // key 为 "getname" | "getage"
 type key1 = `get${B}` // key1 为 never
 ```
 
-## 六、运用类型编程实现数字累加
+### 六、运用类型编程实现数字累加
 
 例如：
 
@@ -144,7 +255,7 @@ type Result = Sum<3> // 期望 Result 的类型为 6，即1 + 2 + 3 = 6
 
 拆解一下数字累加
 
-### 1. 实现计数功能
+#### 1. 实现计数功能
 
 利用递归构造一个循环往空数组里添加单个类型，直到数组的长度跟计数的数字相等，返回构造完成的元组
 
@@ -161,7 +272,7 @@ type Example1 = Count<3> // Example1 的类型为元组 [any, any, any]
 type Example2 = Count<5, number> // Example2 的类型为元组 [number, number, number, number, number]
 ```
 
-### 2. 在可以计数的基础上实现两个数字的加法相加
+#### 2. 在可以计数的基础上实现两个数字的加法相加
 
 ```ts
 type Add<A extends number, B extends number> = [...Count<A>, ...Count<B>]['length']
@@ -170,7 +281,7 @@ type Example1 = Add<2, 3> // Example1 类型为 5
 type Example2 = Add<5, 3> // Example1 类型为 8
 ```
 
-### 3. 在两个数字相加的基础上实现数字累加
+#### 3. 在两个数字相加的基础上实现数字累加
 
 泛型参数详解：
 
@@ -184,7 +295,7 @@ type Result = Sum<3> // Result 类型为 6，即1 + 2 + 3 = 6
 type Result1 = Sum<10> // Result 类型为 55
 ```
 
-### 做加法运算的时候怎么保证只接收正整数
+#### 做加法运算的时候怎么保证只接收正整数
 
 ```ts
 type NonNegativeInteger<T extends number> = number extends T ? never : `${T}` extends `-${string}` | `${string}.${string}` ? never : T
@@ -196,7 +307,7 @@ const number2: NonNegativeInteger<-1> = -1 // error -1 不能分配给 never
 type Add<A extends number, B extends number> = NonNegativeInteger<A> extends never ? never : NonNegativeInteger<B> extends never ? never : [...Count<A>, ...Count<B>]['length']
 ```
 
-## 七、斐波那契数列
+### 七、斐波那契数列
 
 泛型参数详解：
 
@@ -216,7 +327,7 @@ type A = fibnacci<6> // A 的类型为 8
 type B = fibnacci<12> // B 的类型为 144
 ```
 
-## 八、二进制数组转化成十进制整数
+### 八、二进制数组转化成十进制整数
 
 例如一个二进制数 1100，转换成十进制后是 12
 
@@ -235,7 +346,7 @@ type FromBinary<B extends (0 | 1)[], I extends any[] = [], V extends any[] = [0]
 type result = FromBinary<[0, 0, 1, 1]> // result 的类型为 12
 ```
 
-## 九、操作函数的参数和返回值类型
+### 九、操作函数的参数和返回值类型
 
 实现一个泛型`ChangeArgument<F extends (...args: any) => any>`，对于给定的函数类型`F`，返回一个新的函数 `G`。`G`的参数类型为 `F` 参数类型减去第一项 `First`，`G` 的返回类型为 `F` 的返回类型在末尾加上类型为 `First` 的值。
 
@@ -250,19 +361,19 @@ type Result1 = ChangeArgument<Fn>
 // 期望Result1是 () => [number]
 ```
 
-### 1、获取函数参数类型第一项 `First` 的类型
+#### 1、获取函数参数类型第一项 `First` 的类型
 
 ```ts
 type FirstArgument<F extends (...args: any[]) => any[]> = Parameters<F>['length'] extends 0 ? never : Parameters<F>[0]
 ```
 
-### 2、获取函数参数类型第一项除外的剩余参数类型
+#### 2、获取函数参数类型第一项除外的剩余参数类型
 
 ```ts
 type RestArgument<F extends (...args: any[]) => any[]> = F extends (first: any, ...rest: infer R) => any ? R : never
 ```
 
-### 3、实现函数参数和返回值类型的变换
+#### 3、实现函数参数和返回值类型的变换
 
 ```ts
 type ChangeArgument<F extends (...args: any[]) => any[]> = Parameters<F>['length'] extends 0 ? F : (...args: RestArgument<F>) => [...ReturnType<F>, FirstArgument<F>]
@@ -270,9 +381,9 @@ type ChangeArgument<F extends (...args: any[]) => any[]> = Parameters<F>['length
 
 如果传入泛型的函数类型没有参数值，直接返回。
 
-## 十、把联合类型转化成元组
+### 十、把联合类型转化成元组
 
-### 1. 实现把联合类型转化成交叉类型
+#### 1. 实现把联合类型转化成交叉类型
 
 在 TS 严格模式下，函数的参数是逆变的，利用这个特性可以实现把联合类型转化成交叉类型。
 
@@ -298,13 +409,13 @@ type UnionToIntersection<T> = (T extends any ? (args: T) => any : never) extends
 'a' & 'b'
 ```
 
-### 2. 利用多个函数的交叉类型是函数重载获取联合类型的最后一项
+#### 2. 利用多个函数的交叉类型是函数重载获取联合类型的最后一项
 
 ```ts
 type LastInUnion<T> = UnionToIntersection<T extends any ? (args: T) => any : never> extends (args: infer R) => any ? R : never
 ```
 
-#### LastInUnion 是如何获取联合类型的最后一项的？
+##### LastInUnion 是如何获取联合类型的最后一项的？
 
 以 `LastInUnion<'a' | 'b'>` 为例：
 
@@ -329,7 +440,7 @@ type LastInUnion<T> = UnionToIntersection<T extends any ? (args: T) => any : nev
 
 得到联合类型 `'a' | 'b'` 的最后一项为 `'b'`
 
-### 3. 基于 `LastInUnion` 实现把联合类型转化为元组
+#### 3. 基于 `LastInUnion` 实现把联合类型转化为元组
 
 ```ts
 type UnionToTuple<T> = [T] extends [never] ? [] : [...UnionToTuple<Exclude<T, LastInUnion<T>>>, LastInUnion<T>]

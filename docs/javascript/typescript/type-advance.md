@@ -320,7 +320,7 @@ type ExcludeStr = Exclude<'a' | 'b' | 'c', 'b'>
 跟 Exclude 相反，Extract 主要用来从联合类型中提取指定的类型
 
 ```ts
-type Extract<T, U> = T extends U ? U : never
+type Extract<T, U> = T extends U ? T : never
 type ExtractStr = Extract<'a' | 'b' | 'c', 'b'>
 ```
 
@@ -471,90 +471,6 @@ function getValuest<T, K extends keyof T>(obj: T, keys: K[]): T[K][] {
 console.log(getValuest(obj, ['a', 'b']))
 ```
 
-## 映射类型
-
-在定义类型时，可以组合使用 in 和 keyof，并基于已有的类型创建一个新类型，使得新类型与已有类型保持一致的只读、可选特定，这样的**泛型**称之为映射类型。
-
-可以从一个旧的类型，生成一个新的类型。TypeScript 提供的工具类型很多属于映射类型，因为是操作接口的，所以也称为**操作接口类型**。
-
-以下代码用到了 TS 内置的映射类型
-
-```typescript
-interface Obj {
-  a: string
-  b: number
-  c: boolean
-}
-
-type ReadonlyObj = Readonly<Obj>
-/*
-type Readonly<T> = { readonly [P in keyof T]: T[P] }
-ReadonlyObj 结果如下
-{
-    readonly a: string;
-    readonly b: number;
-    readonly c: boolean;
-}
-*/
-
-type PartialObj = Partial<Obj>
-/* type Partial<T> = { [P in keyof T]?: T[P] | undefined; }
-PartialObj 结果如下
-{
-    a?: string | undefined;
-    b?: number | undefined;
-    c?: boolean | undefined;
-}
-*/
-
-type RequiredObj = Required<PartialObj>
-/* type Required<T> = { [P in keyof T]-?: T[P] }
-RequiredObj 结果如下
-{
-    a: string;
-    b: number;
-    c: boolean;
-}
-*/
-
-type PickObj = Pick<Obj, 'a' | 'b'>
-type OmitObj = Omit<Obj, 'a' | 'b'>
-
-type RecordObj = Record<'x' | 'y', Obj>
-/* Record 创建一个具有特定键类型和值类型的对象类型，
-keyof any 表示可以作为对象键的属性，因为 keyof any 生成的类型是 string | number | symbol，目前，JavaScript 仅支持 string、number、symbol 的值作为对象的键值
-type Record<K extends keyof any, T> = { [P in K]: T }
-RecordObj 结果如下
-{
-    x: Obj;
-    y: Obj;
-}
-*/
-```
-
-**注意：映射类型使用索引签名语法（即属性用 [] 括起来）和 in 关键字限定对象属性的范围，特别注意，只能在类型别名定义中使用 in 和 keyof，如果在接口中使用，则会提示一个 ts(1169) 的错误**
-
-#### 使用 as 重新映射 key
-
-从 TypeScript 4.1 起，可以在映射类型的索引签名中使用类型断言。
-
-```ts
-type sourceInterface = {
-  id: number
-  name?: string
-}
-type TargetGenericTypeAssertiony<S> = {
-  [K in keyof S as `get${Capitalize<string & K>}`]: S[K]
-}
-type TargetGenericTypeAssertionyInstance = TargetGenericTypeAssertiony<sourceInterface>
-/* TargetGenericTypeAssertionyInstance 结果如下
-{
-    getId: number;
-    getName?: string | undefined;
-}
-*/
-```
-
 ## 条件类型
 
 `T extends U ? X : Y`
@@ -615,7 +531,7 @@ type result1 = getNever1<never>
 type IsNever<T> = [T] extends [never] ? true : false
 ```
 
-用法一：利用分布式条件类型可以实现 Diff 操作
+#### 用法一：利用分布式条件类型可以实现 Diff 操作
 
 ```typescript
 type Diff<T, U> = T extends U ? never : T
@@ -625,7 +541,7 @@ type NotDiff = str1 extends str2 ? never : str1
 type NotDiff1<T, U> = [T] extends [U] ? never : T
 ```
 
-用法二：在 Diff 的基础上实现过滤掉 null 和 undefined 的值。
+#### 用法二：在 Diff 的基础上实现过滤掉 null 和 undefined 的值。
 
 ```typescript
 type NotNull<T> = Diff<T, undefined | null>
@@ -643,7 +559,7 @@ type T5 = NotNull<string | number | undefined | null>
 type T6 = Extract<'a' | 'b' | 'c', 'a' | 'e'>
 ```
 
-比如： 用于提取函数类型的返回值类型 `ReturnType<T>`
+#### 用于提取函数类型的返回值类型 `ReturnType<T>`
 
 先写出 `ReturnType<T>` 的实现，类型推断操作符 `infer` 表示在 extends 条件语句中待推断的类型变量。
 
@@ -654,7 +570,127 @@ type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => i
 分析一下上面的代码，首先要求传入 ReturnType 的 T 必须能赋值给一个最宽泛的函数，之后判断 T 能不能赋值给一个可以接受任意参数的返回值待推断为 R 的函数，如果可以，返回待推断返回值 R ，如果不可以，返回 any 。
 
 ```typescript
-type T7 = ReturnType<() => string>
+type T7 = ReturnType<() => string> // string
+```
+
+#### 用于提取函数类型的参数类型 `Parameters<T>`
+
+```typescript
+type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never
+
+type Handler = (req: Request, res: Response) => void
+type HandlerArgs = Parameters<Handler> // [req: Request, res: Response]
+```
+
+#### 获取构造函数类型的参数类型 `ConstructorParameters<T>`
+
+```typescript
+type ConstructorParameters<T extends new (...args: any) => any> = T extends new (...args: infer P) => any ? P : never
+
+class User {
+  constructor(public id: number, public name: string) {}
+}
+type UserParams = ConstructorParameters<typeof User> // [id: number, name: string]
+```
+
+## 映射类型
+
+在定义类型时，可以组合使用 in 和 keyof，并基于已有的类型创建一个新类型，使得新类型与已有类型保持一致的只读、可选特定，这样的**泛型**称之为映射类型。
+
+可以从一个旧的类型，生成一个新的类型。TypeScript 提供的工具类型很多属于映射类型，因为是操作接口的，所以也称为**操作接口类型**。
+
+以下代码用到了 TS 内置的映射类型
+
+```typescript
+interface Obj {
+  a: string
+  b: number
+  c: boolean
+}
+
+/* 对象相关的操作*/
+type ReadonlyObj = Readonly<Obj>
+/*
+type Readonly<T> = { readonly [P in keyof T]: T[P] }
+ReadonlyObj 结果如下
+{
+    readonly a: string;
+    readonly b: number;
+    readonly c: boolean;
+}
+*/
+
+type PartialObj = Partial<Obj>
+/* type Partial<T> = { [P in keyof T]?: T[P] | undefined; }
+PartialObj 结果如下
+{
+    a?: string | undefined;
+    b?: number | undefined;
+    c?: boolean | undefined;
+}
+*/
+
+type RequiredObj = Required<PartialObj>
+/* type Required<T> = { [P in keyof T]-?: T[P] }
+RequiredObj 结果如下
+{
+    a: string;
+    b: number;
+    c: boolean;
+}
+*/
+
+type RecordObj = Record<'x' | 'y', Obj>
+/* Record 创建一个具有特定键类型和值类型的对象类型，
+keyof any 表示可以作为对象键的属性，因为 keyof any 生成的类型是 string | number | symbol，目前，JavaScript 仅支持 string、number、symbol 的值作为对象的键值
+type Record<K extends keyof any, T> = { [P in K]: T }
+RecordObj 结果如下
+{
+    x: Obj;
+    y: Obj;
+}
+*/
+
+/*属性相关操作*/
+type PickObj = Pick<Obj, 'a' | 'b'>
+/* type Pick<T, K extends keyof T> = { [P in K]: T[P]; }
+PickObj 结果如下
+{
+    a: string;
+    b: number;
+}
+*/
+type OmitObj = Omit<Obj, 'a' | 'b'>
+/* type Omit<T, K extends keyof T> = { [P in keyof T as P extends K ? never : P]: T[P]; }
+type Omit<T, K extends keyof any> = { [P in Exclude<keyof T, K>]: T[P]; }
+OmitObj 结果如下
+{
+    c: boolean;
+}
+*/
+```
+
+**注意：映射类型使用索引签名语法（即属性用 [] 括起来）和 in 关键字限定对象属性的范围，特别注意，只能在类型别名定义中使用 in 和 keyof，如果在接口中使用，则会提示一个 ts(1169) 的错误**
+
+#### 使用 as 重新映射 key
+
+从 TypeScript 4.1 起，可以在映射类型的索引签名中使用类型断言。
+
+```ts
+type sourceInterface = {
+  id: number
+  name?: string
+}
+type TargetGenericTypeAssertiony<S> = {
+  [K in keyof S as `get${Capitalize<string & K>}`]: S[K]
+}
+type TargetGenericTypeAssertionyInstance = TargetGenericTypeAssertiony<sourceInterface>
+/* TargetGenericTypeAssertionyInstance 结果如下
+{
+    getId: number;
+    getName?: string | undefined;
+}
+*/
 ```
 
 ## 推荐阅读
