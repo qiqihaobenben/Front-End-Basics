@@ -190,6 +190,29 @@ _注意：_ 与同步 I/O 函数不同，Node.js 中的异步函数大多没有�
 - 时序图
 - 层级结构图
 
-### module
+## module
 
 [可跳转 JavaScript 的模块#Node.js 模块查看](./../JavaScript/utility/module)
+
+## NodeJS 代码是如何跑起来的？
+
+- 当我们执行 node server.js 时，NodeJS 首先会进行一系列的初始化操作，包括：
+
+  - 注册 C++ 系列的模块和 V8 的初始化操作
+  - 创建 environment 对象用于存放一些全局的公共变量
+  - 初始化模块加载器，以便在用户 JS 代码层调用原生 JS 模块以及原生 JS 模块调用 C++ 模块能够成功加载
+  - 初始化执行上下文，暴露 global 在全局上下文中，并设置一些全局变量和方法在 global 或 process 对象
+  - 初始化 libuv，创建一个默认的 event_loop 结构体用于管理后续各个阶段产生的任务
+
+- 紧接着 NodeJS 执行用户 JS 代码，用户 JS 代码执行一些初始化的逻辑以及往事件循环注册任务，然后进程就进入事件循环的阶段。
+
+- 整个事件循环分为 7 个阶段
+  - timer 处理定时器任务
+  - pending 处理 poll io 阶段的成功或错误回调
+  - idle、prepare、check（setImmediate 属于此阶段） 是自定义阶段
+  - poll io 主要处理网络 I/O
+  - 文件 I/O 等任务
+  - close 处理关闭的回调任务
+  - 同时在各个事件阶段还会穿插微任务队列。
+
+详情可参考：[NodeJS 代码是如何跑起来的？](https://mp.weixin.qq.com/s/TD7K22i_N_Hp1sVK7n1gpQ)

@@ -123,7 +123,9 @@ SQL 的优点：
 - 输入 help 或 \h 获得帮助，也可以输入更多的文本获得特定命令的帮助（如，输入 help select 获得试用 SELECT 语句的帮助）；
 - 输入 quit 或 exit 退出命令行。
 
-### 连接数据库
+### 数据库的登录和成员管理
+
+#### 连接登录数据库
 
 连接数据库需要以下信息：
 
@@ -137,8 +139,6 @@ SQL 的优点：
 ```
 mysql -u root -h localhost -P 3306 -p
 ```
-
-### 数据库的登录和成员管理
 
 #### 访问控制
 
@@ -549,7 +549,7 @@ DELETE FROM customers WHERE cust_id = 10011;
 
 <br>
 
-## 检索数据
+## 检索数据（products 表）
 
 ```sql
 # 检索单个列，例如从 products 表中检索一个名为 prod_name 的列。
@@ -561,7 +561,7 @@ SELECT prod_id, prod_name, prod_price FROM products;
 # 检索所有列。
 SELECT * FROM products;
 
-# 只检索出不同的行， DESTINCT 关键字可以让指令只返回不同的值。如果指令，products 表中可能一共有14行，现在只返回不同（唯一）的 vend_id 行，可能就只返回4行了。
+# 只检索出不同的行， DISTINCT 关键字可以让指令只返回不同的值。如果指令，products 表中可能一共有14行，现在只返回不同（唯一）的 vend_id 行，可能就只返回4行了。
 SELECT DISTINCT vend_id FROM products;
 
 # 限制结果， LIMIT 5 表示只返回不多于5行。
@@ -585,7 +585,7 @@ SELECT prod_name FROM products LIMIT 1,1;
 数据库包含大量的数据，但是我们很少需要检索表中所有的行。只检索所需数据需要指定过滤条件，在 SELECT 语句中，数据根据 WHERE 子句中指定的搜索条件进行过滤。
 
 ```sql
-# 检索 pro_price 为 2.50 的行
+# 检索 products 表中 prod_price 为 2.50 的行
 SELECT prod_name FROM products WHERE prod_price = 2.50;
 
 # 执行筛选匹配时默认不区分大小写，所以 fuses 可以检索出 Fuses
@@ -716,7 +716,7 @@ SELECT prod_id, prod_name FROM products WHERE prod_name LIKE '%anvil%';
 
 ### 下划线通配符
 
-下划线 \_ 只能匹配单个字符，只能匹配一个，不能多也不能少。
+下划线 `_` 只能匹配单个字符，只能匹配一个，不能多也不能少。
 
 ```sql
 ### 对比一下下面两个通配符结果
@@ -769,7 +769,7 @@ SELECT prod_name FROM products WHERE prod_name REGEXP '1000|2000';
 | JetPack 2000 |
 +--------------+
 
-### 匹配几个字符之一
+### 匹配几个字符之一 `[1,2,3]`，`[123]`， `[1|2|3]` 试过都一样
 SELECT prod_name FROM products WHERE prod_name REGEXP '[1,2,3] Ton' ORDER BY prod_name;
 +-------------+
 | prod_name   |
@@ -777,7 +777,7 @@ SELECT prod_name FROM products WHERE prod_name REGEXP '[1,2,3] Ton' ORDER BY pro
 | 1 ton anvil |
 | 2 ton anvil |
 +-------------+
-### 注意区别 1|2|3 Ton，这表示匹配出 1，2和3 Ton，其实[123]是[1|2|3]的缩写
+### 注意区别 1|2|3 Ton，这表示匹配出 1，2和3 Ton
 SELECT prod_name FROM products WHERE prod_name REGEXP '1|2|3 Ton' ORDER BY prod_name;
 +---------------+
 | prod_name     |
@@ -810,18 +810,18 @@ SELECT prod_name FROM products WHERE prod_name REGEXP '[:digit:]{4}' ORDER BY pr
 
 ### 列举元字符转义和定位元字符
 
-| 元字符                     | 说明       |
-| -------------------------- | ---------- |
-| \\f                        | 换页       |
-| \\n                        | 换行       |
-| \\r                        | 回车       |
-| \\t                        | 制表       |
-| \\v                        | 纵向制表   |
-| \\\                        | 反斜杠     |
-| ^                          | 文本的开始 |
-| \$                         | 文本的结束 |
-| [[:<:]](8 版本之后改为 \b) | 词的开始   |
-| [[:>:]](8 版本之后改为 \b) | 词的结束   |
+| 元字符                          | 说明       |
+| ------------------------------- | ---------- |
+| `\\f`                           | 换页       |
+| `\\n`                           | 换行       |
+| `\\r`                           | 回车       |
+| `\\t`                           | 制表       |
+| `\\v`                           | 纵向制表   |
+| `\\\`                           | 反斜杠     |
+| `^`                             | 文本的开始 |
+| `\$`                            | 文本的结束 |
+| `[[:<:]]`(8 版本之后改为 `\\b`) | 词的开始   |
+| `[[:>:]]`(8 版本之后改为 `\\b`) | 词的结束   |
 
 多数正则表达式实现使用单个反斜杠转义特殊字符，以便能使用这些字符本身。但 MySQL 要求两个反斜杠（MySQL 自己解释一个，正则表达式库解释另一个）。
 
@@ -831,7 +831,7 @@ SELECT prod_name FROM products WHERE prod_name REGEXP '[:digit:]{4}' ORDER BY pr
 | ---------- | ------------------------------------------------ |
 | [:alnum:]  | 任意字符和数字（同 [a-zA-Z0-9]）                 |
 | [:alpha:]  | 任意字符（同 [a-zA-Z]）                          |
-| [:blank:]  | 空格和制表 （同 [\\t]）                          |
+| [:blank:]  | 空格和制表 （同 `\\t`）                          |
 | [:cntrl:]  | ASCII 控制字符 （ASCII 0 到 31 和 127）          |
 | [:digit:]  | 任意数字 （同 [0-9]）                            |
 | [:xdigit:] | 任意十六进制数字（同 [a-fA-F0-9]）               |
@@ -1082,7 +1082,7 @@ SELECT COUNT(DISTINCT vend_id) AS vend_count FROM products;
 
 - AVG() 只能用来确定 **单个** 特定数值列的平均值，而且列名必须作为函数参数传入，想获取多个列的平均值，必须使用多个 AVG() 函数。
 - AVG() 函数忽略列值为 NULL 的行。
-- COUNT(\*) 对表中行的数目进行计数， 不管列中是空值（NULL）还是非空值。
+- `COUNT(*)` 对表中行的数目进行计数， 不管列中是空值（NULL）还是非空值。
 - 使用 COUNT(column) 对特定列中具有值的行进行计数，会忽略 NULL 值。
 - MAX() 函数会忽略值为 NULL 的行（MIN()也是）。它一般是用来找出最大的数值和日期值，但是也可以对非数值的数据使用，例如返回文本列中的最大值，MAX() 会返回最后一行（MIN
   () 会返回第一行）。
@@ -1171,6 +1171,7 @@ FROM
 [LIMIT ...];
 
 ```
+
 1. FROM：
 
 首先，数据库会处理 FROM 子句。它会确定从哪些表中获取数据，如果涉及到多个表，还会进行连接操作（如 INNER JOIN 等）此时的结果集是原始数据集，包含了所有与查询条件相关的表数据
