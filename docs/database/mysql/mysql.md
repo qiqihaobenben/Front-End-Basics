@@ -1283,6 +1283,9 @@ SELECT cust_name, cust_contact FROM customers, orders, orderitems WHERE customer
 
 ## 创建高级联结
 
+- [JOIN详解-其中包含子句的执行顺序](https://segmentfault.com/a/1190000015572505)
+- [Visual Representation of SQL Joins](https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins)
+
 ### 表别名和自联结
 
 ```sql
