@@ -72,6 +72,8 @@ https://mp.weixin.qq.com/s/huyn95OyOz45J93B3WGXdA
 
 https://github.com/ringcrl/node-point?tab=readme-ov-file#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86
 
+健康检查和过载保护：https://mp.weixin.qq.com/s/ig3V0iwaVea9V4VQYDm3CQ
+
 ### 性能
 
 https://github.com/ringcrl/node-point?tab=readme-ov-file#%E6%80%A7%E8%83%BD%E5%AE%9E%E8%B7%B5

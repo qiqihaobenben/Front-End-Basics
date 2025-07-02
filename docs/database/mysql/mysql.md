@@ -926,18 +926,20 @@ SELECT Now();
 
 ### 文本处理函数
 
-| 函 数       | 说 明               |
-| ----------- | ------------------- |
-| Left()      | 返回串左边的字符    |
-| Length()    | 返回串的长度        |
-| Locate()    | 找出串的一个子串    |
-| Lower()     | 将串转换为小写      |
-| LTrim()     | 去掉串左边的空格    |
-| Right()     | 返回串右边的字符    |
-| RTrim()     | 去掉串右边的空格    |
-| Soundex()   | 返回串的 SOUNDEX 值 |
-| SubString() | 返回子串的字符      |
-| Upper()     | 将串转换为大写      |
+| 函 数                      | 说 明                                                                    | 示例                                                |
+| -------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------- |
+| LEFT(str, n)               | 从左侧截取 n 个字符                                                      | `LEFT('abc', 2)` → `ab`                             |
+| RIGHT(str, n)              | 从右侧截取 n 个字符                                                      | `RIGHT('abc', 2)` → `bc`                            |
+| LENGTH(str)                | 返回串的字节长度                                                         | `LENGTH('你好')` → `6`（UTF-8 中每个中文占 3 字节） |
+| CHAR_LENGTH(str)           | 返回串的字符长度                                                         | `CHAR_LENGTH('你好')` → `2`                         |
+| LOCATE(substr, str, [pos]) | 查找子字符串在原字符串中的位置（如果有 pos，从 pos 开始，默认从 1 开始） | `LOCATE('bar', 'foobarbar')` → `4`                  |
+| LTRIM(str)                 | 去掉串左边的空格                                                         | `LTRIM('  abc')` → `abc`                            |
+| RTRIM(str)                 | 去掉串右边的空格                                                         | `RTRIM('abc  ')` → `abc`                            |
+| TRIM(str)                  | 去掉串两边的空格                                                         | `TRIM('  abc  ')` → `abc`                           |
+| SOUNDEX(str)               | 返回串的 SOUNDEX 值                                                      | `SOUNDEX('Smith')` → `S530`                         |
+| SUBSTRING(str, pos, len)   | 返回子串的字符                                                           | `SUBSTRING('abc', 2, 1)` → `b`                      |
+| UPPER(str)                 | 将串转换为大写                                                           | `UPPER('abc')` → `ABC`                              |
+| LOWER(str)                 | 将串转换为小写                                                           | `LOWER('ABC')` → `abc`                              |
 
 SOUNDEX 是一个将任何文本串转换为描述其语音表示的字母数字模式的算法。SOUNDEX 考虑了类似的发音字节和音节，使得能对串进行发音比较而不是字母比较。
 
