@@ -1,5 +1,9 @@
 # AI 概览
 
+## 概念
+
+- [2023-2025 大模型领域 2 年发展综述](https://mp.weixin.qq.com/s/ZJIYSjYVQZrKImc1hWKftQ)
+
 ## 文本
 
 - [大白话讲清楚 ChatGPT](https://mp.weixin.qq.com/s/tri0OINMaOxYeqSk8iFesg)
@@ -7,6 +11,10 @@
 - [ChatGPT 原理探索](https://juejin.cn/post/7218048201982787645)
 - [万字科普 ChatGPT-4 为何会颠覆人类社会](https://www.modevol.com/episode/clf9d5kni0zo301mm6tkl9t87)
 - [50+ ChatGPT 提示和策略，加速你的 Web 开发工作流程](https://mp.weixin.qq.com/s/V1E3OS7Jc19XSTjDAufVkA)
+
+## 代码
+
+- [腾讯研究院：2025 AI Coding 非共识报告！](https://mp.weixin.qq.com/s/Z0-ndh1sE0W3ebsVCs_ArQ)
 
 ## 图片
 
