@@ -439,3 +439,6 @@ line 2
 line 3
 EOF #输出：3
 ```
+
+
+git config --global --add safe.directory /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core

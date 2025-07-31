@@ -472,6 +472,8 @@ java HelloWorld
 
 ## Java 的不同版本共存切换
 
+### 方法一
+
 ```bash
 # 配置JDK路径
 export JAVA_8_HOME=/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home
@@ -492,8 +494,31 @@ alias jdk8_with_classpath='export JAVA_HOME=$JAVA_8_HOME; export CLASSPATH=$JAVA
 alias javaversion='echo "JAVA_HOME: $JAVA_HOME"; java -version'
 ```
 
-- 将上述配置添加到 ~/.bashrc 或 ~/.zshrc（取决于您使用的 shell）
-- 应用更改：source ~/.bashrc 或打开新终端
+### 方法二
+
+```bash
+# 查看当前的 java home 路径
+/usr/libexec/java_home
+
+# 可以用下列命令来看所有安装的JDK
+/usr/libexec/java_home -V
+```
+#### 配置多个 JDK 环境变量
+
+```bash
+export JAVA_8_HOME="$(/usr/libexec/java_home -v 1.8)"
+export JAVA_17_HOME="$(/usr/libexec/java_home -v 17)"
+alias jdk8='export JAVA_HOME=$JAVA_8_HOME'
+alias jdk17='export JAVA_HOME=$JAVA_17_HOME'
+export JAVA_HOME=$JAVA_8_HOME
+
+# 查看当前 Java 版本的快捷命令
+alias javaversion='echo "JAVA_HOME: $JAVA_HOME"; java -version'
+```
+
+
+- 将上述配置添加到 ~/.bashrc 或 ~/.bash_profile或 ~/.zshrc（取决于您使用的 shell）
+- 应用更改：source ~/.bashrc 或 source ~/.bash_profile 或 source ~/.zshrc 或打开新终端
 
 ## IDEA
 

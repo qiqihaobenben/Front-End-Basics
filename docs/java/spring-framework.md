@@ -17,7 +17,7 @@ Aspect Oriented Programming 的简写，译为“面向切面编程”。AOP 用
 spring core 提供了 IOC,DI,Bean 配置装载创建的核心实现。核心概念： Beans、BeanFactory、BeanDefinitions、ApplicationContext。
 
 - spring-core ：IOC 和 DI 的基本实现
-- spring-beans：BeanFactory 和 Bean 的装配管理(BeanFactory)
+- spring-beans：BeanFactory 和 Bean 的装配管理(BeanDefinitions)
 - spring-context：Spring context 上下文，即 IOC 容器(AppliactionContext)
 - spring-expression：spring 表达式语言
 
