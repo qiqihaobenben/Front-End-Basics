@@ -37,7 +37,7 @@ DI 即 依赖注入（Dependency Injection），是 IoC 的一种具体实现。
 - 数据描述符：是一个具有值的属性（value），该值可以是可写的，也可以是不可写的（writable）
 - 存取描述符：由 getter 函数和 setter 函数所描述的属性。
 
-一个属性描述符只能是这两者种的其中一种，不能同时是两者。
+一个属性描述符只能是这两者中的其中一种，不能同时是两者。
 
 #### 共享的属性描述符键值
 
@@ -55,6 +55,57 @@ DI 即 依赖注入（Dependency Injection），是 IoC 的一种具体实现。
 
 - get：一个给属性提供 getter 的方法。当访问该属性时，会调用此方法，并返回其返回值。默认为 `undefined`
 - set：一个给属性提供 setter 的方法。当属性值被修改时，会调用此方法，该方法将接收唯一的参数，即该属性的新值。默认为 `undefined`
+
+#### 示例
+
+```js
+const obj = {}
+
+// 添加一个不可写、不可枚举、不可配置的属性
+Object.defineProperty(obj, 'name', {
+  value: 'John',
+  writable: false,
+  enumerable: false,
+  configurable: false,
+})
+
+console.log(obj.name) // 输出: John
+obj.name = 'Peter' // 尝试修改，但无效
+console.log(obj.name) // 输出: John
+
+// 尝试删除属性，但无效
+delete obj.name
+console.log(obj.name) // 输出: John
+
+// 添加一个可读写的属性
+Object.defineProperty(obj, 'age', {
+  value: 30,
+  writable: true,
+  enumerable: true,
+  configurable: true,
+})
+
+console.log(obj.age) // 输出: 30
+obj.age = 31
+console.log(obj.age) // 输出: 31
+
+// 添加一个访问器属性
+let _value = 0
+Object.defineProperty(obj, 'count', {
+  get: function () {
+    return _value
+  },
+  set: function (newValue) {
+    _value = newValue
+  },
+  enumerable: true,
+  configurable: true,
+})
+
+console.log(obj.count) // 输出: 0
+obj.count = 10
+console.log(obj.count) // 输出: 10
+```
 
 ## 定义
 
@@ -354,7 +405,7 @@ function decoratorLogTime(target, key) {
   const oldDescriptor = Object.getOwnPropertyDescriptor(target, key)
   const oldFun = oldDescriptor.value
   // Step2 编写装饰器函数逻辑代码
-  const logTime = function(...arg) {
+  const logTime = function (...arg) {
     // Before 钩子
     const start = +new Date()
     try {
@@ -394,7 +445,7 @@ decoratorLogTime(Demo.prototype, 'run')
 // Step2 编写装饰器函数业务逻辑代码
 function logTime(target, key, descriptor) {
   const oldMethed = descriptor.value
-  const logTime = function(...arg) {
+  const logTime = function (...arg) {
     let start = +new Date()
     try {
       return oldMethed.apply(this, arg) // 调用之前的函数
@@ -427,7 +478,7 @@ class Demo {
 ```js
 function dec(id) {
   console.log('装饰器初始化', id)
-  return function(target, property, descriptor) {
+  return function (target, property, descriptor) {
     console.log('装饰器执行', id)
   }
 }
