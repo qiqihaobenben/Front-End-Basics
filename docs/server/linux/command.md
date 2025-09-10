@@ -1716,3 +1716,15 @@ another_pattern_file.txt
 pattern_file.txt
 another_pattern_file.txt
 ```
+
+## 关机
+
+```bash
+# 同步数据，然后重启
+sync; sync; sync; reboot
+
+# 同步数据，然后关机
+sync; sync; sync; poweroff
+```
+
+- [正确关机的方法](https://zq99299.github.io/linux-tutorial/tutorial-basis/04/04.html#%E6%AD%A3%E7%A1%AE%E5%85%B3%E6%9C%BA%E7%9A%84%E6%96%B9%E6%B3%95)

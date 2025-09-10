@@ -351,7 +351,7 @@ spring-test：集成测试支持，主要是对 junit 的封装
 
 ### 六、Spring Boot 相关
 
-18. **`@SpringBootApplication`**
+18. **`@SpringBootApplication`**˜
 
     - **作用**：组合注解，包含 `@SpringBootConfiguration`、`@ComponentScan` 和 `@EnableAutoConfiguration`，标记 Spring Boot 主类。
       - `@SpringBootConfiguration` 会将该类声明为配置类（即项目采用基于 Java 注解的配置方式，而不是传统的 XML 文件配置），可以按需添加基于 Java 的 Spring 框架配置。这个注解实际上是 `@Configuration` 注解的特殊形式。

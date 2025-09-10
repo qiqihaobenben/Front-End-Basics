@@ -1,0 +1,244 @@
+version: '3.8'
+
+services:
+  # Nginx API Gateway
+  nginx-gateway:
+    image: nginx:1.24-alpine
+    container_name: kb-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./logs/nginx:/var/log/nginx
+    networks:
+      - frontend
+      - backend
+    restart: unless-stopped
+    depends_on:
+      - chatgpt-next-web
+      - chat-api
+
+  # Frontend Web UI
+  chatgpt-next-web:
+    image: yidadaa/chatgpt-next-web:latest
+    container_name: kb-frontend
+    environment:
+      - OPENAI_API_KEY=sk-dummy
+      - BASE_URL=http://nginx-gateway/api/v1
+      - CODE=your-access-code
+      - HIDE_USER_API_KEY=1
+      - DISABLE_GPT4=1
+    networks:
+      - frontend
+    restart: unless-stopped
+
+  # Chat API Service
+  chat-api:
+    build:
+      context: ./services/chat-api
+      dockerfile: Dockerfile
+    container_name: kb-chat-api
+    environment:
+      - DATABASE_URL=postgresql://kb_user:kb_pass@postgresql:5432/knowledge_base
+      - REDIS_URL=redis://redis:6379/0
+      - RAG_SERVICE_URL=http://rag-service:8000
+      - LLM_SERVICE_URL=http://vllm-inference:8000
+    volumes:
+      - ./logs/chat-api:/app/logs
+    networks:
+      - backend
+    restart: unless-stopped
+    depends_on:
+      - postgresql
+      - redis
+      - rag-service
+
+  # RAG Service
+  rag-service:
+    build:
+      context: ./services/rag-service
+      dockerfile: Dockerfile
+    container_name: kb-rag-service
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - EMBEDDING_MODEL=text-embedding-ada-002
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./logs/rag-service:/app/logs
+    networks:
+      - backend
+      - storage
+    restart: unless-stopped
+    depends_on:
+      - chromadb
+
+  # Document Processor
+  doc-processor:
+    build:
+      context: ./services/doc-processor
+      dockerfile: Dockerfile
+    container_name: kb-doc-processor
+    environment:
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minio_access_key
+      - MINIO_SECRET_KEY=minio_secret_key
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    volumes:
+      - ./temp:/app/temp
+      - ./logs/doc-processor:/app/logs
+    networks:
+      - backend
+      - storage
+    restart: unless-stopped
+    depends_on:
+      - minio
+      - chromadb
+
+  # vLLM Inference Service
+  vllm-inference:
+    image: vllm/vllm-openai:latest
+    container_name: kb-vllm
+    command: >
+      --model /models/qwen2.5-32b-instruct-awq
+      --served-model-name qwen2.5-32b
+      --host 0.0.0.0
+      --port 8000
+      --tensor-parallel-size 1
+      --gpu-memory-utilization 0.8
+      --max-model-len 8192
+      --trust-remote-code
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      - model_cache:/models
+      - ./logs/vllm:/app/logs
+    networks:
+      - backend
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  # ChromaDB Vector Database
+  chromadb:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: kb-chromadb
+    environment:
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+    volumes:
+      - chroma_data:/chroma/chroma
+    networks:
+      - storage
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  postgresql:
+    image: postgres:15-alpine
+    container_name: kb-postgresql
+    environment:
+      - POSTGRES_DB=knowledge_base
+      - POSTGRES_USER=kb_user
+      - POSTGRES_PASSWORD=kb_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init/postgresql:/docker-entrypoint-initdb.d
+    networks:
+      - storage
+    restart: unless-stopped
+
+  # MinIO Object Storage
+  minio:
+    image: minio/minio:latest
+    container_name: kb-minio
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=minio_access_key
+      - MINIO_ROOT_PASSWORD=minio_secret_key
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9001:9001"  # MinIO Console
+    networks:
+      - storage
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: kb-redis
+    command: redis-server --appendonly yes --requirepass redis_password
+    volumes:
+      - redis_data:/data
+    networks:
+      - storage
+    restart: unless-stopped
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: kb-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: kb-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+  storage:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  chroma_data:
+    driver: local
+  minio_data:
+    driver: local
+  redis_data:
+    driver: local
+  model_cache:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local

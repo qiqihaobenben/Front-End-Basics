@@ -1,0 +1,494 @@
+version: '3.8'
+
+services:
+  # Nginx API Gateway
+  nginx-gateway:
+    image: nginx:1.24-alpine
+    container_name: kb-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./logs/nginx:/var/log/nginx
+    networks:
+      - frontend
+      - backend
+    restart: unless-stopped
+    depends_on:
+      - chatgpt-next-web
+      - chat-api
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1'
+
+  # Frontend Web UI
+  chatgpt-next-web:
+    image: yidadaa/chatgpt-next-web:latest
+    container_name: kb-frontend
+    environment:
+      - OPENAI_API_KEY=sk-dummy
+      - BASE_URL=http://nginx-gateway/api/v1
+      - CODE=kb-2024-access
+      - HIDE_USER_API_KEY=1
+      - DISABLE_GPT4=1
+      - CUSTOM_MODELS=qwen2.5-32b-instruct,qwen2.5-72b-instruct
+    volumes:
+      - ./frontend/config:/app/config
+    networks:
+      - frontend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '2'
+
+  # Chat API Service (优化消费级硬件)
+  chat-api:
+    build:
+      context: ./services/chat-api
+      dockerfile: Dockerfile
+    container_name: kb-chat-api
+    environment:
+      - DATABASE_URL=postgresql://kb_user:kb_pass@postgresql:5432/knowledge_base
+      - REDIS_URL=redis://redis:6379/0
+      - RAG_SERVICE_URL=http://rag-service:8000
+      - LLM_SERVICE_URL=http://vllm-inference:8000
+      - MAX_WORKERS=4
+      - WORKER_TIMEOUT=300
+      - MAX_CONCURRENT_REQUESTS=20
+    volumes:
+      - ./logs/chat-api:/app/logs
+      - ./temp/chat-api:/tmp
+    networks:
+      - backend
+    restart: unless-stopped
+    depends_on:
+      - postgresql
+      - redis
+      - rag-service
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '4'
+
+  # RAG Service (针对消费级硬件优化)
+  rag-service:
+    build:
+      context: ./services/rag-service
+      dockerfile: Dockerfile
+    container_name: kb-rag-service
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - EMBEDDING_MODEL=text-embedding-ada-002
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - EMBEDDING_BATCH_SIZE=32
+      - MAX_SEARCH_RESULTS=20
+      - SIMILARITY_THRESHOLD=0.7
+    volumes:
+      - ./logs/rag-service:/app/logs
+      - ./temp/rag-service:/tmp
+    networks:
+      - backend
+      - storage
+    restart: unless-stopped
+    depends_on:
+      - chromadb
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+          cpus: '4'
+
+  # Document Processor (批处理优化)
+  doc-processor:
+    build:
+      context: ./services/doc-processor
+      dockerfile: Dockerfile
+    container_name: kb-doc-processor
+    environment:
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minio_access_key
+      - MINIO_SECRET_KEY=minio_secret_key
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - PROCESSING_BATCH_SIZE=10
+      - MAX_FILE_SIZE=100MB
+      - SUPPORTED_FORMATS=pdf,docx,txt,md,html
+    volumes:
+      - ./temp/doc-processor:/app/temp
+      - ./logs/doc-processor:/app/logs
+    networks:
+      - backend
+      - storage
+    restart: unless-stopped
+    depends_on:
+      - minio
+      - chromadb
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '6'
+
+  # vLLM Inference Service - 32B版本（单卡优化）
+  vllm-inference-32b:
+    image: vllm/vllm-openai:v0.2.7
+    container_name: kb-vllm-32b
+    command: >
+      --model /models/qwen2.5-32b-instruct-awq
+      --served-model-name qwen2.5-32b
+      --host 0.0.0.0
+      --port 8000
+      --tensor-parallel-size 1
+      --gpu-memory-utilization 0.85
+      --max-model-len 8192
+      --max-num-batched-tokens 8192
+      --max-num-seqs 16
+      --trust-remote-code
+      --disable-log-stats
+      --quantization awq
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - NVIDIA_VISIBLE_DEVICES=0
+      - CUDA_DEVICE_ORDER=PCI_BUS_ID
+    volumes:
+      - model_cache:/models:ro
+      - ./logs/vllm:/tmp
+      - /tmp:/tmp
+    networks:
+      - backend
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+        limits:
+          memory: 32G
+    profiles:
+      - 32b
+
+  # vLLM Inference Service - 72B版本（双卡优化）
+  vllm-inference-72b:
+    image: vllm/vllm-openai:v0.2.7
+    container_name: kb-vllm-72b
+    command: >
+      --model /models/qwen2.5-72b-instruct-awq
+      --served-model-name qwen2.5-72b
+      --host 0.0.0.0
+      --port 8000
+      --tensor-parallel-size 2
+      --gpu-memory-utilization 0.80
+      --max-model-len 4096
+      --max-num-batched-tokens 4096
+      --max-num-seqs 8
+      --trust-remote-code
+      --disable-log-stats
+      --quantization awq
+      --enforce-eager
+    environment:
+      - CUDA_VISIBLE_DEVICES=0,1
+      - NVIDIA_VISIBLE_DEVICES=0,1
+      - CUDA_DEVICE_ORDER=PCI_BUS_ID
+      - NCCL_DEBUG=INFO
+    volumes:
+      - model_cache:/models:ro
+      - ./logs/vllm:/tmp
+      - /tmp:/tmp
+    networks:
+      - backend
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0', '1']
+              capabilities: [gpu]
+        limits:
+          memory: 64G
+    profiles:
+      - 72b
+
+  # ChromaDB Vector Database (内存优化)
+  chromadb:
+    image: ghcr.io/chroma-core/chroma:0.4.18
+    container_name: kb-chromadb
+    environment:
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+      - CHROMA_SERVER_GRPC_PORT=50051
+      - ANONYMIZED_TELEMETRY=False
+      - ALLOW_RESET=True
+    volumes:
+      - chroma_data:/chroma/chroma
+    networks:
+      - storage
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '4'
+
+  # PostgreSQL Database (消费级优化)
+  postgresql:
+    image: postgres:15-alpine
+    container_name: kb-postgresql
+    environment:
+      - POSTGRES_DB=knowledge_base
+      - POSTGRES_USER=kb_user
+      - POSTGRES_PASSWORD=kb_pass
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+      - POSTGRES_SHARED_PRELOAD_LIBRARIES=pg_stat_statements
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init/postgresql:/docker-entrypoint-initdb.d
+      - ./config/postgresql.conf:/etc/postgresql/postgresql.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    networks:
+      - storage
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '4'
+
+  # MinIO Object Storage (轻量配置)
+  minio:
+    image: minio/minio:RELEASE.2024-01-16T16-07-38Z
+    container_name: kb-minio
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=minio_access_key
+      - MINIO_ROOT_PASSWORD=minio_secret_key_2024
+      - MINIO_COMPRESS=true
+      - MINIO_COMPRESS_EXTENSIONS=.pdf,.docx,.txt,.md
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9001:9001"  # MinIO Console
+    networks:
+      - storage
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2'
+
+  # Redis Cache (内存优化)
+  redis:
+    image: redis:7.2-alpine
+    container_name: kb-redis
+    command: >
+      redis-server 
+      --appendonly yes 
+      --requirepass redis_password_2024
+      --maxmemory 2gb
+      --maxmemory-policy allkeys-lru
+      --save 900 1 300 10 60 10000
+    volumes:
+      - redis_data:/data
+    networks:
+      - storage
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2.5G
+          cpus: '2'
+
+  # 系统监控 (消费级硬件监控增强)
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: kb-node-exporter
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - backend
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+
+  # GPU监控
+  nvidia-exporter:
+    image: mindprince/nvidia_gpu_prometheus_exporter:0.1
+    container_name: kb-nvidia-exporter
+    volumes:
+      - /usr/lib/x86_64-linux-gnu/libnvidia-ml.so:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so
+      - /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1
+    networks:
+      - backend
+    restart: unless-stopped
+    ports:
+      - "9445:9445"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # Prometheus监控 (轻量配置)
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: kb-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--storage.tsdb.retention.size=10GB'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - backend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2'
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: kb-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+      - GF_SMTP_ENABLED=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2'
+
+  # 日志聚合 (轻量级)
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: kb-loki
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml
+      - loki_data:/loki
+    networks:
+      - backend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1'
+
+  # 健康检查服务
+  healthcheck:
+    build:
+      context: ./services/healthcheck
+      dockerfile: Dockerfile
+    container_name: kb-healthcheck
+    environment:
+      - CHECK_INTERVAL=30
+      - SERVICES=nginx-gateway:80,vllm-inference:8000,chromadb:8000
+      - ALERT_WEBHOOK=${ALERT_WEBHOOK_URL}
+    volumes:
+      - ./logs/healthcheck:/app/logs
+    networks:
+      - backend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+
+networks:
+  frontend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+  storage:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/kb-data/postgres
+  chroma_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/kb-data/chroma
+  minio_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/kb-data/minio
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/kb-data/redis
+  model_cache:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/kb-models
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  loki_data:
+    driver: local
