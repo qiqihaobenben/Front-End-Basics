@@ -556,8 +556,8 @@ String s3 = ""; // s3指向空字符串，不是null
 
 ##### Java 的数组有几个特点：
 
-- 数组所有元素初始化为默认值，整型都是 0，浮点型是 0.0，布尔型是 false；
-- 数组是同一数据类型的集合，数组一旦创建后，大小就不可变；（数组实质是一块地址连续的内存，就像一沓页码连续的白纸）
+- 数组所有元素初始化为默认值，整型都是 0，浮点型是 0.0，布尔型是 false，引用类型是 null；
+- 数组是**同一数据类型的集合**，数组一旦创建后，大小就不可变；（数组实质是一块地址连续的内存，就像一沓页码连续的白纸）
 - 可以通过索引访问数组元素，但索引超出范围将报错。数组索引从 0 开始，例如，5 个元素的数组，索引范围是 0~4。
 - 可以修改数组中的某一个元素，使用赋值语句，例如，`ns[1] = 79;`。
 - 可以用`数组变量.length` 获取数组大小
@@ -595,6 +595,8 @@ String[] names = {
 #### 类 class
 
 #### 接口 interface
+
+在本文 `## 接口（interface）` 章节中，有详细介绍。
 
 #### Lambda Lambda
 
@@ -1786,7 +1788,7 @@ e.run();
 
 ## 接口（interface）
 
-接口（interface）是一种公共的规范，是一种引用数据类型。
+在 Java 中，接口是一种引用数据类型，与类相似。
 
 在抽象类中，抽象方法本质上是定义接口规范：即规定高层次类的接口，从而保证所有子类都有相同的接口实现，这样，多态就能发挥出威力。
 
@@ -1823,6 +1825,8 @@ class Student implements Person {
     }
 }
 ```
+
+接口没有构造方法，只能包含嵌套类型、抽象方法和常量。因为没有构造方法，所以接口不能被实例化，只能被类所实现或被另外的接口所继承。
 
 ### 接口的定义
 
@@ -1927,6 +1931,89 @@ class Student implements Person {
 
 #### 接口中的私有方法
 
+#### 接口中的嵌套类型
+
+在 Java 中，接口（Interface） 可以包含 嵌套类型（Nested Types），包括：
+
+1. 嵌套接口（Nested Interface）
+2. 嵌套类（Nested Class）
+3. 嵌套枚举（Nested Enum）
+4. 嵌套注解（Nested Annotation）
+
+这些嵌套类型定义在接口内部，并且默认是 public static 的（即使不显式声明）。
+
+##### 1. 嵌套接口（Nested Interface）
+
+```
+public interface OuterInterface {
+    // 嵌套接口
+    interface NestedInterface {
+        void nestedMethod();
+    }
+}
+
+使用方式：
+class MyClass implements OuterInterface.NestedInterface {
+    @Override
+    public void nestedMethod() {
+        System.out.println("实现嵌套接口的方法");
+    }
+}
+```
+
+##### 2. 嵌套类（Nested Class）
+
+```
+public interface OuterInterface {
+    // 嵌套类（默认是 public static）
+    class NestedClass {
+        public void print() {
+            System.out.println("嵌套类的方法");
+        }
+    }
+}
+
+使用方式：
+OuterInterface.NestedClass nestedObj = new OuterInterface.NestedClass();
+nestedObj.print(); // 输出："嵌套类的方法"
+```
+
+##### 3. 嵌套枚举（Nested Enum）
+
+```
+public interface OuterInterface {
+    // 嵌套枚举
+    enum NestedEnum {
+        RED, GREEN, BLUE
+    }
+}
+
+使用方式：
+OuterInterface.NestedEnum color = OuterInterface.NestedEnum.RED;
+System.out.println(color); // 输出："RED"
+```
+
+##### 4. 嵌套注解（Nested Annotation）
+
+```
+public interface OuterInterface {
+    // 嵌套注解
+    @interface NestedAnnotation {
+        String value();
+    }
+}
+
+使用方式：
+@OuterInterface.NestedAnnotation("测试")
+class MyClass {}
+```
+
+##### 为什么接口可以包含嵌套类型？
+
+1. 逻辑分组：如果某个接口、类、枚举或注解仅与当前接口相关，可以嵌套定义，提高代码组织性。
+2. 避免命名冲突：嵌套类型的作用域限定在接口内，避免全局命名污染。
+3. 默认 public static：嵌套类型可以直接通过接口名访问，无需实例化接口（因为接口本身不能实例化）。
+
 ### 接口的实现
 
 #### 实现接口的格式
@@ -1963,6 +2050,151 @@ public interface Calculator {
 
     // 从Object类继承的方法不计入抽象方法数量
     boolean equals(Object obj);
+}
+
+```
+
+## 泛型
+
+泛型可以帮助建立类型安全的集合，本质是“数据类型的参数化”，即处理的数据类型不是固定的，是可以作为参数传入的。
+
+可以把“泛型”理解为数据类型的一个占位符，即告诉编译器，在调用泛型时必须传入一个实际的数据类型。
+
+泛型可以用在类、接口和方法中，分别被称为泛型类、泛型接口、泛型方法。
+
+### 泛型声明
+
+泛型是通过给类或接口添加参数类型（Type Parameters） 来实现的。需要说明的是，泛型的类型参数只能是类，例如 String、Integer、Double，不能是简单类型，例如 int、double。
+
+#### 泛型类的声明
+
+语法：
+
+```
+[修饰符] class 类名<参数类型1, 参数类型2,...> [extends 基类名] [implements 接口1名, 接口2名, ...] {
+    类体
+}
+```
+
+示例：
+
+```java
+// PencilCase.java
+public class PencilCase<T> {
+    private T t;
+
+    public void add(T t) {
+        this.t = t;
+    }
+
+    public T get() {
+        return t;
+    }
+}
+
+// 其他文件
+PencilCase<Integer> pencilCase = new PencilCase<>();
+pencilCase.add(new Integer(20));
+Integer intVal = pencilCase.get();
+System.out.println(intVal);
+```
+
+#### 泛型方法的声明
+
+语法
+
+```
+[修饰符] <类型参数1, 类型参数2, ...> 返回值类型 方法名 (形参列表) {
+    方法体
+}
+```
+
+### 泛型的类型参数命名惯例
+
+类型参数的命名规则和变量命名规则不太一样，它一般命名为单个大写字母。这主要是为了区分一个变量类型和一个类或接口名称之间的不同。
+
+最常用的类型参数名称有以下几个：
+
+- E - Element（元素）
+- K - Key（键）
+- V - Value（值）
+- T - Type（类型）
+- N - Number（数字）
+- R - Result（结果）
+- S, U, V 等 - 第二、第三、第四个类型等。
+
+### 限定类型参数
+
+限定类型参数的目的是让程序将传递进来的参数限制在一定范围内。
+
+其语法格式如下：
+
+```
+<类型参数 extends 类型参数的上限>
+```
+
+完整语法如下：
+
+```
+[修饰符] class 类名<类型参数 extends 类型参数的上限> [extends 基类名] [implements 接口1名, 接口2名, ...] {
+    类体
+}
+```
+
+还可以为类型参数设置多个上限（至多有一个父类上限，可以有多个接口上限），表明该类型参数必须是其父类的子类（是其父类也可），并且实现了多个接口上限。其语法格式如下：
+
+```
+<类型参数 extends 父类上限 & 接口 1 & 接口 2 & ...>
+```
+
+### 泛型通配符
+
+泛型中可以使用通配符（`?`）来表示一个未知类型。比如：指定一个能装“某些动物”的笼子，代码如下：
+
+```
+Coop<? extends Zoo> zooCoop = ...;
+```
+
+#### 上限
+
+`? extends Zoo` 就是一个限定通配符，可以称为“某些动物”，意思是“一个未知的类型，它是 Zoo 的派生类型，也可能是 Zoo 本身。”
+
+并且，Zoo 是所期望类型的“上限”。
+
+#### 下限
+
+`? super Zoo` 也是一个限定通配符，可以称为“某些动物”，意思是“一个未知的类型，它是 Zoo 的基类型，也可能是 Zoo 本身。”
+
+并且，Zoo 是所期望类型的“下限”。
+
+#### 无限
+
+无限定通配符 `?` 可以指定一个未知类型，这个未知类型可以是任何类型。
+
+无限定通配符本质上与 `? extends Object` 是等价的。
+
+### 类型擦除
+
+如果有泛型被实例化，那么编译器在编译代码的时候会进行类型擦除。
+
+类型擦除指的是编译器移除一个类、接口或方法中所有与类型参数相关的信息。
+
+经过类型擦除后，泛型类和普通类在程序运行的时候没有任何区别。
+
+例如，`PencilCase<String>` 被编译为 `PencilCase` 后，PencilCase 被称为原类型（Raw Type）。原类型指的是不带任何类型参数的类或接口。
+
+这意味着无法找出泛型类在运行时正在使用的是 Object 的什么子类，所以下面的代码示例是错误的：
+
+```java
+public class MyClass<E> {
+    public void myMethod(Object item) {
+        if(item instanceof  E) { // 编译器错误
+            ...
+        }
+        E item2 = new E(); // 编译器错误
+        E[] arr = new E[12]; // 编译器错误
+        E obj = (E)new Object(); //未经检查的类型转换警告
+    }
 }
 ```
 

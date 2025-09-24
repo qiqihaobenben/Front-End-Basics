@@ -49,7 +49,7 @@ Docling 是一个文档处理库，旨在将各种文件格式（包括 PDF、Wo
 
 #### Mistral OCR
 
-Mistral OCR 是一个光学字符识别库，号称“世界上最好的 OCR 模型”，旨在从各种基于图像的文件格式（包括扫描的 PDF、图像和手写文档）中提取文本，并转换为 JSON 或纯文本等结构化数据。凭借对多语言文本识别、布局分析和手写解读的高级支持，Mistral OCR 简化了数字化和处理文档的过程，适用于搜索、摘要和数据提取等 AI 应用
+Mistral OCR 是一个光学字符识别库，号称“世界上最好的 OCR 模型”，旨在从各种基于图像的文件格式（包括扫描的 PDF、图像和手写文档）中提取文本，并转换为 JSON 或纯文本等结构化数据。凭借对多语言文本识别、布局分析和手写解读的高级支持，Mistral OCR 简化了数字化和处理文档的过程，适用于搜索、摘要和数据提取等 AI 应用。
 
 #### Datalab Marker API
 
@@ -66,7 +66,7 @@ Marker 专注于将 PDF 等文档高保真地转换为 Markdown 和 HTML，特�
 - 追求技术文档（代码、公式）的高保真转换：可以关注 Marker。
 - 处理企业级文档，需要提取结构化键值对和表格：云服务的 Document Intelligence 可能更合适。
 
-### 文本处理和检索框架（Chunking/索引方式）
+### 文本处理框架（Chunking）
 
 在构建知识库时，大模型要先把文档拆分成合适的片段（chunk），再存入向量数据库。
 
@@ -74,19 +74,53 @@ Marker 专注于将 PDF 等文档高保真地转换为 Markdown 和 HTML，特�
 
 - 按段落切分（推荐）：中文文章一般以自然段为逻辑单位（换行符），保留段落层级比按固定长度切分更好理解。
 - 按句子切分：可以用中文分句器（比如 jieba 的 sent_tokenize）来切分句子，适合问答类内容。
-- 滑动窗口切分：固定 token 长度（如 500 tokens），并设置 100–200 tokens 的重叠，保证上下文连续性。适合长 PDF、技术手册。
+- 滑动窗口切分：固定 token 长度，中文建议 500-800 汉字（约 500-1000 tokens），并设置 10%-20% （约 100-200 tokens）的重叠，保证上下文连续性。适合长 PDF、技术手册。
 - 混合策略：段落为主，必要时对超长段落再做窗口切分。
 
 对于中文，推荐：
 
-- 使用 语义感知的分块（段落+标题），保留上下文。
-- 再配合 窗口切分，避免长文丢信息。
+- 使用 **语义感知的分块（段落+标题）**，保留上下文。
+- 再配合 **窗口切分**，避免长文丢信息。
 
 工具上，常用的是：
 
 - LangChain 的 RecursiveCharacterTextSplitter（支持中文）
 - LlamaIndex（提供多种切分模式）
 - Open WebUI 内置 RAG 方案也允许自定义 chunk size、overlap。
+
+#### LangChain 的 `RecursiveCharacterTextSplitter`
+
+这是 LangChain 框架中一个非常常用且强大的文本分割器。它的设计目标是通用且灵活，能够处理各种类型的文档和语言（包括中文）。
+
+##### 核心工作原理
+
+1. 递归切割：它定义了一个分隔符优先级列表（例如：["\n\n", "\n", "。", "！", "？", "...", " ", ""]）。
+2. 优先级尝试：它首先尝试用最高优先级的 separator（如 "\n\n"）将文本分割成较大的块。
+3. 逐级细化：如果某个块仍然大于设定的 chunk_size，它会用下一个优先级的分隔符（如 "\n"）继续分割这个块。
+4. 循环此过程，直到所有文本块都小于目标大小。
+
+##### 特点：
+
+- 优点：非常灵活，通过调整 separators 列表可以很好地适配中文和其他语言的文本结构。
+- 缺点：可能不会 100% 保留原始文档的复杂层次结构（如节、小节）。
+
+#### LlamaIndex 的多种切分模式
+
+LlamaIndex 是一个专门为构建 RAG 应用而设计的高性能框架。它提供了比 LangChain 更丰富、更语义化的节点（Node，即文本块）构建方式。
+
+##### 核心工作模式
+
+LlamaIndex 不仅仅是一个简单的“分割器”，它提供了多种构建节点的策略：
+
+- SimpleNodeParser：类似于 LangChain 的 RecursiveCharacterTextSplitter，基于大小和重叠进行简单分块。
+- 语义分割器（SemanticSplitterNodeParser）：高级功能。它使用嵌入模型（Embedding Model）来计算句子的语义相似度，尝试在语义边界（如主题转换处）进行分割，而不仅仅是字符边界。这能产生质量更高的块。
+- 基于标题的分割器（HierarchicalNodeParser）：高级功能。它会解析文档的标题结构（如 H1, H2, H3），并根据这个层次结构来创建节点。这对于技术手册、论文等结构清晰的文档非常有效。
+- 句子窗口分割器（SentenceWindowNodeParser）：将每个句子作为一个独立的节点，但在检索时返回句子周围的上下文窗口。适用于需要极高精度的任务。
+
+##### 特点：
+
+- 优点：提供了研究级的、更智能的分块策略，能产生更高质量的检索结果。
+- 缺点：概念更复杂（Document, Node, Index 等），学习曲线稍陡。
 
 ### 中文嵌入模型（Embedding Model）
 
@@ -112,6 +146,8 @@ Marker 专注于将 PDF 等文档高保真地转换为 Markdown 和 HTML，特�
 
 ### 向量数据库（Vector Database）
 
+Chroma、Weaviate、Milvus、Qdrant
+
 ## 实践
 
 ### Open WebUI
@@ -134,7 +170,13 @@ Open WebUI 支持 Chroma、Weaviate、Milvus、Qdrant 等。
 
 Open WebUI 支持多种文档提取引擎，以适应不同的需求和文档类型。每种提取方法都有其自身的优势，适用于不同的场景。
 
-调整 chunk size（推荐 500–1000 tokens，overlap 100–200）。
+Open WebUI 也支持多种文本分割器（chunk splitter），包括：
+
+- 字符：按 **固定的字符长度** 来切分文本，例如每 500 个字符一块，不管语义、句子完整性。
+- Token（tiktoken）：使用 OpenAI 的 **tiktoken** 分词器（或兼容的 tokenizer）来切分，按 token 数量 控制 chunk 大小。（一个 token 大概对应英文 0.75 个词，中文 1-2 个汉字或标点符号）
+- Markdown（标题）：按 **Markdown 标题层级（#、##、### ...）** 来切分，把标题下的内容作为一个整体 chunk。
+
+Open WebUI 也支持滑动窗口，调整 chunk size（推荐 500–1000 tokens，overlap 100–200）。
 
 中文文件推荐 “段落切分 + 滑动窗口”。
 
@@ -142,11 +184,9 @@ Open WebUI 支持多种文档提取引擎，以适应不同的需求和文档类
 
 在 open-webui/config.json 或管理界面里，可以指定 Embedding 服务：
 
-如果用 OpenAI：填上 API Key，选 text-embedding-3-large。
-
-如果用 HuggingFace 本地模型（如 bge-large-zh）：
-
-启动一个本地 embedding 服务（可用 text-embeddings-inference 或 llama-index-embedding-server）。
+- 如果用 OpenAI：填上 API Key，选 text-embedding-3-large。
+- 如果用 Ollama，可以用 Ollama 获取 bge-m3 模型，然后填入 Ollama 的地址和模型名称。
+- 如果没有外网，可以使用 huggingface 下载本地模型，然后导入到 Open WebUI 中。
 
 在 Open WebUI 里把 embedding endpoint 指向这个服务。
 
@@ -154,8 +194,7 @@ Open WebUI 支持多种文档提取引擎，以适应不同的需求和文档类
 
 当你提问时，Open WebUI 会：
 
-把问题做 embedding
-
-去向量库检索相关片段
+- 把问题做 embedding
+- 去向量库检索相关片段
 
 把结果拼接进 prompt，交给大模型回答。

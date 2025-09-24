@@ -1605,4 +1605,38 @@ Java 对象持久化的 API。是 SUN 公司推出的一套基于 ORM 的规范�
 
 [图解 Java JDBC 和 JPA 的区别](https://zhuanlan.zhihu.com/p/504680805)
 
+### 其他相关概念
+
+#### DO （Data Object）
+
+与数据库表结构一一对应，通过 DAO 层向上传输数据源对象。
+
+例如，数据库中有一个用户表（user），那么对应的 DO 类可能被命名为 UserDO，它包含了用户表中的所有字段。
+
+#### BO（Business Object）
+
+封装业务逻辑的对象，由 Service 层输出，包含业务操作相关的数据。
+
+BO 通常包含了多个 DO 的组合，或者对 DO 进行了业务逻辑上的封装，以便在 Service 层中使用。
+
+#### DTO（Data Transfer Object）
+
+数据传输对象，通常用于 Service 层向外部接口或第三方平台传输数据，或者在 Web 层与 Service 层之间传递数据。
+
+#### VO （View Object）
+
+视图对象，用于展示层的对象，通常是 Web 层向模板渲染引擎层传输的对象。
+
+VO 通常包含了展示给用户看的数据，可能只包含部分 DO 的字段，且格式可能经过转换以适应展示需求。
+
+#### AO（Application Object）
+
+应用对象，在 Web 层与 Service 层之间抽象的复用对象模型，极为贴近展示层，复用度不高。
+
+AO 通常用于封装 Web 层接收的请求数据，可能包含对数据的初步校验和转换。
+
+#### POJO（Plain Ordinary Java Object）
+
+POJO 专指只有 setter/getter/toString 的简单类，包括 DO/DTO/BO/VO 等。
+
 ## [Spring 5 详细示例](https://www.cnblogs.com/xuweiweiwoaini/p/13660065.html)
