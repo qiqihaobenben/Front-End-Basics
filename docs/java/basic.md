@@ -1748,6 +1748,8 @@ abstract class Person {
 
 ### abstract 注意事项
 
+- 抽象类中不一定有抽象方法
+- 抽象类中可以有具体的普通属性变量和普通方法
 - 如果一个 `class` 定义了方法，但没有具体执行代码，这个方法就是抽象方法，抽象方法用 `abstract` 修饰。因为无法执行抽象方法，因此这个类也必须申明为抽象类（abstract class），即定义了抽象方法的 class 必须被定义为抽象类。
 - 使用 `abstract` 修饰的类就是抽象类。我们无法实例化一个抽象类,`Person p = new Person(); // 编译错误`
 - 无法实例化的抽象类有什么用？因为抽象类本身被设计成只能用于被继承，因此，抽象类可以强迫子类实现其定义的抽象方法，否则编译会报错。因此，抽象方法实际上相当于定义了“规范”。
@@ -1826,11 +1828,11 @@ class Student implements Person {
 }
 ```
 
-接口没有构造方法，只能包含嵌套类型、抽象方法和常量。因为没有构造方法，所以接口不能被实例化，只能被类所实现或被另外的接口所继承。
-
 ### 接口的定义
 
 Java 的接口特指 interface 的定义，表示一个接口类型和一组方法签名，而编程接口泛指接口规范，如方法签名，数据格式，网络协议等。
+
+Java 的接口没有构造方法，只能包含嵌套类型、抽象方法和常量。因为没有构造方法，所以接口不能被实例化，只能被类所实现或被另外的接口所继承。
 
 所谓 interface，就是比抽象类还要抽象的纯抽象接口，因为它连字段都不能有。因为接口定义的所有方法默认都是 public abstract 的，所以这两个修饰符不需要写出来（写不写效果都一样）。
 
@@ -2018,6 +2020,66 @@ class MyClass {}
 
 #### 实现接口的格式
 
+一个类可以通过在声明中使用 `implements` 关键字来实现一个接口。
+
+```
+[修饰符] class 类名称 [extends 基类名称] implements 接口1, 接口2, ... {
+    // 类体
+    // 在类中，要实现所有接口中声明的方法
+}
+```
+
+#### 实现多个接口时的常量和方法冲突问题
+
+##### 常量
+
+如果常量冲突了，那就使用接口的完全限定名`接口名称.常量`（InterfaceName.CONSTANT_NAME）来明确指定要访问的常量，避免冲突。
+
+##### 抽象方法
+
+如果类实现了多个具有相同方法签名（返回值、方法名、参数类型列表都相同，形参的名称可以随便）的抽象方法，只需要在实现类中实现其中一个方法即可。
+
+##### default 方法和 static 方法
+
+从 Java 8 开始，接口可以包含 default 方法和 static 方法。
+
+- 如果两个或多个接口提供了同名且同签名的 default 方法，实现类需要显式重写该方法来解决冲突。
+- 如果类实现了一个接口，该接口的 default 方法与类的现有方法（包括继承的方法）具有相同签名，那么类必须重写这个 default 方法。
+- 对于 static 方法，如果存在同名且同签名的 static 方法，则不会发生冲突，因为 static 方法属于接口本身，不属于具体的对象。但是，如果一个 default 方法和一个 static 方法签名相同，default 方法将优先被调用。
+
+```java
+interface InterfaceA {
+    void myMethod(); // 抽象方法
+    default void defaultMethod() {
+        System.out.println("Method from InterfaceA");
+    }
+}
+
+interface InterfaceB {
+    void myMethod(); // 抽象方法
+    default void defaultMethod() {
+        System.out.println("Method from InterfaceB");
+    }
+}
+```
+
+```java
+class MyClass implements InterfaceA, InterfaceB {
+    @Override
+    public void myMethod() { // 必须提供 myMethod 的实现
+        System.out.println("Implementation for myMethod");
+    }
+
+    @Override
+    public void defaultMethod() { // 必须显式重写 defaultMethod 来解决冲突
+        System.out.println("Implementation for defaultMethod in MyClass");
+        // 如果想调用接口中的默认方法，可以使用接口名.super.方法名()
+        // InterfaceA.super.defaultMethod();
+        // InterfaceB.super.defaultMethod();
+    }
+}
+```
+
 ### 函数式接口
 
 #### 定义
@@ -2071,7 +2133,7 @@ public interface Calculator {
 语法：
 
 ```
-[修饰符] class 类名<参数类型1, 参数类型2,...> [extends 基类名] [implements 接口1名, 接口2名, ...] {
+[修饰符] class 类名<参数类型1, 参数类型2,...> [extends 基类名] [implements 接口1, 接口2, ...] {
     类体
 }
 ```
@@ -2106,6 +2168,40 @@ System.out.println(intVal);
 ```
 [修饰符] <类型参数1, 类型参数2, ...> 返回值类型 方法名 (形参列表) {
     方法体
+}
+```
+
+```java
+public class MyClass {
+    public <T> void myMethod(T t) {
+        System.out.println(t);
+    }
+}
+```
+
+#### 泛型接口的声明
+
+语法：
+
+```
+[修饰符] interface 接口名<类型参数1, 类型参数2, ...> [extends 接口1名, 接口2名, ...] {
+    接口体
+}
+```
+
+```java
+public interface MyInterface<T> {
+    void myMethod(T t);
+}
+```
+
+#### 泛型抽象类的声明
+
+语法：
+
+```
+[修饰符] abstract class 类名<类型参数1, 类型参数2, ...> [extends 基类名] [implements 接口1名, 接口2名, ...] {
+    类体
 }
 ```
 
@@ -2804,6 +2900,8 @@ Java 内置了一套异常处理机制，总是使用异常来表示错误，通
 
 ### 异常 class 的继承关系
 
+Java 是一种面向对象的语言，所以它的异常是通过面向对象的方式来处理的。如果程序在运行时发生了异常，就会产生对应的异常类对象。这些异常类对象都是 Throwable 类的派生类的实例。Throwable 类有两个派生类，分别是 Error 类和 Exception 类。
+
 - Object
   - Throwable
     - Error 严重的错误
@@ -2826,7 +2924,7 @@ Java 内置了一套异常处理机制，总是使用异常来表示错误，通
       - SQLException
       - TimeoutException
 
-从继承关系可知：Throwable 是异常体系的根，它继承自 Object。Throwable 有两个体系：Error 和 Exception，Error 表示严重的错误，程序对此一般无能为力。而 Exception 则是程序运行时的错误，它可以被捕获并处理。
+从继承关系可知：Throwable 是异常体系的根，它继承自 Object。Throwable 有两个体系：Error 和 Exception，Error 类的异常是和虚拟机有关的问题，表示严重的错误，这些错误会直接导致程序崩溃中断，属于无法处理和捕捉的，程序对此一般无能为力。而 Exception 则是程序正常运行中的一些可以预料的意外情况导致的错误，它可以被捕获并处理。
 
 Exception 又分为两大类：
 
@@ -2835,11 +2933,10 @@ Exception 又分为两大类：
 
 某些异常是应用程序逻辑处理的一部分，应该捕获并处理。例如：
 
-- NumberFormatException：数值类型的格式错误
 - FileNotFoundException：未找到文件
 - SocketException：读取网络失败
 
-还有一些异常是程序逻辑编写不对造成的，应该修复程序本身。例如：
+还有一些异常是程序逻辑编写不对造成的，应该暴漏出来，让程序员修复程序本身。例如：
 
 - NullPointerException：空指针异常，俗称 NPE，对某个 null 的对象调用方法或字段就会产生 NullPointerException，这个异常通常是由 JVM 抛出的
 - IndexOutOfBoundsException：数组索引越界
@@ -2850,7 +2947,7 @@ Exception 又分为两大类：
   - 只要是方法声明的 Checked Exception，不在调用层捕获，也必须在更高的调用层捕获。所有未捕获的异常，最终也必须在 main()方法中捕获，不会出现漏写 try 的情况。这是由编译器保证的。main()方法也是最后捕获 Exception 的机会。
 - 不必须捕获的异常，或者说无需强制捕获，包括 Error 及其子类，RuntimeException 及其子类。
 
-通俗来讲，必须处理的异常(Checked Exception)，就像开车必须系安全带一样，这类异常 Java 强制你必须处理；可以不处理的异常(Unchecked Exception)，就像走路可能会摔倒，但你不需要每走一步都做特殊处理
+通俗来讲，必须处理的异常(Checked Exception)，就像开车必须系安全带一样，这类异常 Java 强制你必须处理；可以不处理的异常(Unchecked Exception)，就像走路可能会摔倒，但你不需要每走一步都做特殊处理。
 
 ### 常见的异常种类
 
@@ -2879,6 +2976,10 @@ Exception 又分为两大类：
 先看个示例，查看 Integer.java 源码可知，抛出异常的方法代码如下：
 
 ```java
+修饰符 返回值类型 方法名(参数类型1 参数名1, 参数类型2 参数名2, ...) throws 异常类型1, 异常类型2, ... {
+    // 方法体
+}
+
 public static int parseInt(String s, int radix) throws NumberFormatException {
     if (s == null) {
         throw new NumberFormatException("null");
