@@ -14,7 +14,7 @@
 
 ## 图片
 
-- [初识 Midjourney](https://mp.weixin.qq.com/s/Dh8GhqCgQ_PXeN2HAvCpVQ)
+- [初识 Midjourney](https://mp.weixin.qq.com/s/Dh8GhqCgQ_PXeN2HAvCpVQ) 简单明了
 - [Midjourney 教程](https://learningprompt.wiki/zh-Hans/docs/midjourney-learning-path)
 - [PromptHero - Search prompts for Stable Diffusion, ChatGPT & Midjourney](https://prompthero.com/) 数百万人工智能图片模板包含提示词
 - [可视化编辑提示词 | 一键翻译 AIGC 提示词 | Midjourney 提示词](https://moonvy.com/apps/ops/) 可以跟上个链接结合使用，把已经生成的模板提示词可视化的展示出来做修改

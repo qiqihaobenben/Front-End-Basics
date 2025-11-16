@@ -1,5 +1,21 @@
 # MyBatis 与 MyBatis-Plus 概念解析
 
+## 列举一些概念
+
+### 实体类
+
+实体类是专门用来存放数据的类，类的属性用来保存具体的值。每一个实体类都要提供无参构造方法，每一个属性都要提供 Getter/Setter 方法，除此之外开发者可以根据项目需求重写 hashCode()、equals() 和 toString() 方法。
+
+### 简称含义
+
+- PO：Persistent Object，持久化对象，对应数据库中的一行数据。PO 实体类的属性与数据库表的字段一一对应，通常直接用表明为实体类命名。例如：t_user 表的实体类命名为 UserPO。
+- DO：Data Object，数据对象，与 PO 用法类似，区别是 PO 用来封装持久保存的数据（例如 MySQL 中的数据），DO 通常用来封装非持久的数据（例如 Redis 缓存中的数据）
+- DTO：Data Transfer Object，数据传输对象，是服务模块向外传输的业务数据对象，通常用业务名做前缀。业务对象的属性不一定全来源于一张表，可能是由多张表的数据加工而成。例如，登录模块发送的 UserDTO 对象，除了包含用户名、昵称以外，还有可能包含用户的邮箱、IP 地址、权限认证等数据，这些数据都来自不同的表，甚至来自不同的数据库。
+- BO：Business Object，业务对象，与 DTO 类似。
+- VO：View Object，视图对象，是服务模块向外部（通常是前端）传输的数据对象，对象中包含的属性必须全部在页面中展示出来，不应该有页面不需要的数据。例如，学生成绩单可以命名为 SchoolReportVO，类中保存的数据出了学生基本信息之外就是各科成绩，像学生的兴趣爱好，家庭住址等成绩单中没有的数据不应该保存在类中。
+- DAO：Data Access Object，数据访问对象，是数据访问层（DAO）的接口，用于定义对数据库的操作方法。DAO 接口通常与 Mapper 接口对应，用于封装对数据库的 CRUD 操作。
+- POJO：Plain Ordinary Java Object，简易 Java 对象，不推荐使用，含义太广泛，上文提到的 PO、DO、VO、DTO、BO 等都可以称为 POJO。
+
 ## mapper、entiry、service、mapper 的 xml 概念及相互关系
 
 ### 一、核心概念和关系

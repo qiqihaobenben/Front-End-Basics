@@ -7,6 +7,9 @@
 
 ## Cursor
 
+- [Cursor or Claude Code ？— 这道题怎么选](https://mp.weixin.qq.com/s/s9v1do9YlMBN_xECkIl4tw)
+  - 日期：2025.8.13
+  - 总结：很好的对比和理解
 - [与 Cursor 结对编程的四个月，我大彻大悟了！](https://mp.weixin.qq.com/s/ekNxpuq5wG8AN3GyF359hA)
 
 需要弄清楚几个问题？
