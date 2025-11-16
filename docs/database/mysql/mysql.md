@@ -1670,14 +1670,14 @@ mysqldump -uroot -p --all-databases > /tmp/all.sql # 需要回车后输入密码
 
 # --add-drop-table 在导出的备份文件中，在 CREATE TABLE 语句前加上 DROP TABLE 语句
 
-# --databases 导出database1、database2两个数据库的所有数据
+# --databases 导出database1、database2两个数据库的所有数据，注意看 --user root --password=root 的用法
 mysqldump --user root --password=root --databases database1 database2 > /tmp/user.sql
 
 # --tables 导出database1中的table1、table2表
 mysqldump -uroot -proot --databases database1 --tables table1 table2  > /tmp/database1.sql
 
 # --routines、-R 导出目标数据库里的触发器和函数
-mysqldump  -uroot -proot --host=localhost --all-databases --routines
+mysqldump  -uroot -proot --host=localhost --all-databases --routines > /tmp/all_with_routines.sql
 
 # --where、-w 只导出符合WHERE条件的记录。如果条件包含命令解释符专用空格或字符，一定要将条件引用起来，单引号和双引号都可以
 mysqldump -uroot -proot --databases database1 --tables table1 --where='id=1'  > /tmp/table1.sql
@@ -1690,6 +1690,16 @@ mysqldump -uroot -proot --no-create-info --databases database1 --tables table1 -
 
 # --host、-h 需要导出的主机信息，跨服务器导出导入数据
 mysqldump --host=h1 -uroot -proot --databases database1 |mysql --host=h2 -uroot -proot database2
+
+# 推荐添加的参数，添加这些参数提高备份可靠性
+mysqldump -uroot -p \
+  --single-transaction \
+  --routines \
+  --events \
+  --triggers \
+  --add-drop-database \
+  --add-drop-table \
+  --all-databases > /tmp/complete_backup.sql
 
 ```
 

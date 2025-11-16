@@ -26,6 +26,9 @@ sudo usermod -aG sudo sysadmin  # 对于Ubuntu/Debian
 
 ```bash
 PermitRootLogin no
+
+# 禁止 root 用户密码登录，但是可以使用密钥
+PermitRootLogin prohibit-password
 ```
 
 #### 3. 更改默认 SSH 端口
