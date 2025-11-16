@@ -48,9 +48,12 @@ UEFI 启动的过程如下：
 2. 硬件初始化：UEFI 快速识别和初始化系统硬件，如处理器、内存、键盘、显示器等。这个过程比传统 BIOS 的 POST 更快，更高效。
 3. 引导管理器（Boot Manager）：UEFI 使用内置的引导管理器来处理启动流程，管理从哪个设备引导系统。
 4. 加载 EFI 应用程序/操作系统引导加载程序：选择启动设备，然后 UEFI 从选定的启动设备上加载 EFI 应用程序，通常是操作系统的引导加载程序（如 Windows 的 bootmgfw.efi 或 Linux 的 grubx64.efi）。这些 EFI 应用程序位于 FAT32 格式的 EFI 系统分区（ESP）上。
-
 5. 操作系统加载：操作系统的引导加载程序接管，继续加载操作系统到内存中。
 6. 操作系统接管控制：操作系统加载完成后，UEFI 将控制权完全交给操作系统。
+
+#### 详细启动过程
+
+[详细启动过程文档](./startup)
 
 ## Linux 基础
 
@@ -62,7 +65,7 @@ Linux 版本分为两种：内核版本和发行版本
 
 Linux 的发行版本有很多，例如 Debian 系列的 Debian、Ubuntu、Linux Mint 等，Redhat 系列的 Redhat、Fedora、CentOS 等，国产系列的龙芯、鲲鹏、飞腾等。
 
-Linux 由来和 Linux 各发行版的详细描述，可以参考 [Linux 版本详述](../server/linux/basics.md)
+Linux 由来和 Linux 各发行版的详细描述，可以参考 [Linux 版本详述](../server/linux/basics)
 
 #### 查看 Linux 版本
 

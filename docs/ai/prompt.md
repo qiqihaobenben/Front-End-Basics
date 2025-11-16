@@ -3,6 +3,8 @@
 ## prompt 编写
 
 - [程序员必备！面向 Prompt 编程全攻略](https://mp.weixin.qq.com/s/YwhrGzTcOsA_eOWFTG1ZXg)
+- [prompt 的参数调优入门指南 - 小白也能轻松掌握](https://mp.weixin.qq.com/s/t1eEbOwGX13h-99L3vNYsA)
+- [万字长文解码如何玩转 Prompt（附实践应用）](https://mp.weixin.qq.com/s/ad6y-pCe1_PV7iNA7Uh1bg)
 
 ## prompt 例子
 

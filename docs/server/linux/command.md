@@ -4,6 +4,8 @@
 
 `ps` 命令是 Process Status 的缩写，用于显示当前运行在系统上的进程信息，包括进程 ID（PID）、状态、运行时间、CPU 和内存占用等。ps 命令列出的是当前那些进程的快照，就是执行 ps 命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用 top 命令。
 
+Linux 的 ps 是混合了 UNIX 和 BSD 风格的工具，不同的发行版可能有细微差异，BSD 风格和 UNIX 风格输出格式不同。**日常使用建议始终选择 `ps aux` （BSD 风格）**，避免兼容性问题，如果需要严格遵循 POSIX 标准，可以使用 `ps -ef`（UNIX 风格）。避免使用 `ps -aux` 命令，因为 `-aux` 是 BSD 风格的扩展参数，在某些发行版上可能不兼容。
+
 ### 1. 参数介绍
 
 `ps` 命令有许多参数，用于控制输出的格式和内容。常用的参数包括：
@@ -31,8 +33,8 @@ ps aux
 - PID ：进程 ID
 - %CPU：进程 CPU 的占用率
 - %MEM：进程物理内存的占用率
-- VSZ ：进程占用的虚拟内存量 (Kbytes)
-- RSS ：进程当前实际上占用了多少内存
+- VSZ ：进程占用的虚拟内存量 (KB)
+- RSS ：进程当前实际上占用了多少内存（KB）
 - TTY ：进程是在哪个终端机上面运作，若与终端机无关，则显示 ?，另外， tty1-tty6 是本机上面的登入者程序，若为 pts/0 等等的，则表示为由网络连接进主机的程序。
 - STAT：该程序目前的状态，主要的状态有
   - R ：运行；该程序目前正在运作，或者是可被运作
@@ -40,9 +42,20 @@ ps aux
   - S ：中断；该程序目前正在睡眠当中 (可说是 idle 状态)，但可被某些讯号 (signal) 唤醒。
   - T ：停止：该程序目前正在侦测或者是停止了
   - Z ：僵尸：该程序应该已经终止，但是其父程序却无法正常的终止他，造成 zombie (僵尸) 程序的状态
+  - X ：死亡：该程序已经被砍掉，无法被唤醒（很少见）
+  - `<` ：高优先级
+  - `N` ：低优先级
+  - `s` ：会话领导者（Session leader）
+  - `l` ：多线程进程
+  - `+` ：前台进程组
 - START：该进程启动的时间点
 - TIME ：进程从启动后到现在，实际占用 CPU 的总时间
 - COMMAND：启动该进程的命令
+
+示例组合状态：
+
+- `Ss+`：会话领导者 + 可中断睡眠 + 前台进程
+- `Dl`：不可中断睡眠 + 多线程
 
 #### 显示当前所有进程详细信息
 
@@ -69,13 +82,28 @@ ps -u username
 
 ```bash
 ps -p PID
+
+ps e -p [PID]               # 可以显示环境变量（e参数）
+
+ps -ef | grep nginx          # 通过名称过滤
+ps -C nginx -o pid=         # 仅输出PID（-C按命令名过滤）
+pgrep -u root nginx         # 专用工具（等效上一条）
 ```
+
+#### 自定义输出字段
+
+```bash
+ps -eo pid,ppid,user,%cpu,%mem,command --sort=-%cpu
+```
+
+- ​​-o​​：自定义列
+- --sort​​：按 CPU 降序排序
 
 ### 常用实际应用案例
 
 - **查看系统负载情况**：通过 `ps aux` 命令查看当前系统所有进程的 CPU 和内存占用情况，帮助排查系统负载高的原因。
 - **查找特定进程**：通过 `ps -ef | grep process_name` 查找特定进程的信息，用于监控和管理。
-- **定时监控进程**：结合 `watch` 命令，定时执行 `ps` 命令，实时监控系统中的进程运行情况。
+- **定时监控进程**：结合 `watch` 命令，定时执行 `ps` 命令，实时监控系统中的进程运行情况。`watch -n 1 'ps -eo pid,ppid,%cpu,%mem,command --sort=-%cpu | head -n 10'` 每 1 秒刷新 CPU 占用 Top 10
 
 ## top 命令
 
@@ -1716,3 +1744,15 @@ another_pattern_file.txt
 pattern_file.txt
 another_pattern_file.txt
 ```
+
+## 关机
+
+```bash
+# 同步数据，然后重启
+sync; sync; sync; reboot
+
+# 同步数据，然后关机
+sync; sync; sync; poweroff
+```
+
+- [正确关机的方法](https://zq99299.github.io/linux-tutorial/tutorial-basis/04/04.html#%E6%AD%A3%E7%A1%AE%E5%85%B3%E6%9C%BA%E7%9A%84%E6%96%B9%E6%B3%95)

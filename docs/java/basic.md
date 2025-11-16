@@ -556,8 +556,8 @@ String s3 = ""; // s3指向空字符串，不是null
 
 ##### Java 的数组有几个特点：
 
-- 数组所有元素初始化为默认值，整型都是 0，浮点型是 0.0，布尔型是 false；
-- 数组是同一数据类型的集合，数组一旦创建后，大小就不可变；（数组实质是一块地址连续的内存，就像一沓页码连续的白纸）
+- 数组所有元素初始化为默认值，整型都是 0，浮点型是 0.0，布尔型是 false，引用类型是 null；
+- 数组是**同一数据类型的集合**，数组一旦创建后，大小就不可变；（数组实质是一块地址连续的内存，就像一沓页码连续的白纸）
 - 可以通过索引访问数组元素，但索引超出范围将报错。数组索引从 0 开始，例如，5 个元素的数组，索引范围是 0~4。
 - 可以修改数组中的某一个元素，使用赋值语句，例如，`ns[1] = 79;`。
 - 可以用`数组变量.length` 获取数组大小
@@ -595,6 +595,8 @@ String[] names = {
 #### 类 class
 
 #### 接口 interface
+
+在本文 `## 接口（interface）` 章节中，有详细介绍。
 
 #### Lambda Lambda
 
@@ -1746,6 +1748,8 @@ abstract class Person {
 
 ### abstract 注意事项
 
+- 抽象类中不一定有抽象方法
+- 抽象类中可以有具体的普通属性变量和普通方法
 - 如果一个 `class` 定义了方法，但没有具体执行代码，这个方法就是抽象方法，抽象方法用 `abstract` 修饰。因为无法执行抽象方法，因此这个类也必须申明为抽象类（abstract class），即定义了抽象方法的 class 必须被定义为抽象类。
 - 使用 `abstract` 修饰的类就是抽象类。我们无法实例化一个抽象类,`Person p = new Person(); // 编译错误`
 - 无法实例化的抽象类有什么用？因为抽象类本身被设计成只能用于被继承，因此，抽象类可以强迫子类实现其定义的抽象方法，否则编译会报错。因此，抽象方法实际上相当于定义了“规范”。
@@ -1786,7 +1790,7 @@ e.run();
 
 ## 接口（interface）
 
-接口（interface）是一种公共的规范，是一种引用数据类型。
+在 Java 中，接口是一种引用数据类型，与类相似。
 
 在抽象类中，抽象方法本质上是定义接口规范：即规定高层次类的接口，从而保证所有子类都有相同的接口实现，这样，多态就能发挥出威力。
 
@@ -1827,6 +1831,8 @@ class Student implements Person {
 ### 接口的定义
 
 Java 的接口特指 interface 的定义，表示一个接口类型和一组方法签名，而编程接口泛指接口规范，如方法签名，数据格式，网络协议等。
+
+Java 的接口没有构造方法，只能包含嵌套类型、抽象方法和常量。因为没有构造方法，所以接口不能被实例化，只能被类所实现或被另外的接口所继承。
 
 所谓 interface，就是比抽象类还要抽象的纯抽象接口，因为它连字段都不能有。因为接口定义的所有方法默认都是 public abstract 的，所以这两个修饰符不需要写出来（写不写效果都一样）。
 
@@ -1927,9 +1933,152 @@ class Student implements Person {
 
 #### 接口中的私有方法
 
+#### 接口中的嵌套类型
+
+在 Java 中，接口（Interface） 可以包含 嵌套类型（Nested Types），包括：
+
+1. 嵌套接口（Nested Interface）
+2. 嵌套类（Nested Class）
+3. 嵌套枚举（Nested Enum）
+4. 嵌套注解（Nested Annotation）
+
+这些嵌套类型定义在接口内部，并且默认是 public static 的（即使不显式声明）。
+
+##### 1. 嵌套接口（Nested Interface）
+
+```
+public interface OuterInterface {
+    // 嵌套接口
+    interface NestedInterface {
+        void nestedMethod();
+    }
+}
+
+使用方式：
+class MyClass implements OuterInterface.NestedInterface {
+    @Override
+    public void nestedMethod() {
+        System.out.println("实现嵌套接口的方法");
+    }
+}
+```
+
+##### 2. 嵌套类（Nested Class）
+
+```
+public interface OuterInterface {
+    // 嵌套类（默认是 public static）
+    class NestedClass {
+        public void print() {
+            System.out.println("嵌套类的方法");
+        }
+    }
+}
+
+使用方式：
+OuterInterface.NestedClass nestedObj = new OuterInterface.NestedClass();
+nestedObj.print(); // 输出："嵌套类的方法"
+```
+
+##### 3. 嵌套枚举（Nested Enum）
+
+```
+public interface OuterInterface {
+    // 嵌套枚举
+    enum NestedEnum {
+        RED, GREEN, BLUE
+    }
+}
+
+使用方式：
+OuterInterface.NestedEnum color = OuterInterface.NestedEnum.RED;
+System.out.println(color); // 输出："RED"
+```
+
+##### 4. 嵌套注解（Nested Annotation）
+
+```
+public interface OuterInterface {
+    // 嵌套注解
+    @interface NestedAnnotation {
+        String value();
+    }
+}
+
+使用方式：
+@OuterInterface.NestedAnnotation("测试")
+class MyClass {}
+```
+
+##### 为什么接口可以包含嵌套类型？
+
+1. 逻辑分组：如果某个接口、类、枚举或注解仅与当前接口相关，可以嵌套定义，提高代码组织性。
+2. 避免命名冲突：嵌套类型的作用域限定在接口内，避免全局命名污染。
+3. 默认 public static：嵌套类型可以直接通过接口名访问，无需实例化接口（因为接口本身不能实例化）。
+
 ### 接口的实现
 
 #### 实现接口的格式
+
+一个类可以通过在声明中使用 `implements` 关键字来实现一个接口。
+
+```
+[修饰符] class 类名称 [extends 基类名称] implements 接口1, 接口2, ... {
+    // 类体
+    // 在类中，要实现所有接口中声明的方法
+}
+```
+
+#### 实现多个接口时的常量和方法冲突问题
+
+##### 常量
+
+如果常量冲突了，那就使用接口的完全限定名`接口名称.常量`（InterfaceName.CONSTANT_NAME）来明确指定要访问的常量，避免冲突。
+
+##### 抽象方法
+
+如果类实现了多个具有相同方法签名（返回值、方法名、参数类型列表都相同，形参的名称可以随便）的抽象方法，只需要在实现类中实现其中一个方法即可。
+
+##### default 方法和 static 方法
+
+从 Java 8 开始，接口可以包含 default 方法和 static 方法。
+
+- 如果两个或多个接口提供了同名且同签名的 default 方法，实现类需要显式重写该方法来解决冲突。
+- 如果类实现了一个接口，该接口的 default 方法与类的现有方法（包括继承的方法）具有相同签名，那么类必须重写这个 default 方法。
+- 对于 static 方法，如果存在同名且同签名的 static 方法，则不会发生冲突，因为 static 方法属于接口本身，不属于具体的对象。但是，如果一个 default 方法和一个 static 方法签名相同，default 方法将优先被调用。
+
+```java
+interface InterfaceA {
+    void myMethod(); // 抽象方法
+    default void defaultMethod() {
+        System.out.println("Method from InterfaceA");
+    }
+}
+
+interface InterfaceB {
+    void myMethod(); // 抽象方法
+    default void defaultMethod() {
+        System.out.println("Method from InterfaceB");
+    }
+}
+```
+
+```java
+class MyClass implements InterfaceA, InterfaceB {
+    @Override
+    public void myMethod() { // 必须提供 myMethod 的实现
+        System.out.println("Implementation for myMethod");
+    }
+
+    @Override
+    public void defaultMethod() { // 必须显式重写 defaultMethod 来解决冲突
+        System.out.println("Implementation for defaultMethod in MyClass");
+        // 如果想调用接口中的默认方法，可以使用接口名.super.方法名()
+        // InterfaceA.super.defaultMethod();
+        // InterfaceB.super.defaultMethod();
+    }
+}
+```
 
 ### 函数式接口
 
@@ -1963,6 +2112,185 @@ public interface Calculator {
 
     // 从Object类继承的方法不计入抽象方法数量
     boolean equals(Object obj);
+}
+
+```
+
+## 泛型
+
+泛型可以帮助建立类型安全的集合，本质是“数据类型的参数化”，即处理的数据类型不是固定的，是可以作为参数传入的。
+
+可以把“泛型”理解为数据类型的一个占位符，即告诉编译器，在调用泛型时必须传入一个实际的数据类型。
+
+泛型可以用在类、接口和方法中，分别被称为泛型类、泛型接口、泛型方法。
+
+### 泛型声明
+
+泛型是通过给类或接口添加参数类型（Type Parameters） 来实现的。需要说明的是，泛型的类型参数只能是类，例如 String、Integer、Double，不能是简单类型，例如 int、double。
+
+#### 泛型类的声明
+
+语法：
+
+```
+[修饰符] class 类名<参数类型1, 参数类型2,...> [extends 基类名] [implements 接口1, 接口2, ...] {
+    类体
+}
+```
+
+示例：
+
+```java
+// PencilCase.java
+public class PencilCase<T> {
+    private T t;
+
+    public void add(T t) {
+        this.t = t;
+    }
+
+    public T get() {
+        return t;
+    }
+}
+
+// 其他文件
+PencilCase<Integer> pencilCase = new PencilCase<>();
+pencilCase.add(new Integer(20));
+Integer intVal = pencilCase.get();
+System.out.println(intVal);
+```
+
+#### 泛型方法的声明
+
+语法
+
+```
+[修饰符] <类型参数1, 类型参数2, ...> 返回值类型 方法名 (形参列表) {
+    方法体
+}
+```
+
+```java
+public class MyClass {
+    public <T> void myMethod(T t) {
+        System.out.println(t);
+    }
+}
+```
+
+#### 泛型接口的声明
+
+语法：
+
+```
+[修饰符] interface 接口名<类型参数1, 类型参数2, ...> [extends 接口1名, 接口2名, ...] {
+    接口体
+}
+```
+
+```java
+public interface MyInterface<T> {
+    void myMethod(T t);
+}
+```
+
+#### 泛型抽象类的声明
+
+语法：
+
+```
+[修饰符] abstract class 类名<类型参数1, 类型参数2, ...> [extends 基类名] [implements 接口1名, 接口2名, ...] {
+    类体
+}
+```
+
+### 泛型的类型参数命名惯例
+
+类型参数的命名规则和变量命名规则不太一样，它一般命名为单个大写字母。这主要是为了区分一个变量类型和一个类或接口名称之间的不同。
+
+最常用的类型参数名称有以下几个：
+
+- E - Element（元素）
+- K - Key（键）
+- V - Value（值）
+- T - Type（类型）
+- N - Number（数字）
+- R - Result（结果）
+- S, U, V 等 - 第二、第三、第四个类型等。
+
+### 限定类型参数
+
+限定类型参数的目的是让程序将传递进来的参数限制在一定范围内。
+
+其语法格式如下：
+
+```
+<类型参数 extends 类型参数的上限>
+```
+
+完整语法如下：
+
+```
+[修饰符] class 类名<类型参数 extends 类型参数的上限> [extends 基类名] [implements 接口1名, 接口2名, ...] {
+    类体
+}
+```
+
+还可以为类型参数设置多个上限（至多有一个父类上限，可以有多个接口上限），表明该类型参数必须是其父类的子类（是其父类也可），并且实现了多个接口上限。其语法格式如下：
+
+```
+<类型参数 extends 父类上限 & 接口 1 & 接口 2 & ...>
+```
+
+### 泛型通配符
+
+泛型中可以使用通配符（`?`）来表示一个未知类型。比如：指定一个能装“某些动物”的笼子，代码如下：
+
+```
+Coop<? extends Zoo> zooCoop = ...;
+```
+
+#### 上限
+
+`? extends Zoo` 就是一个限定通配符，可以称为“某些动物”，意思是“一个未知的类型，它是 Zoo 的派生类型，也可能是 Zoo 本身。”
+
+并且，Zoo 是所期望类型的“上限”。
+
+#### 下限
+
+`? super Zoo` 也是一个限定通配符，可以称为“某些动物”，意思是“一个未知的类型，它是 Zoo 的基类型，也可能是 Zoo 本身。”
+
+并且，Zoo 是所期望类型的“下限”。
+
+#### 无限
+
+无限定通配符 `?` 可以指定一个未知类型，这个未知类型可以是任何类型。
+
+无限定通配符本质上与 `? extends Object` 是等价的。
+
+### 类型擦除
+
+如果有泛型被实例化，那么编译器在编译代码的时候会进行类型擦除。
+
+类型擦除指的是编译器移除一个类、接口或方法中所有与类型参数相关的信息。
+
+经过类型擦除后，泛型类和普通类在程序运行的时候没有任何区别。
+
+例如，`PencilCase<String>` 被编译为 `PencilCase` 后，PencilCase 被称为原类型（Raw Type）。原类型指的是不带任何类型参数的类或接口。
+
+这意味着无法找出泛型类在运行时正在使用的是 Object 的什么子类，所以下面的代码示例是错误的：
+
+```java
+public class MyClass<E> {
+    public void myMethod(Object item) {
+        if(item instanceof  E) { // 编译器错误
+            ...
+        }
+        E item2 = new E(); // 编译器错误
+        E[] arr = new E[12]; // 编译器错误
+        E obj = (E)new Object(); //未经检查的类型转换警告
+    }
 }
 ```
 
@@ -2572,6 +2900,8 @@ Java 内置了一套异常处理机制，总是使用异常来表示错误，通
 
 ### 异常 class 的继承关系
 
+Java 是一种面向对象的语言，所以它的异常是通过面向对象的方式来处理的。如果程序在运行时发生了异常，就会产生对应的异常类对象。这些异常类对象都是 Throwable 类的派生类的实例。Throwable 类有两个派生类，分别是 Error 类和 Exception 类。
+
 - Object
   - Throwable
     - Error 严重的错误
@@ -2594,7 +2924,7 @@ Java 内置了一套异常处理机制，总是使用异常来表示错误，通
       - SQLException
       - TimeoutException
 
-从继承关系可知：Throwable 是异常体系的根，它继承自 Object。Throwable 有两个体系：Error 和 Exception，Error 表示严重的错误，程序对此一般无能为力。而 Exception 则是程序运行时的错误，它可以被捕获并处理。
+从继承关系可知：Throwable 是异常体系的根，它继承自 Object。Throwable 有两个体系：Error 和 Exception，Error 类的异常是和虚拟机有关的问题，表示严重的错误，这些错误会直接导致程序崩溃中断，属于无法处理和捕捉的，程序对此一般无能为力。而 Exception 则是程序正常运行中的一些可以预料的意外情况导致的错误，它可以被捕获并处理。
 
 Exception 又分为两大类：
 
@@ -2603,11 +2933,10 @@ Exception 又分为两大类：
 
 某些异常是应用程序逻辑处理的一部分，应该捕获并处理。例如：
 
-- NumberFormatException：数值类型的格式错误
 - FileNotFoundException：未找到文件
 - SocketException：读取网络失败
 
-还有一些异常是程序逻辑编写不对造成的，应该修复程序本身。例如：
+还有一些异常是程序逻辑编写不对造成的，应该暴漏出来，让程序员修复程序本身。例如：
 
 - NullPointerException：空指针异常，俗称 NPE，对某个 null 的对象调用方法或字段就会产生 NullPointerException，这个异常通常是由 JVM 抛出的
 - IndexOutOfBoundsException：数组索引越界
@@ -2618,7 +2947,7 @@ Exception 又分为两大类：
   - 只要是方法声明的 Checked Exception，不在调用层捕获，也必须在更高的调用层捕获。所有未捕获的异常，最终也必须在 main()方法中捕获，不会出现漏写 try 的情况。这是由编译器保证的。main()方法也是最后捕获 Exception 的机会。
 - 不必须捕获的异常，或者说无需强制捕获，包括 Error 及其子类，RuntimeException 及其子类。
 
-通俗来讲，必须处理的异常(Checked Exception)，就像开车必须系安全带一样，这类异常 Java 强制你必须处理；可以不处理的异常(Unchecked Exception)，就像走路可能会摔倒，但你不需要每走一步都做特殊处理
+通俗来讲，必须处理的异常(Checked Exception)，就像开车必须系安全带一样，这类异常 Java 强制你必须处理；可以不处理的异常(Unchecked Exception)，就像走路可能会摔倒，但你不需要每走一步都做特殊处理。
 
 ### 常见的异常种类
 
@@ -2647,6 +2976,10 @@ Exception 又分为两大类：
 先看个示例，查看 Integer.java 源码可知，抛出异常的方法代码如下：
 
 ```java
+修饰符 返回值类型 方法名(参数类型1 参数名1, 参数类型2 参数名2, ...) throws 异常类型1, 异常类型2, ... {
+    // 方法体
+}
+
 public static int parseInt(String s, int radix) throws NumberFormatException {
     if (s == null) {
         throw new NumberFormatException("null");

@@ -83,7 +83,7 @@ cat /etc/redhat-release
 
 ### Linux 基本组成
 
-Linux 系统一般由 4 哥主要部分：
+Linux 系统一般由 4 个主要部分：
 
 - 内核
 - Shell

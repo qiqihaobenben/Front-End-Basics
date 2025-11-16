@@ -391,10 +391,3 @@ public interface Calculator {
 | 数据类     | `Record`                    | 自动生成方法，减少样板代码 |
 | 多行字符串 | 文本块（`"""..."""`）       | 保留格式，易读易维护       |
 | 类型推断   | `var`                       | 减少冗余类型声明           |
-
-**学习建议**：
-
-1. **逐步替换旧代码**：在现有项目中尝试用新语法重构部分代码
-2. **IDE 辅助**：使用 IntelliJ IDEA 或 Eclipse 的语法提示功能
-3. **版本兼容性**：注意不同 Java 版本支持的特性（如 Java 8 不支持 Record）
-4. **官方文档**：参考 [OpenJDK 特性列表](https://openjdk.org/projects/jdk/) 了解每个版本的新功能

@@ -152,10 +152,10 @@ chsh -s /bin/bash newuser
 
 
 # 切换用户
-su - newuser
+su newuser
 # 切换系统管理员执行命令
 su
-su -root
+su root
 # 使用 sudo 命令也可以实现
 ```
 
