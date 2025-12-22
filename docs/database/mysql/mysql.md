@@ -1010,6 +1010,56 @@ SELECT cust_id, order_num FROM orders WHERE Year(order_date) = 2005 AND Month(or
 | Rand() | 返回一个随机数     |
 | Sqrt() | 返回一个数的平方根 |
 
+### CAST 函数
+
+CAST 是 SQL 中的类型转换函数，用于将一个值从一种数据类型转换为另一种数据类型。
+
+基本语法
+
+```
+CAST(expression AS target_type)
+-- 或（某些数据库支持）
+expression::target_type
+```
+
+```
+-- 字符串转 DECIMAL
+SELECT CAST('99.99' AS DECIMAL(10,2));  -- 99.99
+
+-- 字符串转整数
+SELECT CAST('123' AS INT);              -- 123
+SELECT CAST('123' AS SIGNED);           -- MySQL 写法
+
+-- 字符串转日期
+SELECT CAST('2024-01-15' AS DATE);      -- 2024-01-15
+
+-- 日期时间互转
+SELECT CAST(NOW() AS DATE);             -- 只要日期部分
+SELECT CAST('2024-01-15 14:30:00' AS DATETIME);
+
+-- 时间戳转日期
+SELECT CAST(UNIX_TIMESTAMP() AS DATETIME);
+
+-- 减少小数位（四舍五入）
+SELECT CAST(123.4567 AS DECIMAL(10,2));  -- 123.46
+
+-- 增加小数位（补零）
+SELECT CAST(123.4 AS DECIMAL(10,3));     -- 123.400
+
+-- 不同精度转换
+SELECT CAST(99.99 AS DECIMAL(5,1));      -- 100.0（四舍五入）
+
+-- 布尔值转换
+SELECT CAST(1 AS BOOLEAN);               -- TRUE
+SELECT CAST('true' AS BOOLEAN);          -- TRUE
+
+-- JSON 转换（现代数据库）
+SELECT CAST('{"id": 1}' AS JSON);
+
+-- 二进制转换
+SELECT CAST(65 AS BINARY);               -- 'A'（ASCII）
+```
+
 ---
 
 <br>
@@ -1065,7 +1115,7 @@ SELECT COUNT(*) AS num_items, MIN(prod_price) AS price_min, MAX(prod_price) AS p
 +-----------+-----------+-----------+-----------+
 ```
 
-### 参数 ALL 和 DISTINCT
+### `COUNT()` 参数 ALL 和 DISTINCT
 
 使用 DISTINCT 参数时，只会计算包含不同的值的行，如果指定参数为 ALL 或者不指定参数，默认参数为 ALL ，会计算所有的行。
 
@@ -1154,9 +1204,9 @@ SELECT <row_list>
 
 它的执行顺序如下(SQL 语句里第一个被执行的总是 FROM 子句)：
 
-1. FROM:对左右两张表执行笛卡尔积，产生第一张表 vt1。行数为 n\*m（n 为左表的行数，m 为右表的行数
+1. FROM:对左右两张表执行笛卡尔积，产生第一张表 vt1。行数为 `n * m`（n 为左表的行数，m 为右表的行数）
 2. ON:根据 ON 的条件逐行筛选 vt1，将结果插入 vt2 中
-3. JOIN:添加外部行，如果指定了 LEFT JOIN(LEFT OUTER JOIN)，则先遍历一遍左表的每一行，其中不在 vt2 的行会被插入到 vt2，该行的剩余字段将被填充为 NULL，形成 vt3；如果指定了 RIGHT JOIN 也是同理。但如果指定的是 INNER JOIN，则不会添加外部行，上述插入过程被忽略，vt2=vt3（所以 INNER JOIN 的过滤条件放在 ON 或 WHERE 里 执行结果是没有区别的，下文会细说）
+3. JOIN:添加外部行，如果指定了 LEFT JOIN(LEFT OUTER JOIN)，则先遍历一遍左表的每一行，其中不在 vt2 的行会被插入到 vt2，该行的剩余字段将被填充为 NULL，形成 vt3；如果指定了 RIGHT JOIN 也是同理。但如果指定的是 INNER JOIN，则不会添加外部行，上述插入过程被忽略，vt2=vt3（所以 **INNER JOIN 的过滤条件放在 ON 或 WHERE 里 执行结果是没有区别的**，下文会细说）
 4. WHERE:对 vt3 进行条件过滤，满足条件的行被输出到 vt4
 5. SELECT:取出 vt4 的指定字段到 vt5
 

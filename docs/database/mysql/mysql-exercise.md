@@ -19,17 +19,10 @@
 
 ### **二、SQL 基础操作（12 题）**
 
-9. 查询`customers`表中所有来自"London"且名字以"J"开头的客户：
-   ```sql
-   SELECT * FROM customers
-   WHERE city = 'London' AND name LIKE 'J%';
-   ```
+9. 查询`customers`表中所有来自"Detroit"且名字以"C"开头的客户：
+
 10. 更新`products`表中价格低于 50 的所有产品，价格增加 10%：
-    ```sql
-    UPDATE products
-    SET price = price * 1.1
-    WHERE price < 50;
-    ```
+
 11. 计算每个员工的销售总额（需连接`employees`和`sales`表）：
     ```sql
     SELECT e.employee_id, e.first_name, SUM(s.quantity * p.price) AS total_sales
@@ -229,15 +222,15 @@
 
 ### 二、SQL 基础操作（12 题）
 
-9. **查询`customers`表中所有来自"London"且名字以"J"开头的客户：**
+9. **查询`customers`表中所有来自"Detroit"且名字以"C"开头的客户：**
    **答案**：
 
    ```sql
    SELECT * FROM customers
-   WHERE city = 'London' AND name LIKE 'J%';
+   WHERE city = 'Detroit' AND name LIKE 'C%';
    ```
 
-   - 说明：`LIKE 'J%'` 匹配以 J 开头的名字（区分大小写）
+   - 说明：`LIKE 'C%'` 匹配以 C 开头的名字（区分大小写）
 
 10. **更新`products`表中价格低于 50 的所有产品，价格增加 10%：**
     **答案**：

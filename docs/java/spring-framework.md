@@ -54,8 +54,6 @@ spring-test：集成测试支持，主要是对 junit 的封装
 
 在 Spring 框架中，注解（Annotation）是开发的核心工具之一，它们简化了配置并提高了代码的可读性。
 
----
-
 ### 一、核心注解（Bean 定义与装配）
 
 1. **`@Component`**
@@ -171,8 +169,6 @@ spring-test：集成测试支持，主要是对 junit 的封装
    - 当依赖的可用性取决于环境或配置时（如本例中的条件化配置）
    - 当需要根据依赖是否存在来采取不同的行动时
 
----
-
 ### 二、配置相关注解
 
 6. **`@Configuration`**
@@ -212,8 +208,6 @@ spring-test：集成测试支持，主要是对 junit 的封装
      @ComponentScan("com.example")
      public class AppConfig {}
      ```
-
----
 
 ### 三、Web 开发相关注解
 
@@ -267,8 +261,6 @@ spring-test：集成测试支持，主要是对 junit 的封装
       }
       ```
 
----
-
 ### 四、依赖注入与条件注解
 
 13. **`@Qualifier`**
@@ -303,8 +295,6 @@ spring-test：集成测试支持，主要是对 junit 的封装
           return new ProductionDataSource();
       }
       ```
-
----
 
 ### 五、AOP 与事务管理
 
@@ -347,8 +337,6 @@ spring-test：集成测试支持，主要是对 junit 的封装
       }
       ```
 
----
-
 ### 六、Spring Boot 相关
 
 18. **`@SpringBootApplication`**˜
@@ -378,8 +366,6 @@ spring-test：集成测试支持，主要是对 junit 的封装
       }
       ```
 
----
-
 ### 七、其他重要注解
 
 20. **`@Profile`**
@@ -403,8 +389,6 @@ spring-test：集成测试支持，主要是对 junit 的封装
           // 异步发送邮件
       }
       ```
-
----
 
 ### 八、总结
 
@@ -725,8 +709,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
 
 在 Spring Framework 中，`applicationContext.xml` 是核心配置文件，用于定义 Bean 及其依赖关系、组件扫描、外部属性配置等。以下是对其关键配置的详细讲解及示例：
 
----
-
 ### **1. 基础结构**
 
 根元素是 `<beans>`，包含命名空间和子元素 `<bean>`：
@@ -745,8 +727,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
     <!-- 配置内容 -->
 </beans>
 ```
-
----
 
 ### **2. Bean 的定义与依赖注入**
 
@@ -769,8 +749,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
 </bean>
 ```
 
----
-
 ### **3. 组件扫描（自动注册 Bean）**
 
 通过 `<context:component-scan>` 自动扫描并注册带有 `@Component`、`@Service` 等注解的类。
@@ -782,8 +760,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
 ```
 
 - **作用**：自动发现 `com.example` 包下的 `@Component`、`@Service`、`@Repository` 等组件。
-
----
 
 ### **4. 外部属性配置**
 
@@ -803,8 +779,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
     <property name="password" value="${jdbc.password}" />
 </bean>
 ```
-
----
 
 ### **5. AOP 配置**
 
@@ -830,8 +804,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
 </aop:config>
 ```
 
----
-
 ### **6. 事务管理**
 
 配置事务管理器和启用注解驱动的事务。
@@ -848,8 +820,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
 <!-- 启用注解驱动的事务 -->
 <tx:annotation-driven transaction-manager="transactionManager" />
 ```
-
----
 
 ### **7. MVC 配置**
 
@@ -868,8 +838,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
 </bean>
 ```
 
----
-
 ### **8. Bean 的作用域与生命周期**
 
 - **作用域**：通过 `scope` 指定（如 `singleton`、`prototype`）。
@@ -883,8 +851,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
     init-method="init"
     destroy-method="destroy" />
 ```
-
----
 
 ### **9. 整合其他框架（如 MyBatis）**
 
@@ -904,8 +870,6 @@ for (Field field : findAutowiredFields(bean.getClass())) {
     <property name="basePackage" value="com.example.mapper" />
 </bean>
 ```
-
----
 
 ### **总结**
 
@@ -1127,8 +1091,6 @@ public class UserAspect {
 
 ```
 
----
-
 #### **1. 代码解析**
 
 ##### **（1）类定义部分**
@@ -1147,8 +1109,6 @@ public class UserAspect { ... }
 - **`@Order(1)`**：
   定义切面的优先级。当多个切面作用于同一方法时，数值越小优先级越高（例如 `@Order(1)` 的切面会比 `@Order(2)` 的先执行）。
 
----
-
 ##### **（2）切入点定义**
 
 ```java
@@ -1160,8 +1120,6 @@ public void pointcut() {}
   定义一个可重用的切入点表达式，名为 `pointcut()`。后续通知方法可以直接引用 `pointcut()`。
 - **表达式详解**：
   `execution(* com.sunxiaping.User.add(..))` 表示匹配 `User` 类的 `add` 方法，任意参数列表和返回类型。
-
----
 
 ##### **（3）通知类型**
 
@@ -1179,8 +1137,6 @@ public void beforeAdd() {
 - **用途**：
   日志记录、权限校验、参数预处理等。
 
----
-
 **② 后置通知（`@AfterReturning`）**
 
 ```java
@@ -1194,8 +1150,6 @@ public void afterReturningAdd(Object obj) {
   目标方法 **正常执行完成** 后触发（无异常抛出）。
 - **`returning = "obj"`**：
   获取目标方法的返回值，通过参数 `Object obj` 接收。
-
----
 
 **③ 环绕通知（`@Around`）**
 
@@ -1215,8 +1169,6 @@ public void aroundAdd(ProceedingJoinPoint proceedingJoinPoint) throws Throwable 
 - **功能最强大**：
   可以修改参数、返回值，或处理异常。
 
----
-
 **④ 异常通知（`@AfterThrowing`）**
 
 ```java
@@ -1230,8 +1182,6 @@ public void afterThrowingAdd(Exception ex) {
   目标方法 **抛出异常** 后触发。
 - **`throwing = "ex"`**：
   捕获抛出的异常，通过参数 `Exception ex` 接收。
-
----
 
 **⑤ 最终通知（`@After`）**
 
@@ -1247,8 +1197,6 @@ public void afterAdd() {
 - **用途**：
   资源清理（如关闭文件、释放锁）。
 
----
-
 #### **2. 通知执行顺序**
 
 当所有通知同时作用时，执行顺序如下（假设无异常）：
@@ -1258,8 +1206,6 @@ public void afterAdd() {
 若目标方法抛出异常，执行顺序为：
 
 1. **`@Around` 前半部分** → 2. **`@Before`** → 3. **目标方法抛出异常** → 4. **`@AfterThrowing`** → 5. **`@After`**
-
----
 
 ### **`execution` 表达式详解**
 
@@ -1279,8 +1225,6 @@ execution([权限修饰符] [返回类型] [类全路径].[方法名]([参数列
   - `(..)`：任意参数（0 个或多个）
   - `(String, *)`：第一个参数为 String，第二个任意类型
 
----
-
 #### **示例**
 
 ##### **示例 1：匹配所有 public 方法**
@@ -1292,8 +1236,6 @@ execution(public * com.example.service.*.*(..))
 - **解释**：
   匹配 `com.example.service` 包下所有类的 public 方法，返回类型和参数任意。
 
----
-
 ##### **示例 2：匹配特定返回类型的方法**
 
 ```java
@@ -1302,8 +1244,6 @@ execution(String com.example.dao.UserDao.get*(..))
 
 - **解释**：
   匹配 `UserDao` 类中返回类型为 `String` 且方法名以 `get` 开头的方法，参数任意。
-
----
 
 ##### **示例 3：匹配无参数方法**
 
@@ -1316,8 +1256,6 @@ execution(* * com.example.utils.StringUtil.isEmpty())
 - **解释**：
   匹配 `StringUtil` 类的 `isEmpty` 方法，无参数，返回类型任意。
 
----
-
 ##### **示例 4：匹配包下所有类的所有方法**
 
 ```java
@@ -1327,8 +1265,6 @@ execution(* com.example..*.*(..))
 - **解释**：
   匹配 `com.example` 包及其子包下所有类的所有方法。
 
----
-
 ##### **示例 5：匹配特定异常抛出的方法**
 
 ```java
@@ -1337,8 +1273,6 @@ execution(* com.example.service.OrderService.*(..) throws IOException)
 
 - **解释**：
   匹配 `OrderService` 类中所有声明抛出 `IOException` 的方法。
-
----
 
 ### **其他切入点指示符**
 
@@ -1362,8 +1296,6 @@ execution(* com.example.service.OrderService.*(..) throws IOException)
 public void pointcut() {}
 ```
 
----
-
 ### **5. AOP 实现原理**
 
 - **JDK 动态代理**：基于接口生成代理类（要求目标类实现接口）。
@@ -1372,8 +1304,6 @@ public void pointcut() {}
   - 如果目标类实现了接口 → 使用 JDK 动态代理。
   - 如果目标类未实现接口 → 使用 CGLIB。
 
----
-
 ### **总结**
 
 - **AOP 核心**：通过动态代理实现横切关注点的模块化管理。
@@ -1381,11 +1311,11 @@ public void pointcut() {}
 - **切入点表达式**：灵活使用 `execution` 语法匹配目标方法。
 - **适用场景**：日志、事务、权限校验、性能监控等与业务逻辑解耦的功能。
 
+---
+
 ## @Controller、@Service、@Repository、@Component 这四个注释都可以生成 Bean 实例，他们有什么相同点和不同点？
 
 @Controller、@Service、@Repository 是 @Component 的特化注解，它们都继承了 @Component 注解，并提供了额外的语义和功能。
-
----
 
 ### **相同点**
 
@@ -1396,8 +1326,6 @@ public void pointcut() {}
 3. **语义化注解**：
    均属于 Spring 的“模式注解”（Stereotype Annotations），用于分层架构中标识不同角色的组件。
 
----
-
 ### **不同点**
 
 | 注解          | 定位层次   | 核心作用                                                                | 特殊行为                                                           |
@@ -1406,8 +1334,6 @@ public void pointcut() {}
 | `@Controller` | Web 层     | 处理 HTTP 请求，返回视图或 REST 数据（结合 `@RequestMapping` 使用）。   | Spring MVC 会为 `@Controller` 类生成代理，支持请求映射和视图解析。 |
 | `@Service`    | 业务逻辑层 | 封装业务逻辑，协调多个数据访问操作（如调用多个 `@Repository`）。        | 无特殊行为，但通常用于声明式事务（结合 `@Transactional`）。        |
 | `@Repository` | 数据访问层 | 封装数据库操作（如 CRUD），通常与 ORM 框架（如 JPA、MyBatis）结合使用。 | **自动转换数据访问异常**为 Spring 的 `DataAccessException` 体系。  |
-
----
 
 ### **使用场景**
 
@@ -1482,8 +1408,6 @@ public void pointcut() {}
   }
   ```
 
----
-
 ### **为什么需要区分这些注解？**
 
 1. **代码可读性**：
@@ -1493,8 +1417,6 @@ public void pointcut() {}
    - `@Controller` 支持 Spring MVC 的请求映射和视图解析。
 3. **AOP 与事务管理**：
    结合 `@Transactional`，可以在 `@Service` 层统一管理事务边界。
-
----
 
 ### 再展开讲讲
 
@@ -1507,8 +1429,6 @@ public void pointcut() {}
   1. **自动扫描与注册**：被 `@Component` 注解的类会被 Spring 的组件扫描机制识别并实例化为 Bean。
   2. **依赖注入支持**：通过 `@Autowired` 等注解，实现 Bean 的自动装配。
   3. **通用性**：适用于任何需要 Spring 管理的组件，没有特定层次或角色限制。
-
----
 
 #### **@Controller 的作用、功能与区别**
 
@@ -1526,8 +1446,6 @@ public void pointcut() {}
   - 在 Spring MVC 中，`@Controller` 会被 `DispatcherServlet` 特殊处理，用于生成请求映射的处理器链。
   - 语义上更清晰，表明类的职责是处理用户交互和请求。
 
----
-
 #### **@Service 的作用、功能与区别**
 
 - **作用**：
@@ -1541,8 +1459,6 @@ public void pointcut() {}
 - **与 @Component 的区别**：
   - `@Service` 是 `@Component` 的特化，语义上明确类的角色是服务层组件。
   - 功能上无本质差异（Spring 未对 `@Service` 添加额外逻辑），但代码可读性和架构分层更清晰。
-
----
 
 #### **@Repository 的作用、功能与区别**
 
@@ -1558,6 +1474,8 @@ public void pointcut() {}
   - `@Repository` 是 `@Component` 的特化，专为数据访问层设计。
   - 唯一具有**额外功能**的注解（异常转换），通过 Spring 的 `PersistenceExceptionTranslationPostProcessor` 实现。
   - 语义上表明类负责数据访问，与 ORM 框架或 SQL 操作相关。
+
+---
 
 ## Spring 数据库
 
@@ -1607,27 +1525,118 @@ Java 对象持久化的 API。是 SUN 公司推出的一套基于 ORM 的规范�
 
 ### 其他相关概念
 
-#### DO （Data Object）
+#### DO （Data Object）/ PO (Persistent Object)
 
-与数据库表结构一一对应，通过 DAO 层向上传输数据源对象。
+数据对象或持久化对象。
+
+职责：与数据库表结构严格 1:1 对应，仅承载数据存储结构，后续通过 DAO 层向上传输数据源对象。
+
+特征：
+
+- 属性与表字段完全对应
+- 无业务逻辑方法（仅有 getter/setter）
 
 例如，数据库中有一个用户表（user），那么对应的 DO 类可能被命名为 UserDO，它包含了用户表中的所有字段。
 
+#### DAO （Data Access Object）
+
+数据访问对象。
+
+职责：封装所有数据库操作（CRUD），隔离业务与存储细节，向上层提供数据访问接口。
+
+特征：
+
+- 接口方法对应 SQL 操作
+- 返回 PO/DO 或者 PO/DO 的集合
+
+底层实现逻辑：DAO 模式 = 接口 + 实现类 + PO/DO
+
+例如：
+
+```java
+public interface UserDAO {
+    UserPO getUserById(Long id);
+    void insertUser(UserPO user);
+}
+```
+
 #### BO（Business Object）
 
-封装业务逻辑的对象，由 Service 层输出，包含业务操作相关的数据。
+业务对象。
 
-BO 通常包含了多个 DO 的组合，或者对 DO 进行了业务逻辑上的封装，以便在 Service 层中使用。
+职责：封装核心业务逻辑，聚合多个 PO/DO 完成复杂操作。由 Service 层输出，包含业务操作相关的数据。
+
+特征：
+
+- 包含业务状态机，校验规则
+- 可持有多个 PO/DO 引用
+
+例如：订单退款 BO
+
+```java
+public class OrderRefundBO {
+    private OrderDO order;
+    private UserDO user;
+
+    //  业务方法：执行退款
+    public refundResult refund(String reason) {
+        // 1. 检查订单状态
+        // 2. 检查用户余额
+        // 3. 执行退款
+        // 4. 返回结果
+        return new RefundResult(true, "退款成功");
+    }
+}
+```
 
 #### DTO（Data Transfer Object）
 
 数据传输对象，通常用于 Service 层向外部接口或第三方平台传输数据，或者在 Web 层与 Service 层之间传递数据。
 
+职责：跨层/跨服务数据传输，屏蔽敏感字段，简化传输数据。
+
+特征：
+
+- 属性集是 PO/DO 的子集（如排除 password 字段）
+- 支持序列化（实现 Serializable 接口）
+
+代码示例：用户信息 DTO
+
+```java
+public class UserDTO Implements Serializable {
+    private Long id;
+    private String name;
+    private String email;
+}
+```
+
 #### VO （View Object）
 
 视图对象，用于展示层的对象，通常是 Web 层向模板渲染引擎层传输的对象。
 
+职责：适配前端展示，包含渲染逻辑。
+
+特征：
+
+- 属性可包含格式化数据（如日期转为 yyyy-MM-dd 格式）
+- 聚合多表数据（如订单 VO 包含用户名字）
+
 VO 通常包含了展示给用户看的数据，可能只包含部分 DO 的字段，且格式可能经过转换以适应展示需求。
+
+代码示例：
+
+```java
+public class OrderVO {
+    private Long id;
+    private String CreateTime; // 格式化后的日期字段
+    private String userName; // 关联用户表字段
+
+    // 状态码转文字描述
+    private String statusDesc() {
+      return OrderStatus.of(this.status).getDesc();
+    }
+}
+```
 
 #### AO（Application Object）
 
@@ -1637,6 +1646,67 @@ AO 通常用于封装 Web 层接收的请求数据，可能包含对数据的初
 
 #### POJO（Plain Ordinary Java Object）
 
-POJO 专指只有 setter/getter/toString 的简单类，包括 DO/DTO/BO/VO 等。
+普通 Java 对象。
+
+职责：基础数据容器，可扮演 DO/DTO/BO/VO 等角色。
+
+特征：
+
+- 只有属性 + getter/setter
+- 无框架依赖（如不继承 Spring 类）
+
+POJO 也可专指只有 setter/getter/toString 的简单类，包括 DO/DTO/BO/VO 等。
+
+典型实现：Lombok 简化代码
+
+```java
+// 自动生成 getter/setter
+@Data
+public class UserPOJO {
+    private Long id;
+    private String name;
+    private String email;
+}
+```
+
+---
+
+## Spring 常规开发架构通俗理解
+
+Spring 常用开发架构可以想象成一个传统的餐厅
+
+- Controller 层是大厅区域，负责接客
+- Service 层是厨房区域，负责干活
+- DAO 层是仓库区域，负责搬砖
+
+### Controller
+
+Contoller 层的每一个 Controller 好比“服务员小姐姐”，负责`接待+转发+不做决定`。
+
+就像走进餐厅的大厅前台点单，Controller 就是那个问你：点什么菜？加不加辣？主食吃什么？的服务员。
+
+它负责：接收前端发来的参数、检查是否填写完整，把信息给到 Service 层，然后把 Service 层的返回值包装一下，原路送回前端。
+
+Controller 的最佳实践是：
+
+- 长得好看：接口简洁
+- 态度亲切：代码清晰
+- 不亲自干活：不写逻辑
+
+### Service
+
+Service 层是业务逻辑大脑，餐厅的厨房区域。
+
+Controller 负责点单，真正决定菜怎么做？加什么调料的是 Service。
+
+它负责：处理核心业务，做各种流程判断、组合 DAO 层的数据。保证“产品经理说的需求”和“数据库里的字段”之间不吵架。
+
+### DAO
+
+DAO 层做的就是查库，不搞业务。Service 层要查订单，它就查，要更新库存，它就更。不多问，不思考，不掺业务。
+
+DAO 是“SQL 搬运工”，干活不多嘴，出问题大多怪别人。
+
+---
 
 ## [Spring 5 详细示例](https://www.cnblogs.com/xuweiweiwoaini/p/13660065.html)

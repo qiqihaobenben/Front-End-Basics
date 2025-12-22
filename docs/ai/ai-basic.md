@@ -1,5 +1,23 @@
 # AI 基础知识
 
+## 术语
+
+- AI：Artificial Intelligence 的缩写，指“人工智能”，人工智能是指模拟人类智能的计算机系统或软件，使其能够执行诸如学习、推理、问题解决、感知、语言理解等复杂任务。
+- AIGC：AI Generated Content 的缩写，意指由人工智能生成的内容。在算法和数码内容制作领域，AIGC 涉及使用人工智能技术生成各种形式的内容，比如文字、图像、视频、音乐等。
+- AGI：Artificial General Intelligence 的缩写，意指“通用人工智能”，是指具有与人类智能相当或超越人类智能的人工智能系统。
+- NLP：Natural Language Processing 的缩写，意指“自然语言处理”，自然语言处理是人工智能的一个子领域，主要研究计算机如何理解、解释和生成人类语言。NLP 技术包括文本分析、语言生成、机器翻译、情感分析、对话系统等。
+- Transformer：一种用于自然语言处理（NLP）任务的深度学习模型，最初由 Vaswani 等人在 2017 年的论文中提出。它引入了一种名为“自注意力”（self-attention）的机制，能够有效地处理序列数据，且在许多 NLP 任务，如机器翻译、文本生成和语言建模中取得了巨大的成功。
+- LLM：Large Language Model 的缩写，指“大语言模型”，这类模型是基于机器学习和深度学习技术，特别是自然语言处理（NLP）中的一种技术。大语言模型通过大量的文本数据进行训练，以生成、理解和处理自然语言。一些著名的 LLM 示例包括 OpenAI 的 GPT（Generative Pre-trained Transformer）系列模型，如 GPT-3.5 和 GPT-4。
+- GPT：Generative Pre-trained Transformer 的缩写，指“生成式预训练 Transformer”，GPT 模型利用大量文本数据进行预训练，然后可以通过微调来执行特定任务，例如语言生成、回答问题、翻译、文本摘要等。
+- chatGPT：由 OpenAI 开发的一种基于 GPT 架构的人工智能聊天机器人。它使用自然语言处理技术，能够理解并生成类似人类的文本回复。可以看做是一种 Agent。
+- BERT：Bidirectional Encoder Representations from Transformers 的缩写，是一种自然语言处理（NLP）的预训练模型。它由 Google AI 研究团队于 2018 年首次提出。BERT 的主要创新在于它使用了双向（即上下文敏感）的 Transformer 模型来对文本进行编码。
+- LLaMA：Large Language Model Meta AI 的缩写，是由 Meta 开发的一系列大型自然语言处理模型。这些模型在处理文本生成和理解任务方面表现出色，类似于其他著名的大型语言模型如 GPT-3。
+- PEFT：Parameter-Efficient Fine-Tuning 的缩写，意指“参数高效微调”，这是一种微调机器学习模型的方法，旨在减少需要更新的参数数量，从而降低计算成本和存储需求，同时保持模型性能。PEFT 技术在大型预训练模型（如 BERT、GPT 等）的下游任务适配中尤为重要，因为直接微调这些模型可能会耗费大量计算资源和时间。
+- LoRA：Low-Rank Adaptation 的缩写，意味“低秩适应”，一种用于微调大规模语言模型的一种技术。它通过将模型的权重分解成低秩矩阵来显著减少参数数量和计算开销，从而使得模型在资源受限的环境中也能进行高效的适应性调整。
+- Prompt：指的是提供给模型的一段初始文本，用于引导模型生成后续的内容。
+- Embedding：中文叫嵌入，是一种将高维数据映射到低维空间的技术，但仍尽可能保留原数据的特征和结构。嵌入技术通常用于处理和表示复杂的数据如文本、图像、音乐以及其他高维度的数据类型。
+- RAG：Retrieval-Augmented Gneration 的缩写，指“检索增强生成”，这是一个跨越检索和生成任务的框架，通过先从数据库或文档集合中检索到相关信息，然后利用生成模型（如 GPT）来生成最终的输出。
+
 ## 模型大小与硬件的关系
 
 ### 1. 模型大小与显存换算：不只是下载大小那么简单
@@ -127,3 +145,13 @@ _ `Q8`： 8bit（接近 FP16 精度，但显存节省一半）
 1.  **算显存**：用 `参数量 × 每参数字节数 + 缓冲(20-50%)` 来估算。
 2.  **选模型**：根据你的显存，选择合适参数量的模型。8GB 卡玩 7B 的 4bit 量化，16GB 卡玩 13B 的 4bit 量化，24GB 卡玩 34B 的 4bit 量化或 13B 的 8bit 量化。
 3.  **选量化**：**无脑优先选 `Q4_K_M`**。如果发现质量不满意，再尝试 `Q5_K_M` 或 `Q8_0`。如果想快速测试且显存紧张，可以试试 `Q4_K_S`。
+
+## 相关文章
+
+- [技术人的大模型应用初学指南](https://mp.weixin.qq.com/s/NeR1yPdmK6Z1hZVLRSgxrQ)
+  - 介绍了向量数据库：Faiss、Annoy、HNSW、Elasticsearch with k-NN Plugin、Milvus、Pinecone、Weaviate、Vectara，以及向量数据库在演进方向上的发展趋势。
+  - Multi-Agent 多智能体框架：AutoGen 框架、MetaGPT 框架
+  - RAG
+  - Prompt Engineering 提示词工程
+  - 模型微调：LoRA、QLoRA（Quantized LoRA）
+  - 大模型应用框架：LangChain
