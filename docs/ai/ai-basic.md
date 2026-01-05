@@ -146,6 +146,130 @@ _ `Q8`： 8bit（接近 FP16 精度，但显存节省一半）
 2.  **选模型**：根据你的显存，选择合适参数量的模型。8GB 卡玩 7B 的 4bit 量化，16GB 卡玩 13B 的 4bit 量化，24GB 卡玩 34B 的 4bit 量化或 13B 的 8bit 量化。
 3.  **选量化**：**无脑优先选 `Q4_K_M`**。如果发现质量不满意，再尝试 `Q5_K_M` 或 `Q8_0`。如果想快速测试且显存紧张，可以试试 `Q4_K_S`。
 
+## LLM 的基础架构
+
+图示：
+
+![LLM 基础架构](./images/llm_architecture.png)
+
+伪代码：
+
+```python
+prompt = "What is the meaning of life?";
+
+tokens = tokenizer(prompt);
+while (true) {
+	embeddings = embed(tokens);
+	for ([attention, feedforward] of transformers) {
+		embeddings = attention(embeddings);
+		embeddings = feedforward(embeddings);
+	}
+	output_token = output(embeddings);
+	if (output_token === END_TOKEN) {
+		break;
+	}
+	tokens.push(output_token);
+}
+
+print(decode(tokens));
+```
+
+### Tokenizer
+
+可以简单理解为分词器，会将文本转化为数字 ID。
+
+分词器会将你的提示语切分成小块，并为每个独特片段分配一个称为"令牌"的整数 ID。例如，GPT-5 对提示语"Check out ngrok.ai"的分词。
+
+提示语会被拆分为数组 `["Check", " out", " ng", "rok", ".ai"]`，并转换为标记 `[4383, 842, 1657, 17690, 75584]`。相同的提示语始终生成相同的标记。标记还区分大小写，因为字母大小写能反映单词的语义特征——例如，大写字母 W 开头的"Will"更可能是人名，而小写字母 w 开头的"will"则不然。
+
+分词器种类繁多！ChatGPT 使用的分词器与 Claude 使用的不同。即便是 OpenAI 开发的不同模型，使用的分词器也各不相同。每种分词器都有自己将文本分割为词元的规则。
+
+### Embedding
+
+Embedding（词嵌入）是将文本转换为向量（数字）的过程。
+
+在训练模型输出正确文本时，能够识别两句话是否相似会很有帮助。但相似性体现在哪些方面呢？它们可能同样悲伤、同样有趣或同样发人深省。它们的长度、韵律、语调、语言、词汇或结构也可能相似。我们可以用无数维度来描述两句话的相似性，而句子在某些维度上相似，在其他维度上却未必如此。
+
+Tokens 没有维度。它们只是普通的整数。不过，Embeddings 则不同——嵌入具有多维特性。
+
+嵌入是一个长度为 n 的数组，代表在 n 维空间中的位置。 若 n 为 3，则嵌入可能为 `[10, 4, 2]` ，表示三维空间中的位置 x=10, y=4, z=2 。在训练大型语言模型时，每个 token都会被分配到该空间中的随机初始位置，训练过程会推动所有 token移动，直至找到能产生最佳输出的排列方式。
+
+嵌入阶段首先查询每个 token 的嵌入向量。用伪代码表示可能如下所示：
+
+```js
+// Created during training, never changes during inference.
+const EMBEDDINGS = [...];
+
+// Input: array of tokens (integers)
+function embed(tokens) {
+	// Output: array of n-dimensional embedding arrays
+	return tokens.map((token, i) => {
+		const embeddings = EMBEDDINGS[token];
+    // 将 token 的位置编码到嵌入向量中
+		return encodePosition(embeddings, i);
+	});
+}
+```
+因此，我们将 tokens （一个整数数组）转换为嵌入向量数组。这本质上是一个数组的数组，即"矩阵"。
+
+tokens `[75, 305, 284, 887]` 被转换为一个三维嵌入矩阵:
+
+```
+[
+  [4.7,1.0,2.7],
+  [1.2,3.4,5.6],
+  [7.8,9.0,1.2],
+  [3.4,5.6,7.8]
+]
+```
+
+嵌入维度越高，用于比较句子的维度就越多。我们之前讨论的是三维嵌入，但当前模型已采用数千维的嵌入，其中最大型的模型甚至超过一万维。
+
+嵌入阶段还有最后一项功能：在获取令牌的嵌入向量后，它会将令牌在提示词中的位置编码到嵌入向量中。
+
+简而言之，嵌入向量是 n 维空间中的点，可视作其代表文本的语义含义。在训练过程中，每个标记词都会在这个空间中移动，以靠近其他相似的标记词。维度越高，大型语言模型对每个标记词的表征就越复杂、越细腻。
+
+### Transformer
+
+Transformer 阶段的核心在于将嵌入向量作为输入，并在其 n 维空间中进行变换。它通过两种方式实现这一目标，而我们仅聚焦于第一种：attention（注意力机制）。暂不讨论"Feedforward"（前馈）或"Output"（输出）阶段。
+
+注意力机制的作用是帮助大型语言模型理解提示符中每个标记词之间的关系，通过让标记词在 n 维空间中相互影响彼此的位置来实现。它通过加权方式组合提示符中标记词的嵌入向量来完成这一任务。输入是整个提示符的嵌入向量集合，输出则是所有输入嵌入向量经过加权组合后生成的单一新嵌入向量。
+
+注意力计算中大部分操作都是矩阵乘法。关于矩阵乘法，现在只需了解一点：输出矩阵的形状由输入矩阵的形状决定。输出矩阵的行数始终与第一个输入矩阵相同，列数则与第二个输入矩阵相同。
+
+基于此，以下是简化注意力机制计算每个token权重的方式。在下面的代码中，使用 `*` 表示矩阵乘法。
+
+```js
+// Similar to EMBEDDINGS from the pseudocode
+// earlier, WQ and WK are learned during
+// training and do not change during inference.
+//
+// These are both n*n matrices, where n is the
+// number of embedding dimensions. In our example
+// above, n = 3.
+const WQ = [[...], [...], [...]];
+const WK = [[...], [...], [...]];
+
+// The input embeddings look like this:
+// [
+//   [-0.1, 0.1, -0.3], // Mary
+//   [1.0, -0.5, -0.6], // had
+//   [0.0, 0.8, 0.6],   // a
+//   [0.5, -0.7, 1.0]   // little
+// ]
+function attentionWeights(embeddings) {
+	const Q = embeddings * WQ;
+	const K = embeddings * WK;
+	const scores = Q * transpose(K);
+	const masked = mask(scores);
+	return softmax(masked);
+}
+```
+
+### [Prompt caching: 10x cheaper LLM tokens, but how?](https://ngrok.com/blog/prompt-caching/) ：介绍了以上三个部分，尤其是最后的 Transformer 部分。
+
+
+
 ## 相关文章
 
 - [技术人的大模型应用初学指南](https://mp.weixin.qq.com/s/NeR1yPdmK6Z1hZVLRSgxrQ)

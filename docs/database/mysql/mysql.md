@@ -446,6 +446,10 @@ ALTER TABLE vendors DROP COLUMN vend_phone;
 
 ### ALTER TABLE 常见的用途就是定义外键
 ALTER TABLE products ADD CONSTRAINT fk_products_vendors FOREIGN KEY (vend_id) REFERENCES vendors (vend_id)
+
+### modify
+ALTER TABLE employees
+MODIFY hire_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 ```
 
 ### 删除表
@@ -561,7 +565,7 @@ SELECT prod_id, prod_name, prod_price FROM products;
 # 检索所有列。
 SELECT * FROM products;
 
-# 只检索出不同的行， DISTINCT 关键字可以让指令只返回不同的值。如果指令，products 表中可能一共有14行，现在只返回不同（唯一）的 vend_id 行，可能就只返回4行了。
+# 只检索出不同的行， DISTINCT 关键字可以让指令只返回不同的值。如果不加此指令，products 表中可能一共有14行，现在只返回不同（唯一）的 vend_id 行，可能就只返回4行了。
 SELECT DISTINCT vend_id FROM products;
 
 # 限制结果， LIMIT 5 表示只返回不多于5行。
@@ -1412,7 +1416,7 @@ SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SE
 SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION ALL SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001, 1002);
 
 ### 组合查询排序
-SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001, 1002) ORDER BY vend_id, prod_id;
+SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001, 1002) ORDER BY vend_id ASC, prod_id DESC;
 ```
 
 ### 注意
@@ -1420,6 +1424,13 @@ SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SE
 - UNION 必须由两条或两条以上的 SELECT 语句组成，语句之间用关键字 UNION 分隔。
 - UNION 中的每个查询必须包含相同的列，表达式或聚集函数（不过各个列不需要以相同的次序列出）。
 - 对组合查询结果排序时，只能使用一条 ORDER BY 子句，它必须出现在最后一条 SELECT 语句之后。
+
+```
+# ORDER BY 语句
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1 [ASC|DESC], column2 [ASC|DESC], ...;
+```
 
 ---
 
