@@ -3,6 +3,8 @@
 ## 必读概览
 
 - [国内外知名大模型及应用——模型/应用维度](https://zhuanlan.zhihu.com/p/670574382)
+- [国内外知名大模型及应用——公司/品牌维度](https://zhuanlan.zhihu.com/p/1888535008785958517)
+- [不费脑的 AI 原理](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=Mzk2NDQzNTk3MA==&scene=1&album_id=4288470086136201218&count=3#wechat_redirect)
 
 ## 概念
 
