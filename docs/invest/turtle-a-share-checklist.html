@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>A股低执行难度海龟交易 · A4执行清单</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+        "Microsoft YaHei", Arial, sans-serif;
+      background: #f6f7f9;
+      color: #222;
+      margin: 0;
+      padding: 24px;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 32px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      border-left: 6px solid #3b82f6;
+      padding-left: 12px;
+      margin-top: 32px;
+      font-size: 20px;
+    }
+
+    h3 {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+      transform: scale(1.2);
+    }
+
+    .rule {
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 6px;
+      margin: 12px 0;
+      font-weight: bold;
+    }
+
+    .formula {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-family: monospace;
+      margin: 8px 0;
+    }
+
+    .danger {
+      background: #fff1f2;
+      border-left: 6px solid #ef4444;
+      padding: 14px;
+      margin: 12px 0;
+    }
+
+    .quote {
+      background: #fefce8;
+      border-left: 6px solid #eab308;
+      padding: 14px;
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      .page {
+        box-shadow: none;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <h1>🐢 A 股低执行难度海龟交易</h1>
+    <div class="subtitle">一页 A4 执行清单（只负责执行，不负责预测）</div>
+
+    <!-- 一 -->
+    <h2>一、是否允许交易（3 秒过滤）</h2>
+    <ul>
+      <li><label><input type="checkbox"> 标的是 ETF 或超大市值股</label></li>
+      <li><label><input type="checkbox"> 非 ST / 非次新 / 非题材炒作</label></li>
+      <li><label><input type="checkbox"> 股价 &lt; 30（个股）</label></li>
+      <li><label><input type="checkbox"> ATR / 价格 &lt; 3%</label></li>
+      <li><label><input type="checkbox"> 无连续涨停或跌停</label></li>
+    </ul>
+
+    <!-- 二 -->
+    <h2>二、入场规则（只看收盘）</h2>
+    <div class="rule">
+      当日收盘价 ＞ 过去 55 个交易日最高收盘价 → 次日买入
+    </div>
+    <ul>
+      <li><label><input type="checkbox"> 只看收盘价</label></li>
+      <li><label><input type="checkbox"> 不看盘中、不提前</label></li>
+      <li><label><input type="checkbox"> 不看消息、不看基本面</label></li>
+    </ul>
+
+    <!-- 三 -->
+    <h2>三、仓位与风险控制</h2>
+    <h3>单笔最大风险</h3>
+    <ul>
+      <li><label><input type="checkbox"> 0.5%（新手）</label></li>
+      <li><label><input type="checkbox"> 1%（熟练后）</label></li>
+    </ul>
+
+    <h3>止损价计算</h3>
+    <div class="formula">
+      止损价 = 买入价 − 2 × ATR(14)
+    </div>
+    <ul>
+      <li><label><input type="checkbox"> 接受止损可能无法成交</label></li>
+      <li><label><input type="checkbox"> 已为此降低仓位</label></li>
+    </ul>
+
+    <!-- 四 -->
+    <h2>四、下单原则</h2>
+    <ul>
+      <li><label><input type="checkbox"> 只在收盘后决策</label></li>
+      <li><label><input type="checkbox"> 不盯盘</label></li>
+      <li><label><input type="checkbox"> 所有订单提前下好</label></li>
+    </ul>
+
+    <!-- 五 -->
+    <h2>五、止盈 / 退出规则</h2>
+    <div class="rule">
+      收盘价 ＜ 过去 20 个交易日最低收盘价 → 次日全部卖出
+    </div>
+    <ul>
+      <li><label><input type="checkbox"> 不分批卖出</label></li>
+      <li><label><input type="checkbox"> 不因浮盈而提前卖</label></li>
+    </ul>
+
+    <!-- 六 -->
+    <h2>六、加仓规则（可选）</h2>
+    <ul>
+      <li><label><input type="checkbox"> 默认不加仓</label></li>
+      <li><label><input type="checkbox"> 每上涨 1×ATR 才允许加</label></li>
+      <li><label><input type="checkbox"> 每次加 0.5 倍初始仓位</label></li>
+      <li><label><input type="checkbox"> 最多加 2 次</label></li>
+    </ul>
+
+    <!-- 七 -->
+    <h2>七、每日执行流程</h2>
+    <ul>
+      <li><label><input type="checkbox"> 检查 55 日突破</label></li>
+      <li><label><input type="checkbox"> 检查 20 日跌破</label></li>
+      <li><label><input type="checkbox"> 计算 ATR 与仓位</label></li>
+      <li><label><input type="checkbox"> 下好第二天订单</label></li>
+      <li><label><input type="checkbox"> 关闭交易软件</label></li>
+    </ul>
+
+    <!-- 禁止 -->
+    <h2>🚫 强制禁止清单</h2>
+    <div class="danger">
+      <ul>
+        <li>⛔ 因跳空 / 涨跌停修改规则</li>
+        <li>⛔ 连续止损就怀疑系统</li>
+        <li>⛔ 被扫止损后不敢再进</li>
+        <li>⛔ 用消息、感觉干预买卖点</li>
+        <li>⛔ 盘中决策</li>
+        <li>⛔ 和他人短期收益比较</li>
+      </ul>
+    </div>
+
+    <!-- 结语 -->
+    <div class="quote">
+      止损不是失败，<br>
+      是我花 0.5% 买了一次趋势判断权。<br><br>
+      我只负责执行，结果由概率负责。
+    </div>
+
+    <footer>
+      A 股专用 · 低执行难度海龟系统 ｜ 打印建议：A4 纵向
+    </footer>
+  </div>
+</body>
+
+</html>

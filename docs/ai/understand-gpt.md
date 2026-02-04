@@ -280,6 +280,15 @@ ChatGPT 就相当于这样的“试点火实验”。它所展现的一些能力
 
 - [ChatGPT 如何成了学习的神兵利器](https://mp.weixin.qq.com/s/ECFxhRj-Dko097gukaSCTA)
 
+### GPTS
+
+- 趋势投资大师：[https://chatgpt.com/g/g-695f532ccefc8191940aeb77a40383e5-qu-shi-tou-zi-da-shi](https://chatgpt.com/g/g-695f532ccefc8191940aeb77a40383e5-qu-shi-tou-zi-da-shi)
+- 投资大师： [https://chatgpt.com/g/g-69610f6432b081918a4d41cdfb1aa381-tou-zi-da-shi](https://chatgpt.com/g/g-69610f6432b081918a4d41cdfb1aa381-tou-zi-da-shi)
+- AI 百晓生: [https://chatgpt.com/g/g-695f2a309594819181eabe9a9dd170d1-ai-bai-xiao-sheng](https://chatgpt.com/g/g-695f2a309594819181eabe9a9dd170d1-ai-bai-xiao-sheng)
+- 前端技术专家：[https://chatgpt.com/g/g-6966fea8b8e481918c57de39c0f33a47-qian-duan-ji-zhu-zhuan-jia](https://chatgpt.com/g/g-6966fea8b8e481918c57de39c0f33a47-qian-duan-ji-zhu-zhuan-jia)
+- AI 智能体架构导师： [https://chatgpt.com/g/g-69688d4afb7c8191ade8217030389c81-ai-zhi-neng-ti-jia-gou-dao-shi](https://chatgpt.com/g/g-69688d4afb7c8191ade8217030389c81-ai-zhi-neng-ti-jia-gou-dao-shi)
+- 软件系统架构顾问： [https://chatgpt.com/g/g-696dc348574081918df17ade2760e094-ruan-jian-xi-tong-jia-gou-gu-wen](https://chatgpt.com/g/g-696dc348574081918df17ade2760e094-ruan-jian-xi-tong-jia-gou-gu-wen)
+
 ## 国内使用 AI
 
 - [在中国国内如何购买 ChatGPT Plus](https://www.digitalnomadlc.com/how-to-buy-chatgptplus/)
@@ -289,3 +298,7 @@ ChatGPT 就相当于这样的“试点火实验”。它所展现的一些能力
 - [ChatGPT 原理探索](https://juejin.cn/post/7218048201982787645)
 - [大白话讲清楚 ChatGPT](https://mp.weixin.qq.com/s/tri0OINMaOxYeqSk8iFesg)
 - [初探 chatgpt](https://mp.weixin.qq.com/s/nUgoxyLpYOdUzCzyjrs7xw)
+
+我现在要创建一个 MCP Server 给 Coze 平台的智能体使用，这个 Server 主要是使用我们自己的平台通过智能水表和智能电表上传上来的数据，将近两年的数据，并且每天都有新的数据产生。用户如果问智能体水电表的相关问题是，期望智能体分析是否需要项目现场智能水电表的数据。
+
+我现在要开发这个 MCP Server ，请指导我分析主要的功能有哪些，架构是什么样的，如何进行开发。我熟悉 JavaScript，python 也会一些，不太熟练，但是我不排斥多学习一些 python 知识。

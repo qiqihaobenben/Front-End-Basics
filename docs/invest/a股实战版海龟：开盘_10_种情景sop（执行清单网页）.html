@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A 股实战版海龟：开盘 10 种情景 SOP（盘前执行清单）</title>
+  <style>
+    :root{
+      --bg:#f7f7f8;
+      --card:#ffffff;
+      --text:#1f2328;
+      --muted:#57606a;
+      --line:#d0d7de;
+      --accent:#0b5fff;
+      --danger:#b42318;
+      --ok:#067647;
+      --shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
+      --radius:14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    body{margin:0; font-family:var(--sans); color:var(--text); background:var(--bg);}
+    header{padding:28px 16px 10px; max-width:1080px; margin:0 auto;}
+    h1{margin:0 0 8px; font-size:22px; font-weight:700;}
+    .sub{color:var(--muted); font-size:13px; line-height:1.5;}
+    main{max-width:1080px; margin:0 auto; padding:12px 16px 36px;}
+    .grid{display:grid; grid-template-columns:1fr; gap:12px;}
+    @media (min-width: 980px){ .grid{grid-template-columns: 420px 1fr;} }
+    .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);}
+    .card .hd{padding:14px 14px 10px; border-bottom:1px solid var(--line);} 
+    .card .hd h2{margin:0; font-size:15px;}
+    .card .bd{padding:14px;}
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#fafbfc; font-size:12px; color:var(--muted);}
+    .pill b{color:var(--text); font-family:var(--mono); font-size:12px;}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    label{font-size:12px; color:var(--muted);}
+    select,input[type="number"],input[type="text"]{border:1px solid var(--line); border-radius:10px; padding:9px 10px; font-size:13px; background:#fff;}
+    select{min-width:260px;}
+    .btn{border:1px solid var(--line); background:#fff; padding:9px 12px; border-radius:10px; cursor:pointer; font-size:13px;}
+    .btn.primary{border-color:rgba(11,95,255,.35); background:rgba(11,95,255,.08); color:#0b5fff;}
+    .btn:active{transform:translateY(1px);} 
+    .k{font-family:var(--mono); font-size:12px; color:var(--muted);} 
+    .list{margin:0; padding-left:18px;}
+    .list li{margin:6px 0; line-height:1.5;}
+    .hr{height:1px; background:var(--line); margin:12px 0;}
+    .badge{display:inline-flex; align-items:center; padding:3px 8px; border-radius:8px; font-size:12px; border:1px solid var(--line); background:#fff;}
+    .badge.ok{border-color:rgba(6,118,71,.3); background:rgba(6,118,71,.06); color:var(--ok);} 
+    .badge.danger{border-color:rgba(180,35,24,.3); background:rgba(180,35,24,.06); color:var(--danger);} 
+    .badge.neutral{border-color:rgba(87,96,106,.25); background:rgba(87,96,106,.05); color:var(--muted);} 
+    .steps{display:grid; gap:10px;}
+    .step{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff;}
+    .step h3{margin:0 0 6px; font-size:13px; display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .step p{margin:0; font-size:13px; color:var(--muted); line-height:1.6;}
+    .todo{display:grid; gap:10px;}
+    .todo .item{display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:#fff;}
+    .todo input{margin-top:3px;}
+    .todo .t{font-size:13px; line-height:1.5;}
+    .todo .t b{color:var(--text);} 
+    .small{font-size:12px; color:var(--muted); line-height:1.6;}
+    details{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff;}
+    summary{cursor:pointer; font-size:13px; font-weight:600;}
+    .foot{max-width:1080px; margin:0 auto; padding:0 16px 28px; color:var(--muted); font-size:12px;}
+    .warn{color:var(--danger);}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>A 股实战版海龟：开盘 10 种情景 SOP（盘前执行清单）</h1>
+    <div class="sub">
+      适用：趋势跟踪 / 海龟系统（突破入场、ATR 风控、系统止损/退出）。
+      目标：盘前 60 秒确定“今天只做哪三件事”。
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+      <!-- Left: Inputs + Today 3 things -->
+      <section class="card" aria-label="盘前输入">
+        <div class="hd"><h2>盘前 60 秒（输入与选择）</h2></div>
+        <div class="bd">
+          <div class="row" style="margin-bottom:10px;">
+            <span class="pill"><b>系统</b> 海龟突破</span>
+            <span class="pill"><b>市场</b> A 股 T+1</span>
+            <span class="pill"><b>原则</b> 先风控后收益</span>
+          </div>
+
+          <div class="row" style="gap:12px;">
+            <div>
+              <label>选择开盘情景（10 选 1）</label><br />
+              <select id="scenario">
+                <optgroup label="买入场景（突破信号已在前一交易日确认）">
+                  <option value="B1">B1 小幅高开且仍在突破位上方</option>
+                  <option value="B2">B2 小幅低开且仍在突破位上方</option>
+                  <option value="B3">B3 开盘回到突破位附近（测试突破）</option>
+                  <option value="B4">B4 低开跌回区间内（疑似假突破）</option>
+                  <option value="B5">B5 极端高开（≥ 1.5×ATR 或接近涨停）</option>
+                </optgroup>
+                <optgroup label="卖出场景（前一交易日已触发退出/止损/反向突破）">
+                  <option value="S1">S1 平开/小波动，正常退出</option>
+                  <option value="S2">S2 低开但未跳空跌破止损位</option>
+                  <option value="S3">S3 低开直接跳空跌破止损位</option>
+                  <option value="S4">S4 高开冲高（仍需执行退出）</option>
+                  <option value="S5">S5 开盘即封板（涨停/跌停流动性受限）</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="row" style="align-items:flex-end;">
+            <div>
+              <label>账户单笔风险 R（%）</label><br />
+              <input id="riskPct" type="number" min="0" max="5" step="0.1" value="1.0" />
+            </div>
+            <div>
+              <label>止损距离（以 ATR 表示）</label><br />
+              <input id="stopAtr" type="number" min="0.2" max="10" step="0.1" value="2.0" />
+            </div>
+            <div>
+              <label>高开/低开幅度（ATR）</label><br />
+              <input id="gapAtr" type="number" min="-10" max="10" step="0.1" value="0.0" />
+            </div>
+          </div>
+          <div class="small" style="margin-top:10px;">
+            注：这里的 ATR 只用于“执行判断与仓位缩放提示”，不替代你系统中的真实计算。
+          </div>
+
+          <div class="row" style="margin-top:12px;">
+            <button class="btn primary" id="build">生成：今天只做哪三件事</button>
+            <button class="btn" id="reset">重置勾选</button>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="card" style="box-shadow:none; border:none; background:transparent;">
+            <div class="hd" style="padding:0 0 10px; border:none;"><h2>今天只做哪三件事</h2></div>
+            <div class="bd" style="padding:0;">
+              <div class="todo" id="todo"></div>
+              <div class="small" style="margin-top:10px;">
+                纪律提醒：<span class="warn">执行优先于感觉</span>；仓位服从风控；不在系统外做“临场加戏”。
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Right: SOP table -->
+      <section class="card" aria-label="10 种情景 SOP">
+        <div class="hd"><h2>开盘 10 种情景 SOP（可复制到交易日志）</h2></div>
+        <div class="bd">
+          <div class="small" style="margin-bottom:10px;">
+            结构：<span class="badge neutral">判定</span> → <span class="badge ok">动作</span> → <span class="badge danger">禁止</span>。
+            买入默认前提：前一日 <b>收盘确认突破</b>；卖出默认前提：前一日 <b>已触发退出规则</b>。
+          </div>
+
+          <div class="steps" id="sop"></div>
+
+          <div class="hr"></div>
+
+          <details>
+            <summary>通用规则（所有情景都必须遵守）</summary>
+            <ul class="list">
+              <li><b>只按系统触发交易</b>：突破入场、系统止损、系统退出（如反向突破/均线/通道退出）。</li>
+              <li><b>仓位永远重算</b>：任何跳空（高开/低开）都先按新开盘价估算风险，再决定仓位。</li>
+              <li><b>滑点是成本不是错误</b>：趋势交易赚趋势，接受不完美成交价。</li>
+              <li><b>不追求开盘“抄底/逃顶”</b>：开盘第一要务是执行风控。</li>
+              <li><b>极端流动性约束</b>（封板、连续一字）优先考虑“能否成交”，再谈价格。</li>
+            </ul>
+          </details>
+
+          <details style="margin-top:10px;">
+            <summary>仓位缩放提示（A 股实战）</summary>
+            <div class="small" style="margin-top:8px;">
+              你不需要精确到小数点，只要抓住方向：<b>入场越偏离计划价（尤其高开）→ 单股风险越大 → 仓位越小</b>。
+            </div>
+            <ul class="list">
+              <li>若开盘价相对突破价 <b>高开 ≥ 1.0×ATR</b>：建议仓位先降到计划仓位的 <b>50% 或更低</b>，避免一次回撤伤筋动骨。</li>
+              <li>若开盘价 <b>低开但仍在突破位上</b>：按新开盘价重算即可，通常仓位略增或接近原计划。</li>
+              <li>若开盘价 <b>跌回突破区间</b>：默认放弃入场（等待下一次有效突破）。</li>
+              <li>若触发止损且 <b>跳空越过止损价</b>：只讨论“尽快卖出”，不讨论“等反弹”。</li>
+            </ul>
+          </details>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="foot">
+    <div>免责声明：此页面为趋势交易执行清单示例，不构成投资建议。请结合你的系统参数（N 日通道、ATR、风险 R、交易成本）自行校准。</div>
+  </div>
+
+  <script>
+    const SOP = {
+      B1: {
+        title: "B1 小幅高开且仍在突破位上方",
+        tag: "买入",
+        judge: [
+          "开盘价 > 突破位（N 日高点）",
+          "跳空幅度 |gap| < 1.0×ATR（非极端）"
+        ],
+        do: [
+          "集合竞价/开盘尽快买入（不追求精确价）",
+          "按开盘价重算仓位：风险 R ÷（入场-止损）",
+          "止损不放宽（止损位由系统决定）"
+        ],
+        dont: [
+          "不要因‘强’而加大风险（不满仓、不加杠杆）",
+          "不要临场上调止损位或取消止损"
+        ]
+      },
+      B2: {
+        title: "B2 小幅低开且仍在突破位上方",
+        tag: "买入",
+        judge: [
+          "开盘价仍在突破位之上",
+          "低开通常意味着回吐而非趋势失败"
+        ],
+        do: [
+          "正常执行买入（集合竞价或开盘后 5–15 分钟均可）",
+          "按开盘价重算仓位（常常比追高更舒服）",
+          "关注盘中是否稳住突破位（若跌回区间，按规则处理）"
+        ],
+        dont: [
+          "不要因为‘更便宜’就超配仓位",
+          "不要把‘低开’解读为基本面变化去改系统"
+        ]
+      },
+      B3: {
+        title: "B3 开盘回到突破位附近（测试突破）",
+        tag: "买入",
+        judge: [
+          "开盘价≈突破位，盘口分歧增大",
+          "关键在于是否能重新站稳突破位"
+        ],
+        do: [
+          "执行方式二选一（写进系统固定）：A) 直接按规则买；B) 等 30–60 分钟站稳再买",
+          "若选择等待：只等结构确认，不等‘舒服’",
+          "无论哪种，仓位按入场价与止损距离重算"
+        ],
+        dont: [
+          "不要盘中来回改规则（今天等，明天不等）",
+          "不要在突破位下方‘赌反弹式买入’"
+        ]
+      },
+      B4: {
+        title: "B4 低开跌回区间内（疑似假突破）",
+        tag: "买入",
+        judge: [
+          "开盘价 < 突破位（回到通道/箱体内）",
+          "假突破概率显著上升"
+        ],
+        do: [
+          "默认放弃入场（等待下一次有效突破信号）",
+          "若你系统允许‘收盘重新站上突破位’才进：必须事先写死规则"
+        ],
+        dont: [
+          "不要因为‘昨天突破’就硬买",
+          "不要在区间内用主观‘抄底’替代趋势入场"
+        ]
+      },
+      B5: {
+        title: "B5 极端高开（≥ 1.5×ATR 或接近涨停）",
+        tag: "买入",
+        judge: [
+          "跳空过大导致单股风险陡增",
+          "短线情绪化成分更高，回撤弹性更大"
+        ],
+        do: [
+          "优先选择：不做或极小试探仓（如 25% 计划仓位）",
+          "若必须参与：仓位大幅缩小 + 止损严格，不容许‘扛’",
+          "等待回踩突破位/短期均线再补仓（若系统允许）"
+        ],
+        dont: [
+          "不要因为‘怕踏空’而全仓追涨",
+          "不要把止损放宽到‘能扛住’"
+        ]
+      },
+
+      S1: {
+        title: "S1 平开/小波动，正常退出",
+        tag: "卖出",
+        judge: [
+          "前一日已触发退出（通道反向/均线/止损等）",
+          "开盘无流动性异常"
+        ],
+        do: [
+          "集合竞价或开盘尽快卖出（执行优先）",
+          "记录：触发原因、执行价、滑点（用于系统复盘）",
+          "退出后不‘立刻反手’除非系统给出新信号"
+        ],
+        dont: [
+          "不要等‘回抽更好价’",
+          "不要因为‘不甘心’把退出改成加仓"
+        ]
+      },
+      S2: {
+        title: "S2 低开但未跳空跌破止损位",
+        tag: "卖出",
+        judge: [
+          "开盘价仍高于你的系统止损价",
+          "但已触发退出规则"
+        ],
+        do: [
+          "仍然卖出（接受不完美价格）",
+          "若系统是‘收盘触发、次日执行’，则按规则执行，不做主观优化",
+          "若盘中又拉回：也不撤单（防止变成主观交易）"
+        ],
+        dont: [
+          "不要因为低开就改成‘再观察一天’",
+          "不要把退出变成‘做 T 降成本’"
+        ]
+      },
+      S3: {
+        title: "S3 低开直接跳空跌破止损位",
+        tag: "卖出",
+        judge: [
+          "开盘价 < 止损价（跳空越过止损）",
+          "属于不可控风险兑现"
+        ],
+        do: [
+          "能卖就立刻卖（集合竞价/开盘第一时间）",
+          "把这次当作系统成本：复盘是否应降低单笔风险 R 或分散标的",
+          "避免‘补仓摊平’，除非系统出现新的突破信号（通常不会立刻出现）"
+        ],
+        dont: [
+          "不要等反弹再卖（最常见致命错误）",
+          "不要临场取消止损或上调止损"
+        ]
+      },
+      S4: {
+        title: "S4 高开冲高（仍需执行退出）",
+        tag: "卖出",
+        judge: [
+          "前一日已触发退出",
+          "次日高开给了更好执行价，但不改变‘该退出’的事实"
+        ],
+        do: [
+          "按计划退出（可在集合竞价直接卖或开盘分批卖出以降低冲击）",
+          "若你有‘分批退出’规则：必须事先固定（比如 50% 竞价、50% 开盘 5 分钟）",
+          "记录：因高开改善的滑点（用于评估执行策略）"
+        ],
+        dont: [
+          "不要因为高开就撤销退出（那不是趋势系统）",
+          "不要把一次高开当作‘趋势没结束’的证据"
+        ]
+      },
+      S5: {
+        title: "S5 开盘即封板（涨停/跌停流动性受限）",
+        tag: "卖出",
+        judge: [
+          "封板意味着成交受限，尤其跌停无法卖出",
+          "优先级：先处理‘是否能成交’"
+        ],
+        do: [
+          "跌停难卖：遵循可成交原则（排队、盘中开板即卖、预设条件单/盯盘纪律）",
+          "涨停想卖：若系统要求退出，仍应执行（可挂板上卖，或开板卖）",
+          "风险层面：减少隔夜暴露（分散标的、降低单笔 R、避免情绪票）"
+        ],
+        dont: [
+          "不要因为‘封跌停卖不掉’而补仓摊平",
+          "不要在流动性极差标的上设置过大仓位"
+        ]
+      }
+    };
+
+    const sopEl = document.getElementById('sop');
+    const todoEl = document.getElementById('todo');
+
+    function badge(text, cls){
+      return `<span class="badge ${cls}">${text}</span>`;
+    }
+
+    function renderSOP(){
+      const order = ['B1','B2','B3','B4','B5','S1','S2','S3','S4','S5'];
+      sopEl.innerHTML = order.map((k, idx)=>{
+        const x = SOP[k];
+        const tag = x.tag === '买入' ? badge('买入', 'ok') : badge('卖出', 'danger');
+        return `
+          <div class="step" id="${k}">
+            <h3>
+              <span>${idx+1}. ${x.title}</span>
+              ${tag}
+            </h3>
+            <p><span class="k">判定：</span>${x.judge.join('；')}</p>
+            <p style="margin-top:6px;"><span class="k">动作：</span>${x.do.join('；')}</p>
+            <p style="margin-top:6px;"><span class="k">禁止：</span><span class="warn">${x.dont.join('；')}</span></p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function buildToday(){
+      const s = document.getElementById('scenario').value;
+      const riskPct = Number(document.getElementById('riskPct').value || 1);
+      const stopAtr = Number(document.getElementById('stopAtr').value || 2);
+      const gapAtr = Number(document.getElementById('gapAtr').value || 0);
+
+      const x = SOP[s];
+      const isBuy = x.tag === '买入';
+
+      // Simple scaling hint (not a calculator):
+      let scaleHint = "按计划仓位执行";
+      if (isBuy) {
+        if (gapAtr >= 1.5) scaleHint = "仓位建议：≤ 25%（极端高开）";
+        else if (gapAtr >= 1.0) scaleHint = "仓位建议：≈ 50%（高开偏大）";
+        else if (gapAtr <= -1.0) scaleHint = "仓位建议：谨慎（低开较大，先确认结构）";
+        else scaleHint = "仓位建议：接近计划仓位（仍需重算）";
+      } else {
+        if (gapAtr <= -1.0) scaleHint = "执行优先：低开较大，能卖就先卖";
+        else if (gapAtr >= 1.0) scaleHint = "高开改善执行价：仍按规则卖出";
+        else scaleHint = "按规则正常执行卖出";
+      }
+
+      const top3 = [];
+
+      // 1) Decide action
+      top3.push({
+        title: isBuy ? "确认结构 → 执行入场" : "确认触发 → 执行退出",
+        body: isBuy
+          ? `对应情景：<b>${x.title}</b>。先看是否仍在突破结构上方，再按规则买入。`
+          : `对应情景：<b>${x.title}</b>。前一日已触发退出，今日以“能成交”为第一目标。`
+      });
+
+      // 2) Risk/position
+      top3.push({
+        title: "仓位/风险只做一件事：重算（或缩放）",
+        body: `当前参数：单笔风险 R ≈ <b>${riskPct.toFixed(1)}%</b>；止损距离 ≈ <b>${stopAtr.toFixed(1)}×ATR</b>；开盘跳空 ≈ <b>${gapAtr.toFixed(1)}×ATR</b>。<br>${scaleHint}。`
+      });
+
+      // 3) Orders + discipline
+      top3.push({
+        title: "下单与纪律：写死、照做、记录",
+        body: isBuy
+          ? `下单：集合竞价/开盘尽快完成；止损：不放宽；记录：入场原因、执行价、计划止损。`
+          : `下单：集合竞价/开盘尽快完成（或按分批规则）；不等反弹；记录：退出原因、执行价、滑点。`
+      });
+
+      todoEl.innerHTML = top3.map((t, i)=>{
+        return `
+          <div class="item">
+            <input type="checkbox" />
+            <div class="t"><b>${i+1}. ${t.title}</b><br><span class="small">${t.body}</span></div>
+          </div>
+        `;
+      }).join('');
+
+      // Scroll to the SOP card entry
+      const node = document.getElementById(s);
+      if (node) node.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+
+    function resetChecks(){
+      todoEl.querySelectorAll('input[type="checkbox"]').forEach(cb=>cb.checked=false);
+    }
+
+    renderSOP();
+    document.getElementById('build').addEventListener('click', buildToday);
+    document.getElementById('reset').addEventListener('click', resetChecks);
+  </script>
+</body>
+</html>

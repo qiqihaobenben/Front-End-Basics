@@ -143,7 +143,7 @@ test 依赖表示仅在测试时使用，正常运行时并不需要。最常用
 </dependency>
 ```
 
-runtime 依赖表示编译时不需要，但运行时需要。最典型的 runtime 依赖是 JDBC 驱动，例如 MySQL 驱动：
+runtime 依赖表示编译时不需要，但运行时需要（我的代码不知道这些类存在，但运行时必须有才能工作）。最典型的 runtime 依赖是 JDBC 驱动，例如 MySQL 驱动：
 
 ```xml
 <dependency>
@@ -154,7 +154,7 @@ runtime 依赖表示编译时不需要，但运行时需要。最典型的 runti
 </dependency>
 ```
 
-provided 依赖表示编译时需要，但运行时不需要。最典型的 provided 依赖是 Servlet API，编译的时候需要，但是运行时，Servlet 服务器内置了相关的 jar，所以运行期不需要：
+provided 依赖表示编译时需要，但运行时不需要（我的代码明确依赖这些类，但运行环境会替我提供）。最典型的 provided 依赖是 Servlet API，编译的时候需要，但是运行时，Servlet 服务器内置了相关的 jar，所以运行期不需要：
 
 ```xml
 <dependency>
@@ -236,6 +236,23 @@ mvn tomcat:run
 #### 以内置的生命周期`default`为例，它包含以下阶段：
 
 在 Maven 的构建生命周期中，`default` 生命周期是最核心的部分，涵盖了从验证到部署的完整过程。每个阶段都有特定的目标（goal），这些目标由 Maven 插件执行。以下是 `default` 生命周期中每个阶段的详细说明：
+
+```
+简化版：
+validate
+↓
+compile
+↓
+test
+↓
+package
+↓
+verify
+↓
+install
+↓
+deploy
+```
 
 ##### 1. `validate`
 
@@ -583,7 +600,7 @@ Maven 通过自定义插件可以执行项目构建时需要的额外功能，�
 
 插件的配置和用法需参考插件的官方文档。
 
-## 常见的关键问题 🌟
+## 常见的关键问题
 
 ### Maven 如何知道从何处下载所需的依赖？也就是相关的 jar 包？
 

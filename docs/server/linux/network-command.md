@@ -1,12 +1,14 @@
 # 网络命令行工具
 
-以下 **常用的网络测试命令** 按“从链路到应用”分层讲清楚：每个命令的用途、典型用法示例、能测什么、以及如何读输出（并给出 Linux / macOS 与 Windows 的常用互对应命令）。
+以下是“从链路到应用” **常用的网络测试命令** 。
 
-## 1) 基础连通性（ICMP / 路由）
+注意：以下的分层是按照
 
-> ICMP 是 Internet Control Message Protocol 的缩写，意为互联网控制消息协议。它是一种网络层协议，用于在计算机之间传递控制消息。
+## 1. 基础连通性（ICMP / 路由）
 
-#### **ping** — 测试目标是否可达、往返时延（RTT）、丢包率
+> ICMP 是 Internet Control Message Protocol 的缩写，意为互联网控制消息协议。它是一种**网络层**协议，用于在计算机之间传递控制消息。
+
+#### **ping** — 测试目标是否可达、往返时延（Round-Trip Time, RTT）、丢包率
 
 - Linux/macOS: `ping -c 5 8.8.8.8`（发送 5 个包）
 - Windows: `ping -n 5 8.8.8.8`
@@ -15,30 +17,52 @@
 
   注意：很多主机/防火墙会丢弃 ICMP，所以 ping 不通不一定等同主机不可达。
 
-#### **traceroute / tracert / mtr（My Traceroute）** — 路径追踪，查看到目标经过哪些跳（路由器），诊断哪一跳延迟或丢包
+#### **traceroute / tracert / mtr（My Traceroute）** — 路径追踪，查看到目标经过哪些跳（路由器），诊断哪一跳延迟或丢包（不常用）
 
 - Linux/macOS: `traceroute example.com` 或更常用的 `mtr -rw example.com`（实时显示）
 - Windows: `tracert example.com`
 
-  **看什么**：哪一跳延迟骤升或丢包；若在某跳就停了，可能该跳丢弃 ICMP/TTL 过期响应，但后续仍可达（需结合 ping/应用层测试）。
+  **看什么**：哪一跳延迟骤升或丢包；若在某跳就停了，可能该跳丢弃 ICMP/TTL（Time To Live，生存时间）过期响应，但后续仍可达（需结合 ping/应用层测试）。
 
-## 2) 端口与传输层（TCP/UDP）测试
+## 2. 端口与传输层（TCP/UDP）测试
 
 #### **telnet**（测试 TCP 端口是否可建立连接）
 
 - 示例：`telnet smtp.example.com 25` 或 `telnet 192.0.2.1 80`
 
-  **看什么**：能否建立 TCP 三次握手；若能连上但应用无响应，可能应用层问题。
+  **看什么**：能否建立 TCP 三次握手；如果连不上可能是端口没有放通，也可能是该端口的服务没启动（就需要下面的端口检测工具了），若能连上但应用无响应，可能应用层问题。
   Windows 常自带 telnet（需启用），Linux 也常见。
 
-#### **nc / netcat** — 万能端口读写工具（可用作客户端或服务器）
+#### **nc** — 万能端口读写工具（可用作客户端或服务器）
 
-- 连接：`nc -v hostname 12345`
-- 建服务器（临时接收）：`nc -l 8080`（某些发行版是 `-l -p 8080`）
+nc 是一个功能强大的网络工具，可以用于测试、调试和传输数据。它支持 TCP、UDP 和 UNIX 域套接字，可以用于端口扫描、数据传输、文件传输等。
 
-  **用途**：测试 TCP/UDP（`-u`）端口连通性、端到端数据交换、简单端口转发。
+- -l 监听模式，用于创建一个服务器
+- -p 指定端口号
+- -u 使用 UDP 协议
+- -t 使用 TCP 协议
+- -s 指定源 IP 地址
+- -b 指定绑定的 IP 地址
+- -n 不进行 DNS 解析
+- -v 显示详细信息
 
-参考：[nc 命令使用小结](https://wsgzao.github.io/post/nc/)
+##### 示例
+
+```
+# 连接到服务器：-v 显示详细信息
+nc -v hostname 12345
+
+# 建服务器（临时接收）：
+nc -l 8080（某些发行版是 -l -p 8080）
+
+# 连接到服务器：
+nc hostname 8080
+nc 127.0.0.1 8080
+```
+
+- [nc 命令详解](https://wangchujiang.com/linux-command/c/nc.html)
+
+- [nc 命令使用小结](https://wsgzao.github.io/post/nc/)
 
 #### **nmap** — 端口扫描、服务/版本探测、防火墙检测
 
@@ -52,9 +76,167 @@
 #### **ss / netstat** — 查看本机的监听端口和连接
 
 - Linux: `ss -tuln`（列出 listening TCP/UDP，本地端口号）或 `ss -s`（统计）
-- 旧命令 `netstat -tulpen`（某些系统已淘汰）
+- 旧命令 `netstat -tulpen`（某些系统已淘汰），见上文
 
   **看什么**：本机哪些服务在监听、哪些远端已建立连接。
+##### ss （Socket Statistics）
+
+ss(Socket Statistics) 是 Linux 网络诊断的现代工具，用于替代传统的 netstat命令。
+
+```
+查看所有连接
+ss                  # 显示所有连接（简略）
+ss -a               # 显示所有 socket
+ss -a -n            # 不解析服务名（显示端口号）
+ss -a -n -p         # 显示进程信息
+
+按协议筛选
+ss -t              # TCP
+ss -u              # UDP
+ss -w              # RAW
+ss -x              # UNIX
+
+按状态筛选
+ss -t state LISTEN          # 监听中的TCP
+ss -t state ESTABLISHED     # 已建立的连接
+ss -t state TIME-WAIT       # TIME-WAIT状态
+ss -t state all             # 所有状态
+
+常用组合命令
+# 监听中的TCP端口（类似 netstat -tlnp）
+ss -tlnp
+
+# 已建立的TCP连接
+ss -tnp state established
+
+# 查看指定端口的连接
+ss -tna sport = :80
+ss -tna dport = :443
+
+# 按本地端口筛选
+ss -tn src :22
+ss -tn dst :3306
+```
+##### netstat
+
+Linux 中 `netstat -tunlp` 用于显示 tcp，udp 的端口和进程等相关情况。
+
+- -t (tcp) 仅显示 tcp 相关选项
+- -u (udp)仅显示 udp 相关选项
+- -n 拒绝显示别名，能显示数字的全部转化为数字
+- -l 仅列出在 Listen(监听)的服务状态
+- -p 显示建立相关链接的程序名
+
+Linux 中用
+
+macOS 中 `netstat -anv` 用于显示 tcp，udp 的端口和进程等相关情况。
+
+- -a 显示所有连接和监听端口
+- -n 拒绝显示别名，能显示数字的全部转化为数字
+- -v 显示详细信息
+
+##### 示例
+
+Linux 示例
+
+```
+netstat -tunlp | grep 端口号
+
+# netstat -tunlp | grep 8000
+tcp        0      0 0.0.0.0:8000            0.0.0.0:*               LISTEN      26993/nodejs
+```
+
+macOS 示例
+
+```
+netstat -anv
+
+Proto Recv-Q Send-Q  Local Address          Foreign Address        (state)
+tcp4       0      0  127.0.0.1.8081         *.*                    LISTEN
+          ^              ^
+          |              |
+      Receive/Send     本地地址:端口
+      Queue大小
+
+端口所在的列
+Local Address（本地地址）：格式为 IP地址.端口号
+Foreign Address（远程地址）：格式为 IP地址.端口号
+
+端口号提取方法
+# 查看所有监听端口
+netstat -an | grep LISTEN
+
+# 查看指定端口（如8081）
+netstat -an | grep 8081
+
+# 查看所有TCP监听（更详细）
+netstat -anv | grep -i listen
+
+# 查看8081端口是否被监听
+netstat -an | grep -E '\.8081.*LISTEN'
+
+# 查看所有监听端口及其进程（需要root）
+sudo netstat -anvp tcp | grep LISTEN
+
+# 提取端口号的单行命令
+netstat -an | grep LISTEN | awk '{split($4, a, "."); print a[length(a)]}' | sort -n
+```
+
+[Linux netstat 命令详解](https://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html)
+
+##### macOS 推荐 lsof（ List Open Files） 可检测端口是否被占用
+
+- 列出打开的文件
+
+- 在Unix/Linux中，"一切皆文件"，包括网络连接
+
+```
+
+lsof -i -P -n                     # 查看所有网络连接
+lsof -iTCP -sTCP:LISTEN -P -n     # 类似 netstat -tlnp
+
+-iTCP
+只显示TCP协议相关的连接
+等价于 -i tcp
+如果要查看UDP：-iUDP 或 -i udp
+查看所有：-i（TCP+UDP）
+
+-sTCP:LISTEN
+关键参数！ 只显示处于LISTEN状态的TCP连接
+-sTCP: 指定TCP状态过滤器
+LISTEN 表示监听状态（服务端等待连接）
+其他状态：ESTABLISHED、CLOSE_WAIT、TIME_WAIT等
+
+-n - No hostname resolution
+不进行主机名解析
+显示IP地址而不是域名
+示例：127.0.0.1 而不是 localhost
+优点：更快，避免DNS查询延迟
+
+-P - No port name resolution
+不进行端口名解析
+显示端口号而不是服务名
+示例：8081 而不是 http-alt
+优点：避免查看/etc/services的延迟，显示实际端口号
+
+
+
+lsof -i :8080
+# 相当于：lsof -iTCP:8080 -iUDP:8080
+# -iTCP:8080：查看TCP协议的8080端口 -iUDP:8080：查看UDP协议的8080端口
+# 输出
+COMMAND   PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+nodejs    1124 root  11u  IPv4 0x1234567890abcdef      0t0  TCP *:8080 (LISTEN)
+# 如果 PID 是 1124，则说明 8080 端口被 nodejs 进程占用
+
+lsof -ti :8080
+# -t 只输出 PID
+1124
+
+
+# 杀死占用 8080 端口的进程
+kill -9 $(lsof -t -i :8080)
+```
 
 ## 3) 带宽与吞吐量
 

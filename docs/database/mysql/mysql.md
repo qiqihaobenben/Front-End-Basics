@@ -179,14 +179,13 @@ CREATE USER '用户名'@'主机' IDENTIFIED BY '密码';
 ```sql
 # 输入
 
-CREATE USER 'chenfangxu'@'localhost' IDENTIFIED BY '123456';
+CREATE USER 'test'@'localhost' IDENTIFIED BY 'test123456';
 SELECT user FROM user;
 
 #输出
 +------------------+
 | user             |
 +------------------+
-| chenfangxu       |
 | test             |
 | root             |
 +------------------+
@@ -196,7 +195,7 @@ SELECT user FROM user;
 
 ```sql
 # mysql8.0以下
-GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
+GRANT SELECT ON *.* TO test@'%' IDENTIFIED BY 'test123456';
 ```
 
 > 3、使用 INSERT 直接插入行到 user 表来增加用户（不建议）
@@ -211,21 +210,21 @@ GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
 
 ```sql
 # 输入
-SHOW GRANTS FOR chenfangxu;
+SHOW GRANTS FOR test;
 
 # 输出
 +----------------------------------------+
-| Grants for chenfangxu@%                |
+| Grants for test@%                |
 +----------------------------------------+
-| GRANT USAGE ON *.* TO `chenfangxu`@`%` |
+| GRANT USAGE ON *.* TO `test`@`%` |
 +----------------------------------------+
 ```
 
 权限 `USAGE ON *.*` ,USAGE 表示根本没有权限，这句话就是说在任意数据库和任意表上对任何东西没有权限。
 
-`chenfangxu@%` 因为用户定义为 `user@host`, MySQL 的权限用用户名和主机名结合定义，如果不指定主机名，则使用默认的主机名`%`（即授予用户访问权限而不管主机名）。
+`test@%` 因为用户定义为 `user@host`, MySQL 的权限用用户名和主机名结合定义，如果不指定主机名，则使用默认的主机名`%`（即授予用户访问权限而不管主机名）。
 
-如果查看 host 为 localhost 的用户权限可以是：SHOW GRANTS FOR chenfangxu@localhost;
+如果查看 host 为 localhost 的用户权限可以是：SHOW GRANTS FOR test@localhost;
 
 <br>
 
@@ -233,15 +232,15 @@ SHOW GRANTS FOR chenfangxu;
 
 ```sql
 # 输入
-GRANT SELECT ON performance_schema.* TO chenfangxu@'%';
-SHOW GRANTS FOR chenfangxu@%;
+GRANT SELECT ON performance_schema.* TO test@'%';
+SHOW GRANTS FOR test@%;
 
 # 输出
 +------------------------------------------------------------+
-| Grants for chenfangxu@%                                    |
+| Grants for test@%                                    |
 +------------------------------------------------------------+
-| GRANT USAGE ON *.* TO `chenfangxu`@`%`                     |
-| GRANT SELECT ON `performance_schema`.* TO `chenfangxu`@`%` |
+| GRANT USAGE ON *.* TO `test`@`%`                     |
+| GRANT SELECT ON `performance_schema`.* TO `test`@`%` |
 +------------------------------------------------------------+
 ```
 
@@ -251,14 +250,14 @@ SHOW GRANTS FOR chenfangxu@%;
 
 ```sql
 # 输入
-REVOKE SELECT ON performance_schema.* FROM chenfangxu@'%';
-SHOW GRANTS FOR chenfangxu;
+REVOKE SELECT ON performance_schema.* FROM test@'%';
+SHOW GRANTS FOR test;
 
 #输出
 +----------------------------------------+
-| Grants for chenfangxu@%                |
+| Grants for test@%                |
 +----------------------------------------+
-| GRANT USAGE ON *.* TO `chenfangxu`@`%` |
+| GRANT USAGE ON *.* TO `test`@`%` |
 +----------------------------------------+
 ```
 
@@ -289,7 +288,7 @@ SELECT user FROM user;
 > 更改用户密码：`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
 
 ```sql
-SET PASSWORD FOR chenfangxu@'%' = '654321';
+SET PASSWORD FOR test@'%' = '654321';
 
 # 更改root密码
 ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpasswd';
@@ -303,7 +302,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpass
 
 ```sql
 # 输入
-DROP USER chenfangxu@'%';
+DROP USER test@'%';
 SELECT user FROM user;
 
 #输出
@@ -446,6 +445,10 @@ ALTER TABLE vendors DROP COLUMN vend_phone;
 
 ### ALTER TABLE 常见的用途就是定义外键
 ALTER TABLE products ADD CONSTRAINT fk_products_vendors FOREIGN KEY (vend_id) REFERENCES vendors (vend_id)
+
+### modify
+ALTER TABLE employees
+MODIFY hire_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 ```
 
 ### 删除表
@@ -561,7 +564,7 @@ SELECT prod_id, prod_name, prod_price FROM products;
 # 检索所有列。
 SELECT * FROM products;
 
-# 只检索出不同的行， DISTINCT 关键字可以让指令只返回不同的值。如果指令，products 表中可能一共有14行，现在只返回不同（唯一）的 vend_id 行，可能就只返回4行了。
+# 只检索出不同的行， DISTINCT 关键字可以让指令只返回不同的值。如果不加此指令，products 表中可能一共有14行，现在只返回不同（唯一）的 vend_id 行，可能就只返回4行了。
 SELECT DISTINCT vend_id FROM products;
 
 # 限制结果， LIMIT 5 表示只返回不多于5行。
@@ -1010,6 +1013,56 @@ SELECT cust_id, order_num FROM orders WHERE Year(order_date) = 2005 AND Month(or
 | Rand() | 返回一个随机数     |
 | Sqrt() | 返回一个数的平方根 |
 
+### CAST 函数
+
+CAST 是 SQL 中的类型转换函数，用于将一个值从一种数据类型转换为另一种数据类型。
+
+基本语法
+
+```
+CAST(expression AS target_type)
+-- 或（某些数据库支持）
+expression::target_type
+```
+
+```
+-- 字符串转 DECIMAL
+SELECT CAST('99.99' AS DECIMAL(10,2));  -- 99.99
+
+-- 字符串转整数
+SELECT CAST('123' AS INT);              -- 123
+SELECT CAST('123' AS SIGNED);           -- MySQL 写法
+
+-- 字符串转日期
+SELECT CAST('2024-01-15' AS DATE);      -- 2024-01-15
+
+-- 日期时间互转
+SELECT CAST(NOW() AS DATE);             -- 只要日期部分
+SELECT CAST('2024-01-15 14:30:00' AS DATETIME);
+
+-- 时间戳转日期
+SELECT CAST(UNIX_TIMESTAMP() AS DATETIME);
+
+-- 减少小数位（四舍五入）
+SELECT CAST(123.4567 AS DECIMAL(10,2));  -- 123.46
+
+-- 增加小数位（补零）
+SELECT CAST(123.4 AS DECIMAL(10,3));     -- 123.400
+
+-- 不同精度转换
+SELECT CAST(99.99 AS DECIMAL(5,1));      -- 100.0（四舍五入）
+
+-- 布尔值转换
+SELECT CAST(1 AS BOOLEAN);               -- TRUE
+SELECT CAST('true' AS BOOLEAN);          -- TRUE
+
+-- JSON 转换（现代数据库）
+SELECT CAST('{"id": 1}' AS JSON);
+
+-- 二进制转换
+SELECT CAST(65 AS BINARY);               -- 'A'（ASCII）
+```
+
 ---
 
 <br>
@@ -1065,7 +1118,7 @@ SELECT COUNT(*) AS num_items, MIN(prod_price) AS price_min, MAX(prod_price) AS p
 +-----------+-----------+-----------+-----------+
 ```
 
-### 参数 ALL 和 DISTINCT
+### `COUNT()` 参数 ALL 和 DISTINCT
 
 使用 DISTINCT 参数时，只会计算包含不同的值的行，如果指定参数为 ALL 或者不指定参数，默认参数为 ALL ，会计算所有的行。
 
@@ -1154,9 +1207,9 @@ SELECT <row_list>
 
 它的执行顺序如下(SQL 语句里第一个被执行的总是 FROM 子句)：
 
-1. FROM:对左右两张表执行笛卡尔积，产生第一张表 vt1。行数为 n\*m（n 为左表的行数，m 为右表的行数
+1. FROM:对左右两张表执行笛卡尔积，产生第一张表 vt1。行数为 `n * m`（n 为左表的行数，m 为右表的行数）
 2. ON:根据 ON 的条件逐行筛选 vt1，将结果插入 vt2 中
-3. JOIN:添加外部行，如果指定了 LEFT JOIN(LEFT OUTER JOIN)，则先遍历一遍左表的每一行，其中不在 vt2 的行会被插入到 vt2，该行的剩余字段将被填充为 NULL，形成 vt3；如果指定了 RIGHT JOIN 也是同理。但如果指定的是 INNER JOIN，则不会添加外部行，上述插入过程被忽略，vt2=vt3（所以 INNER JOIN 的过滤条件放在 ON 或 WHERE 里 执行结果是没有区别的，下文会细说）
+3. JOIN:添加外部行，如果指定了 LEFT JOIN(LEFT OUTER JOIN)，则先遍历一遍左表的每一行，其中不在 vt2 的行会被插入到 vt2，该行的剩余字段将被填充为 NULL，形成 vt3；如果指定了 RIGHT JOIN 也是同理。但如果指定的是 INNER JOIN，则不会添加外部行，上述插入过程被忽略，vt2=vt3（所以 **INNER JOIN 的过滤条件放在 ON 或 WHERE 里 执行结果是没有区别的**，下文会细说）
 4. WHERE:对 vt3 进行条件过滤，满足条件的行被输出到 vt4
 5. SELECT:取出 vt4 的指定字段到 vt5
 
@@ -1362,7 +1415,7 @@ SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SE
 SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION ALL SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001, 1002);
 
 ### 组合查询排序
-SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001, 1002) ORDER BY vend_id, prod_id;
+SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SELECT vend_id, prod_id, prod_price FROM products WHERE vend_id IN (1001, 1002) ORDER BY vend_id ASC, prod_id DESC;
 ```
 
 ### 注意
@@ -1370,6 +1423,13 @@ SELECT vend_id, prod_id, prod_price FROM products WHERE prod_price <= 5 UNION SE
 - UNION 必须由两条或两条以上的 SELECT 语句组成，语句之间用关键字 UNION 分隔。
 - UNION 中的每个查询必须包含相同的列，表达式或聚集函数（不过各个列不需要以相同的次序列出）。
 - 对组合查询结果排序时，只能使用一条 ORDER BY 子句，它必须出现在最后一条 SELECT 语句之后。
+
+```
+# ORDER BY 语句
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1 [ASC|DESC], column2 [ASC|DESC], ...;
+```
 
 ---
 

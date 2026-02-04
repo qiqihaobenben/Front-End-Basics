@@ -60,7 +60,6 @@ $ npx https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
 
 1. **别名与底层逻辑**
 
-   - `npm create` 是 `npm init` 的别名，与 `npm init` 完全等价。
    - 执行 `npm create <initializer>` 时，实际会动态查找并安装名为 `create-<initializer>` 的包（例如 `npm create vite` → `create-vite`），然后运行该包中定义的 `bin` 文件。
 
 2. **依赖 `npm exec` 执行**

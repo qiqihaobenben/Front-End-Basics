@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>A股海龟交易｜是否该出手 · 每日检查表</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+        "Microsoft YaHei", Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 24px;
+      color: #111;
+    }
+
+    .page {
+      max-width: 820px;
+      margin: auto;
+      background: #fff;
+      padding: 36px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      margin-top: 32px;
+      font-size: 20px;
+      border-left: 6px solid #2563eb;
+      padding-left: 12px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 12px;
+    }
+
+    li {
+      margin: 10px 0;
+      font-size: 15px;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.25);
+      margin-right: 10px;
+    }
+
+    .yes {
+      color: #065f46;
+      font-weight: bold;
+    }
+
+    .no {
+      color: #b91c1c;
+      font-weight: bold;
+    }
+
+    .rule {
+      background: #eff6ff;
+      border-left: 6px solid #2563eb;
+      padding: 14px;
+      margin: 16px 0;
+      font-weight: bold;
+    }
+
+    .danger {
+      background: #fef2f2;
+      border-left: 6px solid #dc2626;
+      padding: 14px;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    .note {
+      background: #fefce8;
+      border-left: 6px solid #ca8a04;
+      padding: 14px;
+      margin-top: 28px;
+      font-style: italic;
+    }
+
+    .footer {
+      margin-top: 36px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      .page {
+        box-shadow: none;
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <h1>🐢 是否该出手 · 每日检查表</h1>
+    <div class="subtitle">
+      A 股专用｜只为防止“手痒交易”
+    </div>
+
+    <!-- 第一部分 -->
+    <h2>一、今天是否“允许交易”？（先过闸门）</h2>
+    <ul>
+      <li>
+        <label>
+          <input type="checkbox">
+          今天情绪稳定，没有急于回本、翻本、证明自己
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox">
+          今天不是因为“无聊 / 看盘太久 / 想动一动”
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox">
+          今天不是刚经历大亏或大赚
+        </label>
+      </li>
+    </ul>
+
+    <div class="danger">
+      ❌ 以上任意一条不满足 → 今天禁止下单
+    </div>
+
+    <!-- 第二部分 -->
+    <h2>二、标的是否“系统允许”？</h2>
+    <ul>
+      <li><label><input type="checkbox"> 标的是 ETF 或超大市值股</label></li>
+      <li><label><input type="checkbox"> 非 ST / 非次新 / 非题材炒作</label></li>
+      <li><label><input type="checkbox"> 股价 &lt; 30（个股）</label></li>
+      <li><label><input type="checkbox"> ATR / 价格 &lt; 3%</label></li>
+    </ul>
+
+    <div class="danger">
+      ❌ 有一项不满足 → 不允许出手
+    </div>
+
+    <!-- 第三部分 -->
+    <h2>三、是否真的“发生了突破”？</h2>
+    <div class="rule">
+      当日【收盘价】 ＞ 过去 55 个交易日【最高收盘价】
+    </div>
+    <ul>
+      <li><label><input type="checkbox"> 确认是“收盘价”，不是盘中</label></li>
+      <li><label><input type="checkbox"> 没有提前买入</label></li>
+      <li><label><input type="checkbox"> 不是猜测“快要突破”</label></li>
+    </ul>
+
+    <div class="danger">
+      ❌ 没有收盘确认 → 禁止交易
+    </div>
+
+    <!-- 第四部分 -->
+    <h2>四、风险是否已提前锁死？</h2>
+    <ul>
+      <li><label><input type="checkbox"> 单笔风险 ≤ 1%（新手 ≤ 0.5%）</label></li>
+      <li><label><input type="checkbox"> 已计算 ATR(14)</label></li>
+      <li><label><input type="checkbox"> 已算好止损价（买入价 − 2×ATR）</label></li>
+      <li><label><input type="checkbox"> 接受可能“卖不在止损价”</label></li>
+    </ul>
+
+    <div class="danger">
+      ❌ 风险没算清 → 禁止下单
+    </div>
+
+    <!-- 第五部分 -->
+    <h2>五、我是否在“试图聪明”？</h2>
+    <ul>
+      <li><label><input type="checkbox"> 没因为消息、政策、利好而心动</label></li>
+      <li><label><input type="checkbox"> 没打算“这次破例”</label></li>
+      <li><label><input type="checkbox"> 如果明天止损，也能心态平稳</label></li>
+    </ul>
+
+    <div class="danger">
+      ❌ 任何一条为否 → 今天不配交易
+    </div>
+
+    <!-- 结论 -->
+    <h2>六、最终裁决</h2>
+    <div class="rule">
+      ✅ 全部通过 → 允许下单（次日执行）<br><br>
+      ❌ 任一未通过 → 今天不交易，是正确行为
+    </div>
+
+    <div class="note">
+      我不靠交易次数赚钱，<br>
+      我靠<strong>少犯错</strong>活下来。
+    </div>
+
+    <div class="footer">
+      A 股专用 · 低执行难度海龟系统<br>
+      打印建议：A4 / 纵向 / 无页眉页脚
+    </div>
+  </div>
+</body>
+
+</html>
