@@ -287,6 +287,7 @@ ChatGPT 就相当于这样的“试点火实验”。它所展现的一些能力
 - AI 百晓生: [https://chatgpt.com/g/g-695f2a309594819181eabe9a9dd170d1-ai-bai-xiao-sheng](https://chatgpt.com/g/g-695f2a309594819181eabe9a9dd170d1-ai-bai-xiao-sheng)
 - 前端技术专家：[https://chatgpt.com/g/g-6966fea8b8e481918c57de39c0f33a47-qian-duan-ji-zhu-zhuan-jia](https://chatgpt.com/g/g-6966fea8b8e481918c57de39c0f33a47-qian-duan-ji-zhu-zhuan-jia)
 - AI 智能体架构导师： [https://chatgpt.com/g/g-69688d4afb7c8191ade8217030389c81-ai-zhi-neng-ti-jia-gou-dao-shi](https://chatgpt.com/g/g-69688d4afb7c8191ade8217030389c81-ai-zhi-neng-ti-jia-gou-dao-shi)
+- 软件系统架构顾问： [https://chatgpt.com/g/g-696dc348574081918df17ade2760e094-ruan-jian-xi-tong-jia-gou-gu-wen](https://chatgpt.com/g/g-696dc348574081918df17ade2760e094-ruan-jian-xi-tong-jia-gou-gu-wen)
 
 ## 国内使用 AI
 

@@ -65,6 +65,8 @@ Marker 专注于将 PDF 等文档高保真地转换为 Markdown 和 HTML，特�
 
 ### 文本处理框架（Chunking）
 
+**RAG 80% 的效果，取决于 chunk，而不是模型。**
+
 在构建知识库时，大模型要先把文档拆分成合适的片段（chunk），再存入向量数据库。
 
 对于中文文档来说，常见的提取/切分方式有：
@@ -144,6 +146,32 @@ LlamaIndex 不仅仅是一个简单的“分割器”，它提供了多种构建
 ### 向量数据库（Vector Database）
 
 Chroma、Weaviate、Milvus、Qdrant
+
+### Rerank 优化
+
+Rerank（重排序）是用一个 更强但更慢的模型，对 Top-K（召回数量） 候选进行 query-chunk 相关性精排。
+
+> Top-K 向量检索时，取最相似的前 K 个 chunk
+
+- Embedding 是 粗筛
+- Reranker 才是 精度来源
+
+```
+query
+  ↓
+embedding 检索（top-20）
+  ↓
+reranker 重新打分
+  ↓
+选 top-3 给 LLM
+```
+
+常见 reranker
+- BGE-reranker
+- Qwen-reranker
+- BCE-reranker
+
+实际效果,在企业 RAG 场景中：加 rerank ≈ 准确率提升 20–40%，尤其是：长文档、相似段落多、术语密集
 
 ## 实践
 

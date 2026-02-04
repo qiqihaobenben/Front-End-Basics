@@ -255,6 +255,8 @@ TCP 是一种**面向连接的、可靠的**传输层协议。这意味着在数
 
 通过这个实际的例子，你可以清晰地看到序列号 (`Seq`) 和确认号 (`Ack`) 是如何递增的，以及 `SYN`, `ACK`, `FIN` 这些标志位在何时被设置。这正是 TCP **可靠性**和**有序性**的体现。
 
+### 视频讲解：[TCP 三次握手和四次挥手](https://www.xiaohongshu.com/explore/694b3fab000000001b025e3e?app_platform=ios&app_version=9.14.2&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CBKTtpXGxbRg3ANa48REZb4sj_KD6Z0uNljbRud3Snp54=&author_share=1&xhsshare=WeixinSession&shareRedId=N0xINkU6Ok42NzUyOTgwNjY0OTc5OTtN&apptime=1766878486&share_id=6bdf277182804b4986b754efe40b6b0f)
+
 ## 文章
 
 - [通过 wireshark 抓包报文来看看 tcp 三次握手的过程](https://zhuanlan.zhihu.com/p/576831354)

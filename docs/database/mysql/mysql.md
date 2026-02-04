@@ -179,14 +179,13 @@ CREATE USER '用户名'@'主机' IDENTIFIED BY '密码';
 ```sql
 # 输入
 
-CREATE USER 'chenfangxu'@'localhost' IDENTIFIED BY '123456';
+CREATE USER 'test'@'localhost' IDENTIFIED BY 'test123456';
 SELECT user FROM user;
 
 #输出
 +------------------+
 | user             |
 +------------------+
-| chenfangxu       |
 | test             |
 | root             |
 +------------------+
@@ -196,7 +195,7 @@ SELECT user FROM user;
 
 ```sql
 # mysql8.0以下
-GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
+GRANT SELECT ON *.* TO test@'%' IDENTIFIED BY 'test123456';
 ```
 
 > 3、使用 INSERT 直接插入行到 user 表来增加用户（不建议）
@@ -211,21 +210,21 @@ GRANT SELECT ON *.* TO chenfangxu@'%' IDENTIFIED BY '123456';
 
 ```sql
 # 输入
-SHOW GRANTS FOR chenfangxu;
+SHOW GRANTS FOR test;
 
 # 输出
 +----------------------------------------+
-| Grants for chenfangxu@%                |
+| Grants for test@%                |
 +----------------------------------------+
-| GRANT USAGE ON *.* TO `chenfangxu`@`%` |
+| GRANT USAGE ON *.* TO `test`@`%` |
 +----------------------------------------+
 ```
 
 权限 `USAGE ON *.*` ,USAGE 表示根本没有权限，这句话就是说在任意数据库和任意表上对任何东西没有权限。
 
-`chenfangxu@%` 因为用户定义为 `user@host`, MySQL 的权限用用户名和主机名结合定义，如果不指定主机名，则使用默认的主机名`%`（即授予用户访问权限而不管主机名）。
+`test@%` 因为用户定义为 `user@host`, MySQL 的权限用用户名和主机名结合定义，如果不指定主机名，则使用默认的主机名`%`（即授予用户访问权限而不管主机名）。
 
-如果查看 host 为 localhost 的用户权限可以是：SHOW GRANTS FOR chenfangxu@localhost;
+如果查看 host 为 localhost 的用户权限可以是：SHOW GRANTS FOR test@localhost;
 
 <br>
 
@@ -233,15 +232,15 @@ SHOW GRANTS FOR chenfangxu;
 
 ```sql
 # 输入
-GRANT SELECT ON performance_schema.* TO chenfangxu@'%';
-SHOW GRANTS FOR chenfangxu@%;
+GRANT SELECT ON performance_schema.* TO test@'%';
+SHOW GRANTS FOR test@%;
 
 # 输出
 +------------------------------------------------------------+
-| Grants for chenfangxu@%                                    |
+| Grants for test@%                                    |
 +------------------------------------------------------------+
-| GRANT USAGE ON *.* TO `chenfangxu`@`%`                     |
-| GRANT SELECT ON `performance_schema`.* TO `chenfangxu`@`%` |
+| GRANT USAGE ON *.* TO `test`@`%`                     |
+| GRANT SELECT ON `performance_schema`.* TO `test`@`%` |
 +------------------------------------------------------------+
 ```
 
@@ -251,14 +250,14 @@ SHOW GRANTS FOR chenfangxu@%;
 
 ```sql
 # 输入
-REVOKE SELECT ON performance_schema.* FROM chenfangxu@'%';
-SHOW GRANTS FOR chenfangxu;
+REVOKE SELECT ON performance_schema.* FROM test@'%';
+SHOW GRANTS FOR test;
 
 #输出
 +----------------------------------------+
-| Grants for chenfangxu@%                |
+| Grants for test@%                |
 +----------------------------------------+
-| GRANT USAGE ON *.* TO `chenfangxu`@`%` |
+| GRANT USAGE ON *.* TO `test`@`%` |
 +----------------------------------------+
 ```
 
@@ -289,7 +288,7 @@ SELECT user FROM user;
 > 更改用户密码：`SET PASSWORD FOR 'username'@'host' = 'newpassword';`
 
 ```sql
-SET PASSWORD FOR chenfangxu@'%' = '654321';
+SET PASSWORD FOR test@'%' = '654321';
 
 # 更改root密码
 ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpasswd';
@@ -303,7 +302,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpass
 
 ```sql
 # 输入
-DROP USER chenfangxu@'%';
+DROP USER test@'%';
 SELECT user FROM user;
 
 #输出

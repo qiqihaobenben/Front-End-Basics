@@ -263,8 +263,18 @@ volumes:
 
 ## docker-compose 命令
 
+- up,创建并启动容器,常用 up -d 后台启动。
+- down,停止并删除容器、网络、镜像和数据卷,清理环境最常用的命令。-v 删除数据卷
+- ps,列出当前运行中的服务状态,查看哪些容器在跑，端口映射是什么。
+- logs,查看容器输出日志,配合 -f 可以持续追踪日志。
+- stop,停止服务,仅停止，不删除容器。
+- start,启动已停止的服务,恢复之前 stop 的容器。
+- restart,重启服务,修改某些配置后常用。
+- exec,在运行中的容器内执行命令,例如：docker-compose exec db bash 进入数据库容器。
+- build,重新构建镜像,当你修改了 Dockerfile 后需要执行。
+
 ```
-# 启动
+# 启动 -d 后台运行
 $ docker-compose up --build xxx -d
 
 # 查看日志
@@ -278,6 +288,7 @@ $ docker-compose rm
 ```
 
 使用 docker-compose up 启动容器，它会自动查找当前目录下的 docker-compose.yaml 文件作为配置文件
+
 
 ## 扩展
 
@@ -305,3 +316,5 @@ $ docker-compose rm
 
 - **无需指定 `version`**：在现代 Docker Compose 实践中，`version` 字段通常可以忽略，尤其是在使用最新的 Docker Compose CLI 时。
 - **向后兼容**：如果你的项目需要向后兼容，或者在一个较老的 Docker 环境中运行，仍然可以指定 `version`，以确保兼容性。
+
+

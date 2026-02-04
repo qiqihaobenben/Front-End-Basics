@@ -1,5 +1,8 @@
 # 网络基础
 
+- [计算机网络常见面试题总结(上)](https://javaguide.cn/cs-basics/network/other-network-questions.html)
+- [计算机网络常见面试题总结(下)](https://javaguide.cn/cs-basics/network/other-network-questions2.html)
+
 ## 网络分层模型
 
 ### TCP/IP 四层模型
