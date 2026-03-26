@@ -67,6 +67,24 @@ ChatGPT 可以类比为学说话的鹦鹉，它没有意识、没有欲望、没
 
 通俗解释：ChatGPT 从根本上始终要做的是，针对它得到的任何文本产生“合理的延续”。这里所说的“合理”是指，“人们在看到诸如数十亿个网页上的内容后，可能期待别人会这样写”。
 
+关于生成原理，更深入的讲解：[解析 Temperature 与 Top P：如何掌控大模型的输出随机性](https://mp.weixin.qq.com/s/BTYNEVdz-9WUoJk3oJEq5Q)
+
+- 这篇文章详细解析了大语言模型（LLM）中控制输出随机性的两个关键参数：Temperature（温度）和 Top P（核采样），并阐述了它们的工作原理、区别及适用场景。
+- 大模型生成文本的三步骤：生成分数（Logits）-> 转换概率（Softmax）-> 加权采样（Sampling）
+- Temperature 的作用
+  - 低值（如 0.1）：概率分布尖锐，高分词优势放大，输出稳定、保守（适合代码生成、数学解题）。
+  - 高值（如 2.0）：概率分布平缓，低分词也有机会被选中，输出随机、多样（适合创意写作）。
+- Top P 的作用：通过设定概率阈值（如 0.9），仅保留累计概率达到阈值的高分词，动态过滤长尾低概率词。
+  - 低值（如 0.1）：仅保留极少数高分词，输出高度确定。
+  - 高值（如 0.9）：允许更多词参与采样，平衡多样性与合理性。
+- 两者区别与协作：
+  - Temperature：全局调整概率分布的平滑度（控制“贫富差距”）。
+  - Top P：局部截断低概率词，控制候选词范围（充当“保安”）。
+  - 通常只需调整其中一个（如固定 Top P=1，仅调节 Temperature），避免效果抵消。
+- 实践建议：
+  - 发散场景（如创意写作）：提高 Temperature（0.8~1.2）或 Top P（0.9）。
+  - 严谨场景（如代码生成）：降低 Temperature（0~0.2）或 Top P（0.1~0.2）。
+
 ### GPT 的训练过程概述
 
 - 收集数据：收集大量的文本数据（GPT3 是 45TB），例如维基百科、小说、新闻文章等。
@@ -288,6 +306,9 @@ ChatGPT 就相当于这样的“试点火实验”。它所展现的一些能力
 - 前端技术专家：[https://chatgpt.com/g/g-6966fea8b8e481918c57de39c0f33a47-qian-duan-ji-zhu-zhuan-jia](https://chatgpt.com/g/g-6966fea8b8e481918c57de39c0f33a47-qian-duan-ji-zhu-zhuan-jia)
 - AI 智能体架构导师： [https://chatgpt.com/g/g-69688d4afb7c8191ade8217030389c81-ai-zhi-neng-ti-jia-gou-dao-shi](https://chatgpt.com/g/g-69688d4afb7c8191ade8217030389c81-ai-zhi-neng-ti-jia-gou-dao-shi)
 - 软件系统架构顾问： [https://chatgpt.com/g/g-696dc348574081918df17ade2760e094-ruan-jian-xi-tong-jia-gou-gu-wen](https://chatgpt.com/g/g-696dc348574081918df17ade2760e094-ruan-jian-xi-tong-jia-gou-gu-wen)
+- 风水大师： [https://chatgpt.com/g/g-69b76e7d1b508191bdfefc926250a0d8-feng-shui-da-shi](https://chatgpt.com/g/g-69b76e7d1b508191bdfefc926250a0d8-feng-shui-da-shi)
+- 前端架构和技术导师：[https://chatgpt.com/g/g-69be0d7ddfa08191a43a77e66be8c1d7-zi-shen-qian-duan-jia-gou-yu-ji-zhu-dao-shi](https://chatgpt.com/g/g-69be0d7ddfa08191a43a77e66be8c1d7-zi-shen-qian-duan-jia-gou-yu-ji-zhu-dao-shi)
+- 资深法律顾问：[https://chatgpt.com/g/g-69c0d6632cac8191a0c7aaa596136adc-zi-shen-fa-lu-gu-wen](https://chatgpt.com/g/g-69c0d6632cac8191a0c7aaa596136adc-zi-shen-fa-lu-gu-wen)
 
 ## 国内使用 AI
 

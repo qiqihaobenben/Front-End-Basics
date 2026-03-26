@@ -99,7 +99,9 @@ Plan-And-Execute 通过分阶段规划与执行任务来应对复杂问题。其
 
 ## 技术选型的思考
 
-### LangChain 和 LangGraph
+### 框架
+
+#### LangChain 和 LangGraph
 
 - LangChain：LLM 应用的基础构建引擎
 
@@ -116,6 +118,31 @@ Plan-And-Execute 通过分阶段规划与执行任务来应对复杂问题。其
 - 实践总结
 
 **LangGraph 的出现是对于使用 LangChain 生态来构建状态化、多智能体应用的的扩展和补充，而不是为了取代 LangChain。相反在实际落地中，往往是二者结合来使用，LangGraph 用来编排图的结构和控制执行流程，LangChain 用来实现某个节点，实现流程编排+节点智能。**
+
+#### [企业级多智能体架构的实践与选型-主要介绍了 AgentScope](https://yuanbao.tencent.com/chat/naQivTmsDa/fbf5b778-758e-43ce-ba20-263860d0667e)
+
+AgentScope 强调“单智能体优先（Single Agent First）”：先通过“单体大模型+精准工具”解决大部分需求（低延迟、易调试），仅当满足以下阈值时升级多智能体：
+
+- 上下文过载（专业知识超窗口容量）；
+- 需分工边界（不同团队维护专属能力）；
+- 需并行加速（多子任务并发降延迟）；
+- 需结构化流转（严格工序/角色切换）。
+
+AgentScope 提供 7 种开箱即用模式，可分为工作流模式（确定性流程）与对话模式（模型动态决策）两大类，关键模式又分为七种：
+
+- （1）Pipeline（工作流）：顺序/并行/循环的固定流程
+- （2）Routing（工作流）：分类 → 专家 → 合并
+- （3）Skills（对话）：渐进式技能披露
+- （4）Handoffs（工作流）：状态驱动的角色交接
+- （5）Subagents vs Supervisor（对话）：中心编排与“专家即工具”
+- （6）Custom Workflow（工作流）：自定义图编排
+
+Spring AI Alibaba 通过 Graph 引擎为 AgentScope 提供工作流编排能力，核心增强包括：
+
+- 统一编排 API（StateGraph/CompiledGraph，节点支持 AgentScopeAgent/普通函数/子图）；
+- 实时状态管理（持久化执行、断点恢复）；
+- 标准状态传递（KeyStrategy 定义合并规则）；
+- 并行与可观测（原生支持并行执行、流式回调与追踪）。
 
 ### 何时单 Agent 已足够（避免过度工程化）
 
@@ -143,25 +170,3 @@ Plan-And-Execute 通过分阶段规划与执行任务来应对复杂问题。其
 
 - [从单智能体到多智能体协作：Agentic System 的演进与 LangGraph4j 实战](https://mp.weixin.qq.com/s/bzG37fcq8uLp3nyw_m5xTg)
 - [LangGraph 快速入门](https://www.luochang.ink/dive-into-langgraph/quickstart/)
-
-新能源车保险智能体 Web 应用 demo，科技感，让人眼前一亮，非常吸引投资人。
-
-1. 首屏（Landing）
-   | 区域 | 展示要点 | 实现捷径 |
-   | ----------- | ---------------------------------------------------- | ---------------------------------------------------- |
-   | ① Hero | 中央 3D 新能源车自动旋转，底盘电池包高亮；右侧 60s 动态数字雨滚动「行驶里程、SOC、风险评分」 | 用 **Spline** 拖一个 GLTF 车模 → 导出 React 组件 → Vercel 一键部署 |
-   | ② 一句话 Pitch | 「让每一公里都成为可定价的风险」——大字 + 霓虹渐变 | Figma 做 3 行字导出 SVG |
-   | ③ CTA | 「立即体验智能体」按钮，点击直接跳 Demo 工作台 | Next.js 路由即可 |
-
-2. Demo 工作台
-   | 模块 | 投资人想看到的 | 界面效果 | 48h 落地方式 |
-   | ----------- | -------------------------------------- | -------------------------------- | ----------------------------------------------------- |
-   | 1. 实时车况云 | 车在哪、电池健康度、异常告警 | 深色地图 + 车辆热力点 + 电池 ICON 三色（优/中/差） | Mapbox + 随机坐标脚本 50 行 |
-   | 2. AI 风险评分 | 1~100 动态仪表盘，秒级刷新 | 3D 仪表盘组件（React-three-fiber） | 写死 `score = 100 - 1.2*rapid_acc - 1.5*deep_discharge` |
-   | 4. 个性化保费 | 输入车牌 → 3 秒生成「报价气泡」上浮 | 气泡带粒子升空动画 | Lottie 动画 + 随机 3 档价格 |
-
-3. 技术路线
-
-前端：Next.js + Tailwind CSS（深色模式已内置），页面上的功能全部使用假数据实现
-3D 车模/图标：Spline 拖完导出 React 组件，不需要写 WebGL
-地图：Mapbox 免费层
