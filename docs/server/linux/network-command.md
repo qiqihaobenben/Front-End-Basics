@@ -76,12 +76,13 @@ nc 127.0.0.1 8080
 #### **ss / netstat** — 查看本机的监听端口和连接
 
 - Linux: `ss -tuln`（列出 listening TCP/UDP，本地端口号）或 `ss -s`（统计）
-- 旧命令 `netstat -tulpen`（某些系统已淘汰），见上文
+- 旧命令 `netstat -tulpen`（某些系统已淘汰），见下文
 
   **看什么**：本机哪些服务在监听、哪些远端已建立连接。
+
 ##### ss （Socket Statistics）
 
-ss(Socket Statistics) 是 Linux 网络诊断的现代工具，用于替代传统的 netstat命令。
+ss(Socket Statistics) 是 Linux 网络诊断的现代工具，用于替代传统的 netstat 命令。
 
 ```
 查看所有连接
@@ -117,6 +118,7 @@ ss -tna dport = :443
 ss -tn src :22
 ss -tn dst :3306
 ```
+
 ##### netstat
 
 Linux 中 `netstat -tunlp` 用于显示 tcp，udp 的端口和进程等相关情况。
@@ -188,7 +190,7 @@ netstat -an | grep LISTEN | awk '{split($4, a, "."); print a[length(a)]}' | sort
 
 - 列出打开的文件
 
-- 在Unix/Linux中，"一切皆文件"，包括网络连接
+- 在 Unix/Linux 中，"一切皆文件"，包括网络连接
 
 ```
 

@@ -309,17 +309,10 @@ ChatGPT 就相当于这样的“试点火实验”。它所展现的一些能力
 - 风水大师： [https://chatgpt.com/g/g-69b76e7d1b508191bdfefc926250a0d8-feng-shui-da-shi](https://chatgpt.com/g/g-69b76e7d1b508191bdfefc926250a0d8-feng-shui-da-shi)
 - 前端架构和技术导师：[https://chatgpt.com/g/g-69be0d7ddfa08191a43a77e66be8c1d7-zi-shen-qian-duan-jia-gou-yu-ji-zhu-dao-shi](https://chatgpt.com/g/g-69be0d7ddfa08191a43a77e66be8c1d7-zi-shen-qian-duan-jia-gou-yu-ji-zhu-dao-shi)
 - 资深法律顾问：[https://chatgpt.com/g/g-69c0d6632cac8191a0c7aaa596136adc-zi-shen-fa-lu-gu-wen](https://chatgpt.com/g/g-69c0d6632cac8191a0c7aaa596136adc-zi-shen-fa-lu-gu-wen)
-
-## 国内使用 AI
-
-- [在中国国内如何购买 ChatGPT Plus](https://www.digitalnomadlc.com/how-to-buy-chatgptplus/)
+- 软件产品专家：[https://chatgpt.com/g/g-69ca1bd6efd08191bc9420ad613053f9-ruan-jian-chan-pin-zhuan-jia](https://chatgpt.com/g/g-69ca1bd6efd08191bc9420ad613053f9-ruan-jian-chan-pin-zhuan-jia)
 
 ## 文章
 
 - [ChatGPT 原理探索](https://juejin.cn/post/7218048201982787645)
 - [大白话讲清楚 ChatGPT](https://mp.weixin.qq.com/s/tri0OINMaOxYeqSk8iFesg)
 - [初探 chatgpt](https://mp.weixin.qq.com/s/nUgoxyLpYOdUzCzyjrs7xw)
-
-我现在要创建一个 MCP Server 给 Coze 平台的智能体使用，这个 Server 主要是使用我们自己的平台通过智能水表和智能电表上传上来的数据，将近两年的数据，并且每天都有新的数据产生。用户如果问智能体水电表的相关问题是，期望智能体分析是否需要项目现场智能水电表的数据。
-
-我现在要开发这个 MCP Server ，请指导我分析主要的功能有哪些，架构是什么样的，如何进行开发。我熟悉 JavaScript，python 也会一些，不太熟练，但是我不排斥多学习一些 python 知识。
